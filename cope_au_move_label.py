@@ -13,7 +13,7 @@ import shutil
 import glob
 import ntpath
 
-env_mode = 1 # Local
+env_mode = 0 # Local
 # env_mode = 1 # Dev
 # env_mode = 2  # Prod
 
@@ -86,7 +86,7 @@ if __name__ == '__main__':
         else:
             source_url = "/home/cope_au/dme_sftp/cope_au/labels/indata/"
             dest_url_0 = "/home/cope_au/dme_sftp/cope_au/labels/archive/"
-            dest_url_1 = "/var/www/html/dme_api/statics/pdfs/"
+            dest_url_1 = "/var/www/html/dme_api/static/pdfs/"
             dup_url = "/home/cope_au/dme_sftp/cope_au/labels/duplicates/"
 
         for file in glob.glob(os.path.join(source_url, "*.pdf")):
@@ -103,14 +103,15 @@ if __name__ == '__main__':
                     with mysqlcon.cursor() as cursor:
                         sql = "UPDATE `dme_bookings` set `b_error_Capture` = %s WHERE `b_bookingID_Visual` = %s"
                         cursor.execute(sql, ('Label is duplicated', visual_id))
+                    mysqlcon.commit()
                 else:
                     shutil.copy(source_url + filename, dest_url_0 + new_filename)
                     shutil.move(source_url + filename, dest_url_1 + new_filename)
                     with mysqlcon.cursor() as cursor:
                         sql = "UPDATE `dme_bookings` set `b_status` = %s, `z_label_url` = %s WHERE `b_bookingID_Visual` = %s"
                         cursor.execute(sql, ('Booked CSV', new_filename, visual_id))
-
-        mysqlcon.commit()
+                    mysqlcon.commit()
+        
     else:
         print('#109 - Flag is 0')
 
