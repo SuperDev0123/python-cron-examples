@@ -40,19 +40,13 @@ redis_host = "localhost"
 redis_port = 6379
 redis_password = ""
 
-def isPodSigned(filename):
-    if filename[4:10] == 'signed':
-        return True
-    else:
-        return False
-
 def get_is_runnable():
     if env_mode == 0:
         return 1
     else:
         with mysqlcon.cursor() as cursor:
             sql = "SELECT `option_value` FROM `dme_options` WHERE `option_name`=%s"
-            cursor.execute(sql, ('rename_move_label'))
+            cursor.execute(sql, ('rename_move_pod'))
             result = cursor.fetchone()
             return int(result['option_value'])
 
@@ -65,10 +59,7 @@ def get_filename(filename, visual_id):
             print('@102 - booking is not exist with this visual_id: ', visual_id)
             return None
         else:
-            if isPodSigned(filename):
-                new_filename = filename[0:11] + result['pu_Address_State'] + '_' + result['b_client_sales_inv_num'] + '_' + filename[11:]
-            else:
-                new_filename = filename[0:4] + result['pu_Address_State'] + '_' + result['b_client_sales_inv_num'] + '_' + filename[4:]
+            new_filename = 'POD_' + result['pu_Address_State'] + '_' + result['b_client_sales_inv_num'] + '_' + filename
             return new_filename
 
 if __name__ == '__main__':
@@ -102,10 +93,7 @@ if __name__ == '__main__':
 
         for file in glob.glob(os.path.join(source_url, "*.png")):
             filename = ntpath.basename(file)
-            if isPodSigned(filename):
-                visual_id = int(filename[14:].split('.')[0])
-            else:
-                visual_id = int(filename[7:].split('.')[0])
+            visual_id = int(filename[3:].split('.')[0])
             new_filename = get_filename(filename, visual_id)
             print('@100 - File name: ', filename, 'Visual ID: ', visual_id, 'New name:', new_filename) 
 
@@ -122,12 +110,8 @@ if __name__ == '__main__':
                     shutil.copy(source_url + filename, dest_url_0 + new_filename)
                     shutil.move(source_url + filename, dest_url_1 + new_filename)
                     with mysqlcon.cursor() as cursor:
-                        if isPodSigned(filename):
-                            sql = "UPDATE `dme_bookings` set`z_pod_signed_url` = %s WHERE `b_bookingID_Visual` = %s"
-                            cursor.execute(sql, (new_filename, visual_id))
-                        else:
-                            sql = "UPDATE `dme_bookings` set `z_pod_url` = %s WHERE `b_bookingID_Visual` = %s"
-                            cursor.execute(sql, (new_filename, visual_id))
+                        sql = "UPDATE `dme_bookings` set `z_pod_url` = %s WHERE `b_bookingID_Visual` = %s"
+                        cursor.execute(sql, (new_filename, visual_id))
                     mysqlcon.commit()
         
     else:
