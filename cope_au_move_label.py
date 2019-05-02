@@ -13,9 +13,9 @@ import shutil
 import glob
 import ntpath
 
-env_mode = 0 # Local
+# env_mode = 0 # Local
 # env_mode = 1 # Dev
-# env_mode = 2  # Prod
+env_mode = 2  # Prod
 
 if env_mode == 0:
     DB_HOST = 'localhost'

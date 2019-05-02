@@ -24,31 +24,21 @@ if env_mode == 0:
     DB_PORT = 3306
     DB_NAME = 'deliver_me'
 if env_mode == 1:
-    DB_HOST = 'fm-dev-database.cbx3p5w50u7o.us-west-2.rds.amazonaws.com'
+    DB_HOST = 'deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com'
     DB_USER = 'fmadmin'
-    DB_PASS = 'Fmadmin1'
+    DB_PASS = 'oU8pPQxh'
     DB_PORT = 3306
     DB_NAME = 'dme_db_dev'  # Dev
 elif env_mode == 2:
-    DB_HOST = 'fm-dev-database.cbx3p5w50u7o.us-west-2.rds.amazonaws.com'
+    DB_HOST = 'deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com'
     DB_USER = 'fmadmin'
-    DB_PASS = 'Fmadmin1'
+    DB_PASS = 'oU8pPQxh'
     DB_PORT = 3306
     DB_NAME = 'dme_db_prod'  # Prod
 
 redis_host = "localhost"
 redis_port = 6379
 redis_password = ""
-
-def get_is_runnable():
-    if env_mode == 0:
-        return 1
-    else:
-        with mysqlcon.cursor() as cursor:
-            sql = "SELECT `option_value` FROM `dme_options` WHERE `option_name`=%s"
-            cursor.execute(sql, ('rename_move_pod'))
-            result = cursor.fetchone()
-            return int(result['option_value'])
 
 def get_filename(filename, visual_id):
     with mysqlcon.cursor() as cursor:
@@ -77,45 +67,44 @@ if __name__ == '__main__':
         print('Mysql DB connection error!')
         exit(1)
 
-    can_run = get_is_runnable()
-
-    if can_run > 0:
-        if env_mode == 0:
-            source_url = "/Users/admin/work/goldmine/scripts/dir01/"
-            dest_url_0 = "/Users/admin/work/goldmine/scripts/dir02/"
-            dest_url_1 = dest_url_0
-            dup_url = "/Users/admin/work/goldmine/scripts/dir_dups/"
-        else:
-            source_url = "/home/cope_au/dme_sftp/cope_au/pods/indata/"
-            dest_url_0 = "/home/cope_au/dme_sftp/cope_au/pods/archive/"
-            dest_url_1 = "/var/www/html/dme_api/static/imgs/"
-            dup_url = "/home/cope_au/dme_sftp/cope_au/pods/duplicates/"
-
-        for file in glob.glob(os.path.join(source_url, "*.png")):
-            filename = ntpath.basename(file)
-            visual_id = int(filename[3:].split('.')[0])
-            new_filename = get_filename(filename, visual_id)
-            print('@100 - File name: ', filename, 'Visual ID: ', visual_id, 'New name:', new_filename) 
-
-            if new_filename:
-                exists = os.path.isfile(dest_url_0 + new_filename)
-
-                if exists:
-                    shutil.move(source_url + filename, dup_url + new_filename)
-                    with mysqlcon.cursor() as cursor:
-                        sql = "UPDATE `dme_bookings` set `b_error_Capture` = %s WHERE `b_bookingID_Visual` = %s"
-                        cursor.execute(sql, ('POD is duplicated', visual_id))
-                    mysqlcon.commit()
-                else:
-                    shutil.copy(source_url + filename, dest_url_0 + new_filename)
-                    shutil.move(source_url + filename, dest_url_1 + new_filename)
-                    with mysqlcon.cursor() as cursor:
-                        sql = "UPDATE `dme_bookings` set `z_pod_url` = %s WHERE `b_bookingID_Visual` = %s"
-                        cursor.execute(sql, (new_filename, visual_id))
-                    mysqlcon.commit()
-        
+    if env_mode == 0:
+        source_url = "/Users/admin/work/goldmine/scripts/dir01/"
+        dest_url_0 = "/Users/admin/work/goldmine/scripts/dir02/"
+        dest_url_1 = dest_url_0
+        dup_url = "/Users/admin/work/goldmine/scripts/dir_dups/"
     else:
-        print('#109 - Flag is 0')
+        source_url = "/home/cope_au/dme_sftp/cope_au/pods/indata/"
+        dest_url_0 = "/home/cope_au/dme_sftp/cope_au/pods/archive/"
+        dest_url_1 = "/var/www/html/dme_api/static/imgs/"
+        dup_url = "/home/cope_au/dme_sftp/cope_au/pods/duplicates/"
 
+    for file in glob.glob(os.path.join(source_url, "*.png")):
+        filename = ntpath.basename(file)
+
+        if '_' in filename:
+            visual_id = int(filename.split('_')[1].split('.')[0])
+        else:
+            visual_id = int(filename[3:].split('.')[0])
+
+        new_filename = get_filename(filename, visual_id)
+        print('@100 - File name: ', filename, 'Visual ID: ', visual_id, 'New name:', new_filename) 
+
+        if new_filename:
+            exists = os.path.isfile(dest_url_0 + new_filename)
+
+            if exists:
+                shutil.move(source_url + filename, dup_url + new_filename)
+                with mysqlcon.cursor() as cursor:
+                    sql = "UPDATE `dme_bookings` set `b_error_Capture` = %s WHERE `b_bookingID_Visual` = %s"
+                    cursor.execute(sql, ('POD is duplicated', visual_id))
+                mysqlcon.commit()
+            else:
+                shutil.copy(source_url + filename, dest_url_0 + new_filename)
+                shutil.move(source_url + filename, dest_url_1 + new_filename)
+                with mysqlcon.cursor() as cursor:
+                    sql = "UPDATE `dme_bookings` set `z_pod_url` = %s WHERE `b_bookingID_Visual` = %s"
+                    cursor.execute(sql, (new_filename, visual_id))
+                mysqlcon.commit()
+        
     print('#901 - Finished %s' % datetime.datetime.now())
     mysqlcon.close()

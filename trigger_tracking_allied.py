@@ -9,16 +9,17 @@ import urllib, requests
 import json
 import pymysql, pymysql.cursors
 import base64
-production = True  # Dev
-# production = False # Local
+
+# production = True  # Dev
+production = False # Local
 
 if production:
-    DB_HOST = 'fm-dev-database.cbx3p5w50u7o.us-west-2.rds.amazonaws.com'
+    DB_HOST = 'deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com'
     DB_USER = 'fmadmin'
-    DB_PASS = 'Fmadmin1'
+    DB_PASS = 'oU8pPQxh'
     DB_PORT = 3306
-    # DB_NAME = 'dme_db_dev'  # Dev
-    DB_NAME = 'dme_db_prod'  # Prod
+    DB_NAME = 'dme_db_dev'  # Dev
+    # DB_NAME = 'dme_db_prod'  # Prod
 else:
     DB_HOST = 'localhost'
     DB_USER = 'root'
@@ -48,8 +49,7 @@ if __name__ == '__main__':
               ORDER BY `id` ASC"
         cursor.execute(sql, ('allied', '1', '0'))
         booking_list = cursor.fetchall()
-    print(DB_HOST)
-    print('@1 Bookings cnt - ', len(booking_list))
+
     # print('@10 - ', booking_list[0])
     # booking_list = Bookings.objects.filter(vx_freight_provider="Allied",
     #                                        z_api_issue_update_flag_500=1, b_client_name="Seaway",
@@ -99,10 +99,9 @@ if __name__ == '__main__':
                     event_time_stamp = status_history_info['statusDate']
                 if 'recipientName' in status_history_info:
                     recipient_name = status_history_info['recipientName']
-
+                    
                 print("status is fine.")
                 if booking['b_status_API'] != new_status:
-                    print("@105 - create new status_history", booking['b_status_API'], new_status)
                     with mysqlcon.cursor() as cursor:
                         sql = "INSERT INTO `dme_status_history` (`fk_booking_id`, `status_old`, `notes`, `status_last`, \
                               `z_createdTimeStamp`, `event_time_stamp`, `recipient_name`, `status_update_via`) \
@@ -117,9 +116,34 @@ if __name__ == '__main__':
                 # total_1_KG_weight_override = data0['consignmentTrackDetails'][0]['totalWeight']
                 # total_lines_qty_override = data0['consignmentTrackDetails'][0]['totalItems']
                 with mysqlcon.cursor() as cursor:
-                    sql = "Update `dme_bookings` set b_status_API=%s,z_lastStatusAPI_ProcessedTimeStamp=%s" \
-                          " where id =%s"
-                    cursor.execute(sql, (new_status, datetime.datetime.now(), booking['id']))
+                    sql = "SELECT * FROM `dme_utl_fp_statuses` \
+                          WHERE LOWER(`fp_name`)=%s \
+                          ORDER BY `id` ASC"
+                    cursor.execute(sql, ('allied'))
+                    fp_statuses = cursor.fetchall()
+
+                    is_status_exist = False
+                    ind = 0
+                    for fp_status in fp_statuses:
+                        if fp_status['fp_lookup_status'] and fp_status['fp_lookup_status'] in new_status:
+                            is_status_exist = True
+                            break
+                        ind = ind + 1
+
+                    if not is_status_exist:
+                        sql = "INSERT INTO `dme_utl_fp_statuses` \
+                            (`fp_name`, `fp_original_status`, `fp_lookup_status`, `dme_status`) \
+                            VALUES (%s, %s, %s, %s)"
+                        cursor.execute(sql, ('Allied', new_status, new_status, 'Pickup ' + new_status))
+                        mysqlcon.commit()
+                        b_status = 'api status'
+                    else:
+                        b_status = fp_statuses[ind]['dme_status']
+                        
+                    sql = "UPDATE `dme_bookings` \
+                           SET b_status=%s, b_status_API=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
+                           WHERE id=%s"
+                    cursor.execute(sql, (b_status, new_status, datetime.datetime.now(), booking['id']))
                     mysqlcon.commit()
 
                 if new_status.lower() == 'shipment has been delivered.':
