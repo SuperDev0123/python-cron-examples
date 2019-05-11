@@ -49,7 +49,10 @@ def get_filename(filename, visual_id):
             print('@102 - booking is not exist with this visual_id: ', visual_id)
             return None
         else:
-            new_filename = 'POD_' + result['pu_Address_State'] + '_' + result['b_client_sales_inv_num'] + '_' + filename
+            if 'POD_SOG_' in filename:
+                new_filename = 'POD_SOG_' + result['pu_Address_State'] + '_' + result['b_client_sales_inv_num'] + '_' + filename[8:]
+            else:
+                new_filename = 'POD_' + result['pu_Address_State'] + '_' + result['b_client_sales_inv_num'] + '_' + filename
             return new_filename
 
 if __name__ == '__main__':
@@ -78,33 +81,49 @@ if __name__ == '__main__':
         dest_url_1 = "/var/www/html/dme_api/static/imgs/"
         dup_url = "/home/cope_au/dme_sftp/cope_au/pods/duplicates/"
 
-    for file in glob.glob(os.path.join(source_url, "*.png")):
+    for file in os.listdir(source_url):
         filename = ntpath.basename(file)
 
-        if '_' in filename:
-            visual_id = int(filename.split('_')[1].split('.')[0])
-        else:
-            visual_id = int(filename[3:].split('.')[0])
-
-        new_filename = get_filename(filename, visual_id)
-        print('@100 - File name: ', filename, 'Visual ID: ', visual_id, 'New name:', new_filename) 
-
-        if new_filename:
-            exists = os.path.isfile(dest_url_0 + new_filename)
-
-            if exists:
-                shutil.move(source_url + filename, dup_url + new_filename)
-                with mysqlcon.cursor() as cursor:
-                    sql = "UPDATE `dme_bookings` set `b_error_Capture` = %s WHERE `b_bookingID_Visual` = %s"
-                    cursor.execute(sql, ('POD is duplicated', visual_id))
-                mysqlcon.commit()
+        if not 'DS_Store' in filename:
+            if 'POD_SOG_' in filename:
+                subname = filename[8:]
+                if '_' in subname:
+                    visual_id = int(subname.split('_')[1].split('.')[0])
+                else: 
+                    visual_id = int(subname[3:].split('.')[0])
             else:
-                shutil.copy(source_url + filename, dest_url_0 + new_filename)
-                shutil.move(source_url + filename, dest_url_1 + new_filename)
-                with mysqlcon.cursor() as cursor:
-                    sql = "UPDATE `dme_bookings` set `z_pod_url` = %s WHERE `b_bookingID_Visual` = %s"
-                    cursor.execute(sql, (new_filename, visual_id))
-                mysqlcon.commit()
+                if '_' in filename:
+                    visual_id = int(filename.split('_')[1].split('.')[0])
+                else:
+                    visual_id = int(filename[3:].split('.')[0])
+
+            new_filename = get_filename(filename, visual_id)
+            print('@100 - File name: ', filename, 'Visual ID: ', visual_id, 'New name:', new_filename) 
+
+            if new_filename:
+                exists = os.path.isfile(dest_url_0 + new_filename)
+
+                if exists:
+                    shutil.move(source_url + filename, dup_url + new_filename)
+                    with mysqlcon.cursor() as cursor:
+                        sql = "UPDATE `dme_bookings` set `b_error_Capture` = %s WHERE `b_bookingID_Visual` = %s"
+                        if 'POD_SOG_' in filename:
+                            cursor.execute(sql, ('POD SOG is duplicated', visual_id))
+                        else:
+                            cursor.execute(sql, ('POD is duplicated', visual_id))
+                    mysqlcon.commit()
+                else:
+                    shutil.copy(source_url + filename, dest_url_0 + new_filename)
+                    shutil.move(source_url + filename, dest_url_1 + new_filename)
+
+                    with mysqlcon.cursor() as cursor:
+                        if 'POD_SOG_' in filename:
+                            sql = "UPDATE `dme_bookings` set `z_pod_signed_url` = %s WHERE `b_bookingID_Visual` = %s"
+                        else:
+                            sql = "UPDATE `dme_bookings` set `z_pod_url` = %s WHERE `b_bookingID_Visual` = %s"
+                            
+                        cursor.execute(sql, (new_filename, visual_id))
+                        mysqlcon.commit()
         
     print('#901 - Finished %s' % datetime.datetime.now())
     mysqlcon.close()

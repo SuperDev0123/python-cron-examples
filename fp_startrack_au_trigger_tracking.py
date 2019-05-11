@@ -13,9 +13,9 @@ production = True  # Dev
 # production = False # Local
 
 if production:
-    DB_HOST = 'fm-dev-database.cbx3p5w50u7o.us-west-2.rds.amazonaws.com'
+    DB_HOST = 'deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com'
     DB_USER = 'fmadmin'
-    DB_PASS = 'Fmadmin1'
+    DB_PASS = 'oU8pPQxh'
     DB_PORT = 3306
     #DB_NAME = 'dme_db_dev'  # Dev
      DB_NAME = 'dme_db_prod'  # Prod

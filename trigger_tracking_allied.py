@@ -10,16 +10,16 @@ import json
 import pymysql, pymysql.cursors
 import base64
 
-# production = True  # Dev
-production = False # Local
+production = True  # Dev
+# production = False # Local
 
 if production:
     DB_HOST = 'deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com'
     DB_USER = 'fmadmin'
     DB_PASS = 'oU8pPQxh'
     DB_PORT = 3306
-    DB_NAME = 'dme_db_dev'  # Dev
-    # DB_NAME = 'dme_db_prod'  # Prod
+    # DB_NAME = 'dme_db_dev'  # Dev
+    DB_NAME = 'dme_db_prod'  # Prod
 else:
     DB_HOST = 'localhost'
     DB_USER = 'root'

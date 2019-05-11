@@ -79,10 +79,24 @@ def do_translate_status(booking, new_status, new_v_FPBookingNumber, event_time_s
         mysqlcon.commit()
 
         if b_status == 'Delivered':
+            sql = "SELECT * \
+                FROM `utl_fp_delivery_times` \
+                WHERE `postal_code_from`=%s and `postal_code_to`=%s"
+            cursor.execute(sql, (booking['pu_Address_PostalCode'], booking['de_To_Address_PostalCode']))
+            result = cursor.fetchone()
+
+            if result:
+                delivery_kpi_days = result['delivery_days']
+            else:
+                delivery_kpi_days = 14
+
+            delivery_days_from_booked = (event_time_stamp - booking['b_dateBookedDate']).days
+            delivery_actual_kpi_days = delivery_days_from_booked - delivery_kpi_days
+
             sql = "UPDATE `dme_bookings` \
-               SET s_21_ActualDeliveryTimeStamp=%s \
+               SET s_21_ActualDeliveryTimeStamp=%s, delivery_kpi_days=%s, delivery_days_from_booked=%s, delivery_actual_kpi_days=%s \
                WHERE id=%s"
-            cursor.execute(sql, (event_time_stamp, booking['id']))
+            cursor.execute(sql, (event_time_stamp, delivery_kpi_days, delivery_days_from_booked, delivery_actual_kpi_days, booking['id']))
             mysqlcon.commit()
 
         return b_status
