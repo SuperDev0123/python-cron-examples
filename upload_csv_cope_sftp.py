@@ -1,58 +1,49 @@
 # Python 3.6.6
 
-import sys, time
 import os
-import errno
-from datetime import datetime
-import uuid
-import urllib, requests
-import json
-import pymysql, pymysql.cursors
-import base64
+import datetime
 import shutil
 import pysftp
 
-# production = True  # Dev
-production = False # Local
+# CSV sftp server info
+host = 'esmart.cope.com.au'
+username = 'deliverme'
+password = 'C3n?7u4f'
+sftp_filepath = '/home/import/csvimport/upload/'
+local_filepath = '/home/cope_au/dme_sftp/cope_au/pickup_ext/'
+local_filepath_dup = '/home/cope_au/dme_sftp/cope_au/pickup_ext/archive/'
 
-#start check if xmls folder exists
-if production:
-    local_filepath = "/var/www/html/dme_api/static/xmls/allied_au/"
-    local_filepath_dup = "/var/www/html/dme_api/static/xmls/allied_au/archive/" + str(datetime.now().strftime("%Y_%m_%d")) + "/"
-else:
-    local_filepath = "/Users/admin/work/goldmine/dme_api/static/xmls/allied_au/"
-    local_filepath_dup = "/Users/admin/work/goldmine/dme_api/static/xmls/allied_au/archive/" + str(datetime.now().strftime("%Y_%m_%d")) + "/"
-
-if not os.path.exists(local_filepath):
-    os.makedirs(local_filepath)
-#end check if xmls folder exists
-
-def upload_sftp(fname, fpath):
-    sftp_filepath = "/home/NSW/delvme.external/indata/"
+def upload_sftp(host, username, password, sftp_filepath, local_filepath, local_filepath_dup, filename):
     cnopts = pysftp.CnOpts()
     cnopts.hostkeys = None
-    with pysftp.Connection(host="edi.alliedexpress.com.au", username="delvme.external", password="987899e64", cnopts=cnopts) as sftp_con:
+    with pysftp.Connection(host=host, username=username, password=password, cnopts=cnopts) as sftp_con:
+        print('@102 - Connected to sftp')
         with sftp_con.cd(sftp_filepath):
-            sftp_con.put(local_filepath + fname)
-            sftp_file_size = sftp_con.lstat(sftp_filepath + fname).st_size
-            local_file_size = os.stat(local_filepath + fname).st_size
+            print('@103 - Go to sftp dir')
+            sftp_con.put(local_filepath + filename)
+            sftp_file_size = sftp_con.lstat(sftp_filepath + filename).st_size
+            local_file_size = os.stat(local_filepath + filename).st_size
 
             if sftp_file_size == local_file_size:
                 if not os.path.exists(local_filepath_dup):
                     os.makedirs(local_filepath_dup)
-                shutil.move(local_filepath + fname, local_filepath_dup + fname)
-                print('@109 Moved xml file:', fpath)
+                shutil.move(local_filepath + filename, local_filepath_dup + filename)
+                print('@109 Moved csv file:', filename)
 
         sftp_con.close()
 
 if __name__ == '__main__':
+    print('#900 - Started at %s' % datetime.datetime.now())
+
     try:
         for fname in os.listdir(local_filepath):
             fpath = os.path.join(local_filepath, fname)
 
-            if os.path.isfile(fpath) and fname.endswith('.xml'):
-                print('@100 Detect xml file:', fpath)
-                upload_sftp(fname, fpath)
+            if os.path.isfile(fpath) and fname.endswith('.csv'):
+                print('@100 Detect csv file:', fpath)
+                upload_sftp(host, username, password, sftp_filepath, local_filepath, local_filepath_dup, fname)
 
     except OSError as e:
         print(str(e))
+
+    print('#999 - Finished at %s' % datetime.datetime.now())

@@ -38,7 +38,7 @@ def get_v_FPBookingNumber(v_FPBookingNumber):
 
 def get_booking_with_v_FPBookingNumber(v_FPBookingNumber, mysqlcon):
      with mysqlcon.cursor() as cursor:
-        sql = "SELECT * \
+        sql = "SELECT `id`, `b_dateBookedDate`, `b_status`, `b_status_API`, `pk_booking_id`, `e_qty_scanned_fp_total` \
                 FROM `dme_bookings` \
                 WHERE `v_FPBookingNumber`=%s"
         cursor.execute(sql, (v_FPBookingNumber))
@@ -46,8 +46,16 @@ def get_booking_with_v_FPBookingNumber(v_FPBookingNumber, mysqlcon):
         # print('@102 - ', result)
         return result
 
-def do_translate_status(booking, new_status, new_v_FPBookingNumber, event_time_stamp, mysqlcon):
-     with mysqlcon.cursor() as cursor:
+def update_booking(booking, b_status, new_status_API, event_time_stamp, mysqlcon)
+    with mysqlcon.cursor() as cursor:
+        sql = "UPDATE `dme_bookings` \
+               SET b_status=%s, b_status_API=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
+               WHERE id=%s"
+        cursor.execute(sql, (b_status, new_status_API, datetime.datetime.now(), booking['id']))
+        mysqlcon.commit()
+
+def do_translate_status(booking, new_status_API, new_v_FPBookingNumber, event_time_stamp, mysqlcon):
+    with mysqlcon.cursor() as cursor:
         sql = "SELECT * FROM `dme_utl_fp_statuses` \
               WHERE LOWER(`fp_name`)=%s \
               ORDER BY `id` ASC"
@@ -57,7 +65,7 @@ def do_translate_status(booking, new_status, new_v_FPBookingNumber, event_time_s
         is_status_exist = False
         ind = 0
         for fp_status in fp_statuses:
-            if fp_status['fp_lookup_status'] and fp_status['fp_lookup_status'] in new_status:
+            if fp_status['fp_lookup_status'] and fp_status['fp_lookup_status'] in new_status_API:
                 is_status_exist = True
                 break
             ind = ind + 1
@@ -66,17 +74,27 @@ def do_translate_status(booking, new_status, new_v_FPBookingNumber, event_time_s
             sql = "INSERT INTO `dme_utl_fp_statuses` \
                 (`fp_name`, `fp_original_status`, `fp_lookup_status`, `dme_status`) \
                 VALUES (%s, %s, %s, %s)"
-            cursor.execute(sql, ('COPE', new_status, new_status, 'Pickup ' + new_status))
+            cursor.execute(sql, ('COPE', new_status_API, new_status_API, 'Pickup ' + new_status_API))
             mysqlcon.commit()
             b_status = 'api status'
         else:
             b_status = fp_statuses[ind]['dme_status']
-            
-        sql = "UPDATE `dme_bookings` \
-               SET b_status=%s, b_status_API=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
-               WHERE id=%s"
-        cursor.execute(sql, (b_status, new_status, datetime.datetime.now(), booking['id']))
-        mysqlcon.commit()
+
+        if b_status == 'In Transit' and booking['e_qty_scanned_fp_total'] and booking['e_qty_scanned_fp_total'] > 0:
+            if new_status_API == 'Out For Delivery' or new_status_API == 'Proof of Delivery':
+                update_booking(booking, b_status, new_status_API, event_time_stamp, mysqlcon)
+                create_status_history(booking, b_status, new_status_API, event_time_stamp, mysqlcon)
+        elif b_status == 'In Transit' and (not booking['e_qty_scanned_fp_total'] or booking['e_qty_scanned_fp_total'] == 0):
+            if new_status_API == 'Out For Delivery' or new_status_API == 'Proof of Delivery':
+                update_booking(booking, b_status, new_status_API, event_time_stamp, mysqlcon)
+                create_status_history(booking, b_status, new_status_API, event_time_stamp, mysqlcon)
+        elif b_status is not 'In Transit':
+            if (new_status_API == 'Allocated' or new_status_API == 'NEW') and booking['e_qty_scanned_fp_total'] > 0:
+                update_booking(booking, 'In Transit', new_status_API, event_time_stamp, mysqlcon)
+                create_status_history(booking, b_status, new_status_API, event_time_stamp, mysqlcon)
+            elif new_status_API != 'Allocated' and new_status_API != 'NEW':
+                update_booking(booking, b_status, new_status_API, event_time_stamp, mysqlcon)
+                create_status_history(booking, b_status, new_status_API, event_time_stamp, mysqlcon)
 
         if b_status == 'Delivered':
             sql = "SELECT * \
@@ -98,8 +116,7 @@ def do_translate_status(booking, new_status, new_v_FPBookingNumber, event_time_s
                WHERE id=%s"
             cursor.execute(sql, (event_time_stamp, delivery_kpi_days, delivery_days_from_booked, delivery_actual_kpi_days, booking['id']))
             mysqlcon.commit()
-
-        return b_status
+            create_status_history(booking, b_status, new_status_API, event_time_stamp, mysqlcon)
 
 def create_status_history(booking, b_status, new_status_API, event_time_stamp, mysqlcon):
     with mysqlcon.cursor() as cursor:
@@ -133,7 +150,6 @@ def update_status(fpath, mysqlcon):
 
                 if booking['b_status_API'] != new_status_API and not booking['z_lock_status']:
                     b_status = do_translate_status(booking, new_status_API, new_v_FPBookingNumber, event_time_stamp, mysqlcon)
-                    create_status_history(booking, b_status, new_status_API, event_time_stamp, mysqlcon)
                 else:
                     with mysqlcon.cursor() as cursor:
                         sql = "UPDATE `dme_bookings` \
@@ -186,3 +202,16 @@ if __name__ == '__main__':
 
     print('#901 - Finished %s' % datetime.datetime.now())
     mysqlcon.close()
+
+# get the b_status from b_status_api
+# if b_status is not same as new_status and z_lock_status is false
+#     if b_status is `In Transit` and scanned
+#         if new_status is 'Out For Delivery` or `Proof of Delivery -> b_status = new_status
+#         else do nothing
+#     else if b_status is `In Transit` and scanned_total = 0:
+#         b_status -> b_status = new_status
+#     else if b_status is not `In Transit`
+#         if new_status is `Allocated` or `New` and scanned_total > 0 -> b_status = `In Transit`
+#         else if new_status is not `Allocated` or `New` -> b_status = new_status
+# else
+#     update dme_bookings/z_lastStatusAPI_ProcessedTimeStamp

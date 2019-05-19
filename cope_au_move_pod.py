@@ -5,7 +5,6 @@ import os
 import errno
 import datetime
 import uuid
-import redis
 import urllib, requests
 import json
 import pymysql, pymysql.cursors
