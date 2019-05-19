@@ -19,8 +19,8 @@ if production:
     DB_USER = 'fmadmin'
     DB_PASS = 'oU8pPQxh'
     DB_PORT = 3306
-    # DB_NAME = 'dme_db_dev'  # Dev
-    DB_NAME = 'dme_db_prod'  # Prod
+    DB_NAME = 'dme_db_dev'  # Dev
+    # DB_NAME = 'dme_db_prod'  # Prod
 else:
     DB_HOST = 'localhost'
     DB_USER = 'root'
@@ -82,30 +82,34 @@ def do_translate_status(booking, new_status_API, new_v_FPBookingNumber, event_ti
             b_status = fp_statuses[ind]['dme_status']
             is_status = fp_statuses[ind]['if_scan_total_in_booking_greaterthanzero']
 
-        b_status = is_status
-        update_booking(booking, b_status, new_status_API, event_time_stamp, mysqlcon)
-        create_status_history(booking, b_status, new_status_API, event_time_stamp, mysqlcon)
+        if booking['e_qty_scanned_fp_total'] and booking['e_qty_scanned_fp_total'] > 0:
+            update_booking(booking, b_status, new_status_API, event_time_stamp, mysqlcon)
+            create_status_history(booking, b_status, new_status_API, event_time_stamp, mysqlcon)
+        else:
+            b_status = is_status
+            update_booking(booking, b_status, new_status_API, event_time_stamp, mysqlcon)
+            create_status_history(booking, b_status, new_status_API, event_time_stamp, mysqlcon)
 
-        if b_status == 'Delivered':
-            sql = "SELECT * \
-                FROM `utl_fp_delivery_times` \
-                WHERE `postal_code_from`=%s and `postal_code_to`=%s"
-            cursor.execute(sql, (booking['pu_Address_PostalCode'], booking['de_To_Address_PostalCode']))
-            result = cursor.fetchone()
+            if b_status == 'Delivered':
+                sql = "SELECT * \
+                    FROM `utl_fp_delivery_times` \
+                    WHERE `postal_code_from`=%s and `postal_code_to`=%s"
+                cursor.execute(sql, (booking['pu_Address_PostalCode'], booking['de_To_Address_PostalCode']))
+                result = cursor.fetchone()
 
-            if result:
-                delivery_kpi_days = result['delivery_days']
-            else:
-                delivery_kpi_days = 14
+                if result:
+                    delivery_kpi_days = result['delivery_days']
+                else:
+                    delivery_kpi_days = 14
 
-            delivery_days_from_booked = (event_time_stamp - booking['b_dateBookedDate']).days
-            delivery_actual_kpi_days = delivery_days_from_booked - delivery_kpi_days
+                delivery_days_from_booked = (event_time_stamp - booking['b_dateBookedDate']).days
+                delivery_actual_kpi_days = delivery_days_from_booked - delivery_kpi_days
 
-            sql = "UPDATE `dme_bookings` \
-               SET s_21_ActualDeliveryTimeStamp=%s, delivery_kpi_days=%s, delivery_days_from_booked=%s, delivery_actual_kpi_days=%s \
-               WHERE id=%s"
-            cursor.execute(sql, (event_time_stamp, delivery_kpi_days, delivery_days_from_booked, delivery_actual_kpi_days, booking['id']))
-            mysqlcon.commit()
+                sql = "UPDATE `dme_bookings` \
+                   SET s_21_ActualDeliveryTimeStamp=%s, delivery_kpi_days=%s, delivery_days_from_booked=%s, delivery_actual_kpi_days=%s \
+                   WHERE id=%s"
+                cursor.execute(sql, (event_time_stamp, delivery_kpi_days, delivery_days_from_booked, delivery_actual_kpi_days, booking['id']))
+                mysqlcon.commit()
 
 def create_status_history(booking, b_status, new_status_API, event_time_stamp, mysqlcon):
     with mysqlcon.cursor() as cursor:
