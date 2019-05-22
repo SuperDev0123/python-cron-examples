@@ -192,7 +192,7 @@ def update_status(fpath, mysqlcon):
                                 sql = "UPDATE `dme_bookings` \
                                        SET z_status_process_notes=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
                                        WHERE id=%s"
-                                cursor.execute(sql, ('status was locked with (' + booking['b_status'] + ') - POD delivered not set', datetime.datetime.now(), booking['id']))
+                                cursor.execute(sql, ('status was locked with (' + booking['b_status'] + ') - POD Received not set', datetime.datetime.now(), booking['id']))
                                 mysqlcon.commit()
                             else:
                                 print('@02 - ')
@@ -202,7 +202,7 @@ def update_status(fpath, mysqlcon):
                                 cursor.execute(sql, (b_status_API_csv, 'status was locked with (' + booking['b_status'] + ') - api status changed but not b_status', datetime.datetime.now(), booking['id']))
                                 mysqlcon.commit()
                         else:
-                            if booking['b_status_API'] == 'POD Delivered' and is_overridable(b_status_API_csv, mysqlcon) and booking['b_status_API'] != b_status_API_csv:
+                            if booking['b_status_API'] == 'POD Received' and is_overridable(b_status_API_csv, mysqlcon) and booking['b_status_API'] != b_status_API_csv:
                                 print('@80 - ')
                                 sql = "UPDATE `dme_bookings` \
                                        SET b_status_API=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
@@ -210,7 +210,7 @@ def update_status(fpath, mysqlcon):
                                 cursor.execute(sql, (b_status_API_csv, datetime.datetime.now(), booking['id']))
                                 mysqlcon.commit()
                                 do_translate_status(booking, b_status_API_csv, v_FPBookingNumber, event_time_stamp, mysqlcon, True)
-                            elif booking['b_status_API'] != 'POD Delivered' and booking['b_status_API'] != b_status_API_csv:
+                            elif booking['b_status_API'] != 'POD Received' and booking['b_status_API'] != b_status_API_csv:
                                 print('@81 - ')
                                 sql = "UPDATE `dme_bookings` \
                                        SET b_status_API=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \

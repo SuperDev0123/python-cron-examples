@@ -142,7 +142,7 @@ if __name__ == '__main__':
                                         SET `z_pod_url`=%s, z_status_process_notes=%s, rpt_pod_from_file_time=%s \
                                         WHERE `b_bookingID_Visual`=%s"
                                 
-                            cursor.execute(sql, (new_filename, 'Status was locked with (' + booking['b_status'] + ') - POD Delivered not set', datetime.datetime.now(), visual_id))
+                            cursor.execute(sql, (new_filename, 'Status was locked with (' + booking['b_status'] + ') - POD Received not set', datetime.datetime.now(), visual_id))
                             mysqlcon.commit()
                             
                         else:
@@ -155,9 +155,9 @@ if __name__ == '__main__':
                                         SET `z_pod_url`=%s, b_status=%s, b_status_API=%s, rpt_pod_from_file_time=%s  \
                                         WHERE `b_bookingID_Visual`=%s"
                                 
-                            cursor.execute(sql, (new_filename, 'Delivered', 'POD Delivered', datetime.datetime.now(), visual_id))
+                            cursor.execute(sql, (new_filename, 'Delivered', 'POD Received', datetime.datetime.now(), visual_id))
                             mysqlcon.commit()
-                            create_status_history(booking, 'Delivered', 'POD Delivered', datetime.datetime.now(), mysqlcon)
+                            create_status_history(booking, 'Delivered', 'POD Received', datetime.datetime.now(), mysqlcon)
         
     print('#901 - Finished %s' % datetime.datetime.now())
     mysqlcon.close()
