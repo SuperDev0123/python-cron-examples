@@ -56,7 +56,7 @@ def update_booking(booking, b_status, b_status_API_csv, event_time_stamp, mysqlc
         cursor.execute(sql, (b_status, b_status_API_csv, datetime.datetime.now(), booking['id']))
         mysqlcon.commit()
 
-def create_status_history(booking, b_status, b_status_API_csv, event_time_stamp, mysqlcon):
+def create_status_history(booking, b_status, event_time_stamp, mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "INSERT INTO `dme_status_history` \
                 (`fk_booking_id`, `status_old`, \
@@ -87,15 +87,15 @@ def do_translate_status(booking, b_status_API_csv, v_FPBookingNumber, event_time
 
         if is_overridable:
             update_booking(booking, b_status, b_status_API_csv, event_time_stamp, mysqlcon)
-            create_status_history(booking, b_status, b_status_API_csv, event_time_stamp, mysqlcon)
+            create_status_history(booking, b_status, event_time_stamp, mysqlcon)
         else:
             if booking['e_qty_scanned_fp_total'] and booking['e_qty_scanned_fp_total'] > 0:
                 b_status = is_status
                 update_booking(booking, b_status, b_status_API_csv, event_time_stamp, mysqlcon)
-                create_status_history(booking, b_status, b_status_API_csv, event_time_stamp, mysqlcon)
+                create_status_history(booking, b_status, event_time_stamp, mysqlcon)
             else:
                 update_booking(booking, b_status, b_status_API_csv, event_time_stamp, mysqlcon)
-                create_status_history(booking, b_status, b_status_API_csv, event_time_stamp, mysqlcon)
+                create_status_history(booking, b_status, event_time_stamp, mysqlcon)
 
         if b_status == 'Delivered':
             sql = "SELECT * \
@@ -187,22 +187,26 @@ def update_status(fpath, mysqlcon):
                         mysqlcon.commit()
                     else:
                         if booking['z_lock_status']:
-                            if is_overridable(b_status_API_csv, mysqlcon) and booking['b_status_API'] == b_status_API_csv:
-                                print('@01 - ')
+                            if (is_overridable(b_status_API_csv, mysqlcon) 
+                                and booking['b_status_API'] == b_status_API_csv):
+                                print('@70 - ')
                                 sql = "UPDATE `dme_bookings` \
                                        SET z_status_process_notes=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
                                        WHERE id=%s"
                                 cursor.execute(sql, ('status was locked with (' + booking['b_status'] + ') - POD Received not set', datetime.datetime.now(), booking['id']))
                                 mysqlcon.commit()
                             else:
-                                print('@02 - ')
+                                print('@71 - ')
                                 sql = "UPDATE `dme_bookings` \
                                        SET b_status_API=%s, z_status_process_notes=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
                                        WHERE id=%s"
                                 cursor.execute(sql, (b_status_API_csv, 'status was locked with (' + booking['b_status'] + ') - api status changed but not b_status', datetime.datetime.now(), booking['id']))
                                 mysqlcon.commit()
+                            create_status_history(booking, 'Locked', event_time_stamp, mysqlcon)
                         else:
-                            if booking['b_status_API'] == 'POD Received' and is_overridable(b_status_API_csv, mysqlcon) and booking['b_status_API'] != b_status_API_csv:
+                            if (booking['b_status_API'] == 'POD Received' 
+                                and is_overridable(b_status_API_csv, mysqlcon) 
+                                and booking['b_status_API'] != b_status_API_csv):
                                 print('@80 - ')
                                 sql = "UPDATE `dme_bookings` \
                                        SET b_status_API=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
@@ -210,7 +214,8 @@ def update_status(fpath, mysqlcon):
                                 cursor.execute(sql, (b_status_API_csv, datetime.datetime.now(), booking['id']))
                                 mysqlcon.commit()
                                 do_translate_status(booking, b_status_API_csv, v_FPBookingNumber, event_time_stamp, mysqlcon, True)
-                            elif booking['b_status_API'] != 'POD Received' and booking['b_status_API'] != b_status_API_csv:
+                            elif (booking['b_status_API'] != 'POD Received' 
+                                and booking['b_status_API'] != b_status_API_csv):
                                 print('@81 - ')
                                 sql = "UPDATE `dme_bookings` \
                                        SET b_status_API=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \

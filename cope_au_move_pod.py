@@ -19,7 +19,7 @@ if env_mode == 0:
     DB_PASS = 'root'
     DB_PORT = 3306
     DB_NAME = 'deliver_me'
-if env_mode == 1:
+elif env_mode == 1:
     DB_HOST = 'deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com'
     DB_USER = 'fmadmin'
     DB_PASS = 'oU8pPQxh'
@@ -57,7 +57,7 @@ def get_booking_with_visual_id(visual_id, mysqlcon):
         # print('@102 - ', result)
         return result
 
-def create_status_history(booking, b_status, new_status_API, event_time_stamp, mysqlcon):
+def create_status_history(booking, b_status, event_time_stamp, mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "INSERT INTO `dme_status_history` \
                 (`fk_booking_id`, `status_old`, \
@@ -144,7 +144,7 @@ if __name__ == '__main__':
                                 
                             cursor.execute(sql, (new_filename, 'Status was locked with (' + booking['b_status'] + ') - POD Received not set', datetime.datetime.now(), visual_id))
                             mysqlcon.commit()
-                            
+                            create_status_history(booking, 'Locked', datetime.datetime.now(), mysqlcon)
                         else:
                             if 'POD_SOG_' in filename:
                                 sql = "UPDATE `dme_bookings` \
@@ -157,7 +157,7 @@ if __name__ == '__main__':
                                 
                             cursor.execute(sql, (new_filename, 'Delivered', 'POD Received', datetime.datetime.now(), visual_id))
                             mysqlcon.commit()
-                            create_status_history(booking, 'Delivered', 'POD Received', datetime.datetime.now(), mysqlcon)
+                            create_status_history(booking, 'Delivered', datetime.datetime.now(), mysqlcon)
         
     print('#901 - Finished %s' % datetime.datetime.now())
     mysqlcon.close()
