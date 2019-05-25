@@ -19,8 +19,8 @@ if production:
     DB_USER = 'fmadmin'
     DB_PASS = 'oU8pPQxh'
     DB_PORT = 3306
-    # DB_NAME = 'dme_db_dev'  # Dev
-    DB_NAME = 'dme_db_prod'  # Prod
+    DB_NAME = 'dme_db_dev'  # Dev
+    # DB_NAME = 'dme_db_prod'  # Prod
 else:
     DB_HOST = 'localhost'
     DB_USER = 'root'
@@ -40,13 +40,46 @@ def get_booking_with_v_FPBookingNumber(v_FPBookingNumber, mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "SELECT `id`, `b_dateBookedDate`, `b_status`, `b_status_API`, `pk_booking_id`, \
                       `e_qty_scanned_fp_total`, `z_lock_status`, `pu_Address_PostalCode`, \
-                      `de_To_Address_PostalCode`, `b_bookingID_Visual` \
+                      `de_To_Address_PostalCode`, `b_bookingID_Visual`, `tally_delivered` \
                 FROM `dme_bookings` \
                 WHERE `v_FPBookingNumber`=%s"
         cursor.execute(sql, (v_FPBookingNumber))
         result = cursor.fetchone()
         # print('@102 - ', result)
         return result
+
+def calc_delivered(booking, mysqlcon):
+    with mysqlcon.cursor() as cursor:
+        tally_delivered = booking['tally_delivered']
+
+        if not tally_delivered:
+            tally_delivered = 0
+
+        sql = "UPDATE `dme_bookings` \
+                SET `tally_delivered`=%s \
+                WHERE `id`=%s"
+        cursor.execute(sql, (int(tally_delivered) + 1, booking_line['id']))
+        mysqlcon.commit()
+
+        sql = "SELECT `pk_lines_id`, `e_qty`, `e_qty_awaiting_inventory`, `e_qty_delivered` \
+                FROM `dme_booking_lines` \
+                WHERE `fk_booking_id`=%s"
+        cursor.execute(sql, (booking['pk_booking_id']))
+        booking_lines = cursor.fetchall()
+        
+        for booking_line in booking_lines:
+            if not booking_line['e_qty']:
+                booking_line['e_qty'] = 0
+            if not booking_line['e_qty_awaiting_inventory']:
+                booking_line['e_qty_awaiting_inventory'] = 0
+
+            booking_line['e_qty_delivered'] = int(booking_line['e_qty']) - int(booking_line['e_qty_awaiting_inventory'])
+
+            sql = "UPDATE `dme_booking_lines` \
+                    SET `e_qty_delivered`=%s \
+                    WHERE `pk_lines_id`=%s"
+            cursor.execute(sql, (booking_line['e_qty_delivered'], booking_line['pk_lines_id']))
+            mysqlcon.commit()
 
 def update_booking(booking, b_status, b_status_API_csv, event_time_stamp, mysqlcon):
     with mysqlcon.cursor() as cursor:
@@ -124,6 +157,7 @@ def do_translate_status(booking, b_status_API_csv, v_FPBookingNumber, event_time
                    WHERE id=%s"
                 cursor.execute(sql, (datetime.datetime.now(), booking['id']))
                 mysqlcon.commit()
+            calc_delivered(booking, mysqlcon)
 
 def is_b_status_API_csv(booking, b_status_API_csv, mysqlcon):
     with mysqlcon.cursor() as cursor:

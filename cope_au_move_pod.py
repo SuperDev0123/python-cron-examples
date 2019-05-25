@@ -10,8 +10,8 @@ import glob
 import ntpath
 
 # env_mode = 0 # Local
-# env_mode = 1 # Dev
-env_mode = 2  # Prod
+env_mode = 1 # Dev
+# env_mode = 2  # Prod
 
 if env_mode == 0:
     DB_HOST = 'localhost'
@@ -49,13 +49,46 @@ def get_filename(filename, visual_id):
 
 def get_booking_with_visual_id(visual_id, mysqlcon):
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT `id`, `z_lock_status`, `b_status`, `pk_booking_id`, `b_bookingID_Visual` \
+        sql = "SELECT `id`, `z_lock_status`, `b_status`, `pk_booking_id`, `b_bookingID_Visual`, `tally_delivered` \
                 FROM `dme_bookings` \
                 WHERE `b_bookingID_Visual`=%s"
         cursor.execute(sql, (visual_id))
         result = cursor.fetchone()
         # print('@102 - ', result)
         return result
+
+def calc_delivered(booking, mysqlcon):
+    with mysqlcon.cursor() as cursor:
+        tally_delivered = booking['tally_delivered']
+
+        if not tally_delivered:
+            tally_delivered = 0
+
+        sql = "UPDATE `dme_bookings` \
+                SET `tally_delivered`=%s \
+                WHERE `id`=%s"
+        cursor.execute(sql, (int(tally_delivered) + 1, booking_line['id']))
+        mysqlcon.commit()
+
+        sql = "SELECT `pk_lines_id`, `e_qty`, `e_qty_awaiting_inventory`, `e_qty_delivered` \
+                FROM `dme_booking_lines` \
+                WHERE `fk_booking_id`=%s"
+        cursor.execute(sql, (booking['pk_booking_id']))
+        booking_lines = cursor.fetchall()
+        
+        for booking_line in booking_lines:
+            if not booking_line['e_qty']:
+                booking_line['e_qty'] = 0
+            if not booking_line['e_qty_awaiting_inventory']:
+                booking_line['e_qty_awaiting_inventory'] = 0
+
+            booking_line['e_qty_delivered'] = int(booking_line['e_qty']) - int(booking_line['e_qty_awaiting_inventory'])
+
+            sql = "UPDATE `dme_booking_lines` \
+                    SET `e_qty_delivered`=%s \
+                    WHERE `pk_lines_id`=%s"
+            cursor.execute(sql, (booking_line['e_qty_delivered'], booking_line['pk_lines_id']))
+            mysqlcon.commit()
 
 def create_status_history(booking, b_status, event_time_stamp, mysqlcon):
     with mysqlcon.cursor() as cursor:
@@ -146,6 +179,7 @@ if __name__ == '__main__':
                             mysqlcon.commit()
                             create_status_history(booking, 'Locked', datetime.datetime.now(), mysqlcon)
                         else:
+
                             if 'POD_SOG_' in filename:
                                 sql = "UPDATE `dme_bookings` \
                                         SET `z_pod_signed_url`=%s, b_status=%s, b_status_API=%s, rpt_pod_from_file_time=%s \
@@ -154,10 +188,10 @@ if __name__ == '__main__':
                                 sql = "UPDATE `dme_bookings` \
                                         SET `z_pod_url`=%s, b_status=%s, b_status_API=%s, rpt_pod_from_file_time=%s  \
                                         WHERE `b_bookingID_Visual`=%s"
-                                
                             cursor.execute(sql, (new_filename, 'Delivered', 'POD Received', datetime.datetime.now(), visual_id))
                             mysqlcon.commit()
                             create_status_history(booking, 'Delivered', datetime.datetime.now(), mysqlcon)
+                            calc_delivered(booking, mysqlcon)
         
     print('#901 - Finished %s' % datetime.datetime.now())
     mysqlcon.close()
