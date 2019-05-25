@@ -5,11 +5,13 @@ import os
 import datetime
 import pymysql, pymysql.cursors
 import shutil
+from pydash import _
 
-production = True # Dev
-# production = False # Local
+IS_DEBUG = False
+IS_PRODUCTION = True # Dev
+# IS_PRODUCTION = False # Local
 
-if production:
+if IS_PRODUCTION:
     DB_HOST = 'deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com'
     DB_USER = 'fmadmin'
     DB_PASS = 'oU8pPQxh'
@@ -23,8 +25,23 @@ else:
     DB_PORT = 3306
     DB_NAME = 'deliver_me'
 
+def get_dme_numbers(csv_lines):
+    dme_numbers = []
+
+    for i, csv_line in enumerate(csv_lines):
+        if i % 5000 == 0 and IS_DEBUG:
+            print('#', i)
+
+        label_code = csv_line.split(',')[0]
+        dme_number = label_code[3:-3]
+
+        if (dme_number not in dme_numbers):
+            dme_numbers.append(dme_number)
+
+    return dme_numbers
+
 def get_api_bcl(label_code, client_item_reference, mysqlcon):
-     with mysqlcon.cursor() as cursor:
+    with mysqlcon.cursor() as cursor:
         sql = "SELECT `id`, `fk_booking_id`, `fk_booking_line_id`, `fp_event_date`, `tally` \
                 FROM `api_booking_confirmation_lines` \
                 WHERE `label_code`=%s and `client_item_reference`=%s"
@@ -32,122 +49,153 @@ def get_api_bcl(label_code, client_item_reference, mysqlcon):
         result = cursor.fetchone()
         return result
 
-def update_qty_scanned(cnt, fk_booking_id, fk_booking_line_id, mysqlcon):
+def get_booking(dme_number, mysqlcon):
+    with mysqlcon.cursor() as cursor:
+        sql = "SELECT `id`, `pk_booking_id` \
+                From `dme_bookings` \
+                WHERE `v_FPBookingNumber`=%s"
+        cursor.execute(sql, (dme_number))
+        booking = cursor.fetchone()
+
+        return booking
+
+def get_booking_lines(pk_booking_id, mysqlcon):
+    with mysqlcon.cursor() as cursor:
+        sql = "SELECT `pk_lines_id`, `client_item_reference` \
+                From `dme_booking_lines` \
+                WHERE `fk_booking_id`=%s"
+        cursor.execute(sql, (pk_booking_id))
+        booking_lines = cursor.fetchall()
+
+        return booking_lines
+
+def update_tally(api_bcl, mysqlcon):
+    tally = api_bcl['tally']
+
+    if not tally:
+        tally = 0
+
+    with mysqlcon.cursor() as cursor:
+        sql = "UPDATE `api_booking_confirmation_lines` \
+                SET tally=%s \
+                WHERE `id`=%s"
+        cursor.execute(sql, (int(tally) + 1, api_bcl['id']))
+        mysqlcon.commit()
+
+def update_api_bcl(api_bcl, fp_event_date, fp_event_time, fp_scan_data, mysqlcon):
+    tally = api_bcl['tally']
+
+    if not tally:
+        tally = 0
+
+    with mysqlcon.cursor() as cursor:
+        sql = "UPDATE `api_booking_confirmation_lines` \
+                SET fp_event_date=%s, fp_event_time=%s, fp_scan_data=%s, tally=%s \
+                WHERE `id`=%s"
+        cursor.execute(sql, (fp_event_date, fp_event_time, fp_scan_data, int(tally) + 1, api_bcl['id']))
+        mysqlcon.commit()
+
+def update_booking_line(booking_line, e_qty_scanned_fp, mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "UPDATE `dme_booking_lines` \
             SET `e_qty_scanned_fp`=%s \
             WHERE `pk_lines_id`=%s"
-        cursor.execute(sql, (cnt, fk_booking_line_id))
+        cursor.execute(sql, (e_qty_scanned_fp, booking_line['pk_lines_id']))
         mysqlcon.commit()
 
-        sql = "SELECT `e_qty_scanned_fp` \
-                From `dme_booking_lines` \
-                WHERE `fk_booking_id`=%s"
-        cursor.execute(sql, (fk_booking_id))
-        booking_lines = cursor.fetchall()
-
-        e_qty_scanned_fp_total = 0
-        for booking_line in booking_lines:
-            if booking_line['e_qty_scanned_fp']:
-                e_qty_scanned_fp_total = e_qty_scanned_fp_total + int(booking_line['e_qty_scanned_fp'])
-
+def update_booking(booking, e_qty_scanned_fp_total, mysqlcon):
+    with mysqlcon.cursor() as cursor:
         sql = "UPDATE `dme_bookings` \
             SET `e_qty_scanned_fp_total`=%s \
-            WHERE `pk_booking_id`=%s"
-        cursor.execute(sql, (e_qty_scanned_fp_total, fk_booking_id))
+            WHERE `id`=%s"
+        cursor.execute(sql, (e_qty_scanned_fp_total, booking['id']))
         mysqlcon.commit()
 
-def update_tally(api_bcl, mysqlcon):
-    if api_bcl['fp_event_date']:
-        if api_bcl['tally']:
-            tally = int(api_bcl['tally']) + 1
-        else:
-            tally = 1
+def do_calc_scanned(dme_number, dme_number_lines, mysqlcon):
+    booking = get_booking(dme_number, mysqlcon)
 
-        with mysqlcon.cursor() as cursor:
-            sql = "UPDATE `api_booking_confirmation_lines` \
-                    SET tally=%s \
-                    WHERE `id`=%s "
-            cursor.execute(sql, (tally, api_bcl['id']))
-            mysqlcon.commit()
+    if not booking:
+        return
+
+    booking_lines = get_booking_lines(booking['pk_booking_id'], mysqlcon)
+
+    if IS_DEBUG:
+        print('@802 - v_FPBookingNumber:', dme_number, ' Lines cnt:', len(booking_lines))
+
+    cnt_total = 0
+    scanned_label_codes = []
+
+    for booking_line in booking_lines:
+        cnt = 0
+
+        for dme_number_line in dme_number_lines:
+            label_code = dme_number_line["label_code"]
+            client_item_reference = dme_number_line["client_item_reference"]
+
+            if booking_line['client_item_reference'] == client_item_reference:
+                api_bcl = get_api_bcl(label_code, client_item_reference, mysqlcon)
+
+                if label_code in scanned_label_codes:
+                    update_tally(api_bcl, mysqlcon)
+
+                if (
+                    api_bcl 
+                    and label_code not in scanned_label_codes
+                    and booking['pk_booking_id'] == api_bcl['fk_booking_id']
+                ):
+                    cnt = cnt + 1
+                    scanned_label_codes.append(label_code)
+                    update_api_bcl(api_bcl, dme_number_line['date'], dme_number_line['time'], dme_number_line['scanned_by'], mysqlcon)
+        
+        if cnt:
+            cnt_total = cnt_total + cnt
+            update_booking_line(booking_line, cnt, mysqlcon)
+
+    if cnt_total:
+        update_booking(booking, cnt_total, mysqlcon)
+
+def do_process_one(dme_number, csv_lines, mysqlcon):
+    # filter with `dme_number`
+    dme_number_lines = _.filter_(csv_lines, lambda x: x.split(',')[0][3:-3] == dme_number)
+
+    # string -> object
+    dme_number_lines = _.map_(dme_number_lines,
+        lambda x: {
+            'label_code': x.split(',')[0],
+            'client_item_reference': x.split(',')[1].split(' ')[1],
+            'date': datetime.datetime.strptime(x.split(',')[2], '%Y-%m-%d'),
+            'time': datetime.datetime.strptime(x.split(',')[3] + ':00', '%H:%M:%S'),
+            'scanned_by': x.split(',')[4].split(' ')[2][:-1]
+        }
+    )
+
+    # sort by `label_code`(first field)
+    dme_number_lines = _.sort_by(dme_number_lines, 'label_code')
+    
+    # show
+    if IS_DEBUG and False:
+        _.map_(dme_number_lines, lambda x: print(f'{dme_number}({len(dme_number_lines)}) - {x["label_code"]}, {x["client_item_reference"]}'))
+
+    do_calc_scanned(dme_number, dme_number_lines, mysqlcon)
 
 def do_process(fpath, mysqlcon):
-    cnt = 0
-    old_label_code = ''
-    old_client_item_reference = ''
-    old_fk_booking_id = ''
-    old_fk_booking_line_id = ''
-    cvs_line_cnt = len(open(fpath).readlines())
-    processed_label_code = []
+    csv_lines = []
 
     with open(fpath) as csv_file:
         for i, line in enumerate(csv_file):
-            if i % 1000 == 0:
-                print('#', i)
-            label_code = line.split(',')[0]
-            client_item_reference = line.split(',')[1].split(' ')[1]
+            csv_lines.append(line)
 
-            if client_item_reference is not '':
-                api_bcl = get_api_bcl(label_code, client_item_reference, mysqlcon)
+        dme_numbers = get_dme_numbers(csv_lines)
 
-                if api_bcl:
-                    fp_event_date = datetime.datetime.strptime(line.split(',')[2], '%Y-%m-%d')
-                    fp_event_time = datetime.datetime.strptime(line.split(',')[3] + ':00', '%H:%M:%S')
-                    fp_scan_data = line.split(',')[4].split(' ')[2]
+        if not dme_numbers:
+            return 'Can not find dme numbers'
+        else:
+            for i, dme_number in enumerate(dme_numbers):
+                if i % 100 == 0:
+                    print(f'@888 {i}th DME number: {dme_number}')
+                do_process_one(dme_number, csv_lines, mysqlcon)
 
-                    if cnt == 0:
-                        # Reset Olds
-                        old_label_code = label_code
-                        old_client_item_reference = client_item_reference
-                        old_fk_booking_id = api_bcl['fk_booking_id']
-                        old_fk_booking_line_id = api_bcl['fk_booking_line_id']
-
-                    if i == 0:
-                        old_label_code = label_code
-                        old_client_item_reference = client_item_reference
-                        old_fk_booking_id = api_bcl['fk_booking_id']
-                        old_fk_booking_line_id = api_bcl['fk_booking_line_id']
-                        cnt = cnt + 1
-                        processed_label_code.append(label_code)
-
-                    if (cnt > 0 and \
-                        (label_code[3:-3] != old_label_code[3:-3] or \
-                        client_item_reference != old_client_item_reference)) or \
-                        i == cvs_line_cnt - 1:
-
-                        if (i == cvs_line_cnt - 1):
-                            if not label_code in processed_label_code:
-                                update_qty_scanned(cnt + 1, old_fk_booking_id, old_fk_booking_line_id, mysqlcon)
-                            else:
-                                update_qty_scanned(cnt, old_fk_booking_id, old_fk_booking_line_id, mysqlcon)
-                        else:
-                            update_qty_scanned(cnt, old_fk_booking_id, old_fk_booking_line_id, mysqlcon)
-
-                        # Reset Olds
-                        old_label_code = label_code
-                        old_client_item_reference = client_item_reference
-                        old_fk_booking_id = api_bcl['fk_booking_id']
-                        old_fk_booking_line_id = api_bcl['fk_booking_line_id']
-                        cnt = 0
-                        processed_label_code = []
-
-                    update_tally(api_bcl, mysqlcon)
-
-                    with mysqlcon.cursor() as cursor:
-                        sql = "UPDATE `api_booking_confirmation_lines` \
-                                SET fp_event_date=%s, fp_event_time=%s, fp_scan_data=%s \
-                                WHERE `label_code`=%s and `client_item_reference`=%s"
-                        cursor.execute(sql, (fp_event_date, fp_event_time, fp_scan_data, label_code, client_item_reference))
-                        mysqlcon.commit()
-
-                    if not label_code in processed_label_code:
-                        cnt = cnt + 1
-                        processed_label_code.append(label_code)
-                else:
-                    update_qty_scanned(cnt, old_fk_booking_id, old_fk_booking_line_id, mysqlcon)
-                    cnt = 0
-                    processed_label_code = []
-                    # print('@209 - No matching BCL - label_code: ', label_code, ' Line of CSV: ', str(i + 1))
+    return f'Successfully processed({len(csv_lines)} lines)'
 
 if __name__ == '__main__':
     print('#900 - Running %s' % datetime.datetime.now())
@@ -164,7 +212,7 @@ if __name__ == '__main__':
         print('Mysql DB connection error!')
         exit(1)
 
-    if production:
+    if IS_PRODUCTION:
         CSV_DIR = '/home/cope_au/dme_sftp/cope_au/scans_labels/indata/'
         ARCHIVE_DIR = '/home/cope_au/dme_sftp/cope_au/scans_labels/archive/'
     else:
@@ -181,12 +229,13 @@ if __name__ == '__main__':
 
             if os.path.isfile(fpath) and fname.endswith('.csv'):
                 print('@100 Detect csv file:', fpath)
-                do_process(fpath, mysqlcon)
+                result = do_process(fpath, mysqlcon)
+                print(f'#901 - Process result: {result}')
                 shutil.move(CSV_DIR + fname, ARCHIVE_DIR + fname)
                 print('@109 Moved csv file:', fpath)
 
     except OSError as e:
         print(str(e))
 
-    print('#901 - Finished %s' % datetime.datetime.now())
+    print('#909 - Finished %s' % datetime.datetime.now())
     mysqlcon.close()
