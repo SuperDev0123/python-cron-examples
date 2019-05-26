@@ -40,12 +40,12 @@ def get_dme_numbers(csv_lines):
 
     return dme_numbers
 
-def get_api_bcl(label_code, client_item_reference, mysqlcon):
+def get_api_bcl(label_code, mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "SELECT `id`, `fk_booking_id`, `fk_booking_line_id`, `fp_event_date`, `tally` \
                 FROM `api_booking_confirmation_lines` \
-                WHERE `label_code`=%s and `client_item_reference`=%s"
-        cursor.execute(sql, (label_code, client_item_reference))
+                WHERE `label_code`=%s"
+        cursor.execute(sql, (label_code))
         result = cursor.fetchone()
         return result
 
@@ -131,22 +131,19 @@ def do_calc_scanned(dme_number, dme_number_lines, mysqlcon):
         for dme_number_line in dme_number_lines:
             label_code = dme_number_line["label_code"]
             client_item_reference = dme_number_line["client_item_reference"]
+            api_bcl = get_api_bcl(label_code, mysqlcon)
 
-            if booking_line['client_item_reference'] == client_item_reference:
-                api_bcl = get_api_bcl(label_code, client_item_reference, mysqlcon)
+            if not api_bcl:
+                continue
 
+            if int(booking_line['pk_lines_id']) == int(api_bcl['fk_booking_line_id']):
                 if label_code in scanned_label_codes:
                     update_tally(api_bcl, mysqlcon)
-
-                if (
-                    api_bcl 
-                    and label_code not in scanned_label_codes
-                    and booking['pk_booking_id'] == api_bcl['fk_booking_id']
-                ):
+                else:
                     cnt = cnt + 1
                     scanned_label_codes.append(label_code)
                     update_api_bcl(api_bcl, dme_number_line['date'], dme_number_line['time'], dme_number_line['scanned_by'], mysqlcon)
-        
+
         if cnt:
             cnt_total = cnt_total + cnt
             update_booking_line(booking_line, cnt, mysqlcon)
