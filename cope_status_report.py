@@ -19,8 +19,8 @@ if production:
     DB_USER = 'fmadmin'
     DB_PASS = 'oU8pPQxh'
     DB_PORT = 3306
-    DB_NAME = 'dme_db_dev'  # Dev
-    # DB_NAME = 'dme_db_prod'  # Prod
+    # DB_NAME = 'dme_db_dev'  # Dev
+    DB_NAME = 'dme_db_prod'  # Prod
 else:
     DB_HOST = 'localhost'
     DB_USER = 'root'
@@ -84,9 +84,10 @@ def calc_delivered(booking, mysqlcon):
 def update_booking(booking, b_status, b_status_API_csv, event_time_stamp, mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "UPDATE `dme_bookings` \
-               SET b_status=%s, b_status_API=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
+               SET b_status=%s, b_status_API=%s, z_lastStatusAPI_ProcessedTimeStamp=%s, \
+                    dme_status_detail=%s, dme_status_action=%s \
                WHERE id=%s"
-        cursor.execute(sql, (b_status, b_status_API_csv, datetime.datetime.now(), booking['id']))
+        cursor.execute(sql, (b_status, b_status_API_csv, datetime.datetime.now(), '', '', booking['id']))
         mysqlcon.commit()
 
 def create_status_history(booking, b_status, event_time_stamp, mysqlcon):
@@ -236,7 +237,7 @@ def update_status(fpath, mysqlcon):
                                        WHERE id=%s"
                                 cursor.execute(sql, (b_status_API_csv, 'status was locked with (' + booking['b_status'] + ') - api status changed but not b_status', datetime.datetime.now(), booking['id']))
                                 mysqlcon.commit()
-                            create_status_history(booking, 'Locked', event_time_stamp, mysqlcon)
+                            # create_status_history(booking, 'Locked', event_time_stamp, mysqlcon)
                         else:
                             if (booking['b_status_API'] == 'POD Received' 
                                 and is_overridable(b_status_API_csv, mysqlcon) 

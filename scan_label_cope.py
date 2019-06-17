@@ -51,7 +51,7 @@ def get_api_bcl(label_code, mysqlcon):
 
 def get_booking(dme_number, mysqlcon):
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT `id`, `pk_booking_id` \
+        sql = "SELECT `id`, `pk_booking_id`, `e_qty_scanned_fp_total` \
                 From `dme_bookings` \
                 WHERE `v_FPBookingNumber`=%s"
         cursor.execute(sql, (dme_number))
@@ -105,11 +105,21 @@ def update_booking_line(booking_line, e_qty_scanned_fp, mysqlcon):
 
 def update_booking(booking, e_qty_scanned_fp_total, mysqlcon):
     with mysqlcon.cursor() as cursor:
-        sql = "UPDATE `dme_bookings` \
-            SET `e_qty_scanned_fp_total`=%s \
-            WHERE `id`=%s"
-        cursor.execute(sql, (e_qty_scanned_fp_total, booking['id']))
-        mysqlcon.commit()
+        if (
+            not booking['e_qty_scanned_fp_total'] 
+            or booking['e_qty_scanned_fp_total'] == '0'
+        ):
+            sql = "UPDATE `dme_bookings` \
+                SET `b_status_API`=%s, `e_qty_scanned_fp_total`=%s \
+                WHERE `id`=%s"
+            cursor.execute(sql, ('update status', e_qty_scanned_fp_total, booking['id']))
+            mysqlcon.commit() 
+        else:
+            sql = "UPDATE `dme_bookings` \
+                SET `e_qty_scanned_fp_total`=%s \
+                WHERE `id`=%s"
+            cursor.execute(sql, (e_qty_scanned_fp_total, booking['id']))
+            mysqlcon.commit()
 
 def do_calc_scanned(dme_number, dme_number_lines, mysqlcon):
     booking = get_booking(dme_number, mysqlcon)

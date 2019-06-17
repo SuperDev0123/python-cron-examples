@@ -152,13 +152,15 @@ if __name__ == '__main__':
                 booking = get_booking_with_visual_id(visual_id, mysqlcon)
 
                 if exists:
-                    shutil.move(source_url + filename, dup_url + new_filename)
+                    shutil.copy(source_url + filename, dest_url_0 + new_filename)
+                    shutil.move(source_url + filename, dest_url_1 + new_filename)
+
                     with mysqlcon.cursor() as cursor:
-                        sql = "UPDATE `dme_bookings` set `b_error_Capture`=%s WHERE `b_bookingID_Visual`=%s"
+                        sql = "UPDATE `dme_bookings` set `z_downloaded_pod_timestamp`=%s WHERE `b_bookingID_Visual`=%s"
                         if 'POD_SOG_' in filename:
-                            cursor.execute(sql, ('POD SOG is duplicated', visual_id))
+                            cursor.execute(sql, (None, visual_id))
                         else:
-                            cursor.execute(sql, ('POD is duplicated', visual_id))
+                            cursor.execute(sql, (None, visual_id))
                     mysqlcon.commit()
                 else:
                     shutil.copy(source_url + filename, dest_url_0 + new_filename)
