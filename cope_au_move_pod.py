@@ -156,10 +156,11 @@ if __name__ == '__main__':
                     shutil.move(source_url + filename, dest_url_1 + new_filename)
 
                     with mysqlcon.cursor() as cursor:
-                        sql = "UPDATE `dme_bookings` set `z_downloaded_pod_timestamp`=%s WHERE `b_bookingID_Visual`=%s"
                         if 'POD_SOG_' in filename:
+                            sql = "UPDATE `dme_bookings` set z_downloaded_pod_sog_timestamp=%s WHERE `b_bookingID_Visual`=%s"
                             cursor.execute(sql, (None, visual_id))
                         else:
+                            sql = "UPDATE `dme_bookings` set z_downloaded_pod_timestamp=%s WHERE `b_bookingID_Visual`=%s"
                             cursor.execute(sql, (None, visual_id))
                     mysqlcon.commit()
                 else:
@@ -170,27 +171,31 @@ if __name__ == '__main__':
                         if booking['z_lock_status'] == 1:
                             if 'POD_SOG_' in filename:
                                 sql = "UPDATE `dme_bookings` \
-                                        SET `z_pod_signed_url`=%s, z_status_process_notes=%s, rpt_pod_from_file_time=%s \
+                                        SET `z_pod_signed_url`=%s, z_status_process_notes=%s, \
+                                        rpt_pod_from_file_time=%s, z_downloaded_pod_sog_timestamp=%s \
                                         WHERE `b_bookingID_Visual`=%s"
                             else:
                                 sql = "UPDATE `dme_bookings` \
-                                        SET `z_pod_url`=%s, z_status_process_notes=%s, rpt_pod_from_file_time=%s \
+                                        SET `z_pod_url`=%s, z_status_process_notes=%s, \
+                                        rpt_pod_from_file_time=%s, z_downloaded_pod_sog_timestamp=%s \
                                         WHERE `b_bookingID_Visual`=%s"
                                 
-                            cursor.execute(sql, (new_filename, 'Status was locked with (' + booking['b_status'] + ') - POD Received not set', datetime.datetime.now(), visual_id))
+                            cursor.execute(sql, (new_filename, 'Status was locked with (' + booking['b_status'] + ') - POD Received not set', datetime.datetime.now(), None, visual_id))
                             mysqlcon.commit()
                             create_status_history(booking, 'Locked', datetime.datetime.now(), mysqlcon)
                         else:
 
                             if 'POD_SOG_' in filename:
                                 sql = "UPDATE `dme_bookings` \
-                                        SET `z_pod_signed_url`=%s, b_status=%s, b_status_API=%s, rpt_pod_from_file_time=%s \
+                                        SET `z_pod_signed_url`=%s, b_status=%s, b_status_API=%s, \
+                                        rpt_pod_from_file_time=%s, z_downloaded_pod_sog_timestamp=%s \
                                         WHERE `b_bookingID_Visual`=%s"
                             else:
                                 sql = "UPDATE `dme_bookings` \
-                                        SET `z_pod_url`=%s, b_status=%s, b_status_API=%s, rpt_pod_from_file_time=%s  \
+                                        SET `z_pod_url`=%s, b_status=%s, b_status_API=%s, \
+                                        rpt_pod_from_file_time=%s, z_downloaded_pod_timestamp \
                                         WHERE `b_bookingID_Visual`=%s"
-                            cursor.execute(sql, (new_filename, 'Delivered', 'POD Received', datetime.datetime.now(), visual_id))
+                            cursor.execute(sql, (new_filename, 'Delivered', 'POD Received', datetime.datetime.now(), None, visual_id))
                             mysqlcon.commit()
                             create_status_history(booking, 'Delivered', datetime.datetime.now(), mysqlcon)
                             calc_delivered(booking, mysqlcon)
