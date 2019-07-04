@@ -169,7 +169,7 @@ def do_process_one(dme_number, csv_lines, mysqlcon):
     dme_number_lines = _.map_(dme_number_lines,
         lambda x: {
             'label_code': x.split(',')[0],
-            'client_item_reference': x.split(',')[1].split(' ')[1],
+            'client_item_reference': x.split(',')[1].split(' ')[-1],
             'date': datetime.datetime.strptime(x.split(',')[2], '%Y-%m-%d'),
             'time': datetime.datetime.strptime(x.split(',')[3] + ':00', '%H:%M:%S'),
             'scanned_by': x.split(',')[4].split(' ')[2][:-1]

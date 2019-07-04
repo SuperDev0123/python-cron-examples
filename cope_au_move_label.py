@@ -96,7 +96,7 @@ if __name__ == '__main__':
                 shutil.move(source_url + filename, dest_url_1 + new_filename)
                 with mysqlcon.cursor() as cursor:
                     sql = "UPDATE `dme_bookings` set `b_status` = %s, `z_label_url` = %s WHERE `b_bookingID_Visual` = %s"
-                    cursor.execute(sql, ('Booked CSV', new_filename, visual_id))
+                    cursor.execute(sql, ('Booked', new_filename, visual_id))
                 mysqlcon.commit()
         
     print('#901 - Finished %s' % datetime.datetime.now())

@@ -10,8 +10,8 @@ import glob
 import ntpath
 
 # env_mode = 0 # Local
-env_mode = 1 # Dev
-# env_mode = 2  # Prod
+# env_mode = 1 # Dev
+env_mode = 2  # Prod
 
 if env_mode == 0:
     DB_HOST = 'localhost'
@@ -41,11 +41,15 @@ def get_filename(filename, visual_id):
             print('@102 - booking is not exist with this visual_id: ', visual_id)
             return None
         else:
-            if 'POD_SOG_' in filename:
-                new_filename = 'POD_SOG_' + result['pu_Address_State'] + '_' + result['b_client_sales_inv_num'] + '_' + filename[8:]
+            if result['pu_Address_State'] is None or result['b_client_sales_inv_num'] is None:
+                print(f'@102 - booking({visual_id}) does not have `pu_Address_State` or `b_client_sales_inv_num`')
+                return None
             else:
-                new_filename = 'POD_' + result['pu_Address_State'] + '_' + result['b_client_sales_inv_num'] + '_' + filename
-            return new_filename
+                if 'POD_SOG_' in filename:
+                    new_filename = 'POD_SOG_' + result['pu_Address_State'] + '_' + result['b_client_sales_inv_num'] + '_' + filename[8:]
+                else:
+                    new_filename = 'POD_' + result['pu_Address_State'] + '_' + result['b_client_sales_inv_num'] + '_' + filename
+                return new_filename
 
 def get_booking_with_visual_id(visual_id, mysqlcon):
     with mysqlcon.cursor() as cursor:
@@ -67,7 +71,7 @@ def calc_delivered(booking, mysqlcon):
         sql = "UPDATE `dme_bookings` \
                 SET `tally_delivered`=%s \
                 WHERE `id`=%s"
-        cursor.execute(sql, (int(tally_delivered) + 1, booking_line['id']))
+        cursor.execute(sql, (int(tally_delivered) + 1, booking['id']))
         mysqlcon.commit()
 
         sql = "SELECT `pk_lines_id`, `e_qty`, `e_qty_awaiting_inventory`, `e_qty_delivered` \
@@ -145,60 +149,62 @@ if __name__ == '__main__':
                     visual_id = int(filename[3:].split('.')[0])
 
             new_filename = get_filename(filename, visual_id)
-            print('@100 - File name: ', filename, 'Visual ID: ', visual_id, 'New name:', new_filename) 
 
-            if new_filename:
-                exists = os.path.isfile(dest_url_0 + new_filename)
-                booking = get_booking_with_visual_id(visual_id, mysqlcon)
+            if new_filename is not None:
+                print('@100 - File name: ', filename, 'Visual ID: ', visual_id, 'New name:', new_filename) 
 
-                if exists:
-                    shutil.copy(source_url + filename, dest_url_0 + new_filename)
-                    shutil.move(source_url + filename, dest_url_1 + new_filename)
+                if new_filename:
+                    exists = os.path.isfile(dest_url_0 + new_filename)
+                    booking = get_booking_with_visual_id(visual_id, mysqlcon)
 
-                    with mysqlcon.cursor() as cursor:
-                        if 'POD_SOG_' in filename:
-                            sql = "UPDATE `dme_bookings` set z_downloaded_pod_sog_timestamp=%s WHERE `b_bookingID_Visual`=%s"
-                            cursor.execute(sql, (None, visual_id))
-                        else:
-                            sql = "UPDATE `dme_bookings` set z_downloaded_pod_timestamp=%s WHERE `b_bookingID_Visual`=%s"
-                            cursor.execute(sql, (None, visual_id))
-                    mysqlcon.commit()
-                else:
-                    shutil.copy(source_url + filename, dest_url_0 + new_filename)
-                    shutil.move(source_url + filename, dest_url_1 + new_filename)
+                    if exists:
+                        shutil.copy(source_url + filename, dest_url_0 + new_filename)
+                        shutil.move(source_url + filename, dest_url_1 + new_filename)
 
-                    with mysqlcon.cursor() as cursor:
-                        if booking['z_lock_status'] == 1:
+                        with mysqlcon.cursor() as cursor:
                             if 'POD_SOG_' in filename:
-                                sql = "UPDATE `dme_bookings` \
-                                        SET `z_pod_signed_url`=%s, z_status_process_notes=%s, \
-                                        rpt_pod_from_file_time=%s, z_downloaded_pod_sog_timestamp=%s \
-                                        WHERE `b_bookingID_Visual`=%s"
+                                sql = "UPDATE `dme_bookings` set z_downloaded_pod_sog_timestamp=%s WHERE `b_bookingID_Visual`=%s"
+                                cursor.execute(sql, (None, visual_id))
                             else:
-                                sql = "UPDATE `dme_bookings` \
-                                        SET `z_pod_url`=%s, z_status_process_notes=%s, \
-                                        rpt_pod_from_file_time=%s, z_downloaded_pod_sog_timestamp=%s \
-                                        WHERE `b_bookingID_Visual`=%s"
-                                
-                            cursor.execute(sql, (new_filename, 'Status was locked with (' + booking['b_status'] + ') - POD Received not set', datetime.datetime.now(), None, visual_id))
-                            mysqlcon.commit()
-                            create_status_history(booking, 'Locked', datetime.datetime.now(), mysqlcon)
-                        else:
+                                sql = "UPDATE `dme_bookings` set z_downloaded_pod_timestamp=%s WHERE `b_bookingID_Visual`=%s"
+                                cursor.execute(sql, (None, visual_id))
+                        mysqlcon.commit()
+                    else:
+                        shutil.copy(source_url + filename, dest_url_0 + new_filename)
+                        shutil.move(source_url + filename, dest_url_1 + new_filename)
 
-                            if 'POD_SOG_' in filename:
-                                sql = "UPDATE `dme_bookings` \
-                                        SET `z_pod_signed_url`=%s, b_status=%s, b_status_API=%s, \
-                                        rpt_pod_from_file_time=%s, z_downloaded_pod_sog_timestamp=%s \
-                                        WHERE `b_bookingID_Visual`=%s"
+                        with mysqlcon.cursor() as cursor:
+                            if booking['z_lock_status'] == 1:
+                                if 'POD_SOG_' in filename:
+                                    sql = "UPDATE `dme_bookings` \
+                                            SET `z_pod_signed_url`=%s, z_status_process_notes=%s, \
+                                            rpt_pod_from_file_time=%s, z_downloaded_pod_sog_timestamp=%s \
+                                            WHERE `b_bookingID_Visual`=%s"
+                                else:
+                                    sql = "UPDATE `dme_bookings` \
+                                            SET `z_pod_url`=%s, z_status_process_notes=%s, \
+                                            rpt_pod_from_file_time=%s, z_downloaded_pod_sog_timestamp=%s \
+                                            WHERE `b_bookingID_Visual`=%s"
+                                    
+                                cursor.execute(sql, (new_filename, 'Status was locked with (' + booking['b_status'] + ') - POD Received not set', datetime.datetime.now(), None, visual_id))
+                                mysqlcon.commit()
+                                create_status_history(booking, 'Locked', datetime.datetime.now(), mysqlcon)
                             else:
-                                sql = "UPDATE `dme_bookings` \
-                                        SET `z_pod_url`=%s, b_status=%s, b_status_API=%s, \
-                                        rpt_pod_from_file_time=%s, z_downloaded_pod_timestamp \
-                                        WHERE `b_bookingID_Visual`=%s"
-                            cursor.execute(sql, (new_filename, 'Delivered', 'POD Received', datetime.datetime.now(), None, visual_id))
-                            mysqlcon.commit()
-                            create_status_history(booking, 'Delivered', datetime.datetime.now(), mysqlcon)
-                            calc_delivered(booking, mysqlcon)
+
+                                if 'POD_SOG_' in filename:
+                                    sql = "UPDATE `dme_bookings` \
+                                            SET `z_pod_signed_url`=%s, b_status=%s, b_status_API=%s, \
+                                            rpt_pod_from_file_time=%s, z_downloaded_pod_sog_timestamp=%s \
+                                            WHERE `b_bookingID_Visual`=%s"
+                                else:
+                                    sql = "UPDATE `dme_bookings` \
+                                            SET `z_pod_url`=%s, b_status=%s, b_status_API=%s, \
+                                            rpt_pod_from_file_time=%s, z_downloaded_pod_timestamp=%s \
+                                            WHERE `b_bookingID_Visual`=%s"
+                                cursor.execute(sql, (new_filename, 'Delivered', 'POD Received', datetime.datetime.now(), None, visual_id))
+                                mysqlcon.commit()
+                                create_status_history(booking, 'Delivered', datetime.datetime.now(), mysqlcon)
+                                calc_delivered(booking, mysqlcon)
         
     print('#901 - Finished %s' % datetime.datetime.now())
     mysqlcon.close()
