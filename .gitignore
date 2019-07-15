@@ -1,3 +1,6 @@
 /dir01
 /dir02
 /dir_dups
+
+.DS_Store
+.python-version
