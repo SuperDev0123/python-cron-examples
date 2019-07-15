@@ -20,8 +20,8 @@ if production:
     DB_USER = "fmadmin"
     DB_PASS = "oU8pPQxh"
     DB_PORT = 3306
-    DB_NAME = "dme_db_dev"  # Dev
-    # DB_NAME = 'dme_db_prod'  # Prod
+    # DB_NAME = "dme_db_dev"  # Dev
+    DB_NAME = "dme_db_prod"  # Prod
 else:
     DB_HOST = "localhost"
     DB_USER = "root"
@@ -31,33 +31,34 @@ else:
 
 if production:
     ZIP_DIR = "/home/cope_au/dme_sftp/cope_au/weekly_pod_zips/"
-    SRC_DIR = "/var/www/html/dme_api/static/pdfs/"
+    SRC_DIR = "/var/www/html/dme_api/static/imgs/"
 else:
     ZIP_DIR = "/Users/admin/work/goldmine/scripts/dir02/"
-    SRC_DIR = "/Users/admin/work/goldmine/dme_api/static/pdfs/"
+    SRC_DIR = "/Users/admin/work/goldmine/dme_api/static/imgs/"
 
 
 def clear_download_timestamp(mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "UPDATE dme_bookings \
-                SET z_downloaded_pod_timestamp=null, z_downloaded_pod_sog_timestamp=null \
-                WHERE vx_freight_provider=%s"
-        cursor.execute(sql, ("Cope"))
+                SET z_downloaded_pod_timestamp=null, z_downloaded_pod_sog_timestamp=null, z_ModifiedTimestamp=%s \
+                WHERE vx_freight_provider=%s and z_CreatedTimestamp=%s"
+        cursor.execute(sql, ("Cope", datetime.datetime.now(), "2019-07-13 00:00:00"))
         mysqlcon.commit()
 
 
 def zip_weekly(mysqlcon):
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT id, z_pod_url, z_pod_signed_url, z_CreatedTimestamp, s_21_ActualDeliveryTimeStamp \
+        sql = "SELECT id, z_pod_url, z_pod_signed_url, z_CreatedTimestamp, s_21_ActualDeliveryTimeStamp, b_bookingID_Visual \
                 FROM `dme_bookings` \
                 WHERE vx_freight_provider=%s \
+                    and z_CreatedTimestamp=%s \
                     and s_21_ActualDeliveryTimeStamp is not null \
                     and ( \
                         (z_pod_url <> '' and z_pod_url is not null) \
                         or (z_pod_signed_url <> '' and z_pod_signed_url is not null) \
                     ) \
                 ORDER BY s_21_ActualDeliveryTimeStamp"
-        cursor.execute(sql, ("Cope"))
+        cursor.execute(sql, ("Cope", "2019-07-13 00:00:00"))
         bookings = cursor.fetchall()
 
         # Separate into each week
@@ -79,6 +80,7 @@ def zip_weekly(mysqlcon):
                         "z_pod_url": booking["z_pod_url"],
                         "z_pod_signed_url": booking["z_pod_signed_url"],
                         "id": booking["id"],
+                        "b_bookingID_Visual": booking["b_bookingID_Visual"],
                     }
                 ]
             else:
@@ -87,6 +89,7 @@ def zip_weekly(mysqlcon):
                         "z_pod_url": booking["z_pod_url"],
                         "z_pod_signed_url": booking["z_pod_signed_url"],
                         "id": booking["id"],
+                        "b_bookingID_Visual": booking["b_bookingID_Visual"],
                     }
                 )
 
@@ -101,12 +104,42 @@ def zip_weekly(mysqlcon):
                     bookings_cnt += 1
 
                 if booking["z_pod_url"]:
-                    file_paths.append(SRC_DIR + booking["z_pod_url"])
-                    filenames.append(booking["z_pod_url"])
+                    if os.path.exists(SRC_DIR + booking["z_pod_url"]):
+                        file_paths.append(SRC_DIR + booking["z_pod_url"])
+                        filenames.append(booking["z_pod_url"])
+                    else:
+                        sql = "UPDATE dme_bookings \
+                                SET b_error_Capture=%s, z_ModifiedTimestamp=%s \
+                                WHERE id=%s"
+                        cursor.execute(
+                            sql,
+                            (
+                                "POD or POD_SOG is missing",
+                                datetime.datetime.now(),
+                                booking["id"],
+                            ),
+                        )
+                        mysqlcon.commit()
+                        print("#925 Missing POD: ", booking["b_bookingID_Visual"])
 
                 if booking["z_pod_signed_url"]:
-                    file_paths.append(SRC_DIR + booking["z_pod_signed_url"])
-                    filenames.append(booking["z_pod_signed_url"])
+                    if os.path.exists(SRC_DIR + booking["z_pod_signed_url"]):
+                        file_paths.append(SRC_DIR + booking["z_pod_signed_url"])
+                        filenames.append(booking["z_pod_signed_url"])
+                    else:
+                        sql = "UPDATE dme_bookings \
+                                SET b_error_Capture=%s, z_ModifiedTimestamp=%s \
+                                WHERE id=%s"
+                        cursor.execute(
+                            sql,
+                            (
+                                "POD or POD_SOG is missing",
+                                datetime.datetime.now(),
+                                booking["id"],
+                            ),
+                        )
+                        mysqlcon.commit()
+                        print("#925 Missing POD_SOG: ", booking["b_bookingID_Visual"])
 
             zip_subdir = ZIP_DIR + key + "__" + str(bookings_cnt)
             zip_filename = f"{zip_subdir}.zip"
@@ -121,14 +154,18 @@ def zip_weekly(mysqlcon):
         # Update download timestamp
         for key in weeks:
             for booking in weeks[key]:
-                if booking["z_pod_url"]:
+                if booking["z_pod_url"] and os.path.exists(
+                    SRC_DIR + booking["z_pod_url"]
+                ):
                     sql = "UPDATE dme_bookings \
                             SET z_downloaded_pod_timestamp=%s \
                             WHERE id=%s"
                     cursor.execute(sql, (datetime.datetime.now(), booking["id"]))
                     mysqlcon.commit()
 
-                if booking["z_pod_signed_url"]:
+                if booking["z_pod_signed_url"] and os.path.exists(
+                    SRC_DIR + booking["z_pod_signed_url"]
+                ):
                     sql = "UPDATE dme_bookings \
                             SET z_downloaded_pod_sog_timestamp=%s \
                             WHERE id=%s"
