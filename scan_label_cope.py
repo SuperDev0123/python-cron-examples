@@ -75,12 +75,19 @@ def get_booking_lines(pk_booking_id, mysqlcon):
 
 
 def update_tally(api_bcl, mysqlcon):
-    tally = api_bcl["tally"]
-
-    if not tally:
-        tally = 0
-
     with mysqlcon.cursor() as cursor:
+        tally = api_bcl["tally"]
+
+        if not tally:
+            tally = 0
+            sql = "UPDATE `dme_bookings` \
+                SET z_first_scan_label_date=%s \
+                WHERE `pk_booking_id`=%s"
+            cursor.execute(
+                sql, (datetime.datetime.now().date(), api_bcl["fk_booking_id"])
+            )
+            mysqlcon.commit()
+
         sql = "UPDATE `api_booking_confirmation_lines` \
                 SET tally=%s \
                 WHERE `id`=%s"
@@ -89,12 +96,19 @@ def update_tally(api_bcl, mysqlcon):
 
 
 def update_api_bcl(api_bcl, fp_event_date, fp_event_time, fp_scan_data, mysqlcon):
-    tally = api_bcl["tally"]
-
-    if not tally:
-        tally = 0
-
     with mysqlcon.cursor() as cursor:
+        tally = api_bcl["tally"]
+
+        if not tally:
+            tally = 0
+            sql = "UPDATE `dme_bookings` \
+                SET z_first_scan_label_date=%s \
+                WHERE `pk_booking_id`=%s"
+            cursor.execute(
+                sql, (datetime.datetime.now().date(), api_bcl["fk_booking_id"])
+            )
+            mysqlcon.commit()
+
         sql = "UPDATE `api_booking_confirmation_lines` \
                 SET fp_event_date=%s, fp_event_time=%s, fp_scan_data=%s, tally=%s \
                 WHERE `id`=%s"
