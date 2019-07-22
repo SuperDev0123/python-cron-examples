@@ -26,7 +26,7 @@ else:
 
 if IS_PRODUCTION:
     CSV_FILE_PATH = "/home/gold/chrons(not run here)/move_from_imgs_to_POD indata_rename_and process.csv"
-    POD_FILE_DIR = "/var/www/html/dme_api/static/imgs/"
+    POD_FILE_DIR = "/opt/static/imgs/"
 else:
     CSV_FILE_PATH = "/Users/admin/work/goldmine/scripts/dir01/move_from_imgs_to_POD indata_rename_and process.csv"
 

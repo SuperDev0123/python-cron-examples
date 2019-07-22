@@ -31,7 +31,7 @@ else:
 
 if production:
     ZIP_DIR = "/home/cope_au/dme_sftp/cope_au/weekly_pod_zips/"
-    SRC_DIR = "/var/www/html/dme_api/static/imgs/"
+    SRC_DIR = "/opt/static/imgs/"
 else:
     ZIP_DIR = "/Users/admin/work/goldmine/scripts/dir02/"
     SRC_DIR = "/Users/admin/work/goldmine/dme_api/static/imgs/"
