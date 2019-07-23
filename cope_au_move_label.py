@@ -83,7 +83,7 @@ if __name__ == "__main__":
     else:
         source_url = "/home/cope_au/dme_sftp/cope_au/labels/indata/"
         dest_url_0 = "/home/cope_au/dme_sftp/cope_au/labels/archive/"
-        dest_url_1 = "/opt/static/pdfs/"
+        dest_url_1 = "/opt/s3_public/pdfs/"
         dup_url = "/home/cope_au/dme_sftp/cope_au/labels/duplicates/"
 
     for file in glob.glob(os.path.join(source_url, "*.pdf")):

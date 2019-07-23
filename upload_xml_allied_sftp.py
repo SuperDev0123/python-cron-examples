@@ -17,9 +17,9 @@ production = True  # Dev
 
 # start check if xmls folder exists
 if production:
-    local_filepath = "/opt/static/xmls/allied_au/"
+    local_filepath = "/opt/s3_private/xmls/allied_au/"
     local_filepath_dup = (
-        "/opt/static/xmls/allied_au/archive/"
+        "/opt/s3_private/xmls/allied_au/archive/"
         + str(datetime.now().strftime("%Y_%m_%d"))
         + "/"
     )

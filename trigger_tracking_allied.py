@@ -232,7 +232,7 @@ if __name__ == "__main__":
                             + str(booking["b_bookingID_Visual"])
                             + ".png"
                         )
-                        file_url = "/opt/static/imgs/" + file_name
+                        file_url = "/opt/s3_public/imgs/" + file_name
 
                         with open(os.path.expanduser(file_url), "wb") as fout:
                             fout.write(base64.decodestring(pod_file.encode("utf-8")))
@@ -268,7 +268,7 @@ if __name__ == "__main__":
                             + str(booking["b_bookingID_Visual"])
                             + ".png"
                         )
-                        file_url = "/opt/static/imgs/" + file_name
+                        file_url = "/opt/s3_public/imgs/" + file_name
 
                         with open(os.path.expanduser(file_url), "wb") as fout:
                             fout.write(base64.decodestring(pod_file.encode("utf-8")))

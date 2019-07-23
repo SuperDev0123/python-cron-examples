@@ -170,7 +170,7 @@ if __name__ == "__main__":
     else:
         source_url = "/home/cope_au/dme_sftp/cope_au/pods/indata/"
         dest_url_0 = "/home/cope_au/dme_sftp/cope_au/pods/archive/"
-        dest_url_1 = "/opt/static/imgs/"
+        dest_url_1 = "/opt/s3_public/imgs/"
         dup_url = "/home/cope_au/dme_sftp/cope_au/pods/duplicates/"
 
     for file in os.listdir(source_url):

@@ -97,7 +97,7 @@ if __name__ == "__main__":
     else:
         source_url = "/home/cope_au/dme_sftp/cope_au/connotes/indata/"
         dest_url_0 = "/home/cope_au/dme_sftp/cope_au/connotes/archive/"
-        dest_url_1 = "/opt/static/connotes/"
+        dest_url_1 = "/opt/s3_private/connotes/"
         dup_url = "/home/cope_au/dme_sftp/cope_au/connotes/duplicates/"
 
     for file in os.listdir(source_url):
