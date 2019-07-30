@@ -119,8 +119,19 @@ def update_api_bcl(api_bcl, fp_event_date, fp_event_time, fp_scan_data, mysqlcon
         mysqlcon.commit()
 
 
-def update_booking_line(booking_line, e_qty_scanned_fp, mysqlcon):
+def update_booking_line(booking_line, mysqlcon):
     with mysqlcon.cursor() as cursor:
+        sql = "SELECT `tally` \
+            FROM api_booking_confirmation_lines \
+            WHERE `fk_booking_line_id`=%s"
+        cursor.execute(sql, (booking_line["pk_lines_id"]))
+        api_bcls = cursor.fetchall()
+
+        e_qty_scanned_fp = 0
+        for api_bcl in api_bcls:
+            if api_bcl["tally"] is not None and int(api_bcl["tally"]) > 0:
+                e_qty_scanned_fp += 1
+
         sql = "UPDATE `dme_booking_lines` \
             SET `e_qty_scanned_fp`=%s \
             WHERE `pk_lines_id`=%s"
@@ -128,8 +139,19 @@ def update_booking_line(booking_line, e_qty_scanned_fp, mysqlcon):
         mysqlcon.commit()
 
 
-def update_booking(booking, e_qty_scanned_fp_total, mysqlcon):
+def update_booking(booking, mysqlcon):
     with mysqlcon.cursor() as cursor:
+        sql = "SELECT `tally` \
+            FROM api_booking_confirmation_lines \
+            WHERE `fk_booking_id`=%s"
+        cursor.execute(sql, (booking["pk_booking_id"]))
+        api_bcls = cursor.fetchall()
+
+        e_qty_scanned_fp_total = 0
+        for api_bcl in api_bcls:
+            if api_bcl["tally"] is not None and int(api_bcl["tally"]) > 0:
+                e_qty_scanned_fp_total += 1
+
         if (
             not booking["e_qty_scanned_fp_total"]
             or booking["e_qty_scanned_fp_total"] == "0"
@@ -162,12 +184,8 @@ def do_calc_scanned(dme_number, dme_number_lines, mysqlcon):
             "@802 - v_FPBookingNumber:", dme_number, " Lines cnt:", len(booking_lines)
         )
 
-    cnt_total = 0
     scanned_label_codes = []
-
     for booking_line in booking_lines:
-        cnt = 0
-
         for dme_number_line in dme_number_lines:
             label_code = dme_number_line["label_code"]
             client_item_reference = dme_number_line["client_item_reference"]
@@ -180,7 +198,6 @@ def do_calc_scanned(dme_number, dme_number_lines, mysqlcon):
                 if label_code in scanned_label_codes:
                     update_tally(api_bcl, mysqlcon)
                 else:
-                    cnt = cnt + 1
                     scanned_label_codes.append(label_code)
                     update_api_bcl(
                         api_bcl,
@@ -190,12 +207,8 @@ def do_calc_scanned(dme_number, dme_number_lines, mysqlcon):
                         mysqlcon,
                     )
 
-        if cnt:
-            cnt_total = cnt_total + cnt
-            update_booking_line(booking_line, cnt, mysqlcon)
-
-    if cnt_total:
-        update_booking(booking, cnt_total, mysqlcon)
+        update_booking_line(booking_line, mysqlcon)
+    update_booking(booking, mysqlcon)
 
 
 def do_process_one(dme_number, csv_lines, mysqlcon):
