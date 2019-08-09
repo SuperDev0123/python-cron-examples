@@ -14,8 +14,8 @@ if IS_PRODUCTION:
     DB_USER = "fmadmin"
     DB_PASS = "oU8pPQxh"
     DB_PORT = 3306
-    DB_NAME = "dme_db_dev"  # Dev
-    # DB_NAME = "dme_db_prod"  # Prod
+    # DB_NAME = "dme_db_dev"  # Dev
+    DB_NAME = "dme_db_prod"  # Prod
 else:
     DB_HOST = "localhost"
     DB_USER = "root"
@@ -34,12 +34,22 @@ sftp_server_infos = [
         "local_filepath": "/home/cope_au/dme_sftp/cope_au/pickup_ext/cope_au/",
         "local_filepath_dup": "/home/cope_au/dme_sftp/cope_au/pickup_ext/cope_au/archive/",
     },
+    # {
+    #     # DHL QA(test) server info
+    #     "fp_name": "DHL",
+    #     "host": "ftp2-dhllink-qa.dhl.com",
+    #     "username": "deliverme_au_tst_sftp",
+    #     "password": "Rbk3Zxi605_5YCIU",
+    #     "sftp_filepath": "/in/",
+    #     "local_filepath": "/home/cope_au/dme_sftp/cope_au/pickup_ext/dhl_au/",
+    #     "local_filepath_dup": "/home/cope_au/dme_sftp/cope_au/pickup_ext/dhl_au/archive/",
+    # },
     {
-        # DHL QA(test) server info
+        # DHL PROD server info
         "fp_name": "DHL",
-        "host": "ftp2-dhllink-qa.dhl.com",
-        "username": "deliverme_au_tst_sftp",
-        "password": "Rbk3Zxi605_5YCIU",
+        "host": "ftp2-dhllink.dhl.com",
+        "username": "deliverme_au_sftp",
+        "password": "O2hdByBe1qWhAcrq",
         "sftp_filepath": "/in/",
         "local_filepath": "/home/cope_au/dme_sftp/cope_au/pickup_ext/dhl_au/",
         "local_filepath_dup": "/home/cope_au/dme_sftp/cope_au/pickup_ext/dhl_au/archive/",
