@@ -9,7 +9,7 @@ from pydash import _
 
 IS_DEBUG = False
 IS_PRODUCTION = True  # Dev
-# IS_PRODUCTION = False # Local
+# IS_PRODUCTION = False  # Local
 
 if IS_PRODUCTION:
     DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
@@ -211,6 +211,28 @@ def do_calc_scanned(dme_number, dme_number_lines, mysqlcon):
     update_booking(booking, mysqlcon)
 
 
+def save_csv_into_db(dme_number_lines, mysqlcon):
+    with mysqlcon.cursor() as cursor:
+        for dme_number_line in dme_number_lines:
+            sql = "INSERT INTO `fp_label_scans` \
+                (`fk_fp`, `label_code`, `client_item_reference`, `scanned_date`, \
+                 `scanned_time`, `scanned_by`, `z_createdTimeStamp`) \
+                VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            cursor.execute(
+                sql,
+                (
+                    1,
+                    dme_number_line["label_code"],
+                    dme_number_line["client_item_reference"],
+                    dme_number_line["date"],
+                    dme_number_line["time"],
+                    dme_number_line["scanned_by"],
+                    datetime.datetime.now(),
+                ),
+            )
+            mysqlcon.commit()
+
+
 def do_process_one(dme_number, csv_lines, mysqlcon):
     # filter with `dme_number`
     dme_number_lines = _.filter_(
@@ -241,6 +263,7 @@ def do_process_one(dme_number, csv_lines, mysqlcon):
             ),
         )
 
+    save_csv_into_db(dme_number_lines, mysqlcon)
     do_calc_scanned(dme_number, dme_number_lines, mysqlcon)
 
 
