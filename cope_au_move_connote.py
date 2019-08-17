@@ -10,8 +10,8 @@ import glob
 import ntpath
 
 # env_mode = 0 # Local
-env_mode = 1  # Dev
-# env_mode = 2  # Prod
+# env_mode = 1  # Dev
+env_mode = 2  # Prod
 
 if env_mode == 0:
     DB_HOST = "localhost"
@@ -126,25 +126,43 @@ if __name__ == "__main__":
                     booking = get_booking_with_visual_id(visual_id, mysqlcon)
 
                     if exists:
-                        shutil.copy(source_url + filename, dest_url_0 + new_filename)
-                        shutil.move(source_url + filename, dest_url_1 + new_filename)
-
-                        with mysqlcon.cursor() as cursor:
-                            sql = "UPDATE `dme_bookings` set z_downloaded_connote_timestamp=%s WHERE `b_bookingID_Visual`=%s"
-                            cursor.execute(sql, (datetime.datetime.now(), visual_id))
-                            mysqlcon.commit()
-                    else:
-                        shutil.copy(source_url + filename, dest_url_0 + new_filename)
-                        shutil.move(source_url + filename, dest_url_1 + new_filename)
-
-                        with mysqlcon.cursor() as cursor:
-                            sql = "UPDATE `dme_bookings` \
-                                    SET `z_connote_url`=%s, z_downloaded_connote_timestamp=%s \
-                                    WHERE `b_bookingID_Visual`=%s"
-                            cursor.execute(
-                                sql, (new_filename, datetime.datetime.now(), visual_id)
+                        try:
+                            shutil.copy(
+                                source_url + filename, dest_url_0 + new_filename
                             )
+                            shutil.move(
+                                source_url + filename, dest_url_1 + new_filename
+                            )
+
+                            with mysqlcon.cursor() as cursor:
+                                sql = "UPDATE `dme_bookings` set z_downloaded_connote_timestamp=%s WHERE `b_bookingID_Visual`=%s"
+                                cursor.execute(
+                                    sql, (datetime.datetime.now(), visual_id)
+                                )
                             mysqlcon.commit()
+                        except IOError as e:
+                            print("#104 Unable to copy or move file. %s" % e)
+
+                    else:
+                        try:
+                            shutil.copy(
+                                source_url + filename, dest_url_0 + new_filename
+                            )
+                            shutil.move(
+                                source_url + filename, dest_url_1 + new_filename
+                            )
+
+                            with mysqlcon.cursor() as cursor:
+                                sql = "UPDATE `dme_bookings` \
+                                        SET `z_connote_url`=%s, z_downloaded_connote_timestamp=%s \
+                                        WHERE `b_bookingID_Visual`=%s"
+                                cursor.execute(
+                                    sql,
+                                    (new_filename, datetime.datetime.now(), visual_id),
+                                )
+                            mysqlcon.commit()
+                        except IOError as e:
+                            print("#105 Unable to copy or move file. %s" % e)
 
     print("#901 - Finished %s" % datetime.datetime.now())
     mysqlcon.close()

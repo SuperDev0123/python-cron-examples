@@ -10,8 +10,8 @@ import glob
 import ntpath
 
 # env_mode = 0  # Local
-env_mode = 1  # Dev
-# env_mode = 2  # Prod
+# env_mode = 1  # Dev
+env_mode = 2  # Prod
 
 if env_mode == 0:
     DB_HOST = "localhost"
@@ -206,80 +206,97 @@ if __name__ == "__main__":
                     booking = get_booking_with_visual_id(visual_id, mysqlcon)
 
                     if exists:
-                        shutil.copy(source_url + filename, dest_url_0 + new_filename)
-                        shutil.move(source_url + filename, dest_url_1 + new_filename)
+                        try:
+                            shutil.copy(
+                                source_url + filename, dest_url_0 + new_filename
+                            )
+                            shutil.move(
+                                source_url + filename, dest_url_1 + new_filename
+                            )
 
-                        with mysqlcon.cursor() as cursor:
-                            if "POD_SOG_" in filename:
-                                sql = "UPDATE `dme_bookings` set z_downloaded_pod_sog_timestamp=%s WHERE `b_bookingID_Visual`=%s"
-                                cursor.execute(sql, (None, visual_id))
-                            else:
-                                sql = "UPDATE `dme_bookings` set z_downloaded_pod_timestamp=%s WHERE `b_bookingID_Visual`=%s"
-                                cursor.execute(sql, (None, visual_id))
-                        mysqlcon.commit()
+                            with mysqlcon.cursor() as cursor:
+                                if "POD_SOG_" in filename:
+                                    sql = "UPDATE `dme_bookings` set z_downloaded_pod_sog_timestamp=%s WHERE `b_bookingID_Visual`=%s"
+                                    cursor.execute(sql, (None, visual_id))
+                                else:
+                                    sql = "UPDATE `dme_bookings` set z_downloaded_pod_timestamp=%s WHERE `b_bookingID_Visual`=%s"
+                                    cursor.execute(sql, (None, visual_id))
+                            mysqlcon.commit()
+                        except IOError as e:
+                            print("#108 Unable to copy or move file. %s" % e)
                     else:
-                        shutil.copy(source_url + filename, dest_url_0 + new_filename)
-                        shutil.move(source_url + filename, dest_url_1 + new_filename)
+                        try:
+                            shutil.copy(
+                                source_url + filename, dest_url_0 + new_filename
+                            )
+                            shutil.move(
+                                source_url + filename, dest_url_1 + new_filename
+                            )
 
-                        with mysqlcon.cursor() as cursor:
-                            if booking["z_lock_status"] == 1:
-                                if "POD_SOG_" in filename:
-                                    sql = "UPDATE `dme_bookings` \
-                                            SET `z_pod_signed_url`=%s, z_status_process_notes=%s, \
-                                            rpt_pod_from_file_time=%s, z_downloaded_pod_sog_timestamp=%s \
-                                            WHERE `b_bookingID_Visual`=%s"
-                                else:
-                                    sql = "UPDATE `dme_bookings` \
-                                            SET `z_pod_url`=%s, z_status_process_notes=%s, \
-                                            rpt_pod_from_file_time=%s, z_downloaded_pod_sog_timestamp=%s \
-                                            WHERE `b_bookingID_Visual`=%s"
+                            with mysqlcon.cursor() as cursor:
+                                if booking["z_lock_status"] == 1:
+                                    if "POD_SOG_" in filename:
+                                        sql = "UPDATE `dme_bookings` \
+                                                SET `z_pod_signed_url`=%s, z_status_process_notes=%s, \
+                                                rpt_pod_from_file_time=%s, z_downloaded_pod_sog_timestamp=%s \
+                                                WHERE `b_bookingID_Visual`=%s"
+                                    else:
+                                        sql = "UPDATE `dme_bookings` \
+                                                SET `z_pod_url`=%s, z_status_process_notes=%s, \
+                                                rpt_pod_from_file_time=%s, z_downloaded_pod_sog_timestamp=%s \
+                                                WHERE `b_bookingID_Visual`=%s"
 
-                                cursor.execute(
-                                    sql,
-                                    (
-                                        new_filename,
-                                        "Status was locked with ("
-                                        + booking["b_status"]
-                                        + ") - POD Received not set",
+                                    cursor.execute(
+                                        sql,
+                                        (
+                                            new_filename,
+                                            "Status was locked with ("
+                                            + booking["b_status"]
+                                            + ") - POD Received not set",
+                                            datetime.datetime.now(),
+                                            None,
+                                            visual_id,
+                                        ),
+                                    )
+                                    mysqlcon.commit()
+                                    create_status_history(
+                                        booking,
+                                        "Locked",
                                         datetime.datetime.now(),
-                                        None,
-                                        visual_id,
-                                    ),
-                                )
-                                mysqlcon.commit()
-                                create_status_history(
-                                    booking, "Locked", datetime.datetime.now(), mysqlcon
-                                )
-                            else:
-                                if "POD_SOG_" in filename:
-                                    sql = "UPDATE `dme_bookings` \
-                                            SET `z_pod_signed_url`=%s, b_status=%s, b_status_API=%s, \
-                                            rpt_pod_from_file_time=%s, z_downloaded_pod_sog_timestamp=%s \
-                                            WHERE `b_bookingID_Visual`=%s"
+                                        mysqlcon,
+                                    )
                                 else:
-                                    sql = "UPDATE `dme_bookings` \
-                                            SET `z_pod_url`=%s, b_status=%s, b_status_API=%s, \
-                                            rpt_pod_from_file_time=%s, z_downloaded_pod_timestamp=%s \
-                                            WHERE `b_bookingID_Visual`=%s"
-                                cursor.execute(
-                                    sql,
-                                    (
-                                        new_filename,
+                                    if "POD_SOG_" in filename:
+                                        sql = "UPDATE `dme_bookings` \
+                                                SET `z_pod_signed_url`=%s, b_status=%s, b_status_API=%s, \
+                                                rpt_pod_from_file_time=%s, z_downloaded_pod_sog_timestamp=%s \
+                                                WHERE `b_bookingID_Visual`=%s"
+                                    else:
+                                        sql = "UPDATE `dme_bookings` \
+                                                SET `z_pod_url`=%s, b_status=%s, b_status_API=%s, \
+                                                rpt_pod_from_file_time=%s, z_downloaded_pod_timestamp=%s \
+                                                WHERE `b_bookingID_Visual`=%s"
+                                    cursor.execute(
+                                        sql,
+                                        (
+                                            new_filename,
+                                            "Delivered",
+                                            "POD Received",
+                                            datetime.datetime.now(),
+                                            None,
+                                            visual_id,
+                                        ),
+                                    )
+                                    mysqlcon.commit()
+                                    create_status_history(
+                                        booking,
                                         "Delivered",
-                                        "POD Received",
                                         datetime.datetime.now(),
-                                        None,
-                                        visual_id,
-                                    ),
-                                )
-                                mysqlcon.commit()
-                                create_status_history(
-                                    booking,
-                                    "Delivered",
-                                    datetime.datetime.now(),
-                                    mysqlcon,
-                                )
-                                calc_delivered(booking, mysqlcon)
+                                        mysqlcon,
+                                    )
+                                    calc_delivered(booking, mysqlcon)
+                        except IOError as e:
+                            print("#104 Unable to copy or move file. %s" % e)
 
     print("#901 - Finished %s" % datetime.datetime.now())
     mysqlcon.close()

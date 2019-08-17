@@ -2,11 +2,7 @@
 
 import sys, time
 import os
-import errno
 import datetime
-import uuid
-import urllib, requests
-import json
 import pymysql, pymysql.cursors
 import shutil
 import glob
@@ -96,18 +92,24 @@ if __name__ == "__main__":
             exists = os.path.isfile(dest_url_0 + new_filename)
 
             if exists:
-                shutil.move(source_url + filename, dup_url + new_filename)
-                with mysqlcon.cursor() as cursor:
-                    sql = "UPDATE `dme_bookings` set `b_error_Capture` = %s WHERE `b_bookingID_Visual` = %s"
-                    cursor.execute(sql, ("Label is duplicated", visual_id))
-                mysqlcon.commit()
+                try:
+                    shutil.move(source_url + filename, dup_url + new_filename)
+                    with mysqlcon.cursor() as cursor:
+                        sql = "UPDATE `dme_bookings` set `b_error_Capture` = %s WHERE `b_bookingID_Visual` = %s"
+                        cursor.execute(sql, ("Label is duplicated", visual_id))
+                    mysqlcon.commit()
+                except IOError, e:
+                    print("#104 Unable to move file. %s" % e)
             else:
-                shutil.copy(source_url + filename, dest_url_0 + new_filename)
-                shutil.move(source_url + filename, dest_url_1 + new_filename)
-                with mysqlcon.cursor() as cursor:
-                    sql = "UPDATE `dme_bookings` set `b_status` = %s, `z_label_url` = %s WHERE `b_bookingID_Visual` = %s"
-                    cursor.execute(sql, ("Booked", new_filename, visual_id))
-                mysqlcon.commit()
+                try:
+                    shutil.copy(source_url + filename, dest_url_0 + new_filename)
+                    shutil.move(source_url + filename, dest_url_1 + new_filename)
+                    with mysqlcon.cursor() as cursor:
+                        sql = "UPDATE `dme_bookings` set `b_status` = %s, `z_label_url` = %s WHERE `b_bookingID_Visual` = %s"
+                        cursor.execute(sql, ("Booked", new_filename, visual_id))
+                    mysqlcon.commit()
+                except IOError as e:
+                    print("#105 Unable to copy file. %s" % e)
 
     print("#901 - Finished %s" % datetime.datetime.now())
     mysqlcon.close()
