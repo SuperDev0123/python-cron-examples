@@ -45,23 +45,22 @@ if __name__ == "__main__":
         exit(1)
 
     with mysqlcon.cursor() as cursor:
-        sql = (
-            "SELECT * FROM `dme_bookings` WHERE LOWER(`vx_freight_provider`)=%s and b_status=%s "
-            "and `z_api_issue_update_flag_500`=%s  ORDER BY `id` ASC"
-        )
+        sql = "SELECT * FROM `dme_bookings` \
+            WHERE LOWER(`vx_freight_provider`)=%s and `b_status`=%s and `z_api_issue_update_flag_500`=%s"
         cursor.execute(sql, ("startrack", "Booked", "1"))
         booking_list = cursor.fetchall()
 
     print("@1 Bookings cnt - ", len(booking_list))
-    # print('@10 - ', booking_list[0])
-    # booking_list = Bookings.objects.filter(vx_freight_provider="Allied",
-    #                                        z_api_issue_update_flag_500=1, b_client_name="Seaway",
-    #                                        b_status_API__isnull=True)
     results = []
 
-    for booking in booking_list:
+    for index, booking in enumerate(booking_list):
+
+        if index > 0 and index % 10 == 0:
+            time.sleep(180)
+
         print("num : ", booking["pk_booking_id"])
-        url = "http://35.161.204.104:8081/dme-api/tracking/trackconsignment"
+        time.sleep(1)
+        url = "http://52.62.102.72:8081/dme-api/tracking/trackconsignment"
         data = {}
         data["consignmentDetails"] = [
             {"consignmentNumber": booking["v_FPBookingNumber"]}
@@ -78,6 +77,9 @@ if __name__ == "__main__":
         response0 = response0.content.decode("utf8")
         data0 = json.loads(response0)
         s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
+
+        if "errorCode" in data0:
+            print(s0)
 
         try:
             request_payload = {
@@ -145,28 +147,32 @@ if __name__ == "__main__":
                     )
                     mysqlcon.commit()
 
-                if new_status.lower() == "shipment has been delivered.":
+                if new_status.lower() == "delivered in full":
                     with mysqlcon.cursor() as cursor:
-                        sql = (
-                            "Update `dme_bookings` set z_api_issue_update_flag_500=%s,"
-                            "s_21_Actual_Delivery_TimeStamp=%s where id =%s"
-                        )
-                        cursor.execute(
-                            sql,
-                            (
-                                "0",
-                                data0["consignmentTrackDetails"][0][
-                                    "scheduledDeliveryDate"
-                                ],
-                                booking["id"],
-                            ),
-                        )
+                        # sql = (
+                        #     "Update `dme_bookings` set z_api_issue_update_flag_500=%s,"
+                        #     "s_21_Actual_Delivery_TimeStamp=%s where id =%s"
+                        # )
+                        # cursor.execute(
+                        #     sql,
+                        #     (
+                        #         "0",
+                        #         data0["consignmentTrackDetails"][0][
+                        #             "scheduledDeliveryDate"
+                        #         ],
+                        #         booking["id"],
+                        #     ),
+                        # )
+                        sql = "Update `dme_bookings` \
+                            SET z_api_issue_update_flag_500=%s \
+                            WHERE id =%s"
+                        cursor.execute(sql, ("0", booking["id"]))
                         mysqlcon.commit()
 
-                with mysqlcon.cursor() as cursor:
-                    sql = "SELECT * FROM `dme_client_warehouses` where pk_id_client_warehouses=%s"
-                    cursor.execute(sql, (booking["fk_client_warehouse_id"]))
-                    warehouse = cursor.fetchall()
+                # with mysqlcon.cursor() as cursor:
+                #     sql = "SELECT * FROM `dme_client_warehouses` where pk_id_client_warehouses=%s"
+                #     cursor.execute(sql, (booking["fk_client_warehouse_id"]))
+                #     warehouse = cursor.fetchall()
                 # try:
                 #     print("now pod.")
                 #
@@ -194,61 +200,63 @@ if __name__ == "__main__":
                 # except IndexError:
                 #     print("POD : ", ' empty')
 
-                try:
-                    print("now sign.")
-                    pod_file = data0["consignmentTrackDetails"][0][
-                        "consignmentStatuses"
-                    ][0]["signatureImage"]
-                    print("sign is fine.")
-                    warehouse_name = ""
-                    if warehouse:
-                        warehouse_name = warehouse[0]["client_warehouse_code"]
-                    file_name = (
-                        "pod_signed_"
-                        + str(warehouse_name)
-                        + "_"
-                        + booking["b_clientReference_RA_Numbers"]
-                        + "_"
-                        + booking["v_FPBookingNumber"]
-                        + "_"
-                        + str(booking["b_bookingID_Visual"])
-                        + ".png"
-                    )
-                    file_url = "/opt/s3_public/imgs/" + file_name
+                ## POD
+                # try:
+                #     print("now sign.")
+                #     pod_file = data0["consignmentTrackDetails"][0][
+                #         "consignmentStatuses"
+                #     ][0]["signatureImage"]
+                #     print("sign is fine.")
+                #     warehouse_name = ""
+                #     if warehouse:
+                #         warehouse_name = warehouse[0]["client_warehouse_code"]
+                #     file_name = (
+                #         "pod_signed_"
+                #         + str(warehouse_name)
+                #         + "_"
+                #         + booking["b_clientReference_RA_Numbers"]
+                #         + "_"
+                #         + booking["v_FPBookingNumber"]
+                #         + "_"
+                #         + str(booking["b_bookingID_Visual"])
+                #         + ".png"
+                #     )
+                #     file_url = "/opt/s3_public/imgs/" + file_name
 
-                    with open(os.path.expanduser(file_url), "wb") as fout:
-                        fout.write(base64.decodestring(pod_file.encode("utf-8")))
+                #     with open(os.path.expanduser(file_url), "wb") as fout:
+                #         fout.write(base64.decodestring(pod_file.encode("utf-8")))
 
-                    with mysqlcon.cursor() as cursor:
-                        sql = (
-                            "Update `dme_bookings` set z_pod_signed_url=%s where id =%s"
-                        )
-                        cursor.execute(sql, (file_name, booking["id"]))
-                        mysqlcon.commit()
-                except IndexError:
-                    print("sign : ", " empty")
+                #     with mysqlcon.cursor() as cursor:
+                #         sql = (
+                #             "Update `dme_bookings` set z_pod_signed_url=%s where id =%s"
+                #         )
+                #         cursor.execute(sql, (file_name, booking["id"]))
+                #         mysqlcon.commit()
+                # except IndexError:
+                #     print("sign : ", " empty")
 
-                try:
-                    with mysqlcon.cursor() as cursor:
-                        sql = "Update `dme_bookings` set vx_fp_pu_eta_time=%s, vx_fp_del_eta_time=%s, z_lastStatusAPI_ProcessedTimeStamp=%s where id =%s"
-                        cursor.execute(
-                            sql,
-                            (
-                                data0["consignmentTrackDetails"][0][
-                                    "scheduledPickupDate"
-                                ],
-                                data0["consignmentTrackDetails"][0][
-                                    "scheduledDeliveryDate"
-                                ],
-                                data0["consignmentTrackDetails"][0]["scannings"][0][
-                                    "scanDate"
-                                ],
-                                booking["id"],
-                            ),
-                        )
-                        mysqlcon.commit()
-                except IndexError:
-                    print("Delivery Date ", " no")
+                ## SCAN
+                # try:
+                #     with mysqlcon.cursor() as cursor:
+                #         sql = "Update `dme_bookings` set vx_fp_pu_eta_time=%s, vx_fp_del_eta_time=%s, z_lastStatusAPI_ProcessedTimeStamp=%s where id =%s"
+                #         cursor.execute(
+                #             sql,
+                #             (
+                #                 data0["consignmentTrackDetails"][0][
+                #                     "scheduledPickupDate"
+                #                 ],
+                #                 data0["consignmentTrackDetails"][0][
+                #                     "scheduledDeliveryDate"
+                #                 ],
+                #                 data0["consignmentTrackDetails"][0]["scannings"][0][
+                #                     "scanDate"
+                #                 ],
+                #                 booking["id"],
+                #             ),
+                #         )
+                #         mysqlcon.commit()
+                # except IndexError:
+                #     print("Delivery Date ", " no")
 
                 print("success : ", booking["id"])
             except IndexError as e:
