@@ -82,7 +82,13 @@ if __name__ == "__main__":
         dest_url_1 = "/opt/s3_public/pdfs/"
         dup_url = "/home/cope_au/dme_sftp/cope_au/labels/duplicates/"
 
+    LIMIT = 50
+    count = 0
     for file in glob.glob(os.path.join(source_url, "*.pdf")):
+        count += 1
+        if count > LIMIT:
+            break
+
         filename = ntpath.basename(file)
         visual_id = int(filename[3:].split(".")[0])
         print("@100 - File name: ", filename, "Visual ID: ", visual_id)
@@ -98,7 +104,7 @@ if __name__ == "__main__":
                         sql = "UPDATE `dme_bookings` set `b_error_Capture` = %s WHERE `b_bookingID_Visual` = %s"
                         cursor.execute(sql, ("Label is duplicated", visual_id))
                     mysqlcon.commit()
-                except IOError, e:
+                except IOError as e:
                     print("#104 Unable to move file. %s" % e)
             else:
                 try:

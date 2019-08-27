@@ -173,7 +173,13 @@ if __name__ == "__main__":
         dest_url_1 = "/opt/s3_public/imgs/"
         dup_url = "/home/cope_au/dme_sftp/cope_au/pods/duplicates/"
 
+    LIMIT = 50
+    count = 0
     for file in os.listdir(source_url):
+        count += 1
+        if count > LIMIT:
+            break
+
         filename = ntpath.basename(file)
 
         if not "DS_Store" in filename:
