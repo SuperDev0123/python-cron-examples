@@ -32,7 +32,7 @@ sftp_server_infos = [
         "password": "C3n?7u4f",
         "sftp_filepath": "/home/import/csvimport/upload/",
         "local_filepath": "/home/cope_au/dme_sftp/cope_au/pickup_ext/cope_au/",
-        "local_filepath_dup": "/home/cope_au/dme_sftp/cope_au/pickup_ext/cope_au/archive/",
+        "local_filepath_archive": "/home/cope_au/dme_sftp/cope_au/pickup_ext/cope_au/archive/",
     },
     # {
     #     # DHL QA(test) server info
@@ -42,7 +42,7 @@ sftp_server_infos = [
     #     "password": "Rbk3Zxi605_5YCIU",
     #     "sftp_filepath": "/in/",
     #     "local_filepath": "/home/cope_au/dme_sftp/cope_au/pickup_ext/dhl_au/",
-    #     "local_filepath_dup": "/home/cope_au/dme_sftp/cope_au/pickup_ext/dhl_au/archive/",
+    #     "local_filepath_archive": "/home/cope_au/dme_sftp/cope_au/pickup_ext/dhl_au/archive/",
     # },
     {
         # DHL PROD server info
@@ -52,7 +52,7 @@ sftp_server_infos = [
         "password": "O2hdByBe1qWhAcrq",
         "sftp_filepath": "/in/",
         "local_filepath": "/home/cope_au/dme_sftp/cope_au/pickup_ext/dhl_au/",
-        "local_filepath_dup": "/home/cope_au/dme_sftp/cope_au/pickup_ext/dhl_au/archive/",
+        "local_filepath_archive": "/home/cope_au/dme_sftp/cope_au/pickup_ext/dhl_au/archive/",
     },
 ]
 
@@ -63,7 +63,7 @@ def upload_sftp(
     password,
     sftp_filepath,
     local_filepath,
-    local_filepath_dup,
+    local_filepath_archive,
     filename,
 ):
     cnopts = pysftp.CnOpts()
@@ -79,9 +79,19 @@ def upload_sftp(
             local_file_size = os.stat(local_filepath + filename).st_size
 
             if sftp_file_size == local_file_size:
-                if not os.path.exists(local_filepath_dup):
-                    os.makedirs(local_filepath_dup)
-                shutil.move(local_filepath + filename, local_filepath_dup + filename)
+                print("@104 - Uploaded successfully!")
+                filename_archive = filename
+
+                if filename.endswith(".csv_"):
+                    print("@105 - Renamed successfully!")
+                    filename_archive = filename_archive[:-1]
+                    sftp_con.rename(filename, filename_archive)
+
+                if not os.path.exists(local_filepath_archive):
+                    os.makedirs(local_filepath_archive)
+                shutil.move(
+                    local_filepath + filename, local_filepath_archive + filename_archive
+                )
                 print("@109 Moved csv file:", filename)
 
         sftp_con.close()
@@ -130,7 +140,9 @@ if __name__ == "__main__":
                     for fname in os.listdir(sftp_server_info["local_filepath"]):
                         fpath = os.path.join(sftp_server_info["local_filepath"], fname)
 
-                        if os.path.isfile(fpath) and fname.endswith(".csv"):
+                        if os.path.isfile(fpath) and (
+                            fname.endswith(".csv") or fname.endswith(".csv_")
+                        ):
                             print("@100 Detect csv file:", fpath)
                             upload_sftp(
                                 sftp_server_info["host"],
@@ -138,7 +150,7 @@ if __name__ == "__main__":
                                 sftp_server_info["password"],
                                 sftp_server_info["sftp_filepath"],
                                 sftp_server_info["local_filepath"],
-                                sftp_server_info["local_filepath_dup"],
+                                sftp_server_info["local_filepath_archive"],
                                 fname,
                             )
     except OSError as e:
