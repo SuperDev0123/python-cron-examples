@@ -1,14 +1,12 @@
 # Python 3.6.6
 
-import sys, time
-import os
-import errno
+import sys, time, os
 import datetime
+from datetime import timedelta
 import uuid
-import urllib, requests
-import json
+import urllib, requests, json
 import pymysql, pymysql.cursors
-import base64
+import base64, pytz
 
 production = True  # Dev
 # production = False # Local
@@ -26,6 +24,20 @@ else:
     DB_PASS = "root"
     DB_PORT = 3306
     DB_NAME = "deliver_me"
+
+BIOPAK_AUTH_TOKEN = "edZIsxP0vEnC3jcNYfPvIg=="
+
+
+def get_sydney_now_time(return_type="char"):
+    sydney_tz = pytz.timezone("Australia/Sydney")
+    sydney_now = sydney_tz.localize(datetime.datetime.utcnow())
+    sydney_now = sydney_now + timedelta(hours=10)
+
+    if return_type == "char":
+        return sydney_now.strftime("%Y-%m-%d %H:%M:%S")
+    elif return_type == "datetime":
+        return sydney_now
+
 
 if __name__ == "__main__":
     print("#900 - Running %s" % datetime.datetime.now())
@@ -59,7 +71,6 @@ if __name__ == "__main__":
             time.sleep(180)
 
         print("num : ", booking["pk_booking_id"])
-        time.sleep(1)
         url = "http://52.62.102.72:8081/dme-api/tracking/trackconsignment"
         data = {}
         data["consignmentDetails"] = [
@@ -133,6 +144,39 @@ if __name__ == "__main__":
                             ),
                         )
                         mysqlcon.commit()
+
+                        # Fetch option flag
+                        sql = "SELECT `option_value` \
+                            FROM dme_options \
+                            WHERE option_name = %s"
+                        cursor.execute(sql, ("status_update_for_biopak"))
+                        result = cursor.fetchone()
+                        print(result["option_value"])
+                        if result["option_value"] == "1":
+                            params = {
+                                "consignment_number": booking["v_FPBookingNumber"],
+                                "b_status_API": new_status,
+                                "event_date": get_sydney_now_time(),
+                                "b_clientReference_RA_Numbers": booking[
+                                    "b_clientReference_RA_Numbers"
+                                ],
+                            }
+                            headers = {
+                                "content-type": "application/json",
+                                "API-TOKEN": BIOPAK_AUTH_TOKEN,
+                            }
+                            print("Update status for BIOPAK: ", params)
+                            response1 = requests.get(
+                                "https://apim.workato.com/biopak/get_booking_status_dme",
+                                headers=headers,
+                                params=params,
+                            )
+                            response1 = response1.content.decode("utf8")
+                            data1 = json.loads(response1)
+                            s1 = json.dumps(
+                                data1, indent=4, sort_keys=True
+                            )  # Just for visual
+                            print("result: ", s1)
 
                 # total_Cubic_Meter_override = data0['consignmentTrackDetails'][0]['totalVolume']
                 # total_1_KG_weight_override = data0['consignmentTrackDetails'][0]['totalWeight']
