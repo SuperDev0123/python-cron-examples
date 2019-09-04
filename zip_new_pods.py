@@ -9,8 +9,8 @@ import datetime
 import zipfile
 import pymysql, pymysql.cursors
 
-production = True  # Dev
-# production = False  # Local
+# production = True  # Dev
+production = False  # Local
 
 if production:
     DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
@@ -71,6 +71,25 @@ def update_download_status(bookings, mysqlcon):
                 mysqlcon.commit()
 
 
+def create_report(bookings, zip_url, mysqlcon):
+    with mysqlcon.cursor() as cursor:
+        sql = "INSERT INTO `dme_reports` \
+                (`user_id`, `name`, `type`, `url`, `z_createdByAccount`, `z_createdTimeStamp`) \
+                VALUES (%s, %s, %s, %s, %s, %s)"
+        cursor.execute(
+            sql,
+            (
+                4,  # DME User ID
+                zip_url.split("/")[-1],
+                "Daily new POD zip",
+                zip_url,
+                "dme",
+                datetime.datetime.now(),
+            ),
+        )
+        mysqlcon.commit()
+
+
 def zip_new_pods(mysqlcon):
     bookings = get_available_bookings(mysqlcon)
 
@@ -101,8 +120,8 @@ def zip_new_pods(mysqlcon):
             + "__"
             + str(len(file_paths))
         )
-        zip_filename = f"{zip_subdir}.zip"
-        zf = zipfile.ZipFile(zip_filename, "w")
+        zip_url = f"{zip_subdir}.zip"
+        zf = zipfile.ZipFile(zip_url, "w")
 
         for index, file_path in enumerate(file_paths):
             zip_path = os.path.join(zip_subdir, file_path)
@@ -111,6 +130,7 @@ def zip_new_pods(mysqlcon):
         zf.close()
 
         update_download_status(bookings, mysqlcon)
+        create_report(bookings, zip_url, mysqlcon)
 
 
 if __name__ == "__main__":
