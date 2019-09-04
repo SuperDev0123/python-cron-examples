@@ -123,6 +123,9 @@ if __name__ == "__main__":
                 new_status = data0["consignmentTrackDetails"][0]["consignmentStatuses"][
                     0
                 ]["status"]
+                event_time_stamp = data0["consignmentTrackDetails"][0][
+                    "consignmentStops"
+                ][0]["transitDate"]
                 print("status is fine.")
                 if booking["b_status_API"] != new_status:
                     with mysqlcon.cursor() as cursor:
@@ -140,7 +143,7 @@ if __name__ == "__main__":
                                 + str(new_status),
                                 new_status,
                                 datetime.datetime.now(),
-                                datetime.datetime.now(),
+                                event_time_stamp,
                             ),
                         )
                         mysqlcon.commit()
@@ -156,7 +159,7 @@ if __name__ == "__main__":
                             params = {
                                 "consignment_number": booking["v_FPBookingNumber"],
                                 "b_status_API": new_status,
-                                "event_date": get_sydney_now_time(),
+                                "event_date": event_time_stamp,
                                 "b_clientReference_RA_Numbers": booking[
                                     "b_clientReference_RA_Numbers"
                                 ],
@@ -167,16 +170,10 @@ if __name__ == "__main__":
                             }
                             print("Update status for BIOPAK: ", params)
                             response1 = requests.get(
-                                "https://apim.workato.com/biopak/get_booking_status_dme",
+                                "https://www.workato.com/webhooks/rest/22e2379b-377a-48f1-9ccd-8dc38a5d0289/receive_tracking_updates",
                                 headers=headers,
                                 params=params,
                             )
-                            response1 = response1.content.decode("utf8")
-                            data1 = json.loads(response1)
-                            s1 = json.dumps(
-                                data1, indent=4, sort_keys=True
-                            )  # Just for visual
-                            print("result: ", s1)
 
                 # total_Cubic_Meter_override = data0['consignmentTrackDetails'][0]['totalVolume']
                 # total_1_KG_weight_override = data0['consignmentTrackDetails'][0]['totalWeight']
