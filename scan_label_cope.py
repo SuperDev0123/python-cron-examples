@@ -54,7 +54,7 @@ def get_api_bcl(label_code, mysqlcon):
 
 def get_booking(dme_number, mysqlcon):
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT `id`, `pk_booking_id`, `e_qty_scanned_fp_total` \
+        sql = "SELECT `id`, `pk_booking_id`, `e_qty_scanned_fp_total`, `delivery_kpi_days` \
                 From `dme_bookings` \
                 WHERE `v_FPBookingNumber`=%s"
         cursor.execute(sql, (dme_number))
@@ -74,17 +74,25 @@ def get_booking_lines(pk_booking_id, mysqlcon):
         return booking_lines
 
 
-def update_tally(api_bcl, mysqlcon):
+def update_tally(api_bcl, booking, mysqlcon):
     with mysqlcon.cursor() as cursor:
         tally = api_bcl["tally"]
 
         if not tally:
             tally = 0
             sql = "UPDATE `dme_bookings` \
-                SET z_first_scan_label_date=%s \
+                SET z_first_scan_label_date=%s, z_calculated_ETA=%s \
                 WHERE `pk_booking_id`=%s"
             cursor.execute(
-                sql, (datetime.datetime.now().date(), api_bcl["fk_booking_id"])
+                sql,
+                (
+                    datetime.datetime.now().date(),
+                    (
+                        datetime.datetime.now()
+                        + datetime.timedelta(days=int(booking["delivery_kpi_days"]))
+                    ).date(),
+                    api_bcl["fk_booking_id"],
+                ),
             )
             mysqlcon.commit()
 
@@ -95,17 +103,27 @@ def update_tally(api_bcl, mysqlcon):
         mysqlcon.commit()
 
 
-def update_api_bcl(api_bcl, fp_event_date, fp_event_time, fp_scan_data, mysqlcon):
+def update_api_bcl(
+    api_bcl, fp_event_date, fp_event_time, fp_scan_data, booking, mysqlcon
+):
     with mysqlcon.cursor() as cursor:
         tally = api_bcl["tally"]
 
         if not tally:
             tally = 0
             sql = "UPDATE `dme_bookings` \
-                SET z_first_scan_label_date=%s \
+                SET z_first_scan_label_date=%s, z_calculated_ETA=%s \
                 WHERE `pk_booking_id`=%s"
             cursor.execute(
-                sql, (datetime.datetime.now().date(), api_bcl["fk_booking_id"])
+                sql,
+                (
+                    datetime.datetime.now().date(),
+                    (
+                        datetime.datetime.now()
+                        + datetime.timedelta(days=int(booking["delivery_kpi_days"]))
+                    ).date(),
+                    api_bcl["fk_booking_id"],
+                ),
             )
             mysqlcon.commit()
 
@@ -196,7 +214,7 @@ def do_calc_scanned(dme_number, dme_number_lines, mysqlcon):
 
             if int(booking_line["pk_lines_id"]) == int(api_bcl["fk_booking_line_id"]):
                 if label_code in scanned_label_codes:
-                    update_tally(api_bcl, mysqlcon)
+                    update_tally(api_bcl, booking, mysqlcon)
                 else:
                     scanned_label_codes.append(label_code)
                     update_api_bcl(
@@ -204,6 +222,7 @@ def do_calc_scanned(dme_number, dme_number_lines, mysqlcon):
                         dme_number_line["date"],
                         dme_number_line["time"],
                         dme_number_line["scanned_by"],
+                        booking,
                         mysqlcon,
                     )
 
