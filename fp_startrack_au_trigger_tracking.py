@@ -27,6 +27,19 @@ else:
 
 BIOPAK_AUTH_TOKEN = "edZIsxP0vEnC3jcNYfPvIg=="
 
+# DME_LEVEL_API_URL = "http://localhost:3000"  # Local
+# DME_LEVEL_API_URL = "http://52.62.109.115:3000" # Dev
+DME_LEVEL_API_URL = "http://52.62.102.72:3000"  # Prod
+
+FK_CLIENT_WAREHOUSE_IDS_AND_ACCOUNT_NUMBERS = [
+    {"warehouse_id": 16, "account_number": "10149943"},
+    {"warehouse_id": 7, "account_number": "10145597"},
+    {"warehouse_id": 6, "account_number": "10149944"},
+    {"warehouse_id": 5, "account_number": "10145596"},
+    {"warehouse_id": 4, "account_number": "10145593"},
+    {"warehouse_id": 3, "account_number": "10145902"},
+]
+
 
 def get_sydney_now_time(return_type="char"):
     sydney_tz = pytz.timezone("Australia/Sydney")
@@ -37,6 +50,187 @@ def get_sydney_now_time(return_type="char"):
         return sydney_now.strftime("%Y-%m-%d %H:%M:%S")
     elif return_type == "datetime":
         return sydney_now
+
+
+def _update_booking_with_error(consignmentNumber, error_message, mysqlcon):
+    # with mysqlcon.cursor() as cursor:
+    #     cursor.execute(
+    #         "UPDATE `dme_bookings` \
+    #         SET `b_error_Capture` = %s \
+    #         WHERE `v_FPBookingNumber` = %s",
+    #         (error_message, consignmentNumber),
+    #     )
+    #     mysqlcon.commit()
+    print("@402 - Set b_error_Capture: ", consignmentNumber, error_message)
+
+
+def get_booking_with_v_FPBookingNumber(v_FPBookingNumber, mysqlcon):
+    with mysqlcon.cursor() as cursor:
+        sql = "SELECT `id`, `kf_FP_ID`, `pk_booking_id`, `b_status_API`, `v_FPBookingNumber`, `b_clientReference_RA_Numbers` \
+                FROM `dme_bookings` \
+                WHERE `v_FPBookingNumber`=%s"
+        cursor.execute(sql, (v_FPBookingNumber))
+        result = cursor.fetchone()
+        # print('@102 - ', result)
+        return result
+
+
+def _update_booking_and_BIOPAK(trackDetail, mysqlcon, payload, url):
+    booking = get_booking_with_v_FPBookingNumber(
+        trackDetail["consignmentNumber"], mysqlcon
+    )
+
+    with mysqlcon.cursor() as cursor:
+        try:
+            # Save log
+            request_payload = {
+                "apiUrl": url,
+                "accountCode": payload["spAccountDetails"]["accountCode"],
+                "authKey": payload["spAccountDetails"]["accountKey"],
+                "trackingId": payload["consignmentDetails"][0]["consignmentNumber"],
+            }
+            request_type = "TRACKING"
+            request_status = "SUCCESS"
+
+            temp = ""
+            if booking["kf_FP_ID"]:
+                temp = booking["kf_FP_ID"]
+            sql = "INSERT INTO `dme_log` \
+                (`request_payload`, `request_status`, `request_type`, `response`, `fk_booking_id`,`fk_service_provider_id`) \
+                VALUES (%s, %s, %s, %s, %s,%s)"
+            cursor.execute(
+                sql, ("", request_status, request_type, response0, booking["id"], temp)
+            )
+            mysqlcon.commit()
+
+            # Update booking and BIOPAK
+            try:
+                new_status = trackDetail["consignmentStatuses"][0]["status"]
+                try:
+                    event_time_stamp = trackDetail["consignmentStops"][0]["transitDate"]
+                except IndexError:
+                    event_time_stamp = None
+
+                print(
+                    "@601 - ",
+                    "Old Status:",
+                    booking["b_status_API"],
+                    "New Status:",
+                    new_status,
+                )
+
+                if booking["b_status_API"] != new_status:
+                    # Create dme_status_history
+                    sql = "INSERT INTO `dme_status_history` \
+                        (`fk_booking_id`, `status_old`, `notes`, `status_last`, `z_createdTimeStamp`,`event_time_stamp`) \
+                        VALUES (%s, %s, %s, %s, %s, %s)"
+                    cursor.execute(
+                        sql,
+                        (
+                            booking["pk_booking_id"],
+                            booking["b_status_API"],
+                            str(booking["b_status_API"]) + " ---> " + str(new_status),
+                            new_status,
+                            datetime.datetime.now(),
+                            event_time_stamp,
+                        ),
+                    )
+                    mysqlcon.commit()
+
+                    # Fetch option flag
+                    sql = "SELECT `option_value` \
+                        FROM dme_options \
+                        WHERE option_name = %s"
+                    cursor.execute(sql, ("status_update_for_biopak"))
+                    result = cursor.fetchone()
+
+                    # Update BIOPAK
+                    if result["option_value"] == "1":
+                        try:
+                            params = {
+                                "consignment_number": booking["v_FPBookingNumber"],
+                                "b_status_API": new_status,
+                                "event_date": event_time_stamp,
+                                "b_clientReference_RA_Numbers": booking[
+                                    "b_clientReference_RA_Numbers"
+                                ],
+                            }
+                            headers = {
+                                "content-type": "application/json",
+                                "API-TOKEN": BIOPAK_AUTH_TOKEN,
+                            }
+                            print("@602 - ", "Update BIOPAK: ", params)
+                            response1 = requests.get(
+                                "https://www.workato.com/webhooks/rest/22e2379b-377a-48f1-9ccd-8dc38a5d0289/receive_tracking_updates",
+                                headers=headers,
+                                params=params,
+                            )
+                        except requests.exceptions.ConnectionError:
+                            print("@405 - WORKATO(BIOPAK api) connection problem")
+
+                # Update dme_bookings
+                sql = "UPDATE `dme_bookings` \
+                    SET b_status_API=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
+                    WHERE id =%s"
+                cursor.execute(
+                    sql, (new_status, datetime.datetime.now(), booking["id"])
+                )
+                mysqlcon.commit()
+
+                print("success : ", booking["id"])
+            except IndexError as e:
+                print("@608 - error : ", booking["id"], e)
+
+            # Disable tracking if `delivered in full`
+            if (
+                booking["b_status_API"]
+                and booking["b_status_API"].lower() == "delivered in full"
+            ) or new_status.lower() == "delivered in full":
+                sql = "UPDATE `dme_bookings` \
+                    SET z_api_issue_update_flag_500=%s \
+                    WHERE id =%s"
+                cursor.execute(sql, ("0", booking["id"]))
+                mysqlcon.commit()
+        except KeyError as e:
+            print("@609 - error : ", e)
+
+
+def do_process(data, mysqlcon, bookings, index, payload, url):
+    if not data:
+        # for i in range(index * 10, (index + 1) * 10):
+        #     _update_booking_with_error(
+        #         bookings[i]["v_FPBookingNumber"], "INVALID_TRACKING_ID", mysqlcon
+        #     )
+        return
+    try:
+        if data[0]["error_code"] == "API_002":  # Too many requests
+            print("@300 - Sleep: 1 minutes")
+            time.sleep(60)
+            return
+    except KeyError:
+        try:
+            for trackDetail in data["consignmentTrackDetails"]:
+                try:
+                    if trackDetail["code"] == "ESB-10001":  # Invalid tracking ID
+                        _update_booking_with_error(
+                            trackDetail["consignmentNumber"],
+                            trackDetail["message"],
+                            mysqlcon,
+                        )
+                    else:
+                        print("@301 - ", trackDetail)
+                except KeyError:
+                    print(
+                        "@302 - ",
+                        trackDetail["consignmentNumber"],
+                        ":",
+                        trackDetail["consignmentStatuses"][0]["status"],
+                    )
+                    _update_booking_and_BIOPAK(trackDetail, mysqlcon, payload, url)
+        except TypeError:
+            print("@401 - ", data)
+        except KeyError:
+            print("@402 - ", data)
 
 
 if __name__ == "__main__":
@@ -56,252 +250,48 @@ if __name__ == "__main__":
         print("Mysql DB connection error!")
         exit(1)
 
-    with mysqlcon.cursor() as cursor:
-        sql = "SELECT * FROM `dme_bookings` \
-            WHERE LOWER(`vx_freight_provider`)=%s and `b_status`=%s and `z_api_issue_update_flag_500`=%s"
-        cursor.execute(sql, ("startrack", "Booked", "1"))
-        booking_list = cursor.fetchall()
+    for wian in FK_CLIENT_WAREHOUSE_IDS_AND_ACCOUNT_NUMBERS:
+        with mysqlcon.cursor() as cursor:
+            sql = "SELECT * FROM `dme_bookings` \
+                WHERE LOWER(`vx_freight_provider`)=%s and `b_status`=%s and `z_api_issue_update_flag_500`=%s \
+                        and (b_error_Capture IS NULL or b_error_Capture = %s) \
+                        and fk_client_warehouse_id = %s "
+            cursor.execute(sql, ("startrack", "Booked", "1", "", wian["warehouse_id"]))
+            booking_list = cursor.fetchall()
+            print("@100 Bookings cnt - ", len(booking_list))
 
-    print("@1 Bookings cnt - ", len(booking_list))
-    results = []
-
-    for index, booking in enumerate(booking_list):
-
-        if index > 0 and index % 10 == 0:
-            time.sleep(180)
-
-        print("num : ", booking["pk_booking_id"])
-        url = "http://52.62.102.72:8081/dme-api/tracking/trackconsignment"
-        data = {}
-        data["consignmentDetails"] = [
-            {"consignmentNumber": booking["v_FPBookingNumber"]}
-        ]
-        data["spAccountDetails"] = {
-            "accountCode": "10149943",
-            "accountState": "NSW",
-            "accountPassword": "x81775935aece65541c9",
-            "accountKey": "d36fca86-53da-4db8-9a7d-3029975aa134",
-        }
-        data["serviceProvider"] = "ST"
-
-        response0 = requests.post(url, params={}, json=data)
-        response0 = response0.content.decode("utf8")
-        data0 = json.loads(response0)
-        s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
-
-        if "errorCode" in data0:
-            print(s0)
-
-        try:
-            request_payload = {
-                "apiUrl": "",
-                "accountCode": "",
-                "authKey": "",
-                "trackingId": "",
-            }
-            request_payload["apiUrl"] = url
-            request_payload["accountCode"] = data["spAccountDetails"]["accountCode"]
-            request_payload["authKey"] = data["spAccountDetails"]["accountKey"]
-            request_payload["trackingId"] = data["consignmentDetails"][0][
-                "consignmentNumber"
-            ]
-            request_type = "TRACKING"
-            request_status = "SUCCESS"
-
-            with mysqlcon.cursor() as cursor:
-                temp = ""
-                if booking["kf_FP_ID"]:
-                    temp = booking["kf_FP_ID"]
-                sql = "INSERT INTO `dme_log` (`request_payload`, `request_status`, `request_type`, `response`, `fk_booking_id`,`fk_service_provider_id`) VALUES (%s, %s, %s, %s, %s,%s)"
-                cursor.execute(
-                    sql,
-                    ("", request_status, request_type, response0, booking["id"], temp),
+        for index in range(int(len(booking_list) / 10)):  # Batch - 10
+            # for index in range(int(len(booking_list))):
+            url = DME_LEVEL_API_URL + "/tracking/trackconsignment"
+            payload = {}
+            consignmentDetails = []
+            for i in range(index * 10, (index + 1) * 10):  # Batch - 10
+                consignmentDetails.append(
+                    {"consignmentNumber": booking_list[i]["v_FPBookingNumber"]}
                 )
-                mysqlcon.commit()
+            # consignmentDetails.append(
+            #     {"consignmentNumber": booking_list[index]["v_FPBookingNumber"]}
+            # )
+
+            payload["consignmentDetails"] = consignmentDetails
+            payload["spAccountDetails"] = {
+                "accountCode": wian["account_number"],
+                "accountPassword": "x81775935aece65541c9",
+                "accountKey": "d36fca86-53da-4db8-9a7d-3029975aa134",
+            }
+            payload["serviceProvider"] = "ST"
 
             try:
-                new_status = data0["consignmentTrackDetails"][0]["consignmentStatuses"][
-                    0
-                ]["status"]
-                event_time_stamp = data0["consignmentTrackDetails"][0][
-                    "consignmentStops"
-                ][0]["transitDate"]
-                print("status is fine.")
-                if booking["b_status_API"] != new_status:
-                    with mysqlcon.cursor() as cursor:
-                        sql = (
-                            "INSERT INTO `dme_status_history` (`fk_booking_id`, `status_old`, `notes`, `status_last`,"
-                            " `z_createdTimeStamp`,`event_time_stamp`) VALUES (%s, %s, %s, %s, %s, %s)"
-                        )
-                        cursor.execute(
-                            sql,
-                            (
-                                booking["pk_booking_id"],
-                                booking["b_status_API"],
-                                str(booking["b_status_API"])
-                                + " ---> "
-                                + str(new_status),
-                                new_status,
-                                datetime.datetime.now(),
-                                event_time_stamp,
-                            ),
-                        )
-                        mysqlcon.commit()
+                print("@101 Payload:", payload)
+                response0 = requests.post(url, params={}, json=payload)
+                response0 = response0.content.decode("utf8")
+                data0 = json.loads(response0)
+                # s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
+                # print("@102 Response:", s0)
+            except requests.exceptions.ConnectionError:
+                print("@407 - ST api connection problem")
 
-                        # Fetch option flag
-                        sql = "SELECT `option_value` \
-                            FROM dme_options \
-                            WHERE option_name = %s"
-                        cursor.execute(sql, ("status_update_for_biopak"))
-                        result = cursor.fetchone()
-                        print(result["option_value"])
-                        if result["option_value"] == "1":
-                            params = {
-                                "consignment_number": booking["v_FPBookingNumber"],
-                                "b_status_API": new_status,
-                                "event_date": event_time_stamp,
-                                "b_clientReference_RA_Numbers": booking[
-                                    "b_clientReference_RA_Numbers"
-                                ],
-                            }
-                            headers = {
-                                "content-type": "application/json",
-                                "API-TOKEN": BIOPAK_AUTH_TOKEN,
-                            }
-                            print("Update status for BIOPAK: ", params)
-                            response1 = requests.get(
-                                "https://www.workato.com/webhooks/rest/22e2379b-377a-48f1-9ccd-8dc38a5d0289/receive_tracking_updates",
-                                headers=headers,
-                                params=params,
-                            )
+            do_process(data0, mysqlcon, booking_list, index, payload, url)
 
-                # total_Cubic_Meter_override = data0['consignmentTrackDetails'][0]['totalVolume']
-                # total_1_KG_weight_override = data0['consignmentTrackDetails'][0]['totalWeight']
-                # total_lines_qty_override = data0['consignmentTrackDetails'][0]['totalItems']
-                with mysqlcon.cursor() as cursor:
-                    sql = (
-                        "Update `dme_bookings` set b_status_API=%s,z_lastStatusAPI_ProcessedTimeStamp=%s"
-                        " where id =%s"
-                    )
-                    cursor.execute(
-                        sql, (new_status, datetime.datetime.now(), booking["id"])
-                    )
-                    mysqlcon.commit()
-
-                if new_status.lower() == "delivered in full":
-                    with mysqlcon.cursor() as cursor:
-                        # sql = (
-                        #     "Update `dme_bookings` set z_api_issue_update_flag_500=%s,"
-                        #     "s_21_Actual_Delivery_TimeStamp=%s where id =%s"
-                        # )
-                        # cursor.execute(
-                        #     sql,
-                        #     (
-                        #         "0",
-                        #         data0["consignmentTrackDetails"][0][
-                        #             "scheduledDeliveryDate"
-                        #         ],
-                        #         booking["id"],
-                        #     ),
-                        # )
-                        sql = "Update `dme_bookings` \
-                            SET z_api_issue_update_flag_500=%s \
-                            WHERE id =%s"
-                        cursor.execute(sql, ("0", booking["id"]))
-                        mysqlcon.commit()
-
-                # with mysqlcon.cursor() as cursor:
-                #     sql = "SELECT * FROM `dme_client_warehouses` where pk_id_client_warehouses=%s"
-                #     cursor.execute(sql, (booking["fk_client_warehouse_id"]))
-                #     warehouse = cursor.fetchall()
-                # try:
-                #     print("now pod.")
-                #
-                #     pod_file = data0['consignmentTrackDetails'][0]["pods"][0]['podData']
-                #     print("pod is fine.")
-                #
-                #     warehouse_name = ''
-                #     if warehouse:
-                #         warehouse_name = warehouse[0]['client_warehouse_code']
-                #     file_name = "POD_" + \
-                #                 str(warehouse_name) + "_" + \
-                #                 booking['b_clientReference_RA_Numbers'] + "_" + \
-                #                 booking['v_FPBookingNumber'] + "_" + \
-                #                 str(booking['b_bookingID_Visual']) + '.png'
-                #     file_url = '/var/www/html/dme_api/static/imgs/' + file_name
-                #
-                #     with open(os.path.expanduser(file_url), 'wb') as fout:
-                #         fout.write(
-                #             base64.decodestring(pod_file.encode('utf-8')))
-                #
-                #     with mysqlcon.cursor() as cursor:
-                #         sql = "Update `dme_bookings` set z_pod_url=%s where id =%s"
-                #         cursor.execute(sql, (file_name, booking['id']))
-                #         mysqlcon.commit()
-                # except IndexError:
-                #     print("POD : ", ' empty')
-
-                ## POD
-                # try:
-                #     print("now sign.")
-                #     pod_file = data0["consignmentTrackDetails"][0][
-                #         "consignmentStatuses"
-                #     ][0]["signatureImage"]
-                #     print("sign is fine.")
-                #     warehouse_name = ""
-                #     if warehouse:
-                #         warehouse_name = warehouse[0]["client_warehouse_code"]
-                #     file_name = (
-                #         "pod_signed_"
-                #         + str(warehouse_name)
-                #         + "_"
-                #         + booking["b_clientReference_RA_Numbers"]
-                #         + "_"
-                #         + booking["v_FPBookingNumber"]
-                #         + "_"
-                #         + str(booking["b_bookingID_Visual"])
-                #         + ".png"
-                #     )
-                #     file_url = "/opt/s3_public/imgs/" + file_name
-
-                #     with open(os.path.expanduser(file_url), "wb") as fout:
-                #         fout.write(base64.decodestring(pod_file.encode("utf-8")))
-
-                #     with mysqlcon.cursor() as cursor:
-                #         sql = (
-                #             "Update `dme_bookings` set z_pod_signed_url=%s where id =%s"
-                #         )
-                #         cursor.execute(sql, (file_name, booking["id"]))
-                #         mysqlcon.commit()
-                # except IndexError:
-                #     print("sign : ", " empty")
-
-                ## SCAN
-                # try:
-                #     with mysqlcon.cursor() as cursor:
-                #         sql = "Update `dme_bookings` set vx_fp_pu_eta_time=%s, vx_fp_del_eta_time=%s, z_lastStatusAPI_ProcessedTimeStamp=%s where id =%s"
-                #         cursor.execute(
-                #             sql,
-                #             (
-                #                 data0["consignmentTrackDetails"][0][
-                #                     "scheduledPickupDate"
-                #                 ],
-                #                 data0["consignmentTrackDetails"][0][
-                #                     "scheduledDeliveryDate"
-                #                 ],
-                #                 data0["consignmentTrackDetails"][0]["scannings"][0][
-                #                     "scanDate"
-                #                 ],
-                #                 booking["id"],
-                #             ),
-                #         )
-                #         mysqlcon.commit()
-                # except IndexError:
-                #     print("Delivery Date ", " no")
-
-                print("success : ", booking["id"])
-            except IndexError as e:
-                print("error : ", booking["id"])
-                print("error : ", e)
-        except KeyError as e:
-            print("error : ", e)
+            time.sleep(30)
+    print("#999 - Finished %s" % datetime.datetime.now())
