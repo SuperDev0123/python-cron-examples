@@ -204,7 +204,7 @@ def do_process(data, mysqlcon, bookings, index, payload, url):
         return
     try:
         if data[0]["error_code"] == "API_002":  # Too many requests
-            print("@300 - Sleep: 1 minutes")
+            print("@300 - Sleep: 1 minutes (%s)" % datetime.datetime.now())
             time.sleep(60)
             return
     except KeyError:
