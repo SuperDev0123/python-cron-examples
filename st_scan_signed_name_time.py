@@ -118,12 +118,13 @@ def download_sftp(
                 lstatout = str(sftp_con.lstat(file)).split()[0]
 
                 if "d" not in lstatout:  # If file
+                    print("@104 - downloading: ", file)
                     sftp_con.get(sftp_filepath + file, local_filepath + file)
                     sftp_file_size = sftp_con.lstat(sftp_filepath + file).st_size
                     local_file_size = os.stat(local_filepath + file).st_size
 
                     if sftp_file_size == local_file_size:  # Check file size
-                        print("@104 - Download success: " + file)
+                        print("@105 - Download success: " + file)
                         sftp_con.remove(sftp_filepath + file)  # Delete file from remote
 
         sftp_con.close()
@@ -204,20 +205,20 @@ def csv_write(fpath, f, mysqlcon):
                         type_flag,
                     )
 
-                    # sql = "UPDATE `dme_bookings` \
-                    #     SET b_del_to_signed_name=%s, b_del_to_signed_time=%s, z_ModifiedTimestamp=%s, b_status_API=%s \
-                    #     WHERE `v_FPBookingNumber`=%s"
-                    # cursor.execute(
-                    #     sql,
-                    #     (
-                    #         b_del_to_signed_name,
-                    #         b_del_to_signed_time,
-                    #         datetime.datetime.now(),
-                    #         type_flag_transit_state[type_flag],
-                    #         consignment_number,
-                    #     ),
-                    # )
-                    # mysqlcon.commit()
+                    sql = "UPDATE `dme_bookings` \
+                        SET b_del_to_signed_name=%s, b_del_to_signed_time=%s, z_ModifiedTimestamp=%s, b_status_API=%s \
+                        WHERE `v_FPBookingNumber`=%s"
+                    cursor.execute(
+                        sql,
+                        (
+                            b_del_to_signed_name,
+                            b_del_to_signed_time,
+                            datetime.datetime.now(),
+                            type_flag_transit_state[type_flag],
+                            consignment_number,
+                        ),
+                    )
+                    mysqlcon.commit()
 
                     # Write Each Line
                     comma = ","
