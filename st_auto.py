@@ -14,8 +14,8 @@ if IS_PRODUCTION:
     DB_USER = "fmadmin"
     DB_PASS = "oU8pPQxh"
     DB_PORT = 3306
-    DB_NAME = "dme_db_dev"  # Dev
-    # DB_NAME = "dme_db_prod"  # Prod
+    # DB_NAME = "dme_db_dev"  # Dev
+    DB_NAME = "dme_db_prod"  # Prod
 else:
     DB_HOST = "localhost"
     DB_USER = "root"
@@ -45,7 +45,7 @@ def get_bookings(mysqlcon):
 
 
 def do_book(booking):
-    url = API_URL + "/st_book/"
+    url = API_URL + "/fp-api/startrack/book/"
     data = {}
     data["booking_id"] = booking["id"]
 
@@ -57,7 +57,7 @@ def do_book(booking):
 
 
 def do_create_and_get_label(booking):
-    url = API_URL + "/st_get_label/"
+    url = API_URL + "/fp-api/startrack/get-label/"
     data = {}
     data["bookingId"] = booking["id"]
 
