@@ -32,12 +32,28 @@ BIOPAK_AUTH_TOKEN = "edZIsxP0vEnC3jcNYfPvIg=="
 DME_LEVEL_API_URL = "http://52.62.102.72:3000"  # Prod
 
 FK_CLIENT_WAREHOUSE_IDS_AND_ACCOUNT_NUMBERS = [
-    {"warehouse_id": 16, "account_number": "10149943"},
-    {"warehouse_id": 7, "account_number": "10145597"},
-    {"warehouse_id": 6, "account_number": "10149944"},
-    {"warehouse_id": 5, "account_number": "10145596"},
-    {"warehouse_id": 4, "account_number": "10145593"},
-    {"warehouse_id": 3, "account_number": "10145902"},
+    {"warehouse_id": 16, "account_number": "10149943", "warehouse_name": "EasternC"},
+    {
+        "warehouse_id": 7,
+        "account_number": "10145597",
+        "warehouse_name": "Hazelmere (WA)",
+    },
+    {
+        "warehouse_id": 6,
+        "account_number": "10149944",
+        "warehouse_name": "Truganina (VIC)",
+    },
+    {"warehouse_id": 5, "account_number": "10145596", "warehouse_name": "Cavan (SA)"},
+    {
+        "warehouse_id": 4,
+        "account_number": "10145593",
+        "warehouse_name": "Rocklea (QLD)",
+    },
+    {
+        "warehouse_id": 3,
+        "account_number": "10145902",
+        "warehouse_name": "Bondi Junction",
+    },
 ]
 
 
@@ -66,7 +82,7 @@ def _update_booking_with_error(consignmentNumber, error_message, mysqlcon):
 
 def get_booking_with_v_FPBookingNumber(v_FPBookingNumber, mysqlcon):
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT `id`, `kf_FP_ID`, `pk_booking_id`, `b_status_API`, `v_FPBookingNumber`, `b_clientReference_RA_Numbers` \
+        sql = "SELECT `id`, `kf_FP_ID`, `b_bookingID_Visual`, `pk_booking_id`, `b_status_API`, `v_FPBookingNumber`, `b_clientReference_RA_Numbers` \
                 FROM `dme_bookings` \
                 WHERE `v_FPBookingNumber`=%s"
         cursor.execute(sql, (v_FPBookingNumber))
@@ -75,11 +91,7 @@ def get_booking_with_v_FPBookingNumber(v_FPBookingNumber, mysqlcon):
         return result
 
 
-def _update_booking_and_BIOPAK(trackDetail, mysqlcon, payload, url):
-    booking = get_booking_with_v_FPBookingNumber(
-        trackDetail["consignmentNumber"], mysqlcon
-    )
-
+def _update_booking_and_BIOPAK(trackDetail, mysqlcon, payload, url, booking):
     with mysqlcon.cursor() as cursor:
         try:
             # Save log
@@ -111,13 +123,16 @@ def _update_booking_and_BIOPAK(trackDetail, mysqlcon, payload, url):
                 except IndexError:
                     event_time_stamp = None
 
-                print(
-                    "@601 - ",
-                    "Old Status:",
-                    booking["b_status_API"],
-                    "New Status:",
-                    new_status,
-                )
+                if booking["b_status_API"] != new_status:
+                    print(
+                        "@601 - ",
+                        "Old Status:",
+                        booking["b_status_API"],
+                        "New Status:",
+                        new_status,
+                    )
+                else:
+                    print("@601 - SAME STATUS:", new_status)
 
                 if booking["b_status_API"] != new_status:
                     # Create dme_status_history
@@ -177,9 +192,9 @@ def _update_booking_and_BIOPAK(trackDetail, mysqlcon, payload, url):
                 )
                 mysqlcon.commit()
 
-                print("success : ", booking["id"])
+                print("@200 - SUCCESS: ", booking["b_bookingID_Visual"])
             except IndexError as e:
-                print("@608 - error : ", booking["id"], e)
+                print("@500 - error : ", booking["id"], e)
 
             # Disable tracking if `delivered in full`
             if (
@@ -209,7 +224,7 @@ def do_process(data, mysqlcon, bookings, index, payload, url):
             return
     except KeyError:
         try:
-            for trackDetail in data["consignmentTrackDetails"]:
+            for index, trackDetail in enumerate(data["consignmentTrackDetails"]):
                 try:
                     if trackDetail["code"] == "ESB-10001":  # Invalid tracking ID
                         _update_booking_with_error(
@@ -220,13 +235,18 @@ def do_process(data, mysqlcon, bookings, index, payload, url):
                     else:
                         print("@301 - ", trackDetail)
                 except KeyError:
+                    booking = get_booking_with_v_FPBookingNumber(
+                        trackDetail["consignmentNumber"], mysqlcon
+                    )
                     print(
                         "@302 - ",
-                        trackDetail["consignmentNumber"],
+                        booking["b_bookingID_Visual"],
                         ":",
-                        trackDetail["consignmentStatuses"][0]["status"],
+                        trackDetail["consignmentNumber"],
                     )
-                    _update_booking_and_BIOPAK(trackDetail, mysqlcon, payload, url)
+                    _update_booking_and_BIOPAK(
+                        trackDetail, mysqlcon, payload, url, booking
+                    )
         except TypeError:
             print("@401 - ", data)
         except KeyError:
@@ -252,26 +272,33 @@ if __name__ == "__main__":
 
     for wian in FK_CLIENT_WAREHOUSE_IDS_AND_ACCOUNT_NUMBERS:
         with mysqlcon.cursor() as cursor:
-            sql = "SELECT * FROM `dme_bookings` \
+            sql = "SELECT `id`, `b_bookingID_Visual`, `v_FPBookingNumber`, `b_status_API`, `kf_FP_ID` \
+                FROM `dme_bookings` \
                 WHERE LOWER(`vx_freight_provider`)=%s and `b_status`=%s and `z_api_issue_update_flag_500`=%s \
                         and (b_error_Capture IS NULL or b_error_Capture = %s) \
-                        and fk_client_warehouse_id = %s "
+                        and fk_client_warehouse_id = %s \
+                ORDER BY id DESC"
             cursor.execute(sql, ("startrack", "Booked", "1", "", wian["warehouse_id"]))
             booking_list = cursor.fetchall()
-            print("@100 Bookings cnt - ", len(booking_list))
+            print(
+                "@100 - Warehouse:",
+                wian["warehouse_name"],
+                "Bookings cnt: ",
+                len(booking_list),
+            )
 
-        for index in range(int(len(booking_list) / 10)):  # Batch - 10
-            # for index in range(int(len(booking_list))):
+        # for index in range(int(len(booking_list) / 10)):  # Batch - 10
+        for index in range(int(len(booking_list))):  # Single
             url = DME_LEVEL_API_URL + "/tracking/trackconsignment"
             payload = {}
             consignmentDetails = []
-            for i in range(index * 10, (index + 1) * 10):  # Batch - 10
-                consignmentDetails.append(
-                    {"consignmentNumber": booking_list[i]["v_FPBookingNumber"]}
-                )
-            # consignmentDetails.append(
-            #     {"consignmentNumber": booking_list[index]["v_FPBookingNumber"]}
-            # )
+            # for i in range(index * 10, (index + 1) * 10):  # Batch - 10
+            #     consignmentDetails.append(
+            #         {"consignmentNumber": booking_list[i]["v_FPBookingNumber"]}
+            #     )
+            consignmentDetails.append(  # Single
+                {"consignmentNumber": booking_list[index]["v_FPBookingNumber"]}
+            )
 
             payload["consignmentDetails"] = consignmentDetails
             payload["spAccountDetails"] = {
@@ -282,7 +309,7 @@ if __name__ == "__main__":
             payload["serviceProvider"] = "ST"
 
             try:
-                print("@101 Payload:", payload)
+                # print("@101 Payload:", payload)
                 response0 = requests.post(url, params={}, json=payload)
                 response0 = response0.content.decode("utf8")
                 data0 = json.loads(response0)
