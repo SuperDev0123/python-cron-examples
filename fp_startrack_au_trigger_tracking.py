@@ -186,9 +186,10 @@ def _update_booking_and_BIOPAK(trackDetail, mysqlcon, payload, url, booking):
                 # Update dme_bookings
                 sql = "UPDATE `dme_bookings` \
                     SET b_status_API=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
-                    WHERE id =%s"
+                    WHERE v_FPBookingNumber=%s"
                 cursor.execute(
-                    sql, (new_status, datetime.datetime.now(), booking["id"])
+                    sql,
+                    (new_status, datetime.datetime.now(), booking["v_FPBookingNumber"]),
                 )
                 mysqlcon.commit()
 
@@ -202,9 +203,11 @@ def _update_booking_and_BIOPAK(trackDetail, mysqlcon, payload, url, booking):
                 and booking["b_status_API"].lower() == "delivered in full"
             ) or new_status.lower() == "delivered in full":
                 sql = "UPDATE `dme_bookings` \
-                    SET z_api_issue_update_flag_500=%s \
-                    WHERE id =%s"
-                cursor.execute(sql, ("0", booking["id"]))
+                    SET b_status_API=%s, z_api_issue_update_flag_500=%s \
+                    WHERE v_FPBookingNumber=%s"
+                cursor.execute(
+                    sql, ("Delivered in Full", "0", booking["v_FPBookingNumber"])
+                )
                 mysqlcon.commit()
         except KeyError as e:
             print("@609 - error : ", e)
@@ -274,11 +277,11 @@ if __name__ == "__main__":
         with mysqlcon.cursor() as cursor:
             sql = "SELECT `id`, `b_bookingID_Visual`, `v_FPBookingNumber`, `b_status_API`, `kf_FP_ID` \
                 FROM `dme_bookings` \
-                WHERE LOWER(`vx_freight_provider`)=%s and `b_status`=%s and `z_api_issue_update_flag_500`=%s \
-                        and (b_error_Capture IS NULL or b_error_Capture = %s) \
-                        and fk_client_warehouse_id = %s \
+                WHERE LOWER(`vx_freight_provider`)=%s AND `b_status`=%s AND `z_api_issue_update_flag_500`=%s \
+                        AND (`b_error_Capture` IS NULL OR `b_error_Capture` = %s) \
+                        AND `fk_client_warehouse_id` = %s \
                 ORDER BY id DESC"
-            cursor.execute(sql, ("startrack", "Booked", "1", "", wian["warehouse_id"]))
+            cursor.execute(sql, ("startrack", "Booked", 1, "", wian["warehouse_id"]))
             booking_list = cursor.fetchall()
             print(
                 "@100 - Warehouse:",
@@ -287,19 +290,37 @@ if __name__ == "__main__":
                 len(booking_list),
             )
 
-        # for index in range(int(len(booking_list) / 10)):  # Batch - 10
-        for index in range(int(len(booking_list))):  # Single
-            url = DME_LEVEL_API_URL + "/tracking/trackconsignment"
-            payload = {}
-            consignmentDetails = []
-            # for i in range(index * 10, (index + 1) * 10):  # Batch - 10
-            #     consignmentDetails.append(
-            #         {"consignmentNumber": booking_list[i]["v_FPBookingNumber"]}
-            #     )
-            consignmentDetails.append(  # Single
-                {"consignmentNumber": booking_list[index]["v_FPBookingNumber"]}
+        for index in range(int(len(booking_list) / 10)):  # Batch - 10
+            print(
+                "@101 - ",
+                wian["warehouse_name"],
+                ":",
+                index * 10,
+                "/",
+                len(booking_list),
             )
+            # for index in range(int(len(booking_list))):  # Single
+            #     print(
+            #         "@102 - ",
+            #         wian["warehouse_name"],
+            #         ":",
+            #         index,
+            #         "/",
+            #         len(booking_list),
+            #         "-",
+            #         booking_list[index]["b_bookingID_Visual"],
+            #     )
 
+            consignmentDetails = []
+            for i in range(index * 10, (index + 1) * 10):  # Batch - 10
+                consignmentDetails.append(
+                    {"consignmentNumber": booking_list[i]["v_FPBookingNumber"]}
+                )
+            # consignmentDetails.append(  # Single
+            #     {"consignmentNumber": booking_list[index]["v_FPBookingNumber"]}
+            # )
+
+            payload = {}
             payload["consignmentDetails"] = consignmentDetails
             payload["spAccountDetails"] = {
                 "accountCode": wian["account_number"],
@@ -310,6 +331,7 @@ if __name__ == "__main__":
 
             try:
                 # print("@101 Payload:", payload)
+                url = DME_LEVEL_API_URL + "/tracking/trackconsignment"
                 response0 = requests.post(url, params={}, json=payload)
                 response0 = response0.content.decode("utf8")
                 data0 = json.loads(response0)
@@ -321,4 +343,5 @@ if __name__ == "__main__":
             do_process(data0, mysqlcon, booking_list, index, payload, url)
 
             time.sleep(30)
+
     print("#999 - Finished %s" % datetime.datetime.now())
