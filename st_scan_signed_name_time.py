@@ -235,7 +235,7 @@ def upload_sftp(
 
 def get_booking(consignment_number, mysqlcon):
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT `id`, `pk_booking_id`, `b_status_API` \
+        sql = "SELECT `id`, `b_bookingID_Visual`, `pk_booking_id`, `b_status`, `b_status_API` \
                 From `dme_bookings` \
                 WHERE `v_FPBookingNumber`=%s"
         cursor.execute(sql, (consignment_number))
@@ -255,12 +255,36 @@ def get_translations(mysqlcon):
         return translations
 
 
-def get_dme_status(translations, type_flag):
+def get_dme_status_from_flag(translations, type_flag):
     for translation in translations:
         if translation["fp_lookup_status"] == type_flag:
             return translation["dme_status"]
 
     return ""
+
+
+def create_status_history(booking, b_status, event_time_stamp, mysqlcon):
+    with mysqlcon.cursor() as cursor:
+        sql = "INSERT INTO `dme_status_history` \
+                (`fk_booking_id`, `status_old`, \
+                 `notes`, `status_last`, \
+                 `z_createdTimeStamp`, `event_time_stamp`, `recipient_name`, `status_update_via`, `b_booking_visualID`) \
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        cursor.execute(
+            sql,
+            (
+                booking["pk_booking_id"],
+                booking["b_status"],
+                str(booking["b_status"]) + " ---> " + str(b_status),
+                b_status,
+                datetime.datetime.now(),
+                event_time_stamp,
+                " ",
+                ".FTP file",
+                booking["b_bookingID_Visual"],
+            ),
+        )
+        mysqlcon.commit()
 
 
 def csv_write(fpath, f, mysqlcon):
@@ -281,7 +305,7 @@ def csv_write(fpath, f, mysqlcon):
                 type_flag = line.split(",")[3].strip()
                 transit_state = type_flag_transit_state[type_flag]["transit_state"]
                 detail = type_flag_transit_state[type_flag]["detail"]
-                dme_status = get_dme_status(translations, type_flag)
+                dme_status = get_dme_status_from_flag(translations, type_flag)
 
                 print(
                     "@200 - ",
@@ -305,11 +329,18 @@ def csv_write(fpath, f, mysqlcon):
                             b_del_to_signed_time,
                             datetime.datetime.now(),
                             transit_state,
-                            consignment_number,
                             dme_status,
+                            consignment_number,
                         ),
                     )
                     mysqlcon.commit()
+
+                    # If new status, create status_history
+                    if booking["b_status"] != dme_status:
+                        print("@201 - New Status!")
+                        create_status_history(
+                            booking, dme_status, datetime.datetime.now(), mysqlcon
+                        )
 
                 # Write Each Line
                 comma = ","
@@ -375,7 +406,7 @@ if __name__ == "__main__":
                 csv_write(fpath, f, mysqlcon)
                 f.close()
 
-                # Download .csv file
+                Download .csv file
                 upload_sftp(
                     sftp_server_infos["biopak"]["host"],
                     sftp_server_infos["biopak"]["username"],
