@@ -62,30 +62,93 @@ sftp_server_infos = {
 
 
 type_flag_transit_state = {
-    "B": "BOOK-IN. DELIVERY DUE",
-    "D": "DELIVERED",
-    "C": "DELIVERED BUT QC’D LATE OR UNSERVICABLE",
-    "H": "HELD. AWAITING INSTRUCTIONS FROM SENDER.",
-    "M": "# ITEMS ON BOARD FOR DELIVERY.",
-    "N": "SCANNED IN TRANSIT (NEW ZEALAND)",
-    "R": "RETURNED TO DELIVERY DEPOT.",
-    "S": "SHORTAGE. # ITEM MISSING AT DELIVERY DEPOT",
-    "X": "RECONSIGNED",
-    "Y": "RETURN TO SENDER",
-    "L": "LABELS IN TRANSIT",
-    "G": "REFUSED DELIVERY, PENDING FUTHER INSTRUCTIONS FROM",
-    "V": "REDELIVER",
-    "F": "FINAL SHORTAGE",
-    "P": "PICKED UP",
-    "T": "POD RETURNED TO DEPOT",
-    "Z": "CONSIGNMENT REGISTERED AS A BOOKIN",
-    "O": "POD FILED",
-    "I": "CONSIGNMENT NOTE SCANNED IN TRANSIT",
-    "Q": "TRUCK PROOF OF PICKUP (TRUCK OUT)",
-    "W": "TRANSFER TO ANOTHER DRIVER (BREAKDOWN, ACCIDENT, MANIFESTED IN ERROR)",
-    "1": "INCORRECT ADDRESS",
-    "2": "ATTEMPTED DELIVERY",
-    "3": "DELIVERED TO POSTOFFICE",
+    "B": {
+        "transit_state": "BOOK-IN. DELIVERY DUE",
+        "detail": "Consignment booked into the warehouse with a confirmed updated ETA Date",
+    },
+    "D": {
+        "transit_state": "DELIVERED",
+        "detail": "Consignment has been successfully delivered",
+    },
+    "C": {
+        "transit_state": "DELIVERED BUT QC’D LATE OR UNSERVICABLE",
+        "detail": "Consignment has been delivered but flagged as late or unserviceable",
+    },
+    "H": {
+        "transit_state": "HELD. AWAITING INSTRUCTIONS FROM SENDER.",
+        "detail": "Consignment has been held at the StarTrack Depot",
+    },
+    "M": {
+        "transit_state": "# ITEMS ON BOARD FOR DELIVERY.",
+        "detail": "Consignment is on-board for delivery with the StarTrack Driver",
+    },
+    "N": {"transit_state": "SCANNED IN TRANSIT (NEW ZEALAND)", "detail": ""},
+    "R": {
+        "transit_state": "RETURNED TO DELIVERY DEPOT.",
+        "detail": "Consignment has been Returned to the Delivery Depot - usually after an Attempted Delivery",
+    },
+    "S": {
+        "transit_state": "SHORTAGE. # ITEM MISSING AT DELIVERY DEPOT",
+        "detail": "Consignment has been delivered, however not all pieces were delivered",
+    },
+    "X": {"transit_state": "RECONSIGNED", "detail": "Consignment has been reconsigned"},
+    "Y": {
+        "transit_state": "RETURN TO SENDER",
+        "detail": "Consignment has been identified for Return To Sender",
+    },
+    "L": {
+        "transit_state": "LABELS IN TRANSIT",
+        "detail": "Items have been scanned at a StarTrack location - this may be at the origin or destination depot.",
+    },
+    "G": {
+        "transit_state": "REFUSED DELIVERY, PENDING FUTHER INSTRUCTIONS FROM",
+        "detail": "Receiver has refused delivery of the Consignment",
+    },
+    "V": {
+        "transit_state": "REDELIVER",
+        "detail": "Consignment has had a previous Delivery Attempt and a new delivery date has been confirmed with the receiver",
+    },
+    "F": {
+        "transit_state": "FINAL SHORTAGE",
+        "detail": "Consignment was not delivered in full and missing items have not been located - usually occurs approx. 5 days after delivery after all attempts have been made to locate missing items",
+    },
+    "P": {
+        "transit_state": "PICKED UP",
+        "detail": "Consignment has received a Pickup Scan at the Pickup Location",
+    },
+    "T": {"transit_state": "POD RETURNED TO DEPOT", "detail": ""},
+    "Z": {
+        "transit_state": "CONSIGNMENT REGISTERED AS A BOOKIN",
+        "detail": "Consignment booked into the warehouse without any changes to the ETA Date",
+    },
+    "O": {
+        "transit_state": "POD FILED",
+        "detail": "Confirmation a delivery has been completed, this may be the only record received in regional locations where no scanning equipment available",
+    },
+    "I": {
+        "transit_state": "CONSIGNMENT NOTE SCANNED IN TRANSIT",
+        "detail": "Consignment has been scanned at a StarTrack location - this may be at the origin or destination depot.",
+    },
+    "Q": {
+        "transit_state": "TRUCK PROOF OF PICKUP (TRUCK OUT)",
+        "detail": "Confirmation that StarTrack has taken custody of the consignment from the customer",
+    },
+    "W": {
+        "transit_state": "TRANSFER TO ANOTHER DRIVER (BREAKDOWN, ACCIDENT, MANIFESTED IN ERROR)",
+        "detail": "Consignment was transferred to another driver due to a break down, accident or a manifesting error",
+    },
+    "1": {
+        "transit_state": "INCORRECT ADDRESS",
+        "detail": "Consignment has been returned to the Delivery Depot as the delivery address is invalid",
+    },
+    "2": {
+        "transit_state": "ATTEMPTED DELIVERY",
+        "detail": "Consignment has been returned to the Delivery Depot as the receiver was not home or closed",
+    },
+    "3": {
+        "transit_state": "DELIVERED TO POSTOFFICE",
+        "detail": "Consignment has been delivered to a postoffice for collection by the receiver",
+    },
 }
 
 error_receiver_signature_fields = [
@@ -181,32 +244,59 @@ def get_booking(consignment_number, mysqlcon):
         return booking
 
 
+def get_translations(mysqlcon):
+    with mysqlcon.cursor() as cursor:
+        sql = "SELECT `id`, `dme_status`, `fp_original_status`, `fp_lookup_status` \
+            FROM `dme_utl_fp_statuses` \
+            WHERE `fp_name`=%s"
+        cursor.execute(sql, ("Startrack"))
+        translations = cursor.fetchall()
+
+        return translations
+
+
+def get_dme_status(translations, type_flag):
+    for translation in translations:
+        if translation["fp_lookup_status"] == type_flag:
+            return translation["dme_status"]
+
+    return ""
+
+
 def csv_write(fpath, f, mysqlcon):
     # Write Header
-    f.write("consignment_number, date_of_delivery, status, pod_name, reason")
+    f.write(
+        "consignment_number, date_of_event, fp_status_code, fp_status, fp_status_details, dme_status, pod_name, reason"
+    )
     with mysqlcon.cursor() as cursor:
+        translations = get_translations(mysqlcon)
+
         with open(fpath) as ftp_file:
             for line in ftp_file:
                 consignment_number = line.split(",")[0].strip()
+                b_del_to_signed_time = datetime.datetime.strptime(
+                    line.split(",")[1].strip(), "%Y%m%d%H%M"
+                )
+                b_del_to_signed_name = line.split(",")[2].strip()
+                type_flag = line.split(",")[3].strip()
+                transit_state = type_flag_transit_state[type_flag]["transit_state"]
+                detail = type_flag_transit_state[type_flag]["detail"]
+                dme_status = get_dme_status(translations, type_flag)
+
+                print(
+                    "@200 - ",
+                    consignment_number,
+                    b_del_to_signed_time,
+                    b_del_to_signed_name,
+                    type_flag,
+                    transit_state,
+                    dme_status,
+                )
+
                 booking = get_booking(consignment_number, mysqlcon)
-
                 if booking:
-                    b_del_to_signed_time = datetime.datetime.strptime(
-                        line.split(",")[1].strip(), "%Y%m%d%H%M"
-                    )
-                    b_del_to_signed_name = line.split(",")[2].strip()
-                    type_flag = line.split(",")[3].strip()
-
-                    print(
-                        "@200 - ",
-                        consignment_number,
-                        b_del_to_signed_time,
-                        b_del_to_signed_name,
-                        type_flag,
-                    )
-
                     sql = "UPDATE `dme_bookings` \
-                        SET b_del_to_signed_name=%s, b_del_to_signed_time=%s, z_ModifiedTimestamp=%s, b_status_API=%s \
+                        SET b_del_to_signed_name=%s, b_del_to_signed_time=%s, z_ModifiedTimestamp=%s, b_status_API=%s, b_status=%s \
                         WHERE `v_FPBookingNumber`=%s"
                     cursor.execute(
                         sql,
@@ -214,23 +304,25 @@ def csv_write(fpath, f, mysqlcon):
                             b_del_to_signed_name,
                             b_del_to_signed_time,
                             datetime.datetime.now(),
-                            type_flag_transit_state[type_flag],
+                            transit_state,
                             consignment_number,
+                            dme_status,
                         ),
                     )
                     mysqlcon.commit()
 
-                    # Write Each Line
-                    comma = ","
-                    newLine = "\n"
-                    eachLineText = consignment_number + comma
-                    eachLineText += b_del_to_signed_time.strftime("%Y%m%d") + comma
-                    eachLineText += type_flag + comma
-                    eachLineText += b_del_to_signed_name + comma
+                # Write Each Line
+                comma = ","
+                newLine = "\n"
+                eachLineText = consignment_number + comma
+                eachLineText += b_del_to_signed_time.strftime("%Y%m%d") + comma
+                eachLineText += type_flag + comma
+                eachLineText += transit_state + comma
+                eachLineText += detail + comma
+                eachLineText += dme_status + comma
+                eachLineText += b_del_to_signed_name + comma
 
-                    f.write(newLine + eachLineText)
-                else:
-                    print("@400: Booking not found - ", consignment_number)
+                f.write(newLine + eachLineText)
 
 
 if __name__ == "__main__":
@@ -283,6 +375,7 @@ if __name__ == "__main__":
                 csv_write(fpath, f, mysqlcon)
                 f.close()
 
+                # Download .csv file
                 upload_sftp(
                     sftp_server_infos["biopak"]["host"],
                     sftp_server_infos["biopak"]["username"],
