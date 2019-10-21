@@ -406,7 +406,7 @@ if __name__ == "__main__":
                 csv_write(fpath, f, mysqlcon)
                 f.close()
 
-                Download .csv file
+                # Download .csv file
                 upload_sftp(
                     sftp_server_infos["biopak"]["host"],
                     sftp_server_infos["biopak"]["username"],
