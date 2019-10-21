@@ -24,8 +24,8 @@ else:
     DB_NAME = "deliver_me"
 
 if IS_PRODUCTION:
-    API_URL = "http://3.105.62.128/api"  # Dev
-    # API_URL = "http://13.55.64.102/api"  # Prod
+    # API_URL = "http://3.105.62.128/api"  # Dev
+    API_URL = "http://13.55.64.102/api"  # Prod
 else:
     API_URL = "http://localhost:8000/api"  # Local
 
@@ -37,7 +37,7 @@ def get_bookings(mysqlcon):
                 WHERE `vx_freight_provider`=%s and `b_dateBookedDate` is NULL and `b_status`=%s and \
                 (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
                 ORDER BY id DESC \
-                LIMIT 10"
+                LIMIT 3"
         cursor.execute(sql, ("StarTrack", "Ready for booking", ""))
         bookings = cursor.fetchall()
 
@@ -69,14 +69,17 @@ def do_create_and_get_label(booking):
 
 
 def do_process(mysqlcon):
-    # Get 10 ST, bookings
+    # Get 3 ST bookings
     bookings = get_bookings(mysqlcon)
     print("#200 - Booking cnt to process: ", len(bookings))
 
-    for booking in bookings:
-        print("#200 - Processing: ***", booking["b_bookingID_Visual"], "***")
-        do_book(booking)
-        do_create_and_get_label(booking)
+    if len(bookings) > 0:
+        time.sleep(5)
+
+        for booking in bookings:
+            print("#200 - Processing: ***", booking["b_bookingID_Visual"], "***")
+            do_book(booking)
+            do_create_and_get_label(booking)
 
 
 if __name__ == "__main__":
