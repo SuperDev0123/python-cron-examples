@@ -54,12 +54,13 @@ def do_book(booking):
     data0 = json.loads(response0)
     s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
     print("@210 - ", s0)
+    return data
 
 
 def do_create_and_get_label(booking):
     url = API_URL + "/fp-api/startrack/get-label/"
     data = {}
-    data["bookingId"] = booking["id"]
+    data["booking_id"] = booking["id"]
 
     response0 = requests.post(url, params={}, json=data)
     response0 = response0.content.decode("utf8")
@@ -78,8 +79,10 @@ def do_process(mysqlcon):
 
         for booking in bookings:
             print("#200 - Processing: ***", booking["b_bookingID_Visual"], "***")
-            do_book(booking)
-            do_create_and_get_label(booking)
+            result = do_book(booking)
+
+            if "message" in result and "Successfully booked" in result["message"]:
+                do_create_and_get_label(booking)
 
 
 if __name__ == "__main__":
