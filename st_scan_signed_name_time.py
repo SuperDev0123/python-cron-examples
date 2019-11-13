@@ -290,7 +290,7 @@ def create_status_history(booking, b_status, event_time_stamp, mysqlcon):
 def csv_write(fpath, f, mysqlcon):
     # Write Header
     f.write(
-        "consignment_number, date_of_event, fp_status_code, fp_status, fp_status_details, dme_status, pod_name, reason"
+        "consignment_number, date_of_event, fp_status_code, fp_status, fp_status_details, dme_status, pod_name, reason, cartons_delivered"
     )
     with mysqlcon.cursor() as cursor:
         translations = get_translations(mysqlcon)
@@ -306,6 +306,7 @@ def csv_write(fpath, f, mysqlcon):
                 transit_state = type_flag_transit_state[type_flag]["transit_state"]
                 detail = type_flag_transit_state[type_flag]["detail"]
                 dme_status = get_dme_status_from_flag(translations, type_flag)
+                cartons_delivered = int(line.split(",")[11].strip())
 
                 print(
                     "@200 - ",
@@ -315,6 +316,7 @@ def csv_write(fpath, f, mysqlcon):
                     type_flag,
                     transit_state,
                     dme_status,
+                    cartons_delivered,
                 )
 
                 booking = get_booking(consignment_number, mysqlcon)
@@ -352,6 +354,8 @@ def csv_write(fpath, f, mysqlcon):
                 eachLineText += detail + comma
                 eachLineText += dme_status + comma
                 eachLineText += b_del_to_signed_name + comma
+                eachLineText += "" + comma
+                eachLineText += str(cartons_delivered) + comma
 
                 f.write(newLine + eachLineText)
 
