@@ -49,12 +49,12 @@ def do_book(booking):
     data = {}
     data["booking_id"] = booking["id"]
 
-    response0 = requests.post(url, params={}, json=data)
-    response0 = response0.content.decode("utf8")
+    response = requests.post(url, params={}, json=data)
+    response0 = response.content.decode("utf8")
     data0 = json.loads(response0)
     s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
     print("@210 - ", s0)
-    return data
+    return data0
 
 
 def do_create_and_get_label(booking):
@@ -62,8 +62,8 @@ def do_create_and_get_label(booking):
     data = {}
     data["booking_id"] = booking["id"]
 
-    response0 = requests.post(url, params={}, json=data)
-    response0 = response0.content.decode("utf8")
+    response = requests.post(url, params={}, json=data)
+    response0 = response.content.decode("utf8")
     data0 = json.loads(response0)
     s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
     print("@220 - ", s0)
