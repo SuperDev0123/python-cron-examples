@@ -13,19 +13,19 @@ IS_DEBUG = False
 IS_PRODUCTION = True  # Dev
 # IS_PRODUCTION = False  # Local
 
-# if IS_PRODUCTION:
-#     DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
-#     DB_USER = "fmadmin"
-#     DB_PASS = "oU8pPQxh"
-#     DB_PORT = 3306
-#     DB_NAME = "dme_db_dev"  # Dev
-#     # DB_NAME = "dme_db_prod"  # Prod
-# else:
-#     DB_HOST = "localhost"
-#     DB_USER = "root"
-#     DB_PASS = "root"
-#     DB_PORT = 3306
-#     DB_NAME = "deliver_me"
+if IS_PRODUCTION:
+    DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
+    DB_USER = "fmadmin"
+    DB_PASS = "oU8pPQxh"
+    DB_PORT = 3306
+    DB_NAME = "dme_db_dev"  # Dev
+    # DB_NAME = "dme_db_prod"  # Prod
+else:
+    DB_HOST = "localhost"
+    DB_USER = "root"
+    DB_PASS = "root"
+    DB_PORT = 3306
+    DB_NAME = "deliver_me"
 
 if IS_PRODUCTION:
     API_URL = "http://3.105.62.128/api"  # Dev
@@ -33,7 +33,7 @@ if IS_PRODUCTION:
 else:
     API_URL = "http://localhost:8000/api"  # Local
 
-if not IS_PRODUCTION:
+if IS_PRODUCTION:
     OK_DIR = "/dme_sftp/plum_au/ok/indata/"
     ARCHIVE_OK_DIR = "/dme_sftp/plum_au/ok/archive/"
 else:
@@ -81,6 +81,8 @@ def _read_file(ok_file):
     bok_1["pick_instructions"] = ok_file.read(29).strip()
     bok_1["state"] = ok_file.read(3).strip()
     bok_1["service"] = ok_file.read(21).strip()
+    bok_1["email_address"] = ok_file.read(50).strip()
+    bok_1["phone_number"] = ok_file.read(20).strip()
 
     while not _is_eof(ok_file):
         bok_2_line = {}
@@ -90,6 +92,10 @@ def _read_file(ok_file):
         bok_2_line["line_number"] = ok_file.read(4).strip()
         bok_2_line["customer_product_code"] = ok_file.read(15).strip()
         bok_2_line["quantity"] = ok_file.read(12).strip()
+        bok_2_line["height"] = ok_file.read(20).strip()
+        bok_2_line["width"] = ok_file.read(20).strip()
+        bok_2_line["length"] = ok_file.read(20).strip()
+        bok_2_line["weight"] = ok_file.read(20).strip()
 
         if not bok_2_line["dtl"] == "":
             bok_2.append(bok_2_line)
@@ -117,7 +123,7 @@ def _populate_file(bok_1, bok_2):
     header["b_015_b_pu_instructions_contact"] = bok_1["pick_instructions"]
     header["b_003_b_service_name"] = bok_1["service"]
     header["success"] = 2  # Hardcoded start
-    header["kf_client_id"] = 7
+    header["fk_client_id"] = "461162D2-90C7-BF4E-A905-000000000003"
     header["b_client_name"] = "Plum"
     header["b_client_warehouse_code"] = "No - Warehouse"
     header["fk_client_warehouse_id"] = 100
@@ -130,7 +136,8 @@ def _populate_file(bok_1, bok_2):
     header["b_033_b_pu_address_postalcode"] = "2089"
     header["b_034_b_pu_address_country"] = "Australia"
     header["b_035_b_pu_contact_full_name"] = "plum contacttest"
-    header["b_038_b_pu_phone_main"] = "61 2 8968 2200"
+    header["b_037_b_pu_email"] = bok_1["email_address"]
+    header["b_038_b_pu_phone_main"] = bok_1["phone_number"]
     header["b_021_b_pu_avail_from_date"] = str(datetime.datetime.now())  # Hardcoded end
 
     for bok_2_line in bok_2:
@@ -142,11 +149,11 @@ def _populate_file(bok_1, bok_2):
         line["l_002_qty"] = int(float(bok_2_line["quantity"]))
         line["success"] = 2  # Hardcoded start
         line["l_004_dim_UOM"] = "mm"
-        line["l_005_dim_length"] = 1600
-        line["l_006_dim_width"] = 703
-        line["l_007_dim_height"] = 1158
+        line["l_005_dim_length"] = bok_2_line["length"]
+        line["l_006_dim_width"] = bok_2_line["width"]
+        line["l_007_dim_height"] = bok_2_line["height"]
         line["l_008_weight_UOM"] = "kg"
-        line["l_009_weight_per_each"] = 75  # Hardcoded end
+        line["l_009_weight_per_each"] = bok_2_line["weight"]  # Hardcoded end
         lines.append(line)
 
     return header, lines
@@ -175,6 +182,19 @@ def _push_2_tables(header, lines, mysqlcon, fname):
 
 if __name__ == "__main__":
     print("#900 - Running %s" % datetime.datetime.now())
+    try:
+        mysqlcon = pymysql.connect(
+            host=DB_HOST,
+            port=DB_PORT,
+            user=DB_USER,
+            password=DB_PASS,
+            db=DB_NAME,
+            charset="utf8mb4",
+            cursorclass=pymysql.cursors.DictCursor,
+        )
+    except:
+        print("Mysql DB connection error!")
+        exit(1)
 
     try:
         for fname in sorted(os.listdir(OK_DIR)):
