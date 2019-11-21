@@ -62,7 +62,11 @@ def do_process(fpath, mysqlcon):
             booking = get_booking_with_v_FPBookingNumber(v_FPBookingNumber, mysqlcon)
 
             if booking:
-                print("@103 v_FPBookingNumber match: ", v_FPBookingNumber, date)
+                print(
+                    "@103 v_FPBookingNumber match: ",
+                    v_FPBookingNumber,
+                    fp_store_event_date,
+                )
                 with mysqlcon.cursor() as cursor:
                     sql = "UPDATE `dme_bookings` \
                            SET de_Deliver_From_Date=%s, de_Deliver_By_Date=%s, fp_store_event_date=%s, fp_store_event_time=%s \
