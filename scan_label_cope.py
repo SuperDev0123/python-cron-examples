@@ -81,7 +81,7 @@ def update_tally(api_bcl, booking, mysqlcon):
         if not tally:
             tally = 0
             sql = "UPDATE `dme_bookings` \
-                SET z_first_scan_label_date=%s, z_calculated_ETA=%s \
+                SET fp_received_date_time=%s, z_calculated_ETA=%s \
                 WHERE `pk_booking_id`=%s"
             cursor.execute(
                 sql,
@@ -112,7 +112,7 @@ def update_api_bcl(
         if not tally:
             tally = 0
             sql = "UPDATE `dme_bookings` \
-                SET z_first_scan_label_date=%s, z_calculated_ETA=%s \
+                SET fp_received_date_time=%s, z_calculated_ETA=%s \
                 WHERE `pk_booking_id`=%s"
             cursor.execute(
                 sql,

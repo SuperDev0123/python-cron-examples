@@ -53,8 +53,10 @@ def do_process(fpath, mysqlcon):
     with open(fpath) as csv_file:
         for i, line in enumerate(csv_file):
             v_FPBookingNumber = get_v_FPBookingNumber(line.split(",")[0])
-            fp_store_event_date = datetime.datetime.strptime(
-                line.split(",")[2], "%Y-%m-%d"
+            fp_store_event_date = (
+                datetime.datetime.strptime(line.split(",")[1], "%Y-%m-%d")
+                if "No" not in line.split(",")[1]
+                else None
             )
             fp_store_event_time = datetime.datetime.strptime(
                 line.split(",")[3].replace("\n", ""), "%H:%M"
