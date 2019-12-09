@@ -70,7 +70,7 @@ def do_pod(booking):
 
 
 def do_process(mysqlcon):
-    # Get 3 TNT bookings
+    # Get 3 Hunter bookings
     bookings = get_bookings(mysqlcon)
     print("#200 - Booking cnt to process: ", len(bookings))
 
