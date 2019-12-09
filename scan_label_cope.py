@@ -54,7 +54,8 @@ def get_api_bcl(label_code, mysqlcon):
 
 def get_booking(dme_number, mysqlcon):
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT `id`, `pk_booking_id`, `e_qty_scanned_fp_total`, `delivery_kpi_days` \
+        sql = "SELECT `id`, `pk_booking_id`, `e_qty_scanned_fp_total`, `delivery_kpi_days`, `dme_status_detail`, \
+                `dme_status_detail_updated_by`, `fp_received_date_time`, `b_given_to_transport_date_time` \
                 From `dme_bookings` \
                 WHERE `v_FPBookingNumber`=%s"
         cursor.execute(sql, (dme_number))
@@ -187,6 +188,38 @@ def update_booking(booking, mysqlcon):
                 WHERE `id`=%s"
             cursor.execute(sql, (e_qty_scanned_fp_total, booking["id"]))
             mysqlcon.commit()
+
+        if (
+            not booking["dme_status_detail_updated_by"]
+            or booking["dme_status_detail_updated_by"] == "script"
+        ):
+            dme_status_detail = ""
+
+            if (
+                booking["b_given_to_transport_date_time"]
+                and not booking["fp_received_date_time"]
+            ):
+                dme_status_detail = "In transporter's depot"
+            if booking["fp_received_date_time"]:
+                dme_status_detail = "Good Received by Transport"
+
+            if e_qty_scanned_fp_total > 0 and e_qty_scanned_fp_total < len(api_bcls):
+                dme_status_detail = dme_status_detail + " (Partial)"
+
+            sql = "UPDATE `dme_bookings` \
+                SET dme_status_detail=%s, prev_dme_status_detail=%s, dme_status_detail_updated_at=%s, \
+                    dme_status_detail_updated_by=%s \
+                WHERE `id`=%s"
+            cursor.execute(
+                sql,
+                (
+                    dme_status_detail,
+                    booking["dme_status_detail"],
+                    datetime.datetime.now(),
+                    "script",
+                    booking["id"],
+                ),
+            )
 
 
 def do_calc_scanned(dme_number, dme_number_lines, mysqlcon):

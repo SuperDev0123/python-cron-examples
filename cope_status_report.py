@@ -42,7 +42,9 @@ def get_booking_with_v_FPBookingNumber(v_FPBookingNumber, mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "SELECT `id`, `b_dateBookedDate`, `b_status`, `b_status_API`, `pk_booking_id`, \
                       `e_qty_scanned_fp_total`, `z_lock_status`, `pu_Address_PostalCode`, \
-                      `de_To_Address_PostalCode`, `b_bookingID_Visual`, `tally_delivered` \
+                      `de_To_Address_PostalCode`, `b_bookingID_Visual`, `tally_delivered`, \
+                      `fp_received_date_time`, `b_given_to_transport_date_time`, `delivery_kpi_days`, \
+                      `dme_status_detail_updated_by`, `dme_status_detail` \
                 FROM `dme_bookings` \
                 WHERE `v_FPBookingNumber`=%s"
         cursor.execute(sql, (v_FPBookingNumber))
@@ -108,6 +110,61 @@ def update_booking(booking, b_status, b_status_API_csv, event_time_stamp, mysqlc
         )
         mysqlcon.commit()
 
+        if b_status == "In Transit" and (
+            not booking["dme_status_detail_updated_by"]
+            or booking["dme_status_detail_updated_by"] == "script"
+        ):
+            if (
+                booking["b_given_to_transport_date_time"]
+                and not booking["fp_received_date_time"]
+            ):
+                sql = "UPDATE `dme_bookings` \
+                    SET dme_status_detail=%s, prev_dme_status_detail=%s, dme_status_detail_updated_at=%s, \
+                        dme_status_detail_updated_by=%s \
+                    WHERE `id`=%s"
+                cursor.execute(
+                    sql,
+                    (
+                        "Collection Confirmed by Pickup Address",
+                        booking["dme_status_detail"],
+                        datetime.datetime.now(),
+                        "script",
+                        booking["id"],
+                    ),
+                )
+            # if booking["fp_received_date_time"]:
+            #     sql = "UPDATE `dme_bookings` \
+            #         SET dme_status_detail=%s, prev_dme_status_detail=%s, dme_status_detail_updated_at=%s, \
+            #             dme_status_detail_updated_by=%s \
+            #         WHERE `id`=%s"
+            #     cursor.execute(
+            #         sql,
+            #         (
+            #             "Good Received by Transport",
+            #             booking["dme_status_detail"],
+            #             datetime.datetime.now(),
+            #             "script",
+            #             booking["id"],
+            #         ),
+            #     )
+            mysqlcon.commit()
+        elif b_status == "Delivered":
+            sql = "UPDATE `dme_bookings` \
+                    SET dme_status_detail=%s, prev_dme_status_detail=%s, dme_status_detail_updated_at=%s, \
+                        dme_status_detail_updated_by=%s \
+                    WHERE `id`=%s"
+            cursor.execute(
+                sql,
+                (
+                    "",
+                    booking["dme_status_detail"],
+                    datetime.datetime.now(),
+                    "script",
+                    booking["id"],
+                ),
+            )
+            mysqlcon.commit()
+
 
 def create_status_history(booking, b_status, event_time_stamp, mysqlcon):
     with mysqlcon.cursor() as cursor:
@@ -138,6 +195,7 @@ def do_translate_status(
     b_status_API_csv,
     v_FPBookingNumber,
     event_time_stamp,
+    b_fp_qty_delivered_csv,
     mysqlcon,
     is_overridable=False,
 ):
@@ -181,7 +239,7 @@ def do_translate_status(
                 )
                 create_status_history(booking, b_status, event_time_stamp, mysqlcon)
 
-        if b_status == "Delivered":
+        if "Proof of Delivery" in b_status_API_csv:
             sql = "SELECT * \
                     FROM `utl_fp_delivery_times` \
                     WHERE `postal_code_from`=%s and `postal_code_to`=%s"
@@ -196,33 +254,38 @@ def do_translate_status(
             else:
                 delivery_kpi_days = 14
 
-            delivery_days_from_booked = (
-                event_time_stamp - booking["b_dateBookedDate"]
-            ).days
-            delivery_actual_kpi_days = delivery_days_from_booked - delivery_kpi_days
-
-            sql = "UPDATE `dme_bookings` \
-               SET s_21_ActualDeliveryTimeStamp=%s, delivery_kpi_days=%s, delivery_days_from_booked=%s, delivery_actual_kpi_days=%s \
-               WHERE id=%s"
-            cursor.execute(
-                sql,
-                (
-                    event_time_stamp,
-                    delivery_kpi_days,
-                    delivery_days_from_booked,
-                    delivery_actual_kpi_days,
-                    booking["id"],
-                ),
-            )
-            mysqlcon.commit()
-
-            if b_status_API_csv == "Proof of Delivery":
+            if not booking["b_dateBookedDate"]:
                 sql = "UPDATE `dme_bookings` \
-                   SET rpt_proof_of_del_from_csv_time=%s \
+                   SET b_error_Capture = %s \
                    WHERE id=%s"
-                cursor.execute(sql, (datetime.datetime.now(), booking["id"]))
+                cursor.execute(sql, ("Delivered but no booked date", booking["id"]))
                 mysqlcon.commit()
-            calc_delivered(booking, mysqlcon)
+            else:
+                delivery_days_from_booked = (
+                    event_time_stamp - booking["b_dateBookedDate"]
+                ).days
+                delivery_actual_kpi_days = delivery_days_from_booked - delivery_kpi_days
+
+                sql = "UPDATE `dme_bookings` \
+                   SET s_21_ActualDeliveryTimeStamp=%s, delivery_kpi_days=%s, \
+                       delivery_days_from_booked=%s, delivery_actual_kpi_days=%s, \
+                       rpt_proof_of_del_from_csv_time=%s, b_fp_qty_delivered=%s \
+                   WHERE id=%s"
+                cursor.execute(
+                    sql,
+                    (
+                        event_time_stamp,
+                        delivery_kpi_days,
+                        delivery_days_from_booked,
+                        delivery_actual_kpi_days,
+                        datetime.datetime.now(),
+                        b_fp_qty_delivered_csv,
+                        booking["id"],
+                    ),
+                )
+                mysqlcon.commit()
+
+                calc_delivered(booking, mysqlcon)
 
 
 def is_b_status_API_csv(booking, b_status_API_csv, mysqlcon):
@@ -267,7 +330,7 @@ def update_status(fpath, mysqlcon):
             for i, line in enumerate(csv_file):
                 v_FPBookingNumber = get_v_FPBookingNumber(line.split(",")[0])
                 # new_v_FPBookingNumber = v_FPBookingNumber.replace("DME", "DME_")
-                b_status_API_csv = line.split(",")[1]
+                b_status_API_csv = line.split(",")[1].replace('"', "")
                 b_fp_qty_delivered_csv = line.split(",")[2]
 
                 if "-" in line.split(",")[3]:
@@ -293,13 +356,6 @@ def update_status(fpath, mysqlcon):
                         v_FPBookingNumber,
                         event_time_stamp,
                     )
-
-                    # Update b_fp_qty_delivered
-                    sql = "UPDATE `dme_bookings` \
-                           SET b_fp_qty_delivered=%s \
-                           WHERE id=%s"
-                    cursor.execute(sql, (b_fp_qty_delivered_csv, booking["id"]))
-                    mysqlcon.commit()
 
                     if is_b_status_API_csv(booking, b_status_API_csv, mysqlcon):
                         sql = "UPDATE `dme_bookings` \
@@ -380,6 +436,7 @@ def update_status(fpath, mysqlcon):
                                     b_status_API_csv,
                                     v_FPBookingNumber,
                                     event_time_stamp,
+                                    b_fp_qty_delivered_csv,
                                     mysqlcon,
                                     True,
                                 )
@@ -405,6 +462,7 @@ def update_status(fpath, mysqlcon):
                                     b_status_API_csv,
                                     v_FPBookingNumber,
                                     event_time_stamp,
+                                    b_fp_qty_delivered_csv,
                                     mysqlcon,
                                     False,
                                 )
@@ -464,7 +522,9 @@ def do_status_check(mysqlcon):
                 and booking["e_qty_scanned_fp_total"] > 0
             ):
                 sql = "UPDATE `dme_bookings` \
-                       SET b_status=%s, dme_status_detail=%s, z_ModifiedTimestamp=%s \
+                       SET b_status=%s, dme_status_detail=%s, z_ModifiedTimestamp=%s, \
+                           prev_dme_status_detail=%s, dme_status_detail_updated_at=%s, \
+                           dme_status_detail_updated_by=%s \
                        WHERE id=%s"
                 cursor.execute(
                     sql,
@@ -472,6 +532,9 @@ def do_status_check(mysqlcon):
                         "In Transit",
                         "In transporter's depot (partial)",
                         datetime.datetime.now(),
+                        booking["dme_status_detail"],
+                        datetime.datetime.now(),
+                        "script",
                         booking["id"],
                     ),
                 )
@@ -530,7 +593,9 @@ def do_status_check(mysqlcon):
                 and booking["e_qty_scanned_fp_total"] < e_qty_total
             ):
                 sql = "UPDATE `dme_bookings` \
-                       SET b_status=%s, dme_status_detail=%s, z_ModifiedTimestamp=%s \
+                       SET b_status=%s, dme_status_detail=%s, z_ModifiedTimestamp=%s, \
+                           prev_dme_status_detail=%s, dme_status_detail_updated_at=%s, \
+                           dme_status_detail_updated_by=%s \
                        WHERE id=%s"
                 cursor.execute(
                     sql,
@@ -538,6 +603,9 @@ def do_status_check(mysqlcon):
                         "Delivered",
                         "Delivered Partial",
                         datetime.datetime.now(),
+                        booking["dme_status_detail"],
+                        datetime.datetime.now(),
+                        "script",
                         booking["id"],
                     ),
                 )
