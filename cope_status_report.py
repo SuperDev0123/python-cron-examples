@@ -19,8 +19,8 @@ if production:
     DB_USER = "fmadmin"
     DB_PASS = "oU8pPQxh"
     DB_PORT = 3306
-    # DB_NAME = 'dme_db_dev'  # Dev
-    DB_NAME = "dme_db_prod"  # Prod
+    DB_NAME = "dme_db_dev"  # Dev
+    # DB_NAME = "dme_db_prod"  # Prod
 else:
     DB_HOST = "localhost"
     DB_USER = "root"
@@ -242,17 +242,17 @@ def do_translate_status(
         if "Proof of Delivery" in b_status_API_csv:
             sql = "SELECT * \
                     FROM `utl_fp_delivery_times` \
-                    WHERE `postal_code_from`=%s and `postal_code_to`=%s"
+                    WHERE `postal_code_from`<=%s and `postal_code_to`>=%s"
             cursor.execute(
                 sql,
-                (booking["pu_Address_PostalCode"], booking["de_To_Address_PostalCode"]),
+                (
+                    int(booking["de_To_Address_PostalCode"]),
+                    int(booking["de_To_Address_PostalCode"]),
+                ),
             )
             result = cursor.fetchone()
 
-            if result:
-                delivery_kpi_days = result["delivery_days"]
-            else:
-                delivery_kpi_days = 14
+            delivery_kpi_days = result["delivery_days"] if result else 14
 
             if not booking["b_dateBookedDate"]:
                 sql = "UPDATE `dme_bookings` \
