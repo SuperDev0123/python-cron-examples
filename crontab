@@ -1,0 +1,51 @@
+# Edit this file to introduce tasks to be run by cron.
+# 
+# Each task to run has to be defined through a single line
+# indicating with different fields when the task will be run
+# and what command to run for the task
+# 
+# To define the time you can provide concrete values for
+# minute (m), hour (h), day of month (dom), month (mon),
+# and day of week (dow) or use '*' in these fields (for 'any').# 
+# Notice that tasks will be started based on the cron's system
+# daemon's notion of time and timezones.
+# 
+# Output of the crontab jobs (including errors) is sent through
+# email to the user the crontab file belongs to (unless redirected).
+# 
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+# 
+# For more information see the manual pages of crontab(5) and cron(8)
+# 
+# m h  dom mon dow   command
+@reboot /bin/bash /home/dme/nginx.sh
+*/2 * * * * /bin/bash /home/ubuntu/check_nginx.sh
+* * * * *    python3 /opt/xlsimport/import.py >> /opt/xlsimport/import.log 2>&1
+#*/2 * * * * /home/dme/BookAllied.sh
+#*/30 * * * * /home/dme/StartrackAuAutoLabel.sh
+#*/30 * * * * /home/dme/StartrackAuAutoBook.sh
+#* */2 * * * /home/dme/StartrackAuTriggerTracking.sh
+#0 */3 * * * /home/dme/TriggerTrack_Allied.sh
+#*/2 * * * * /home/dme/BookSt.sh
+*/2 * * * * /bin/bash /home/dme/EnableDisableCrons.sh
+#*/5 * * * * /home/dme/Push2FM.sh > /home/dme/Push2FM.log
+#*/5 * * * * /home/dme/pullRecords/PullFromFM.sh > /home/dme/pullRecords/PullFromFM.log
+#*/5 * * * * /home/dme/pullModified/PullFromFM.sh > /home/dme/pullModified/PullFromFM.log
+#*/30 * * * * /home/dme/pushBooking/pushBookings.sh > /home/dme/pushBooking/pushBookings.log
+*/2 * * * * /home/dme/MoveSuccess2ToBookings.sh > /home/dme/MoveSuccess2ToBookings.log
+*/5 * * * * /opt/chrons/cope_au_move_label.sh
+*/5 * * * * /opt/chrons/cope_au_move_pod.sh
+0 */1 * * * /opt/chrons/cope_status_report.sh
+*/5 * * * * /opt/chrons/store_bookings.sh
+*/5 * * * * /opt/chrons/upload_csv_sftp.sh
+*/5 * * * * /opt/chrons/upload_xml_allied_sftp.sh
+*/59 * * * * /opt/chrons/scan_label_cope.sh
+*/5 * * * * /opt/chrons/cope_au_move_connote.sh
+#1 0 * * * /opt/chrons/zip_new_pods.sh
+*/30 * * * * /opt/chrons/st_scan_signed_name_time.sh
+*/5 * * * * /opt/chrons/st_auto.sh
+#*/10 * * * * /opt/chrons/append_status_history_feedback.sh
+#*/5 * * * * /opt/chrons/plum_au_scan_ok.sh
+*/30 * * * * /opt/chrons/tnt_status_pod.sh
