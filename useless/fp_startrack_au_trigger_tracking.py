@@ -8,6 +8,8 @@ import urllib, requests, json
 import pymysql, pymysql.cursors
 import base64, pytz
 
+import _status_history
+
 production = True  # Dev
 # production = False # Local
 
@@ -136,21 +138,7 @@ def _update_booking_and_BIOPAK(trackDetail, mysqlcon, payload, url, booking):
 
                 if booking["b_status_API"] != new_status:
                     # Create dme_status_history
-                    sql = "INSERT INTO `dme_status_history` \
-                        (`fk_booking_id`, `status_old`, `notes`, `status_last`, `z_createdTimeStamp`,`event_time_stamp`) \
-                        VALUES (%s, %s, %s, %s, %s, %s)"
-                    cursor.execute(
-                        sql,
-                        (
-                            booking["pk_booking_id"],
-                            booking["b_status_API"],
-                            str(booking["b_status_API"]) + " ---> " + str(new_status),
-                            new_status,
-                            datetime.datetime.now(),
-                            event_time_stamp,
-                        ),
-                    )
-                    mysqlcon.commit()
+                    _status_history.create(booking["id"], new_status, event_time_stamp)
 
                     # Fetch option flag
                     sql = "SELECT `option_value` \

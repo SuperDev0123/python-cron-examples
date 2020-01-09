@@ -9,6 +9,8 @@ import shutil
 import glob
 import ntpath
 
+import _status_history
+
 # env_mode = 0  # Local
 # env_mode = 1  # Dev
 env_mode = 2  # Prod
@@ -119,30 +121,6 @@ def calc_delivered(booking, mysqlcon):
                 sql, (booking_line["e_qty_delivered"], booking_line["pk_lines_id"])
             )
             mysqlcon.commit()
-
-
-def create_status_history(booking, b_status, event_time_stamp, mysqlcon):
-    with mysqlcon.cursor() as cursor:
-        sql = "INSERT INTO `dme_status_history` \
-                (`fk_booking_id`, `status_old`, \
-                 `notes`, `status_last`, \
-                 `z_createdTimeStamp`, `event_time_stamp`, `recipient_name`, `status_update_via`, `b_booking_visualID`) \
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        cursor.execute(
-            sql,
-            (
-                booking["pk_booking_id"],
-                booking["b_status"],
-                str(booking["b_status"]) + " ---> " + str(b_status),
-                b_status,
-                datetime.datetime.now(),
-                event_time_stamp,
-                " ",
-                "fp api",
-                booking["b_bookingID_Visual"],
-            ),
-        )
-        mysqlcon.commit()
 
 
 if __name__ == "__main__":
@@ -265,11 +243,11 @@ if __name__ == "__main__":
                                         ),
                                     )
                                     mysqlcon.commit()
-                                    create_status_history(
-                                        booking,
-                                        "Locked",
+                                    _status_history.create(
+                                        booking["id"],
+                                        None,
                                         datetime.datetime.now(),
-                                        mysqlcon,
+                                        "Locked",
                                     )
                                 else:
                                     if "POD_SOG_" in filename:
@@ -294,11 +272,12 @@ if __name__ == "__main__":
                                         ),
                                     )
                                     mysqlcon.commit()
-                                    create_status_history(
-                                        booking,
-                                        "Delivered",
+
+                                    _status_history.create(
+                                        booking["id"],
+                                        None,
                                         datetime.datetime.now(),
-                                        mysqlcon,
+                                        "Delivered",
                                     )
                                     calc_delivered(booking, mysqlcon)
                         except IOError as e:

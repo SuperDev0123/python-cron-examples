@@ -10,6 +10,8 @@ import json
 import pymysql, pymysql.cursors
 import base64
 
+import _status_history
+
 production = True  # Dev
 # production = False # Local
 
@@ -112,7 +114,7 @@ if __name__ == "__main__":
                     "consignmentStatuses"
                 ][0]
 
-                new_status = status_history_info["status"]
+                new_b_status_API = status_history_info["status"]
                 event_time_stamp = None
                 recipient_name = None
 
@@ -122,27 +124,10 @@ if __name__ == "__main__":
                     recipient_name = status_history_info["recipientName"]
 
                 print("status is fine.")
-                if booking["b_status_API"] != new_status:
-                    with mysqlcon.cursor() as cursor:
-                        sql = "INSERT INTO `dme_status_history` (`fk_booking_id`, `status_old`, `notes`, `status_last`, \
-                              `z_createdTimeStamp`, `event_time_stamp`, `recipient_name`, `status_update_via`) \
-                              VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-                        cursor.execute(
-                            sql,
-                            (
-                                booking["pk_booking_id"],
-                                booking["b_status_API"],
-                                str(booking["b_status_API"])
-                                + " ---> "
-                                + str(new_status),
-                                new_status,
-                                datetime.datetime.now(),
-                                event_time_stamp,
-                                recipient_name,
-                                "fp api",
-                            ),
-                        )
-                        mysqlcon.commit()
+                if booking["b_status_API"] != new_b_status_API:
+                    _status_history.create(
+                        booking["id"], new_b_status_API, event_time_stamp
+                    )
 
                 # total_Cubic_Meter_override = data0['consignmentTrackDetails'][0]['totalVolume']
                 # total_1_KG_weight_override = data0['consignmentTrackDetails'][0]['totalWeight']

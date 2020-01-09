@@ -5,6 +5,8 @@ import datetime
 import pymysql, pymysql.cursors
 import requests
 
+import _status_history
+
 IS_DEBUG = False
 # IS_PRODUCTION = True  # Dev
 IS_PRODUCTION = False  # Local
@@ -19,7 +21,7 @@ if IS_PRODUCTION:
 else:
     DB_HOST = "localhost"
     DB_USER = "root"
-    DB_PASS = "root"
+    DB_PASS = ""
     DB_PORT = 3306
     DB_NAME = "deliver_me"
 
@@ -55,45 +57,6 @@ def _set_error(booking, error, mysqlcon):
         mysqlcon.commit()
 
 
-def _add_status_history(booking, new_b_status_API, event_time_stamp, mysqlcon):
-    with mysqlcon.cursor() as cursor:
-        sql = "SELECT `dme_status` \
-                FROM `dme_utl_fp_statuses` \
-                WHERE fp_lookup_status=%s"
-        cursor.execute(sql, (new_b_status_API))
-        result = cursor.fetchone()
-        b_status = result["dme_status"]
-
-        sql = "INSERT INTO `dme_status_history` \
-                (`fk_booking_id`, `status_old`, \
-                 `notes`, `status_last`, \
-                 `z_createdTimeStamp`, `event_time_stamp`, `recipient_name`, `status_update_via`, `b_booking_visualID` ) \
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        cursor.execute(
-            sql,
-            (
-                booking["pk_booking_id"],
-                booking["b_status"],
-                str(booking["b_status"]) + " ---> " + str(b_status),
-                b_status,
-                datetime.datetime.now(),
-                datetime.datetime.now()
-                if event_time_stamp == "null"
-                else event_time_stamp,
-                " ",
-                "fp api",
-                booking["b_bookingID_Visual"],
-            ),
-        )
-        mysqlcon.commit()
-
-        sql = "UPDATE `dme_bookings` \
-                SET b_status=%s \
-                WHERE id=%s"
-        cursor.execute(sql, (b_status, booking["id"]))
-        mysqlcon.commit()
-
-
 def get_tracking_info(booking, mysqlcon):
     url = f"{API_URL}/fp-api/{booking['vx_freight_provider']}/tracking/"
     data = {}
@@ -125,8 +88,8 @@ def do_process(mysqlcon):
                 new_b_status_API = tracking_info["message"]
 
                 # if booking["b_status_API"] != new_b_status_API:
-                #     _add_status_history(
-                #         booking, new_b_status_API, event_time_stamp, mysqlcon
+                #     _status_history.create(
+                #         booking["id"], new_b_status_API, event_time_stamp
                 #     )
 
 

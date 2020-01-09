@@ -11,6 +11,8 @@ import pymysql, pymysql.cursors
 import base64
 import shutil
 
+import _status_history
+
 production = True  # Dev
 # production = False # Local
 
@@ -166,30 +168,6 @@ def update_booking(booking, b_status, b_status_API_csv, event_time_stamp, mysqlc
             mysqlcon.commit()
 
 
-def create_status_history(booking, b_status, event_time_stamp, mysqlcon):
-    with mysqlcon.cursor() as cursor:
-        sql = "INSERT INTO `dme_status_history` \
-                (`fk_booking_id`, `status_old`, \
-                 `notes`, `status_last`, \
-                 `z_createdTimeStamp`, `event_time_stamp`, `recipient_name`, `status_update_via`, `b_booking_visualID` ) \
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        cursor.execute(
-            sql,
-            (
-                booking["pk_booking_id"],
-                booking["b_status"],
-                str(booking["b_status"]) + " ---> " + str(b_status),
-                b_status,
-                datetime.datetime.now(),
-                event_time_stamp,
-                " ",
-                "fp api",
-                booking["b_bookingID_Visual"],
-            ),
-        )
-        mysqlcon.commit()
-
-
 def do_translate_status(
     booking,
     b_status_API_csv,
@@ -222,7 +200,7 @@ def do_translate_status(
             update_booking(
                 booking, b_status, b_status_API_csv, event_time_stamp, mysqlcon
             )
-            create_status_history(booking, b_status, event_time_stamp, mysqlcon)
+            _status_history.create(booking["id"], None, event_time_stamp, b_status)
         else:
             if (
                 booking["e_qty_scanned_fp_total"]
@@ -232,12 +210,12 @@ def do_translate_status(
                 update_booking(
                     booking, b_status, b_status_API_csv, event_time_stamp, mysqlcon
                 )
-                create_status_history(booking, b_status, event_time_stamp, mysqlcon)
+                _status_history.create(booking["id"], None, event_time_stamp, b_status)
             else:
                 update_booking(
                     booking, b_status, b_status_API_csv, event_time_stamp, mysqlcon
                 )
-                create_status_history(booking, b_status, event_time_stamp, mysqlcon)
+                _status_history.create(booking["id"], None, event_time_stamp, b_status)
 
         if "Proof of Delivery" in b_status_API_csv:
             sql = "SELECT * \
