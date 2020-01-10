@@ -36,6 +36,17 @@ def get_booking(mysqlcon, booking_id):
         return booking
 
 
+def get_option(mysqlcon):
+    with mysqlcon.cursor() as cursor:
+        sql = "SELECT * \
+                FROM `dme_options` \
+                WHERE option_name=%s"
+        cursor.execute(sql, ("tempo_push"))
+        dme_option = cursor.fetchone()
+
+        return dme_option
+
+
 def create(booking_id, new_b_status_API, event_time_stamp, new_b_status=None):
     try:
         mysqlcon = pymysql.connect(
@@ -61,7 +72,7 @@ def create(booking_id, new_b_status_API, event_time_stamp, new_b_status=None):
             cursor.execute(sql, (new_b_status_API))
             result = cursor.fetchone()
             b_status = result["dme_status"]
-        else
+        else:
             b_status = new_b_status
 
         sql = "INSERT INTO `dme_status_history` \
@@ -93,5 +104,9 @@ def create(booking_id, new_b_status_API, event_time_stamp, new_b_status=None):
         cursor.execute(sql, (b_status, booking["id"]))
         mysqlcon.commit()
 
-        if booking['kf_client_id'] == '461162D2-90C7-BF4E-A905-092A1A5F73F3':
+        option = get_option()
+        if (
+            booking["kf_client_id"] == "461162D2-90C7-BF4E-A905-092A1A5F73F3"
+            and int(option["option_value"]) == 1
+        ):
             push_via_api(booking)
