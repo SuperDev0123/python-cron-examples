@@ -7,6 +7,8 @@ import pymysql, pymysql.cursors
 import shutil
 import pysftp
 
+import _status_history
+
 IS_DEBUG = False
 IS_PRODUCTION = True  # Dev
 # IS_PRODUCTION = False  # Local
@@ -263,30 +265,6 @@ def get_dme_status_from_flag(translations, type_flag):
     return ""
 
 
-def create_status_history(booking, b_status, event_time_stamp, mysqlcon):
-    with mysqlcon.cursor() as cursor:
-        sql = "INSERT INTO `dme_status_history` \
-                (`fk_booking_id`, `status_old`, \
-                 `notes`, `status_last`, \
-                 `z_createdTimeStamp`, `event_time_stamp`, `recipient_name`, `status_update_via`, `b_booking_visualID`) \
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        cursor.execute(
-            sql,
-            (
-                booking["pk_booking_id"],
-                booking["b_status"],
-                str(booking["b_status"]) + " ---> " + str(b_status),
-                b_status,
-                datetime.datetime.now(),
-                event_time_stamp,
-                " ",
-                ".FTP file",
-                booking["b_bookingID_Visual"],
-            ),
-        )
-        mysqlcon.commit()
-
-
 def csv_write(fpath, f, mysqlcon):
     # Write Header
     f.write(
@@ -340,8 +318,8 @@ def csv_write(fpath, f, mysqlcon):
                     # If new status, create status_history
                     if booking["b_status"] != dme_status:
                         print("@201 - New Status!")
-                        create_status_history(
-                            booking, dme_status, datetime.datetime.now(), mysqlcon
+                        _status_history.create(
+                            booking["id"], None, datetime.datetime.now(), dme_status
                         )
 
                 # Write Each Line
