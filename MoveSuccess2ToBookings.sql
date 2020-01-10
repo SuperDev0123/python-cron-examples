@@ -2,14 +2,19 @@ CREATE DEFINER=`fmadmin`@`%` PROCEDURE `MoveSuccess2ToBookings`()
 BEGIN
 
 DECLARE v_b_bookingID_Visual int(11);
+DECLARE v_start_b_bookingID_Visual int(11);
+DECLARE v_end_b_bookingID_Visual int(11);
+
 DECLARE EXIT HANDLER FOR SQLEXCEPTION 
     BEGIN
     GET DIAGNOSTICS CONDITION 1
     @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
     SELECT @p1 AS RETURNED_SQLSTATE, @p2 AS MESSAGE_TEXT;
         ROLLBACK;
+        Drop TABLE IF EXISTS dme_memory;
     END;
 
+Drop TABLE IF EXISTS dme_memory;
 START TRANSACTION;
 
 SELECT max(b_bookingID_Visual) into v_b_bookingID_Visual FROM dme_bookings;
@@ -19,6 +24,9 @@ If (v_b_bookingID_Visual is NULL ) THEN
 END If;
 
 SELECT 'Starting with Visual Id ' + v_b_bookingID_Visual;
+
+Set v_start_b_bookingID_Visual = v_b_bookingID_Visual + 1;
+
 
 INSERT INTO `dme_bookings` 
     (`pk_booking_id`, `b_clientReference_RA_Numbers`, `DME_price_from_client`, 
@@ -80,12 +88,15 @@ SELECT bok_1.pk_header_id, bok_1.b_000_1_b_clientReference_RA_Numbers, b_000_2_b
             AND bok_1.b_000_3_consignment_number <> "" 
             THEN 'Booked'
         WHEN success = 2 
-            AND (bok_1.b_000_3_consignment_number IS NULL OR bok_1.b_000_3_consignment_number = "") 
+            AND (bok_1.b_000_3_consignment_number IS NULL
+            OR bok_1.b_000_3_consignment_number = "") 
             THEN 'Ready for booking'
         WHEN success = 3 
             THEN 'Ready for XML'
-        WHEN success= 4 
+        WHEN success = 4 
             THEN 'Ready for CSV'
+        WHEN success = 6
+            THEN ''
     END,
     bok_1.z_test, b_client_del_note_num,
     b_client_order_num, b_client_sales_inv_num, b_client_warehouse_code,
@@ -98,7 +109,37 @@ LEFT OUTER JOIN utl_fp_delivery_times ON (b_001_b_freight_provider = fp_name AND
 BETWEEN postal_code_from AND postal_code_to), (SELECT @a:= v_b_bookingID_Visual) AS a 
 WHERE success IN (2,3,4,6);
 
+Set v_end_b_bookingID_Visual = v_start_b_bookingID_Visual + (ROW_COUNT() - 1);
+
 SELECT 'Rows moved to dme_bookings = ' + ROW_COUNT();
+
+CREATE TABLE dme_memory (id INT, kf_client_id VARCHAR(64), b_client_sales_inv_num VARCHAR(64), b_bookingID_Visual_List varchar(100));
+
+insert InTo dme_memory (id, kf_client_id, b_client_sales_inv_num, b_bookingID_Visual_List)
+select max(id), kf_client_id, b_client_sales_inv_num, Group_Concat(b_bookingID_Visual SEPARATOR ', ')
+from (
+select id, kf_client_id, b_client_sales_inv_num, b_bookingID_Visual
+from dme_bookings where b_bookingID_Visual < v_start_b_bookingID_Visual
+and b_status not in ('Cancelled', 'Closed') 
+and kf_client_id is not null and b_client_sales_inv_num is not null and length(b_client_sales_inv_num) > 0
+and (kf_client_id, b_client_sales_inv_num) in (select kf_client_id, b_client_sales_inv_num from dme_bookings
+                                                where b_bookingID_Visual between v_start_b_bookingID_Visual and v_end_b_bookingID_Visual
+                                                )
+union
+select id, kf_client_id, b_client_sales_inv_num, b_bookingID_Visual from dme_bookings
+where b_bookingID_Visual between v_start_b_bookingID_Visual and v_end_b_bookingID_Visual
+and kf_client_id is not null and b_client_sales_inv_num is not null and length(b_client_sales_inv_num) > 0
+) t
+group by kf_client_id, b_client_sales_inv_num
+having count(*) > 1;
+
+
+Update dme_bookings join dme_memory on dme_bookings.id=dme_memory.id
+Set dme_bookings.b_error_Capture = Concat('SINV is duplicated in bookingID = ' , dme_memory.b_bookingID_Visual_List),
+    dme_bookings.b_status = 'On Hold'
+;
+
+Drop TABLE dme_memory;
 
 UPDATE bok_1_headers SET success=1
 WHERE success IN (2,3,4,6);
@@ -109,7 +150,7 @@ SELECT 'Starting move of booking lines';
 INSERT INTO dme_booking_lines
     (e_spec_clientRMA_Number, e_weightPerEach,
     e_1_Total_dimCubicMeter, e_Total_KG_weight,
-    e_item, e_qty,
+    e_item, e_qty, e_type_of_packaging,
     e_item_type, e_pallet_Type, fk_booking_id,
     e_dimLength, e_dimWidth, e_dimHeight,
     e_weightUOM, z_createdTimeStamp, e_dimUOM,
@@ -132,7 +173,7 @@ SELECT client_booking_id, l_009_weight_per_each,
         Else
             0
     END,
-    l_003_item, l_002_qty,
+    l_003_item, l_002_qty, l_001_type_of_packaging,
     e_item_type, e_pallet_type, v_client_pk_consigment_num,
     l_005_dim_length, l_006_dim_width, l_007_dim_height,
     l_008_weight_UOM, z_createdTimeStamp, l_004_dim_UOM,
