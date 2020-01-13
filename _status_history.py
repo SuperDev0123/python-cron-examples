@@ -7,16 +7,16 @@ import pymysql, pymysql.cursors
 from _tempo_push_booking import push_via_api
 
 IS_DEBUG = False
-# IS_PRODUCTION = True  # Dev
-IS_PRODUCTION = False  # Local
+IS_PRODUCTION = True  # Dev
+# IS_PRODUCTION = False  # Local
 
 if IS_PRODUCTION:
     DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
     DB_USER = "fmadmin"
     DB_PASS = "oU8pPQxh"
     DB_PORT = 3306
-    DB_NAME = "dme_db_dev"  # Dev
-    # DB_NAME = "dme_db_prod"  # Prod
+    # DB_NAME = "dme_db_dev"  # Dev
+    DB_NAME = "dme_db_prod"  # Prod
 else:
     DB_HOST = "localhost"
     DB_USER = "root"
@@ -104,7 +104,7 @@ def create(booking_id, new_b_status_API, event_time_stamp, new_b_status=None):
         cursor.execute(sql, (b_status, booking["id"]))
         mysqlcon.commit()
 
-        option = get_option()
+        option = get_option(mysqlcon)
         if (
             booking["kf_client_id"] == "461162D2-90C7-BF4E-A905-092A1A5F73F3"
             and int(option["option_value"]) == 1

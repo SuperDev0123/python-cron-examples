@@ -4,10 +4,6 @@ import os, sys, time, json
 import datetime
 import requests
 
-IS_DEBUG = False
-IS_PRODUCTION = True  # Dev
-# IS_PRODUCTION = False  # Local
-
 TEMPO_CREDENTIALS = {
     "host_url": "https://globalconnect.tempo.org/",
     "api_url": "https://globalconnect.tempo.org/api/EDIDelivery/Items",
@@ -33,6 +29,16 @@ def push_via_api(booking):
     json_booking["consignmentNo"] = booking["v_FPBookingNumber"]
     json_booking["status"] = booking["b_status"]
     json_booking["bookingID"] = booking["b_bookingID_Visual"]
+    json_booking["actualDeliveryDate"] = (
+        booking["s_21_ActualDeliveryTimeStamp"].strftime("%Y-%m-%d %H:%M:%S")
+        if booking["s_21_ActualDeliveryTimeStamp"]
+        else ""
+    )
+    json_booking["bookingRequestDate"] = (
+        booking["delivery_booking"].strftime("%Y-%m-%d")
+        if booking["delivery_booking"]
+        else ""
+    )
 
     json_payload = {"data": [json_booking]}
     headers = {"content-type": "application/json"}
