@@ -104,6 +104,13 @@ def create(booking_id, new_b_status_API, event_time_stamp, new_b_status=None):
         cursor.execute(sql, (b_status, booking["id"]))
         mysqlcon.commit()
 
+        if b_status == "Delivered":
+            sql = "UPDATE `dme_bookings` \
+                SET z_lock_status=%s, z_api_issue_update_flag_500=%s \
+                WHERE id=%s"
+            cursor.execute(sql, (1, 0, booking["id"]))
+            mysqlcon.commit()
+
         option = get_option(mysqlcon)
         if (
             booking["kf_client_id"] == "461162D2-90C7-BF4E-A905-092A1A5F73F3"
