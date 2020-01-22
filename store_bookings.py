@@ -60,6 +60,11 @@ def do_process(fpath, fname, mysqlcon):
             new_fp_store_event_time = datetime.datetime.strptime(
                 line.split(",")[3].replace("\n", ""), "%H:%M"
             )
+
+            new_fp_store_event_desc = ""
+            if len(line.split(",")) > 4:
+                new_fp_store_event_desc = line.split(",")[4]
+
             booking = get_booking_with_v_FPBookingNumber(v_FPBookingNumber, mysqlcon)
 
             if booking:
@@ -70,7 +75,7 @@ def do_process(fpath, fname, mysqlcon):
                     if not booking["fp_store_event_date"]:
                         sql = "UPDATE `dme_bookings` \
                                 SET delivery_booking=%s, de_Deliver_From_Date=%s, de_Deliver_By_Date=%s, \
-                                    fp_store_event_date=%s, fp_store_event_time=%s \
+                                    fp_store_event_date=%s, fp_store_event_time=%s,  fp_store_event_desc=%s \
                                 WHERE v_FPBookingNumber=%s"
                         cursor.execute(
                             sql,
@@ -80,12 +85,14 @@ def do_process(fpath, fname, mysqlcon):
                                 new_delivery_booking,
                                 new_fp_store_event_date,
                                 new_fp_store_event_time,
+                                new_fp_store_event_desc,
                                 booking["v_FPBookingNumber"],
                             ),
                         )
                     if new_delivery_booking:
                         sql = "UPDATE `dme_bookings` \
-                                SET delivery_booking=%s, de_Deliver_From_Date=%s, de_Deliver_By_Date=%s \
+                                SET delivery_booking=%s, de_Deliver_From_Date=%s, de_Deliver_By_Date=%s, \
+                                fp_store_event_desc=%s \
                                 WHERE v_FPBookingNumber=%s"
                         cursor.execute(
                             sql,
@@ -93,13 +100,14 @@ def do_process(fpath, fname, mysqlcon):
                                 new_delivery_booking,
                                 new_delivery_booking,
                                 new_delivery_booking,
+                                new_fp_store_event_desc,
                                 booking["v_FPBookingNumber"],
                             ),
                         )
 
                     sql = "INSERT INTO `fp_store_booking_log` \
                             (v_FPBookingNumber, delivery_booking, fp_store_event_date, \
-                            fp_store_event_time, z_createdTimeStamp, csv_file_name) \
+                            fp_store_event_time, fp_store_event_desc, z_createdTimeStamp, csv_file_name) \
                             VALUES (%s, %s, %s, %s, %s, %s)"
                     cursor.execute(
                         sql,
@@ -108,6 +116,7 @@ def do_process(fpath, fname, mysqlcon):
                             new_delivery_booking,
                             new_fp_store_event_date,
                             new_fp_store_event_time,
+                            new_fp_store_event_desc,
                             datetime.datetime.now(),
                             fname,
                         ),
