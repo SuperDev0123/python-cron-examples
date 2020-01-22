@@ -35,10 +35,10 @@ def get_bookings(mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "SELECT * \
                 FROM `dme_bookings` \
-                WHERE `vx_freight_provider`=%s and \
+                WHERE `kf_client_id`=%s and \
                 `b_status` <> 'Ready for Booking' and (`b_status` = 'Closed' or `b_status` = 'Cancelled') \
                 ORDER BY id"
-        cursor.execute(sql, ("Cope"))
+        cursor.execute(sql, ("461162D2-90C7-BF4E-A905-092A1A5F73F3"))
         bookings = cursor.fetchall()
 
         return bookings
@@ -55,11 +55,15 @@ def do_process(mysqlcon):
             json_booking = {}
             booking = bookings[i]
 
-            json_booking["bookedDate"] = (
-                booking["b_dateBookedDate"].strftime("%Y-%m-%d %H:%M:%S")
-                if booking["b_dateBookedDate"]
-                else ""
-            )
+            try:
+                json_booking["bookedDate"] = (
+                    booking["b_dateBookedDate"].strftime("%Y-%m-%d %H:%M:%S")
+                    if booking["b_dateBookedDate"]
+                    else ""
+                )
+            except Exception as e:
+                print(f"{booking['b_bookingID_Visual']}: {e}")
+                exit()
             json_booking["fromState"] = booking["de_To_Address_State"]
             json_booking["toEntity"] = booking["deToCompanyName"]
             json_booking["toPostalCode"] = booking["de_To_Address_PostalCode"]
@@ -69,6 +73,16 @@ def do_process(mysqlcon):
             json_booking["consignmentNo"] = booking["v_FPBookingNumber"]
             json_booking["status"] = booking["b_status"]
             json_booking["bookingID"] = booking["b_bookingID_Visual"]
+            json_booking["actualDeliveryDate"] = (
+                booking["s_21_ActualDeliveryTimeStamp"].strftime("%Y-%m-%d %H:%M:%S")
+                if booking["s_21_ActualDeliveryTimeStamp"]
+                else ""
+            )
+            json_booking["bookingRequestDate"] = (
+                booking["delivery_booking"].strftime("%Y-%m-%d")
+                if booking["delivery_booking"]
+                else ""
+            )
             json_bookings.append(json_booking)
 
             if i == len(bookings) - 1:
