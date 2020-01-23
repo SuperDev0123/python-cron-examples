@@ -459,7 +459,8 @@ def do_status_check(mysqlcon):
     with mysqlcon.cursor() as cursor:
         # for all bookings that have a b_stauts = entered or booked only, as per below
         #    1. b_status to 'In Transit' if qty scanned = qty booked
-        #    2. b_status to 'In Transit' if qty scanned < qty booked but not Null or 0 and set Status Detail to 'In transporter's depot (partial)'
+        #    2. b_status to 'In Transit' if qty scanned < qty booked
+        #       but not Null or 0 and set Status Detail to 'In transporter's depot (partial)'
         sql = "SELECT `id`, `pk_booking_id`, `e_qty_scanned_fp_total` \
                 From `dme_bookings` \
                 WHERE `b_status`=%s or `b_status`=%s"
