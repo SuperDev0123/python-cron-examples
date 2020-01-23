@@ -7,8 +7,8 @@ import json
 import pymysql, pymysql.cursors
 import shutil
 
-# production = True  # Dev
-production = False  # Local
+production = True  # Dev
+# production = False  # Local
 
 if production:
     DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
@@ -16,7 +16,7 @@ if production:
     DB_PASS = "oU8pPQxh"
     DB_PORT = 3306
     # DB_NAME = "dme_db_dev"  # Dev
-    # DB_NAME = "dme_db_prod"  # Prod
+    DB_NAME = "dme_db_prod"  # Prod
 else:
     DB_HOST = "localhost"
     DB_USER = "root"
@@ -75,7 +75,7 @@ def do_process(fpath, fname, mysqlcon):
                     if not booking["fp_store_event_date"]:
                         sql = "UPDATE `dme_bookings` \
                                 SET delivery_booking=%s, de_Deliver_From_Date=%s, de_Deliver_By_Date=%s, \
-                                    fp_store_event_date=%s, fp_store_event_time=%s,  fp_store_event_desc=%s \
+                                    fp_store_event_date=%s, fp_store_event_time=%s \
                                 WHERE v_FPBookingNumber=%s"
                         cursor.execute(
                             sql,
@@ -85,14 +85,12 @@ def do_process(fpath, fname, mysqlcon):
                                 new_delivery_booking,
                                 new_fp_store_event_date,
                                 new_fp_store_event_time,
-                                new_fp_store_event_desc,
                                 booking["v_FPBookingNumber"],
                             ),
                         )
                     if new_delivery_booking:
                         sql = "UPDATE `dme_bookings` \
-                                SET delivery_booking=%s, de_Deliver_From_Date=%s, de_Deliver_By_Date=%s, \
-                                fp_store_event_desc=%s \
+                                SET delivery_booking=%s, de_Deliver_From_Date=%s, de_Deliver_By_Date=%s \
                                 WHERE v_FPBookingNumber=%s"
                         cursor.execute(
                             sql,
@@ -100,15 +98,22 @@ def do_process(fpath, fname, mysqlcon):
                                 new_delivery_booking,
                                 new_delivery_booking,
                                 new_delivery_booking,
-                                new_fp_store_event_desc,
                                 booking["v_FPBookingNumber"],
                             ),
                         )
 
+                    # Update Store event description anytime
+                    sql = "UPDATE `dme_bookings` \
+                            SET fp_store_event_desc=%s \
+                            WHERE v_FPBookingNumber=%s"
+                    cursor.execute(
+                        sql, (new_fp_store_event_desc, booking["v_FPBookingNumber"])
+                    )
+
                     sql = "INSERT INTO `fp_store_booking_log` \
                             (v_FPBookingNumber, delivery_booking, fp_store_event_date, \
                             fp_store_event_time, fp_store_event_desc, z_createdTimeStamp, csv_file_name) \
-                            VALUES (%s, %s, %s, %s, %s, %s)"
+                            VALUES (%s, %s, %s, %s, %s, %s, %s)"
                     cursor.execute(
                         sql,
                         (
@@ -160,9 +165,9 @@ if __name__ == "__main__":
 
             if os.path.isfile(fpath) and fname.endswith(".csv"):
                 print("@100 Detect csv file:", fpath)
-                # do_process(fpath, fname, mysqlcon)
-                # shutil.move(CSV_DIR + fname, ARCHIVE_DIR + fname)
-                # print("@109 Moved csv file:", fpath)
+                do_process(fpath, fname, mysqlcon)
+                shutil.move(CSV_DIR + fname, ARCHIVE_DIR + fname)
+                print("@109 Moved csv file:", fpath)
 
     except OSError as e:
         print(str(e))
