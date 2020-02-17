@@ -247,7 +247,7 @@ if __name__ == "__main__":
                                         booking["id"],
                                         None,
                                         datetime.datetime.now(),
-                                        "Locked",
+                                        "Delivered",
                                     )
                                 else:
                                     if "POD_SOG_" in filename:
