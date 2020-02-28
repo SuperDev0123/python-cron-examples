@@ -20,7 +20,7 @@ def push_via_api(booking):
         if booking["b_dateBookedDate"]
         else ""
     )
-    json_booking["fromState"] = booking["de_To_Address_State"]
+    json_booking["fromState"] = booking["pu_Address_State"]
     json_booking["toEntity"] = booking["deToCompanyName"]
     json_booking["toPostalCode"] = booking["de_To_Address_PostalCode"]
     json_booking["clientSalesInvoice"] = booking["b_client_sales_inv_num"]
@@ -39,6 +39,15 @@ def push_via_api(booking):
         if booking["delivery_booking"]
         else ""
     )
+    json_booking["deToAddress"] = (
+        booking["de_To_Address_Street_1"] + ""
+        if booking["de_To_Address_Street_2"]
+        else booking["de_To_Address_Street_1"]
+    )
+    json_booking["deToPhoneMain"] = booking["de_to_Phone_Main"]
+    json_booking["deToAddressSuburb"] = booking["de_To_Address_Suburb"]
+    json_booking["deToAddressState"] = booking["de_To_Address_State"]
+    # json_booking["dhlOrder"] = booking["de_To_Address_PostalCode"]
 
     json_payload = {"data": [json_booking]}
     headers = {"content-type": "application/json"}
