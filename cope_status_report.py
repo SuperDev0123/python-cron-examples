@@ -303,312 +303,288 @@ def is_overridable(b_status_API_csv, mysqlcon):
 
 
 def update_status(fpath, mysqlcon):
-    with open(fpath) as csv_file:
-        with mysqlcon.cursor() as cursor:
-            for i, line in enumerate(csv_file):
-                v_FPBookingNumber = get_v_FPBookingNumber(line.split(",")[0])
-                # new_v_FPBookingNumber = v_FPBookingNumber.replace("DME", "DME_")
-                b_status_API_csv = line.split(",")[1].replace('"', "")
-                b_fp_qty_delivered_csv = line.split(",")[2]
+    csv_file = open(fpath)
+    cursor = mysqlcon.cursor()
 
-                if "-" in line.split(",")[3]:
-                    event_time_stamp = datetime.datetime.strptime(
-                        line.split(",")[3] + " " + line.split(",")[4].replace("\n", ""),
-                        "%Y-%m-%d %H:%M",
-                    )
-                else:
-                    event_time_stamp = datetime.datetime.strptime(
-                        line.split(",")[3] + " " + line.split(",")[4].replace("\n", ""),
-                        "%d/%m/%y %H:%M",
-                    )
+    for i, line in enumerate(csv_file):
+        v_FPBookingNumber = get_v_FPBookingNumber(line.split(",")[0])
+        # new_v_FPBookingNumber = v_FPBookingNumber.replace("DME", "DME_")
+        b_status_API_csv = line.split(",")[1].replace('"', "")
+        b_fp_qty_delivered_csv = line.split(",")[2]
 
-                booking = get_booking_with_v_FPBookingNumber(
-                    v_FPBookingNumber, mysqlcon
+        if "-" in line.split(",")[3]:
+            event_time_stamp = datetime.datetime.strptime(
+                line.split(",")[3] + " " + line.split(",")[4].replace("\n", ""),
+                "%Y-%m-%d %H:%M",
+            )
+        else:
+            event_time_stamp = datetime.datetime.strptime(
+                line.split(",")[3] + " " + line.split(",")[4].replace("\n", ""),
+                "%d/%m/%y %H:%M",
+            )
+
+        booking = get_booking_with_v_FPBookingNumber(v_FPBookingNumber, mysqlcon)
+
+        if not booking:
+            print("@102 v_FPBookingNumber not match: ", v_FPBookingNumber)
+        else:
+            print("@103 v_FPBookingNumber match: ", v_FPBookingNumber, event_time_stamp)
+
+            if is_b_status_API_csv(booking, b_status_API_csv, mysqlcon):
+                sql = "UPDATE `dme_bookings` \
+                       SET z_status_process_notes=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
+                       WHERE id=%s"
+                cursor.execute(
+                    sql,
+                    (
+                        f"New Status from FP ({b_status_API_csv}) "
+                        + str(datetime.datetime.now().strftime("%d/%m/%Y")),
+                        datetime.datetime.now(),
+                        booking["id"],
+                    ),
                 )
-
-                if not booking:
-                    print("@102 v_FPBookingNumber not match: ", v_FPBookingNumber)
-                else:
-                    print(
-                        "@103 v_FPBookingNumber match: ",
-                        v_FPBookingNumber,
-                        event_time_stamp,
-                    )
-
-                    if is_b_status_API_csv(booking, b_status_API_csv, mysqlcon):
+                mysqlcon.commit()
+            else:
+                if booking["z_lock_status"]:
+                    if (
+                        is_overridable(b_status_API_csv, mysqlcon)
+                        and booking["b_status_API"] == b_status_API_csv
+                    ):
+                        print("@70 - ")
                         sql = "UPDATE `dme_bookings` \
                                SET z_status_process_notes=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
                                WHERE id=%s"
                         cursor.execute(
                             sql,
                             (
-                                "New Status from FP ("
-                                + b_status_API_csv
-                                + ") "
-                                + str(datetime.datetime.now().strftime("%d/%m/%Y")),
+                                f"status was locked with ({booking['b_status']}) - POD Received not set",
                                 datetime.datetime.now(),
                                 booking["id"],
                             ),
                         )
                         mysqlcon.commit()
                     else:
-                        if booking["z_lock_status"]:
-                            if (
-                                is_overridable(b_status_API_csv, mysqlcon)
-                                and booking["b_status_API"] == b_status_API_csv
-                            ):
-                                print("@70 - ")
-                                sql = "UPDATE `dme_bookings` \
-                                       SET z_status_process_notes=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
-                                       WHERE id=%s"
-                                cursor.execute(
-                                    sql,
-                                    (
-                                        "status was locked with ("
-                                        + booking["b_status"]
-                                        + ") - POD Received not set",
-                                        datetime.datetime.now(),
-                                        booking["id"],
-                                    ),
-                                )
-                                mysqlcon.commit()
-                            else:
-                                print("@71 - ")
-                                sql = "UPDATE `dme_bookings` \
-                                       SET b_status_API=%s, z_status_process_notes=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
-                                       WHERE id=%s"
-                                cursor.execute(
-                                    sql,
-                                    (
-                                        b_status_API_csv,
-                                        "status was locked with ("
-                                        + booking["b_status"]
-                                        + ") - api status changed but not b_status",
-                                        datetime.datetime.now(),
-                                        booking["id"],
-                                    ),
-                                )
-                                mysqlcon.commit()
-                            # create_status_history(booking, 'Locked', event_time_stamp, mysqlcon)
-                        else:
-                            if (
-                                booking["b_status_API"] == "POD Received"
-                                and is_overridable(b_status_API_csv, mysqlcon)
-                                and booking["b_status_API"] != b_status_API_csv
-                            ):
-                                print("@80 - ")
-                                sql = "UPDATE `dme_bookings` \
-                                       SET b_status_API=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
-                                       WHERE id=%s"
-                                cursor.execute(
-                                    sql,
-                                    (
-                                        b_status_API_csv,
-                                        datetime.datetime.now(),
-                                        booking["id"],
-                                    ),
-                                )
-                                mysqlcon.commit()
-                                do_translate_status(
-                                    booking,
-                                    b_status_API_csv,
-                                    v_FPBookingNumber,
-                                    event_time_stamp,
-                                    b_fp_qty_delivered_csv,
-                                    mysqlcon,
-                                    True,
-                                )
-                            elif (
-                                booking["b_status_API"] != "POD Received"
-                                and booking["b_status_API"] != b_status_API_csv
-                            ):
-                                print("@81 - ")
-                                sql = "UPDATE `dme_bookings` \
-                                       SET b_status_API=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
-                                       WHERE id=%s"
-                                cursor.execute(
-                                    sql,
-                                    (
-                                        b_status_API_csv,
-                                        datetime.datetime.now(),
-                                        booking["id"],
-                                    ),
-                                )
-                                mysqlcon.commit()
-                                do_translate_status(
-                                    booking,
-                                    b_status_API_csv,
-                                    v_FPBookingNumber,
-                                    event_time_stamp,
-                                    b_fp_qty_delivered_csv,
-                                    mysqlcon,
-                                    False,
-                                )
-                            else:
-                                print("@82 - ")
-                                sql = "UPDATE `dme_bookings` \
-                                       SET z_lastStatusAPI_ProcessedTimeStamp=%s \
-                                       WHERE id=%s"
-                                cursor.execute(
-                                    sql, (datetime.datetime.now(), booking["id"])
-                                )
-                                mysqlcon.commit()
+                        print("@71 - ")
+                        sql = "UPDATE `dme_bookings` \
+                               SET b_status_API=%s, z_status_process_notes=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
+                               WHERE id=%s"
+                        cursor.execute(
+                            sql,
+                            (
+                                b_status_API_csv,
+                                f"status was locked with ({booking['b_status']}) - api status changed but not b_status",
+                                datetime.datetime.now(),
+                                booking["id"],
+                            ),
+                        )
+                        mysqlcon.commit()
+                    # create_status_history(booking, 'Locked', event_time_stamp, mysqlcon)
+                else:
+                    if (
+                        booking["b_status_API"] == "POD Received"
+                        and is_overridable(b_status_API_csv, mysqlcon)
+                        and booking["b_status_API"] != b_status_API_csv
+                    ):
+                        print("@80 - ")
+                        sql = "UPDATE `dme_bookings` \
+                               SET b_status_API=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
+                               WHERE id=%s"
+                        cursor.execute(
+                            sql,
+                            (b_status_API_csv, datetime.datetime.now(), booking["id"]),
+                        )
+                        mysqlcon.commit()
+                        do_translate_status(
+                            booking,
+                            b_status_API_csv,
+                            v_FPBookingNumber,
+                            event_time_stamp,
+                            b_fp_qty_delivered_csv,
+                            mysqlcon,
+                            True,
+                        )
+                    elif (
+                        booking["b_status_API"] != "POD Received"
+                        and booking["b_status_API"] != b_status_API_csv
+                    ):
+                        print("@81 - ")
+                        sql = "UPDATE `dme_bookings` \
+                               SET b_status_API=%s, z_lastStatusAPI_ProcessedTimeStamp=%s \
+                               WHERE id=%s"
+                        cursor.execute(
+                            sql,
+                            (b_status_API_csv, datetime.datetime.now(), booking["id"]),
+                        )
+                        mysqlcon.commit()
+                        do_translate_status(
+                            booking,
+                            b_status_API_csv,
+                            v_FPBookingNumber,
+                            event_time_stamp,
+                            b_fp_qty_delivered_csv,
+                            mysqlcon,
+                            False,
+                        )
+                    else:
+                        print("@82 - ")
+                        sql = "UPDATE `dme_bookings` \
+                               SET z_lastStatusAPI_ProcessedTimeStamp=%s \
+                               WHERE id=%s"
+                        cursor.execute(sql, (datetime.datetime.now(), booking["id"]))
+                        mysqlcon.commit()
 
 
 def do_status_check(mysqlcon):
-    with mysqlcon.cursor() as cursor:
-        # for all bookings that have a b_stauts = entered or booked only, as per below
-        #    1. b_status to 'In Transit' if qty scanned = qty booked
-        #    2. b_status to 'In Transit' if qty scanned < qty booked
-        #       but not Null or 0 and set Status Detail to 'In transporter's depot (partial)'
-        sql = "SELECT `id`, `pk_booking_id`, `e_qty_scanned_fp_total` \
-                From `dme_bookings` \
-                WHERE `b_status`=%s or `b_status`=%s"
-        cursor.execute(sql, ("Entered", "Booked"))
-        bookings = cursor.fetchall()
+    cursor = mysqlcon.cursor()
 
-        for booking in bookings:
-            sql = "SELECT `pk_lines_id`, `e_qty` \
-                    From `dme_booking_lines` \
-                    WHERE `fk_booking_id`=%s"
-            cursor.execute(sql, (booking["pk_booking_id"]))
-            booking_lines = cursor.fetchall()
+    sql = "SELECT `id`, `pk_booking_id`, `e_qty_scanned_fp_total`, `z_pod_signed_url`, `z_lock_status` \
+            From `dme_bookings` \
+            WHERE `b_status`=%s or `b_status`=%s"
+    cursor.execute(sql, ("Entered", "Booked"))
+    bookings = cursor.fetchall()
 
-            e_qty_total = 0
+    # for all bookings that have a b_stauts = entered or booked only, as per below
+    #    1. b_status to 'In Transit' if qty scanned = qty booked
+    #    2. b_status to 'In Transit' if qty scanned < qty booked
+    #       but not Null or 0 and set Status Detail to 'In transporter's depot (partial)'
+    for booking in bookings:
+        if booking["z_lock_status"]:
+            continue
 
-            for booking_line in booking_lines:
-                if booking_line["e_qty"] is not None:
-                    e_qty_total += booking_line["e_qty"]
+        sql = "SELECT `pk_lines_id`, `e_qty` \
+                From `dme_booking_lines` \
+                WHERE `fk_booking_id`=%s"
+        cursor.execute(sql, (booking["pk_booking_id"]))
+        booking_lines = cursor.fetchall()
 
-            if (
+        e_qty_total = 0
+
+        for booking_line in booking_lines:
+            if booking_line["e_qty"] is not None:
+                e_qty_total += booking_line["e_qty"]
+
+        if (
+            booking["e_qty_scanned_fp_total"] != 0
+            and booking["e_qty_scanned_fp_total"] is not None
+        ) and booking["e_qty_scanned_fp_total"] == e_qty_total:
+            sql = "UPDATE `dme_bookings` \
+                   SET b_status=%s, z_ModifiedTimestamp=%s \
+                   WHERE id=%s"
+            cursor.execute(sql, ("In Transit", datetime.datetime.now(), booking["id"]))
+            mysqlcon.commit()
+        elif (
+            booking["e_qty_scanned_fp_total"] is not None
+            and (
                 booking["e_qty_scanned_fp_total"] != 0
                 and booking["e_qty_scanned_fp_total"] is not None
-            ) and booking["e_qty_scanned_fp_total"] == e_qty_total:
-                sql = "UPDATE `dme_bookings` \
-                       SET b_status=%s, z_ModifiedTimestamp=%s \
-                       WHERE id=%s"
-                cursor.execute(
-                    sql, ("In Transit", datetime.datetime.now(), booking["id"])
-                )
-                mysqlcon.commit()
-            elif (
-                booking["e_qty_scanned_fp_total"] is not None
-                and (
-                    booking["e_qty_scanned_fp_total"] != 0
-                    and booking["e_qty_scanned_fp_total"] is not None
-                )
-                and booking["e_qty_scanned_fp_total"] < e_qty_total
-                and booking["e_qty_scanned_fp_total"] > 0
-            ):
-                sql = "UPDATE `dme_bookings` \
-                       SET b_status=%s, dme_status_detail=%s, z_ModifiedTimestamp=%s, \
-                           prev_dme_status_detail=%s, dme_status_detail_updated_at=%s, \
-                           dme_status_detail_updated_by=%s \
-                       WHERE id=%s"
-                cursor.execute(
-                    sql,
-                    (
-                        "In Transit",
-                        "In transporter's depot (partial)",
-                        datetime.datetime.now(),
-                        booking["dme_status_detail"],
-                        datetime.datetime.now(),
-                        "script",
-                        booking["id"],
-                    ),
-                )
-                mysqlcon.commit()
-
-        # POD Check
-        #     1. If a POD exists and scans equal the qty booked set b_status to Delivered
-        #     2. If a POD exists and scans are less than the qty booked set b_status to 'Delivered' and Satus Detail to 'Delivered Partial'
-        #     3. if a POD exists and scans are 0 or NULL, set b_status to 'POD Check Required'
-        sql = "SELECT `id`, `pk_booking_id`, `e_qty_scanned_fp_total`, `z_pod_signed_url` \
-                From `dme_bookings` \
-                WHERE `id`=%s"
-        cursor.execute(sql, ("23199"))
-        bookings = cursor.fetchall()
-
-        for booking in bookings:
-            sql = "SELECT `pk_lines_id`, `e_qty` \
-                    From `dme_booking_lines` \
-                    WHERE `fk_booking_id`=%s"
-            cursor.execute(sql, (booking["pk_booking_id"]))
-            booking_lines = cursor.fetchall()
-
-            e_qty_total = 0
-
-            for booking_line in booking_lines:
-                if booking_line["e_qty"] is not None:
-                    e_qty_total += booking_line["e_qty"]
-
-            if (
+            )
+            and booking["e_qty_scanned_fp_total"] < e_qty_total
+            and booking["e_qty_scanned_fp_total"] > 0
+        ):
+            sql = "UPDATE `dme_bookings` \
+                   SET b_status=%s, dme_status_detail=%s, z_ModifiedTimestamp=%s, \
+                       prev_dme_status_detail=%s, dme_status_detail_updated_at=%s, \
+                       dme_status_detail_updated_by=%s \
+                   WHERE id=%s"
+            cursor.execute(
+                sql,
                 (
-                    booking["z_pod_signed_url"] is not None
-                    and booking["z_pod_signed_url"] != ""
-                )
-                and (
-                    booking["e_qty_scanned_fp_total"] != 0
-                    and booking["e_qty_scanned_fp_total"] is not None
-                )
-                and booking["e_qty_scanned_fp_total"] == e_qty_total
-            ):
-                sql = "UPDATE `dme_bookings` \
-                       SET b_status=%s, z_ModifiedTimestamp=%s \
-                       WHERE id=%s"
-                cursor.execute(
-                    sql, ("Delivered", datetime.datetime.now(), booking["id"])
-                )
-                mysqlcon.commit()
-            elif (
-                (
-                    booking["z_pod_signed_url"] is not None
-                    and booking["z_pod_signed_url"] != ""
-                )
-                and (
-                    booking["e_qty_scanned_fp_total"] != 0
-                    and booking["e_qty_scanned_fp_total"] is not None
-                )
-                and booking["e_qty_scanned_fp_total"] < e_qty_total
-            ):
-                sql = "UPDATE `dme_bookings` \
-                       SET b_status=%s, dme_status_detail=%s, z_ModifiedTimestamp=%s, \
-                           prev_dme_status_detail=%s, dme_status_detail_updated_at=%s, \
-                           dme_status_detail_updated_by=%s \
-                       WHERE id=%s"
-                cursor.execute(
-                    sql,
-                    (
-                        "Delivered",
-                        "Delivered Partial",
-                        datetime.datetime.now(),
-                        booking["dme_status_detail"],
-                        datetime.datetime.now(),
-                        "script",
-                        booking["id"],
-                    ),
-                )
-                mysqlcon.commit()
-            elif (
+                    "In Transit",
+                    "In transporter's depot (partial)",
+                    datetime.datetime.now(),
+                    booking["dme_status_detail"],
+                    datetime.datetime.now(),
+                    "script",
+                    booking["id"],
+                ),
+            )
+            mysqlcon.commit()
+
+    # POD Check
+    #     1. If a POD exists and scans equal the qty booked set b_status to Delivered
+    #     2. If a POD exists and scans are less than the qty booked set b_status to 'Delivered' and Satus Detail to 'Delivered Partial'
+    #     3. if a POD exists and scans are empty, set b_status to 'Delivered' and status Detail to 'POD Check Required'
+    for booking in bookings:
+        if booking["z_lock_status"]:
+            continue
+
+        sql = "SELECT `pk_lines_id`, `e_qty` \
+                From `dme_booking_lines` \
+                WHERE `fk_booking_id`=%s"
+        cursor.execute(sql, (booking["pk_booking_id"]))
+        booking_lines = cursor.fetchall()
+
+        e_qty_total = 0
+
+        for booking_line in booking_lines:
+            if booking_line["e_qty"] is not None:
+                e_qty_total += booking_line["e_qty"]
+
+        if (
+            (
                 booking["z_pod_signed_url"] is not None
                 and booking["z_pod_signed_url"] != ""
-            ) and (
-                booking["e_qty_scanned_fp_total"] == 0
-                or booking["e_qty_scanned_fp_total"] is None
-            ):
-                sql = "UPDATE `dme_bookings` \
-                       SET b_status=%s, dme_status_detail=%s, z_ModifiedTimestamp=%s \
-                       WHERE id=%s"
-                cursor.execute(
-                    sql,
-                    (
-                        "Delivered",
-                        "POD Check Required",
-                        datetime.datetime.now(),
-                        booking["id"],
-                    ),
-                )
-                mysqlcon.commit()
+            )
+            and (
+                booking["e_qty_scanned_fp_total"] != 0
+                and booking["e_qty_scanned_fp_total"] is not None
+            )
+            and booking["e_qty_scanned_fp_total"] == e_qty_total
+        ):
+            sql = "UPDATE `dme_bookings` \
+                   SET b_status=%s, z_ModifiedTimestamp=%s \
+                   WHERE id=%s"
+            cursor.execute(sql, ("Delivered", datetime.datetime.now(), booking["id"]))
+            mysqlcon.commit()
+        elif (
+            (
+                booking["z_pod_signed_url"] is not None
+                and booking["z_pod_signed_url"] != ""
+            )
+            and (
+                booking["e_qty_scanned_fp_total"] != 0
+                and booking["e_qty_scanned_fp_total"] is not None
+            )
+            and booking["e_qty_scanned_fp_total"] < e_qty_total
+        ):
+            sql = "UPDATE `dme_bookings` \
+                   SET b_status=%s, dme_status_detail=%s, z_ModifiedTimestamp=%s, \
+                       prev_dme_status_detail=%s, dme_status_detail_updated_at=%s, \
+                       dme_status_detail_updated_by=%s \
+                   WHERE id=%s"
+            cursor.execute(
+                sql,
+                (
+                    "Delivered",
+                    "Delivered Partial",
+                    datetime.datetime.now(),
+                    booking["dme_status_detail"],
+                    datetime.datetime.now(),
+                    "script",
+                    booking["id"],
+                ),
+            )
+            mysqlcon.commit()
+        elif (
+            booking["z_pod_signed_url"] is not None
+            and booking["z_pod_signed_url"] != ""
+        ) and (
+            booking["e_qty_scanned_fp_total"] == 0
+            or booking["e_qty_scanned_fp_total"] is None
+        ):
+            sql = "UPDATE `dme_bookings` \
+                   SET b_status=%s, dme_status_detail=%s, z_ModifiedTimestamp=%s \
+                   WHERE id=%s"
+            cursor.execute(
+                sql,
+                (
+                    "Delivered",
+                    "POD Check Required",
+                    datetime.datetime.now(),
+                    booking["id"],
+                ),
+            )
+            mysqlcon.commit()
 
 
 if __name__ == "__main__":

@@ -243,12 +243,12 @@ if __name__ == "__main__":
                                         ),
                                     )
                                     mysqlcon.commit()
-                                    _status_history.create(
-                                        booking["id"],
-                                        None,
-                                        datetime.datetime.now(),
-                                        "Delivered",
-                                    )
+                                    # _status_history.create(
+                                    #     booking["id"],
+                                    #     None,
+                                    #     datetime.datetime.now(),
+                                    #     "Delivered",
+                                    # )
                                 else:
                                     if "POD_SOG_" in filename:
                                         sql = "UPDATE `dme_bookings` \

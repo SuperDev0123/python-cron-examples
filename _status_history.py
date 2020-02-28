@@ -75,6 +75,8 @@ def create(booking_id, new_b_status_API, event_time_stamp, new_b_status=None):
         else:
             b_status = new_b_status
 
+        time_stamp = None if event_time_stamp == None else event_time_stamp
+
         sql = "INSERT INTO `dme_status_history` \
                 (`fk_booking_id`, `status_old`, `notes`, `status_last`, \
                  `z_createdTimeStamp`, `event_time_stamp`, `recipient_name`, `status_update_via`, \
@@ -88,9 +90,7 @@ def create(booking_id, new_b_status_API, event_time_stamp, new_b_status=None):
                 str(booking["b_status"]) + " ---> " + str(b_status),
                 b_status,
                 datetime.datetime.now(),
-                datetime.datetime.now()
-                if event_time_stamp == "null"
-                else event_time_stamp,
+                time_stamp,
                 " ",
                 "fp api",
                 booking["b_bookingID_Visual"],
@@ -106,9 +106,9 @@ def create(booking_id, new_b_status_API, event_time_stamp, new_b_status=None):
 
         if b_status == "Delivered":
             sql = "UPDATE `dme_bookings` \
-                SET z_lock_status=%s, z_api_issue_update_flag_500=%s \
+                SET z_lock_status=%s, z_api_issue_update_flag_500=%s, delivery_booking=%s \
                 WHERE id=%s"
-            cursor.execute(sql, (1, 0, booking["id"]))
+            cursor.execute(sql, (1, 0, booking["id"], time_stamp))
             mysqlcon.commit()
 
         option = get_option(mysqlcon)
