@@ -14,8 +14,8 @@ if IS_PRODUCTION:
     DB_USER = "fmadmin"
     DB_PASS = "oU8pPQxh"
     DB_PORT = 3306
-    # DB_NAME = "dme_db_dev"  # Dev
-    DB_NAME = "dme_db_prod"  # Prod
+    DB_NAME = "dme_db_dev"  # Dev
+    # DB_NAME = "dme_db_prod"  # Prod
 else:
     DB_HOST = "localhost"
     DB_USER = "root"
@@ -24,8 +24,8 @@ else:
     DB_NAME = "deliver_me"
 
 if IS_PRODUCTION:
-    # API_URL = "http://3.105.62.128/api"  # Dev
-    API_URL = "http://13.55.64.102/api"  # Prod
+    API_URL = "http://3.105.62.128/api"  # Dev
+    # API_URL = "http://13.55.64.102/api"  # Prod
 else:
     API_URL = "http://localhost:8000/api"  # Local
 
@@ -35,10 +35,12 @@ def get_bookings(mysqlcon):
         sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
                 FROM `dme_bookings` \
                 WHERE `b_dateBookedDate` is NULL and `b_status`=%s and \
+                `kf_client_id`=%s and `api_booking_quote_id` is NULL and \
                 (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
-                ORDER BY id DESC \
-                LIMIT 30"
-        cursor.execute(sql, ("Ready for booking", ""))
+                ORDER BY id DESC"
+        cursor.execute(
+            sql, ("Ready for booking", "461162D2-90C7-BF4E-A905-000000000003", "")
+        )
         bookings = cursor.fetchall()
 
         return bookings
@@ -53,7 +55,7 @@ def do_select_pricing(booking):
     response0 = response.content.decode("utf8")
     data0 = json.loads(response0)
     s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
-    print("@210 - ", s0)
+    print("@210 - Success")
     return data0
 
 
@@ -62,8 +64,10 @@ def do_process(mysqlcon):
     print("#200 - Booking cnt to process: ", len(bookings))
 
     if len(bookings) > 0:
-        for booking in bookings:
-            print("#201 - Processing: ***", booking["b_bookingID_Visual"], "***")
+        for index, booking in enumerate(bookings):
+            print(
+                f"#201 - Processing({index}/{len(bookings)}): ***   {booking['b_bookingID_Visual']}   ***"
+            )
             result = do_select_pricing(booking)
 
 
