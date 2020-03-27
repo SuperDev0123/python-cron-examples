@@ -4,6 +4,12 @@ BEGIN
 DECLARE v_b_bookingID_Visual int(11);
 DECLARE v_start_b_bookingID_Visual int(11);
 DECLARE v_end_b_bookingID_Visual int(11);
+DECLARE first_name char(64);
+DECLARE last_name char(64);
+DECLARE pk_id_dme_client int(11);
+DECLARE booking_created_for_email char(255);
+DECLARE bookingID_Visual int(11);
+
 
 DECLARE EXIT HANDLER FOR SQLEXCEPTION 
     BEGIN
@@ -206,6 +212,37 @@ SELECT 'Rows moved to dme_booking_lines_data = ' + ROW_COUNT();
 
 UPDATE bok_3_lines_data SET success=1
 WHERE success IN (2,3,4,6);
+
+
+SET bookingID_Visual = v_start_b_bookingID_Visual;
+
+bookingCreatedEmail: REPEAT 
+
+    SELECT 
+         SUBSTRING_INDEX(SUBSTRING_INDEX(dme_bookings.booking_Created_For, ' ', 1), ' ', -1),
+         TRIM( SUBSTR(dme_bookings.booking_Created_For, LOCATE(' ', dme_bookings.booking_Created_For))),
+         dme_clients.pk_id_dme_client INTO last_name, first_name, pk_id_dme_client
+    FROM
+        dme_bookings 
+    INNER JOIN dme_clients 
+    ON dme_bookings.b_client_name=dme_clients.company_name AND dme_bookings.kf_client_id=dme_clients.dme_account_num
+    WHERE dme_bookings.b_bookingID_Visual = bookingID_Visual;
+
+
+    SELECT first_name, last_name, pk_id_dme_client;
+
+    SELECT email INTO booking_created_for_email
+    FROM dme_client_employees
+    WHERE name_first=first_name AND name_last=last_name AND fk_id_dme_client_id=pk_id_dme_client;
+
+    SELECT booking_created_for_email;
+
+    UPDATE dme_bookings SET booking_Created_For_Email = booking_created_for_email WHERE b_bookingID_Visual = bookingID_Visual;
+    
+    Set bookingID_Visual = bookingID_Visual + 1;
+UNTIL bookingID_Visual > v_end_b_bookingID_Visual             
+END REPEAT bookingCreatedEmail;
+
 
 COMMIT;
 
