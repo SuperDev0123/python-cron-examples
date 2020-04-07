@@ -3,7 +3,7 @@
 /dir_dups
 
 .DS_Store
-.python-version
+*.python-version
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
