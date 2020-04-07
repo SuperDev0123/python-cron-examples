@@ -14,8 +14,8 @@ if IS_PRODUCTION:
     DB_USER = "fmadmin"
     DB_PASS = "oU8pPQxh"
     DB_PORT = 3306
-    DB_NAME = "dme_db_dev"  # Dev
-    # DB_NAME = "dme_db_prod"  # Prod
+    # DB_NAME = "dme_db_dev"  # Dev
+    DB_NAME = "dme_db_prod"  # Prod
 else:
     DB_HOST = "localhost"
     DB_USER = "root"
@@ -24,8 +24,8 @@ else:
     DB_NAME = "deliver_me"
 
 if IS_PRODUCTION:
-    API_URL = "http://3.105.62.128/api"  # Dev
-    # API_URL = "http://13.55.64.102/api"  # Prod
+    # API_URL = "http://3.105.62.128/api"  # Dev
+    API_URL = "http://13.55.64.102/api"  # Prod
 else:
     API_URL = "http://localhost:8000/api"  # Local
 
@@ -38,7 +38,7 @@ def get_bookings(mysqlcon):
                 (`b_status` is NULL or (`b_status`<>%s and `b_status`<>%s)) and \
                 (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
                 ORDER BY id DESC \
-                LIMIT 10"
+                LIMIT 200"
         cursor.execute(sql, ("TNT", "1", "Ready for booking", "Delivered", ""))
         bookings = cursor.fetchall()
 
@@ -52,8 +52,14 @@ def do_tracking(booking):
     response = requests.post(url, params={}, json=data)
     response0 = response.content.decode("utf8")
     data0 = json.loads(response0)
-    s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
-    print("@210 - Tracking result:", s0)
+
+    try:
+        s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
+        print("@210 - Tracking result:", s0)
+    except Exception as e:
+        print("@410 - Tracking error:", str(e))
+        pass
+
     return data0
 
 
