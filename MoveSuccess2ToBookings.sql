@@ -195,12 +195,12 @@ UPDATE bok_2_lines SET success=1 WHERE success IN (2,3,4,6);
 SELECT 'Starting move of booking lines data';
 
 INSERT INTO dme_booking_lines_data 
-    (pk_id_lines_data, fk_booking_id, quantity,
+    (fk_booking_id, quantity,
     modelNumber, itemDescription, itemFaultDescription,
     itemSerialNumbers, insuranceValueEach, gap_ra,
     clientRefNumber, z_createdByAccount, z_createdTimeStamp,
     z_modifiedByAccount, z_modifiedTimeStamp, fk_booking_lines_id)
-SELECT pk_auto_id, v_client_pk_consigment_num, ld_001_qty,
+SELECT v_client_pk_consigment_num, ld_001_qty,
     ld_002_model_number, ld_003_item_description, ld_004_fault_description,
     ld_005_item_serial_number, ld_006_insurance_value, ld_007_gap_ra,
     ld_008_client_ref_number, z_createdByAccount, z_createdTimeStamp,
@@ -228,22 +228,27 @@ bookingCreatedEmail: REPEAT
     ON dme_bookings.b_client_name=dme_clients.company_name AND dme_bookings.kf_client_id=dme_clients.dme_account_num
     WHERE dme_bookings.b_bookingID_Visual = bookingID_Visual;
 
-
     SELECT first_name, last_name, pk_id_dme_client;
-
-    SELECT email INTO booking_created_for_email
-    FROM dme_client_employees
-    WHERE name_first=first_name AND name_last=last_name AND fk_id_dme_client_id=pk_id_dme_client;
+    
+    If (first_name = "")
+        THEN
+            SELECT email INTO booking_created_for_email
+            FROM dme_client_employees
+            WHERE name_first IS NULL AND name_last=last_name AND fk_id_dme_client_id=pk_id_dme_client;
+        ELSE
+            SELECT email INTO booking_created_for_email
+            FROM dme_client_employees
+            WHERE name_first=first_name AND name_last=last_name AND fk_id_dme_client_id=pk_id_dme_client;
+    END If;
 
     SELECT booking_created_for_email;
 
     UPDATE dme_bookings SET booking_Created_For_Email = booking_created_for_email WHERE b_bookingID_Visual = bookingID_Visual;
     
     Set bookingID_Visual = bookingID_Visual + 1;
-UNTIL bookingID_Visual > v_end_b_bookingID_Visual             
+UNTIL bookingID_Visual > v_end_b_bookingID_Visual          
 END REPEAT bookingCreatedEmail;
 
 
 COMMIT;
-
 END
