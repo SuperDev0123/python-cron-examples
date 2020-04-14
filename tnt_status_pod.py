@@ -45,6 +45,19 @@ def get_bookings(mysqlcon):
         return bookings
 
 
+def get_bookings_missing_pod(mysqlcon):
+    with mysqlcon.cursor() as cursor:
+        sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
+                FROM `dme_bookings` \
+                WHERE `vx_freight_provider`=%s and b_status=%s and z_pod_url is NULL \
+                ORDER BY id DESC \
+                LIMIT 20"
+        cursor.execute(sql, ("TNT", "Delivered"))
+        bookings = cursor.fetchall()
+
+        return bookings
+
+
 def do_tracking(booking):
     url = API_URL + "/fp-api/tnt/tracking/"
     data = {"booking_id": booking["id"]}
@@ -76,17 +89,24 @@ def do_pod(booking):
 
 
 def do_process(mysqlcon):
-    # Get 3 TNT bookings
+    # Get 200 TNT bookings
     bookings = get_bookings(mysqlcon)
     print("#200 - Booking cnt to process: ", len(bookings))
 
-    if len(bookings) > 0:
-        for booking in bookings:
-            print("#200 - Processing: ***", booking["b_bookingID_Visual"], "***")
-            result = do_tracking(booking)
+    for booking in bookings:
+        print("#201 - Processing: ***", booking["b_bookingID_Visual"], "***")
+        result = do_tracking(booking)
 
-            if "b_status" in result and result["b_status"] == "Delivered":
-                do_pod(booking)
+        if "b_status" in result and result["b_status"] == "Delivered":
+            do_pod(booking)
+
+    # Get 20 TNT bookings that b_status is `Delivered` but missed POD
+    bookings = get_bookings_missing_pod(mysqlcon)
+    print("#210 - Booking(missing POD) cnt to process: ", len(bookings))
+
+    for booking in bookings:
+        print("#211 - Processing: ***", booking["b_bookingID_Visual"], "***")
+        do_pod(booking)
 
 
 if __name__ == "__main__":
