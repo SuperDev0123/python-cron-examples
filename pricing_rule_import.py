@@ -94,7 +94,8 @@ def _insert_file_info(mysqlcon, fname, fpath, note):
     mysqlcon.commit()
 
 
-def _set_rule_type_of_fp(freight_provider, rule_type):
+def _set_rule_type_of_fp(mysqlcon, freight_provider, rule_type):
+    cursor = mysqlcon.cursor()
     sql = "UPDATE dme_files \
         SET rule_type_id=%s \
         WHERE id=%s"
@@ -153,12 +154,15 @@ def read_xls(file):
 
         timing = {}
         timing["id"] = ws["A%i" % row].value
-        timing["time_UOM"] = ws["B%i" % row].value
+        timing["fp_delivery_service_code"] = ws["B%i" % row].value
         timing["min"] = set_null(ws["C%i" % row].value)
         timing["max"] = set_null(ws["D%i" % row].value)
-        timing["booking_cut_off_time"] = set_null(ws["E%i" % row].value[:8])
-        timing["collected_by"] = set_null(ws["F%i" % row].value[:8])
-        timing["delivered_by"] = set_null(ws["G%i" % row].value[:8])
+
+        if timing["max"]:
+            timing["fp_03_delivery_hours"] = int(timing["max"]) * 24
+        else:
+            timing["fp_03_delivery_hours"] = int(timing["min"]) * 24
+
         timings.append(timing)
         row += 1
 
@@ -272,13 +276,9 @@ def read_xls(file):
         rule["pu_state"] = set_null(ws["M%i" % row].value)
         rule["pu_suburb"] = set_null(ws["N%i" % row].value)
         rule["both_way"] = ws["O%i" % row].value
-        rule["vehicle_id"] = set_null(ws["P%i" % row].value)
+        rule["vehicle_type"] = set_null(ws["P%i" % row].value)
 
-        if (
-            not rule["freight_provider_id"]
-            or not rule["cost_id"]
-            or not rule["timing_id"]
-        ):
+        if not rule["freight_provider_id"] or not rule["cost_id"]:
             print(f'#409 - Error: Rule({rule["id"]}) missed foreign key(s)')
             exit(1)
 
@@ -286,6 +286,50 @@ def read_xls(file):
         row += 1
 
     return freight_providers, timings, vehicles, availabilities, costs, rules
+
+
+def _populate_vehicle_id(rules, vehicles):
+    for rule in rules:
+        if not rule["vehicle_type"]:
+            rule["vehicle_id"] = None
+            del rule["vehicle_type"]
+            continue
+
+        for vehicle in vehicles:
+            if rule["vehicle_type"] == vehicle["description"]:
+                rule["vehicle_id"] = vehicle["id"]
+                del rule["vehicle_type"]
+                break
+
+
+def _populate_etd_id(rules, freight_provider, rule_type, timings=[]):
+    cursor = mysqlcon.cursor()
+    sql = "SELECT * \
+        FROM fp_service_etds \
+        WHERE freight_provider_id=%s"
+    cursor.execute(sql, (freight_provider["id"]))
+    etds = cursor.fetchall()
+
+    for rule in rules:
+        for etd in etds:
+            if rule_type == "rule_type_01":
+                if (
+                    rule["service_timing_code"].lower()
+                    == etd["fp_delivery_service_code"].lower()
+                ):
+                    rule["etd_id"] = etd["id"]
+                    break
+            elif rule_type == "rule_type_02" and timings:
+                if (
+                    rule["service_timing_code"].lower()
+                    == etd["fp_delivery_service_code"].lower()
+                    and timings[int(rule["timing_id"]) - 1]["fp_03_delivery_hours"]
+                    == etd["fp_03_delivery_hours"]
+                ):
+                    rule["etd_id"] = etd["id"]
+                    break
+
+        del rule["timing_id"]
 
 
 def get_or_create_freight_provider(token, rule, freight_providers):
@@ -333,7 +377,7 @@ def get_or_create_objects(token, objects, name, rules=None):
 
     for obj in objects:
         # time.sleep(1) # Give some delay for server performance
-        # print("@201 - Timing: ", obj)
+        # print("@201 - Each Obj: ", obj)
         url = f"{API_URL}/{name}/add/"
         headers = {"Authorization": f"JWT {token}"}
         response = requests.post(url, params={}, json=obj, headers=headers)
@@ -346,7 +390,7 @@ def get_or_create_objects(token, objects, name, rules=None):
                     f"@203 - Diff index - xls index: {obj['id']}, result: {data0['result']['id']}"
                 )
 
-                if rules:
+                if rules and not name in ["vehicles", "availabilities"]:
                     for rule in rules:
                         if rule[f"{name[:-1]}_id"] == obj["id"]:
                             rule[f"{name[:-1]}_id"] = int(data0["result"]["id"])
@@ -376,34 +420,81 @@ def do_process(mysqlcon, fpath, fname):
         exit(1)
 
     print("# 100 - Reading XLS")
+    _update_file_info(
+        mysqlcon, fname, SRC_INPROGRESS_DIR + fname, "In progress: 0% --- Reading XLS"
+    )
     freight_providers, timings, vehicles, availabilities, costs, rules = read_xls(fpath)
 
     print("# 110 - Checking Rule Type...")
+    _update_file_info(
+        mysqlcon,
+        fname,
+        SRC_INPROGRESS_DIR + fname,
+        "In progress: 0% --- Checking Rule Type",
+    )
     rule_type = fname.split("__")[1]
-    for rule in rules:
-        freight_provider = get_or_create_freight_provider(
-            token, rule, freight_providers
+    first_rule = rules[0]
+    freight_provider = get_or_create_freight_provider(
+        token, first_rule, freight_providers
+    )
+
+    if not freight_provider["rule_type_code"]:
+        _set_rule_type_of_fp(mysqlcon, freight_provider, rule_type)
+    if rule_type != freight_provider["rule_type_code"]:
+        print(
+            f"# 501 Error: Freight Provider({freight_provider['fp_company_name']}) has this Rule Type({freight_provider['rule_type_code']}). But imported Rule({rule['id']}) with wrong Rule Type({rule_type})"
         )
+        exit(1)
 
-        if not freight_provider["rule_type_code"]:
-            _set_rule_type_of_fp(freight_provider, rule_type)
-        if rule_type != freight_provider["rule_type_code"]:
-            print(
-                f"# 501 Error: Freight Provider({freight_provider['fp_company_name']}) has this Rule Type({freight_provider['rule_type_code']}). But imported Rule({rule['id']}) with wrong Rule Type({rule_type})"
-            )
-            exit(1)
-
-    print("# 101 - Get or Create Timings...")
-    timings = get_or_create_objects(token, timings, "timings", rules)
     print("# 102 - Get or Create Vehicles...")
+    _update_file_info(
+        mysqlcon,
+        fname,
+        SRC_INPROGRESS_DIR + fname,
+        "In progress: 0% --- Get or Create Vehicles...",
+    )
     vehicles = get_or_create_objects(token, vehicles, "vehicles", rules)
     print("# 102 - Get or Create Availabilities...")
+    _update_file_info(
+        mysqlcon,
+        fname,
+        SRC_INPROGRESS_DIR + fname,
+        "In progress: 0% --- Get or Create Availabilities...",
+    )
     availabilities = get_or_create_objects(
         token, availabilities, "availabilities", rules
     )
     print("# 103 - Get or Create Costs...")
+    _update_file_info(
+        mysqlcon,
+        fname,
+        SRC_INPROGRESS_DIR + fname,
+        "In progress: 30% --- Get or Create Costs...",
+    )
     costs = get_or_create_objects(token, costs, "costs", rules)
+
+    _update_file_info(
+        mysqlcon,
+        fname,
+        SRC_INPROGRESS_DIR + fname,
+        "In progress: 35% --- Populating Vehicle Id",
+    )
+    _populate_vehicle_id(rules, vehicles)
+    _update_file_info(
+        mysqlcon,
+        fname,
+        SRC_INPROGRESS_DIR + fname,
+        "In progress: 40% --- Populating ETD Id",
+    )
+    _populate_etd_id(rules, freight_provider, rule_type, timings)
+
     print("# 104 - Get or Create Rules...")
+    _update_file_info(
+        mysqlcon,
+        fname,
+        SRC_INPROGRESS_DIR + fname,
+        "In progress: 40% --- Get or Create Rules...",
+    )
     rules = get_or_create_objects(token, rules, "pricing_rules")
 
 
