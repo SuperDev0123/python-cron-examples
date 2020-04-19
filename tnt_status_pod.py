@@ -83,8 +83,8 @@ def do_pod(booking):
     response = requests.post(url, params={}, json=data)
     response0 = response.content.decode("utf8")
     data0 = json.loads(response0)
-    s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
-    print("@210 - POD result:", s0)
+    # s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
+    # print("@210 - POD result:", s0)
     return data0
 
 
@@ -106,7 +106,15 @@ def do_process(mysqlcon):
 
     for booking in bookings:
         print("#211 - Processing: ***", booking["b_bookingID_Visual"], "***")
-        do_pod(booking)
+        counter = 0
+        result = None
+
+        while counter < 5 or (
+            "message" in result and "successfully" in result["message"]
+        ):
+            result = do_pod(booking)
+            counter += 1
+            time.sleep(30)
 
 
 if __name__ == "__main__":
