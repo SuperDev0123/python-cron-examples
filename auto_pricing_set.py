@@ -61,9 +61,9 @@ def _get_bookingSets_to_get_pricing(mysqlcon):
     return bookingSets
 
 
-def _pricing(booking):
+def _pricing(booking, auto_select_type):
     url = API_URL + "/fp-api/pricing/"
-    data = {"booking_id": booking["id"]}
+    data = {"booking_id": booking["id"], "auto_select_type": auto_select_type}
     response = requests.post(url, params={}, json=data)
 
     try:
@@ -101,7 +101,7 @@ def do_process(mysqlcon):
             success_cnt = 0
 
             for index, booking in enumerate(bookings):
-                result = _pricing(booking)
+                result = _pricing(booking, bookingSet["auto_select_type"])
 
                 success_cnt = success_cnt + (1 if result else 0)
                 print(f"#810 - Processing {index + 1}/{len(bookings)}")
