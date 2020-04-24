@@ -38,8 +38,21 @@ def get_bookings(mysqlcon):
                 (`b_status` is NULL or (`b_status`<>%s and `b_status`<>%s and `z_pod_url` is NULL)) and \
                 (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
                 ORDER BY id DESC \
-                LIMIT 25"
+                LIMIT 200"
         cursor.execute(sql, ("Hunter", "Ready for booking", "Closed", ""))
+        bookings = cursor.fetchall()
+
+        return bookings
+
+
+def get_bookings_missing_pod(mysqlcon):
+    with mysqlcon.cursor() as cursor:
+        sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
+                FROM `dme_bookings` \
+                WHERE `vx_freight_provider`=%s and b_status=%s and z_pod_url is NULL \
+                ORDER BY id DESC \
+                LIMIT 20"
+        cursor.execute(sql, ("Hunter", "Delivered"))
         bookings = cursor.fetchall()
 
         return bookings
@@ -70,7 +83,7 @@ def do_pod(booking):
 
 
 def do_process(mysqlcon):
-    # Get 25 Hunter bookings
+    # Get 200 Hunter bookings
     bookings = get_bookings(mysqlcon)
     print("#200 - Booking cnt to process: ", len(bookings))
 
@@ -82,6 +95,24 @@ def do_process(mysqlcon):
 
             if "b_status" in result and result["b_status"] == "Delivered":
                 do_pod(booking)
+
+    # Get 20 Hunter bookings that b_status is `Delivered` but missed POD
+    bookings = get_bookings_missing_pod(mysqlcon)
+    print("#210 - Booking(missing POD) cnt to process: ", len(bookings))
+
+    for booking in bookings:
+        print("#211 - Processing: ***", booking["b_bookingID_Visual"], "***")
+        counter = 0
+        result = None
+
+        while counter < 5:
+            result = do_pod(booking)
+
+            if "message" in result and "successfully" in result["message"]:
+                break
+
+            counter += 1
+            time.sleep(30)
 
 
 if __name__ == "__main__":

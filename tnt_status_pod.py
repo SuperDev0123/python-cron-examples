@@ -109,10 +109,12 @@ def do_process(mysqlcon):
         counter = 0
         result = None
 
-        while counter < 5 or (
-            "message" in result and "successfully" in result["message"]
-        ):
+        while counter < 5:
             result = do_pod(booking)
+
+            if "message" in result and "successfully" in result["message"]:
+                break
+
             counter += 1
             time.sleep(30)
 
