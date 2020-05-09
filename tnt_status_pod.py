@@ -30,6 +30,17 @@ else:
     API_URL = "http://localhost:8000/api"  # Local
 
 
+def get_option(mysqlcon, flag_name):
+    with mysqlcon.cursor() as cursor:
+        sql = "SELECT * \
+                FROM `dme_options` \
+                WHERE option_name=%s"
+        cursor.execute(sql, (flag_name))
+        dme_option = cursor.fetchone()
+
+        return dme_option
+
+
 def get_bookings(mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
@@ -137,7 +148,13 @@ if __name__ == "__main__":
         exit(1)
 
     try:
-        do_process(mysqlcon)
+        option = get_option(mysqlcon, "tnt_status_pod")
+
+        if int(option["option_value"]) == 0:
+            print("#905 - `tnt_status_pod` option is OFF")
+        else:
+            print("#906 - `tnt_status_pod` option is ON")
+            do_process(mysqlcon)
     except OSError as e:
         print(str(e))
 
