@@ -110,27 +110,27 @@ def do_process(mysqlcon):
         print("#201 - Processing: ***", booking["b_bookingID_Visual"], "***")
         result = do_tracking(booking)
 
-        # Sendle do NOT support POD
-        # if "b_status" in result and result["b_status"] == "Delivered":
-        #     do_pod(booking)
+        Sendle do NOT support POD
+        if "b_status" in result and result["b_status"] == "Delivered":
+            do_pod(booking)
 
-    # Get 20 Sendle bookings that b_status is `Delivered` but missed POD
-    # bookings = get_bookings_missing_pod(mysqlcon)
-    # print("#210 - Booking(missing POD) cnt to process: ", len(bookings))
+    Get 20 Sendle bookings that b_status is `Delivered` but missed POD
+    bookings = get_bookings_missing_pod(mysqlcon)
+    print("#210 - Booking(missing POD) cnt to process: ", len(bookings))
 
-    # for booking in bookings:
-    #     print("#211 - Processing: ***", booking["b_bookingID_Visual"], "***")
-    #     counter = 0
-    #     result = None
+    for booking in bookings:
+        print("#211 - Processing: ***", booking["b_bookingID_Visual"], "***")
+        counter = 0
+        result = None
 
-    #     while counter < 5:
-    #         result = do_pod(booking)
+        while counter < 3:
+            result = do_pod(booking)
 
-    #         if "message" in result and "successfully" in result["message"]:
-    #             break
+            if "message" in result and "successfully" in result["message"]:
+                break
 
-    #         counter += 1
-    #         time.sleep(30)
+            counter += 1
+            time.sleep(10)
 
 
 if __name__ == "__main__":

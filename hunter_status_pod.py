@@ -118,14 +118,14 @@ def do_process(mysqlcon):
         counter = 0
         result = None
 
-        while counter < 5:
+        while counter < 3:
             result = do_pod(booking)
 
             if "message" in result and "successfully" in result["message"]:
                 break
 
             counter += 1
-            time.sleep(30)
+            time.sleep(10)
 
 
 if __name__ == "__main__":
