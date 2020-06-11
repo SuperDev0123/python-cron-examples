@@ -49,3 +49,16 @@
 #*/10 * * * * /opt/chrons/append_status_history_feedback.sh
 #*/5 * * * * /opt/chrons/plum_au_scan_ok.sh
 */30 * * * * /opt/chrons/tnt_status_pod.sh
+
+# Auth status tracking and POD
+*/30 * * * * sudo python3 /opt/chrons/tnt_status_pod.py >> /opt/chrons/tnt_status_pod.log 2>&1
+*/25 * * * * sudo python3 /opt/chrons/sendle_status_pod.py >> /opt/chrons/sendle_status_pod.log 2>&1
+*/20 * * * * sudo python3 /opt/chrons/hunter_status_pod.py >> /opt/chrons/hunter_status_pod.log 2>&1
+
+# Pricing-Only and Pricing-Rule
+* * * * * sudo python3 /opt/chrons/pricing_only.py >> /opt/chrons/pricing_only.log 2>&1
+* * * * * sudo python3 /opt/chrons/pricing_rule_import.py >> /opt/chrons/pricing_rule_import.log 2>&1
+
+# BookingSet
+* * * * * sudo python3 /opt/chrons/auto_pricing_set.py >> /opt/chrons/auto_pricing_set.log 2>&1
+* * * * * sudo python3 /opt/chrons/auto_book_label_set.py >> /opt/chrons/auto_book_label_set.log 2>&1
