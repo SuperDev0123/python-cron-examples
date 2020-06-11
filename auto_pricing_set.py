@@ -21,10 +21,10 @@ if IS_PRODUCTION:
     DB_USER = "fmadmin"
     DB_PASS = "oU8pPQxh"
     DB_PORT = 3306
-    DB_NAME = "dme_db_dev"  # Dev
-    API_URL = "http://3.105.62.128/api"  # Dev
-    # DB_NAME = "dme_db_prod"               # Prod
-    # API_URL = "http://13.55.64.102/api"   # Prod
+    # DB_NAME = "dme_db_dev"  # Dev
+    # API_URL = "http://3.105.62.128/api"  # Dev
+    DB_NAME = "dme_db_prod"  # Prod
+    API_URL = "http://13.55.64.102/api"  # Prod
 else:
     DB_HOST = "localhost"
     DB_USER = "root"
