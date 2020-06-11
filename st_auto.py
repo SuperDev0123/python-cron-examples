@@ -30,15 +30,25 @@ else:
     API_URL = "http://localhost:8000/api"  # Local
 
 
-def get_bookings(mysqlcon):
+def get_bookings(mysqlcon, type="not-booked"):
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
-                FROM `dme_bookings` \
-                WHERE `vx_freight_provider`=%s and `b_dateBookedDate` is NULL and `b_status`=%s and \
-                (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
-                ORDER BY id DESC \
-                LIMIT 3"
-        cursor.execute(sql, ("StarTrack", "Ready for booking", ""))
+        if type == "not-booked":
+            sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
+                    FROM `dme_bookings` \
+                    WHERE `vx_freight_provider`=%s and `b_dateBookedDate` is NULL and `b_status`=%s and \
+                    (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
+                    ORDER BY id DESC \
+                    LIMIT 3"
+            cursor.execute(sql, ("StarTrack", "Ready for Booking", ""))
+        elif type == "missing-label":
+            sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
+                    FROM `dme_bookings` \
+                    WHERE `vx_freight_provider`=%s and `b_dateBookedDate` is not NULL and `b_status`=%s and \
+                    `z_label_url` is NULL and z_CreatedTimestamp > '2020-01-01' and \
+                    (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
+                    ORDER BY id DESC \
+                    LIMIT 10"
+            cursor.execute(sql, ("StarTrack", "Booked", ""))
         bookings = cursor.fetchall()
 
         return bookings
@@ -72,7 +82,7 @@ def do_create_and_get_label(booking):
 def do_process(mysqlcon):
     # Get 3 ST bookings
     bookings = get_bookings(mysqlcon)
-    print("#200 - Booking cnt to process: ", len(bookings))
+    print("#200 - Booking cnt to process(BOOK & LABEL): ", len(bookings))
 
     if len(bookings) > 0:
         time.sleep(5)
@@ -83,6 +93,16 @@ def do_process(mysqlcon):
 
             if "message" in result and "Successfully booked" in result["message"]:
                 do_create_and_get_label(booking)
+
+    # Get 3 ST bookings
+    bookings = get_bookings(mysqlcon, "missing-label")
+    print("#200 - Booking cnt to process(LABEL-ONLY): ", len(bookings))
+
+    if len(bookings) > 0:
+        time.sleep(5)
+
+        for booking in bookings:
+            do_create_and_get_label(booking)
 
 
 if __name__ == "__main__":
