@@ -299,6 +299,13 @@ def csv_write(fpath, f, mysqlcon):
 
                 booking = get_booking(consignment_number, mysqlcon)
                 if booking:
+                    # If new status, create status_history
+                    if booking["b_status"] != dme_status:
+                        print("@201 - New Status!")
+                        _status_history.create(
+                            booking["id"], None, datetime.datetime.now(), dme_status
+                        )
+
                     sql = "UPDATE `dme_bookings` \
                         SET b_del_to_signed_name=%s, b_del_to_signed_time=%s, z_ModifiedTimestamp=%s, b_status_API=%s, b_status=%s \
                         WHERE `v_FPBookingNumber`=%s"
@@ -314,13 +321,6 @@ def csv_write(fpath, f, mysqlcon):
                         ),
                     )
                     mysqlcon.commit()
-
-                    # If new status, create status_history
-                    if booking["b_status"] != dme_status:
-                        print("@201 - New Status!")
-                        _status_history.create(
-                            booking["id"], None, datetime.datetime.now(), dme_status
-                        )
 
                 # Write Each Line
                 comma = ","
