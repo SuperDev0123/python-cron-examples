@@ -62,7 +62,8 @@ INSERT INTO `dme_bookings`
     `de_Email`, `v_service_Type`, `v_FPBookingNumber`,
     `b_status`, `b_client_booking_ref_num`, `b_client_del_note_num`,
     `b_client_order_num`, `b_client_sales_inv_num`, `b_client_warehouse_code`,
-    `b_client_name`, `delivery_kpi_days`, `z_api_issue_update_flag_500`, `x_manual_booked_flag`)
+    `b_client_name`, `delivery_kpi_days`, `z_api_issue_update_flag_500`,
+    `x_manual_booked_flag`, `x_booking_Created_With`)
 SELECT bok_1.pk_header_id, bok_1.b_000_1_b_clientReference_RA_Numbers, b_000_2_b_price,
     bok_1.b_000_b_total_lines, bok_1.b_001_b_freight_provider, b_002_b_vehicle_type,
     bok_1.b_005_b_created_for, bok_1.b_006_b_created_for_email, b_007_b_ready_status,
@@ -108,7 +109,8 @@ SELECT bok_1.pk_header_id, bok_1.b_000_1_b_clientReference_RA_Numbers, b_000_2_b
     b_client_order_num, b_client_sales_inv_num, b_client_warehouse_code,
     dme_clients.company_name , IFNULL(delivery_days, 14),
     CASE WHEN success = 2 THEN 1 WHEN success = 3 THEN 0 WHEN success= 4 THEN 0 END,
-    CASE WHEN success = 6 THEN 1 ELSE 0 END
+    CASE WHEN success = 6 THEN 1 ELSE 0 END,
+    bok_1.x_booking_Created_With
 FROM bok_1_headers bok_1
 LEFT OUTER JOIN dme_clients ON fk_client_id=dme_account_num
 LEFT OUTER JOIN utl_fp_delivery_times ON (b_001_b_freight_provider = fp_name AND cast(b_059_b_del_address_postalcode AS UNSIGNED) 
