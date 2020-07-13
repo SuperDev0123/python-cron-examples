@@ -713,8 +713,6 @@ if __name__ == "__main__":
         print("Mysql DB connection error!")
         exit(1)
 
-    option = get_option(dbcon)
-
     try:
         option = get_option(dbcon, "web_2_fm_new")
 
