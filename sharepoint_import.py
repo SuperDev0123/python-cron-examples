@@ -32,7 +32,7 @@ from _env import (
     EMAIL_HOST_USER,
     EMAIL_HOST_PASSWORD,
 )
-from _sharepoint import Office365, Site
+from _sharepoint_lib import Office365, Site
 from _options_lib import get_option, set_option
 from _datetime_lib import convert_to_UTC_tz
 

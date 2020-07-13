@@ -17,7 +17,7 @@ def get_bookings(mysqlcon, type="not-booked"):
                     WHERE `vx_freight_provider`=%s and `b_dateBookedDate` is NULL and `b_status`=%s and \
                     (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
                     ORDER BY id DESC \
-                    LIMIT 3"
+                    LIMIT 5"
             cursor.execute(sql, ("StarTrack", "Ready for Booking", ""))
         elif type == "missing-label":
             sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
