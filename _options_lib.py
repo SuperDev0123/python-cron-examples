@@ -20,13 +20,13 @@ def set_option(mysqlcon, flag_name, is_running):
     with mysqlcon.cursor() as cursor:
         if is_running:
             sql = "UPDATE `dme_options` \
-                    SET is_running=%s, start_time=%s, is_running=%s \
+                    SET is_running=%s, start_time=%s \
                     WHERE option_name=%s"
-            cursor.execute(sql, (flag_name, datetime.now(), is_running))
+            cursor.execute(sql, (is_running, datetime.now(), flag_name))
         else:
             sql = "UPDATE `dme_options` \
-                    SET is_running=%s, end_time=%s, is_running=%s \
+                    SET is_running=%s, end_time=%s \
                     WHERE option_name=%s"
-            cursor.execute(sql, (flag_name, datetime.now(), is_running))
+            cursor.execute(sql, (is_running, datetime.now(), flag_name))
 
         mysqlcon.commit()
