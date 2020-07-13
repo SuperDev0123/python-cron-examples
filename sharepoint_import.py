@@ -714,20 +714,20 @@ if __name__ == "__main__":
         exit(1)
 
     try:
-        option = get_option(dbcon, "web_2_fm_new")
+        option = get_option(dbcon, "xls_import")
 
         if int(option["option_value"]) == 0:
-            print("#905 - `web_2_fm_new` option is OFF")
+            print("#905 - `xls_import` option is OFF")
         elif option["is_running"]:
-            print("#905 - `web_2_fm_new` script is already RUNNING")
+            print("#905 - `xls_import` script is already RUNNING")
         else:
-            print("#906 - `web_2_fm_new` option is ON")
-            set_option(dbcon, "web_2_fm_new", True)
+            print("#906 - `xls_import` option is ON")
+            set_option(dbcon, "xls_import", True)
             print("#910 - Processing...")
             download_from_sharepoint(dbcon)
     except Exception as e:
         print("Error 904:", str(e))
 
-    set_option(dbcon, "web_2_fm_new", False)
+    set_option(dbcon, "xls_import", False)
     dbcon.close()
     print("#999 - Finished %s" % datetime.now())
