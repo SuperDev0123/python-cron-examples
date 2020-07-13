@@ -13,25 +13,8 @@ import pymysql, pymysql.cursors
 import xlsxwriter as xlsxwriter
 from openpyxl import load_workbook
 
-# IS_PRODUCTION = False  # Local
-IS_PRODUCTION = True  # Prod
-
-if IS_PRODUCTION:
-    DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
-    DB_USER = "fmadmin"
-    DB_PASS = "oU8pPQxh"
-    DB_PORT = 3306
-    # DB_NAME = "dme_db_dev"  # Dev
-    # API_URL = "http://3.105.62.128/api"  # Dev
-    DB_NAME = "dme_db_prod"  # Prod
-    API_URL = "http://13.55.64.102/api"  # Prod
-else:
-    DB_HOST = "localhost"
-    DB_USER = "root"
-    DB_PASS = ""
-    DB_PORT = 3306
-    DB_NAME = "deliver_me"
-    API_URL = "http://localhost:8000/api"  # Local
+from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
+from _options_lib import get_option, set_option
 
 
 def _update_bookingSet_status(bookingSet_id, status, mysqlcon):
@@ -149,8 +132,20 @@ if __name__ == "__main__":
         exit(1)
 
     try:
-        do_process(mysqlcon)
+        option = get_option(mysqlcon, "auto_pricing_set")
+
+        if int(option["option_value"]) == 0:
+            print("#905 - `auto_pricing_set` option is OFF")
+        elif option["is_running"]:
+            print("#905 - `auto_pricing_set` script is already RUNNING")
+        else:
+            print("#906 - `auto_pricing_set` option is ON")
+            set_option(mysqlcon, "auto_pricing_set", True)
+            print("#910 - Processing...")
+            do_process(mysqlcon)
     except Exception as e:
         print("#904 Error: ", str(e))
 
+    set_option(mysqlcon, "auto_pricing_set", True)
+    mysqlcon.close()
     print("#999 Finished %s" % datetime.datetime.now())

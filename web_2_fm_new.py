@@ -5,49 +5,15 @@ from datetime import datetime
 import pymysql, pymysql.cursors
 import xlsxwriter as xlsxwriter
 
+from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME
 from _sharepoint_lib import Office365, Site
 from _datetime_lib import convert_to_AU_SYDNEY_tz
-
-IS_DEBUG = False
-# IS_PRODUCTION = True  # Dev
-IS_PRODUCTION = False  # Local
-
-if IS_PRODUCTION:
-    DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
-    DB_USER = "fmadmin"
-    DB_PASS = "oU8pPQxh"
-    DB_PORT = 3306
-    DB_NAME = "dme_db_dev"  # Dev
-    # DB_NAME = "dme_db_prod"  # Prod
-else:
-    DB_HOST = "localhost"
-    DB_USER = "root"
-    DB_PASS = ""
-    DB_PORT = 3306
-    DB_NAME = "deliver_me"
+from _options_lib import get_option, set_option
 
 
-def get_option(mysqlcon, flag_name):
-    with mysqlcon.cursor() as cursor:
-        sql = "SELECT * \
-                FROM `dme_options` \
-                WHERE option_name=%s"
-        cursor.execute(sql, (flag_name))
-        dme_option = cursor.fetchone()
-
-        return dme_option
-
-
-def get_latest_pushed_b_bookingID_Visual(mysqlcon):
-    with mysqlcon.cursor() as cursor:
-        sql = "SELECT * FROM `dme_options` WHERE option_name=%s"
-        cursor.execute(sql, ("web_2_fm_new"))
-        result = cursor.fetchone()
-
-        if result and "arg1" in result:
-            return result["arg1"]
-
-        return False
+def get_latest_pushed_b_bookingID_Visual(option):
+    if option and "arg1" in option:
+        return option["arg1"]
 
 
 def set_latest_pushed_b_bookingID_Visual(mysqlcon, b_bookingID_Visual):
@@ -59,8 +25,8 @@ def set_latest_pushed_b_bookingID_Visual(mysqlcon, b_bookingID_Visual):
 
 def get_bookings(mysqlcon, b_bookingID_Visual):
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT * FROM `dme_bookings` WHERE b_bookingID_Visual >= %s ORDER BY id"
-        cursor.execute(sql, (b_bookingID_Visual))
+        sql = "SELECT * FROM `dme_bookings` WHERE b_bookingID_Visual>=%s and b_client_name<>%s ORDER BY id"
+        cursor.execute(sql, (b_bookingID_Visual, "BioPak"))
         results = cursor.fetchall()
         return results
 
@@ -141,9 +107,9 @@ def write_worksheet(name, workbook, worksheet, table, fields_info):
             col_index += 1
 
 
-def do_process(mysqlcon):
+def do_process(mysqlcon, option):
     # Get latested pushed b_bookingID_Visual
-    b_bookingID_Visual = get_latest_pushed_b_bookingID_Visual(mysqlcon)
+    b_bookingID_Visual = get_latest_pushed_b_bookingID_Visual(option)
 
     if not b_bookingID_Visual:
         print(
@@ -239,12 +205,16 @@ if __name__ == "__main__":
 
         if int(option["option_value"]) == 0:
             print("#905 - `web_2_fm_new` option is OFF")
+        elif option["is_running"]:
+            print("#905 - `web_2_fm_new` script is already RUNNING")
         else:
             print("#906 - `web_2_fm_new` option is ON")
-            print("#910 - Processing")
-            do_process(mysqlcon)
-    except OSError as e:
-        print(str(e))
+            set_option(mysqlcon, "web_2_fm_new", True)
+            print("#910 - Processing...")
+            do_process(mysqlcon, option)
+    except Exception as e:
+        print("Error 904:", str(e))
 
-    print("#999 - Finished %s" % datetime.now())
+    set_option(mysqlcon, "web_2_fm_new", False)
     mysqlcon.close()
+    print("#999 - Finished %s" % datetime.now())

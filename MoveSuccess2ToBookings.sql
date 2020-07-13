@@ -222,7 +222,7 @@ bookingCreatedEmail: REPEAT
 
     SELECT 
          SUBSTRING_INDEX(SUBSTRING_INDEX(dme_bookings.booking_Created_For, ' ', 1), ' ', -1),
-         TRIM( SUBSTR(dme_bookings.booking_Created_For, LOCATE(' ', dme_bookings.booking_Created_For))),
+         TRIM(SUBSTR(dme_bookings.booking_Created_For, LOCATE(' ', dme_bookings.booking_Created_For))),
          dme_clients.pk_id_dme_client INTO last_name, first_name, pk_id_dme_client
     FROM
         dme_bookings 

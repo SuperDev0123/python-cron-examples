@@ -1,5 +1,5 @@
 #!/bin/bash
-arr=("Push2FM" "pullRecords" "pullModified" "MoveSuccess2ToBookings" "BookAllied" "BookSt" "TrackAllied" "StartrackAuAutoLabel" "StartrackAuAutoBook" "StartrackAuTriggerTracking")
+arr=("MoveSuccess2ToBookings")
 
 for i in "${arr[@]}"
 do
@@ -14,6 +14,3 @@ do
 done
 
 crontab -l
-
-sh /home/dme/TriggerTrackManualAllied.sh >> /home/dme/TriggerTrackManualAllied.log 2>&1
-sh /home/dme/ProdTrackManualAllied.sh >> /home/dme/ProdTrackManualAllied.log 2>&1

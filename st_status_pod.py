@@ -8,35 +8,18 @@ import shutil
 import pysftp
 
 import _status_history
-
-IS_DEBUG = False
-IS_PRODUCTION = True  # Dev
-# IS_PRODUCTION = False  # Local
-
-if IS_PRODUCTION:
-    DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
-    DB_USER = "fmadmin"
-    DB_PASS = "oU8pPQxh"
-    DB_PORT = 3306
-    # DB_NAME = 'dme_db_dev'  # Dev
-    DB_NAME = "dme_db_prod"  # Prod
-else:
-    DB_HOST = "localhost"
-    DB_USER = "root"
-    DB_PASS = "root"
-    DB_PORT = 3306
-    DB_NAME = "deliver_me"
-
-if IS_PRODUCTION:
-    FTP_DIR = "/home/cope_au/dme_sftp/startrack_au/ftp/indata/"
-    ARCHIVE_FTP_DIR = "/home/cope_au/dme_sftp/startrack_au/ftp/archive/"
-    CSV_DIR = "/home/cope_au/dme_sftp/startrack_au/pickup_ext/indata/"
-    ARCHIVE_CSV_DIR = "/home/cope_au/dme_sftp/startrack_au/pickup_ext/archive/"
-else:
-    FTP_DIR = "/Users/admin/work/goldmine/scripts/dir01/"
-    ARCHIVE_FTP_DIR = "/Users/admin/work/goldmine/scripts/dir02/"
-    CSV_DIR = "/Users/admin/work/goldmine/scripts/dir01/"
-    ARCHIVE_CSV_DIR = "/Users/admin/work/goldmine/scripts/dir02/"
+from _env import (
+    DB_HOST,
+    DB_USER,
+    DB_PASS,
+    DB_PORT,
+    DB_NAME,
+    ST_FTP_DIR as FTP_DIR,
+    ST_ARCHIVE_FTP_DIR as ARCHIVE_FTP_DIR,
+    ST_CSV_DIR as CSV_DIR,
+    ST_ARCHIVE_CSV_DIR as ARCHIVE_CSV_DIR,
+)
+from _options_lib import get_option, set_option
 
 # sftp server infos
 sftp_server_infos = {
@@ -359,51 +342,67 @@ if __name__ == "__main__":
         print('Given argument "%s, %s" is not a directory' % FTP_DIR, CSV_DIR)
         exit(1)
 
-    # Download .FTP files
     try:
-        download_sftp(
-            sftp_server_infos["st"]["host"],
-            sftp_server_infos["st"]["username"],
-            sftp_server_infos["st"]["password"],
-            sftp_server_infos["st"]["sftp_filepath"],
-            sftp_server_infos["st"]["local_filepath"],
-            sftp_server_infos["st"]["local_filepath_archive"],
-        )
-    except OSError as e:
-        print("Failed download .FTP files from remote. Error: ", str(e))
+        option = get_option(mysqlcon, "st_status_pod")
 
-    try:
-        for fname in sorted(os.listdir(FTP_DIR)):
-            fpath = os.path.join(FTP_DIR, fname)
+        if int(option["option_value"]) == 0:
+            print("#905 - `st_status_pod` option is OFF")
+        elif option["is_running"]:
+            print("#905 - `st_status_pod` script is already RUNNING")
+        else:
+            print("#906 - `st_status_pod` option is ON")
+            set_option(mysqlcon, "st_status_pod", True)
+            print("#910 - Processing...")
 
-            if os.path.isfile(fpath) and fname.endswith(".FTP"):
-                print("@100 Detect .FTP file:", fpath)
-                csv_name = (
-                    str(datetime.datetime.now().strftime("%d-%m-%Y__%H_%M_%S")) + ".csv"
+            # Download .FTP files
+            try:
+                download_sftp(
+                    sftp_server_infos["st"]["host"],
+                    sftp_server_infos["st"]["username"],
+                    sftp_server_infos["st"]["password"],
+                    sftp_server_infos["st"]["sftp_filepath"],
+                    sftp_server_infos["st"]["local_filepath"],
+                    sftp_server_infos["st"]["local_filepath_archive"],
                 )
-                if IS_PRODUCTION:
-                    f = open(CSV_DIR + csv_name, "w")
-                else:
-                    f = open(CSV_DIR + csv_name, "w")
-                csv_write(fpath, f, mysqlcon)
-                f.close()
+            except OSError as e:
+                print("Failed download .FTP files from remote. Error: ", str(e))
 
-                # Download .csv file
-                upload_sftp(
-                    sftp_server_infos["biopak"]["host"],
-                    sftp_server_infos["biopak"]["username"],
-                    sftp_server_infos["biopak"]["password"],
-                    sftp_server_infos["biopak"]["sftp_filepath"],
-                    sftp_server_infos["biopak"]["local_filepath"],
-                    sftp_server_infos["biopak"]["local_filepath_archive"],
-                    csv_name,
-                )
+            try:
+                for fname in sorted(os.listdir(FTP_DIR)):
+                    fpath = os.path.join(FTP_DIR, fname)
 
-                shutil.move(FTP_DIR + fname, ARCHIVE_FTP_DIR + fname)
-                print("@109 Moved .FTP file:", fpath)
+                    if os.path.isfile(fpath) and fname.endswith(".FTP"):
+                        print("@100 Detect .FTP file:", fpath)
+                        csv_name = (
+                            str(datetime.datetime.now().strftime("%d-%m-%Y__%H_%M_%S"))
+                            + ".csv"
+                        )
+                        if IS_PRODUCTION:
+                            f = open(CSV_DIR + csv_name, "w")
+                        else:
+                            f = open(CSV_DIR + csv_name, "w")
+                        csv_write(fpath, f, mysqlcon)
+                        f.close()
 
-    except OSError as e:
-        print(str(e))
+                        # Download .csv file
+                        upload_sftp(
+                            sftp_server_infos["biopak"]["host"],
+                            sftp_server_infos["biopak"]["username"],
+                            sftp_server_infos["biopak"]["password"],
+                            sftp_server_infos["biopak"]["sftp_filepath"],
+                            sftp_server_infos["biopak"]["local_filepath"],
+                            sftp_server_infos["biopak"]["local_filepath_archive"],
+                            csv_name,
+                        )
 
-    print("#909 - Finished %s" % datetime.datetime.now())
+                        shutil.move(FTP_DIR + fname, ARCHIVE_FTP_DIR + fname)
+                        print("@109 Moved .FTP file:", fpath)
+
+            except OSError as e:
+                print(str(e))
+    except Exception as e:
+        print("Error 904:", str(e))
+
+    set_option(mysqlcon, "st_status_pod", False)
     mysqlcon.close()
+    print("#999 - Finished %s" % datetime.datetime.now())

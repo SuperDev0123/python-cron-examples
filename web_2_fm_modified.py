@@ -5,58 +5,25 @@ from datetime import datetime
 import pymysql, pymysql.cursors
 import xlsxwriter as xlsxwriter
 
+from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME
 from _sharepoint_lib import Office365, Site
 from _datetime_lib import convert_to_AU_SYDNEY_tz
-
-IS_DEBUG = False
-# IS_PRODUCTION = True  # Dev
-IS_PRODUCTION = False  # Local
-
-if IS_PRODUCTION:
-    DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
-    DB_USER = "fmadmin"
-    DB_PASS = "oU8pPQxh"
-    DB_PORT = 3306
-    DB_NAME = "dme_db_dev"  # Dev
-    # DB_NAME = "dme_db_prod"  # Prod
-else:
-    DB_HOST = "localhost"
-    DB_USER = "root"
-    DB_PASS = ""
-    DB_PORT = 3306
-    DB_NAME = "deliver_me"
+from _options_lib import get_option, set_option
 
 
-def get_option(mysqlcon, flag_name):
-    with mysqlcon.cursor() as cursor:
-        sql = "SELECT * \
-                FROM `dme_options` \
-                WHERE option_name=%s"
-        cursor.execute(sql, (flag_name))
-        dme_option = cursor.fetchone()
-
-        return dme_option
-
-
-def get_begin_timestamp(mysqlcon):
-    with mysqlcon.cursor() as cursor:
-        sql = "SELECT * FROM `dme_options` WHERE option_name=%s"
-        cursor.execute(sql, ("web_2_fm_modified"))
-        result = cursor.fetchone()
-
-        if result and "arg2" in result:
-            return result["arg2"]
-
-        return False
+def get_begin_timestamp(option):
+    if option and "arg2" in option:
+        return option["arg2"]
 
 
 def get_bookings(mysqlcon, begin_ts):
     # Get bookings which modified after begin_ts and then delta(z_ModifiedTimestamp, z_CreatedTimestamp) is over 5 min
     with mysqlcon.cursor() as cursor:
         sql = "SELECT * FROM `dme_bookings` \
-                WHERE z_ModifiedTimestamp > %s and z_ModifiedTimestamp - z_CreatedTimestamp > %s \
+                WHERE z_ModifiedTimestamp>%s and z_ModifiedTimestamp - z_CreatedTimestamp>%s \
+                    and b_client_name<>%s \
                 ORDER BY id"
-        cursor.execute(sql, (begin_ts, 300))
+        cursor.execute(sql, (begin_ts, 300, "BioPak"))
         results = cursor.fetchall()
         return results
 
@@ -137,9 +104,9 @@ def write_worksheet(name, workbook, worksheet, table, fields_info):
             col_index += 1
 
 
-def do_process(mysqlcon):
+def do_process(mysqlcon, option):
     # Get begin timestamp - arg2 field of dme_options table
-    begin_ts = get_begin_timestamp(mysqlcon)
+    begin_ts = get_begin_timestamp(option)
 
     if not begin_ts:
         print(
@@ -230,12 +197,16 @@ if __name__ == "__main__":
 
         if int(option["option_value"]) == 0:
             print("#905 - `web_2_fm_modified` option is OFF")
+        elif option["is_running"]:
+            print("#905 - `web_2_fm_modified` script is already RUNNING")
         else:
             print("#906 - `web_2_fm_modified` option is ON")
-            print("#910 - Processing")
-            do_process(mysqlcon)
-    except OSError as e:
-        print(str(e))
+            set_option(mysqlcon, "web_2_fm_modified", True)
+            print("#910 - Processing...")
+            do_process(mysqlcon, option)
+    except Exception as e:
+        print("Error 904:", str(e))
 
-    print("#999 - Finished %s" % datetime.now())
+    set_option(mysqlcon, "web_2_fm_modified", False)
     mysqlcon.close()
+    print("#999 - Finished %s" % datetime.now())

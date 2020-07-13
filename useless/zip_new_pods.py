@@ -156,5 +156,5 @@ if __name__ == "__main__":
     except OSError as e:
         print("#902 Error", str(e))
 
-    print("#901 - Finished %s" % datetime.datetime.now())
     mysqlcon.close()
+    print("#901 - Finished %s" % datetime.datetime.now())

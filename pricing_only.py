@@ -13,37 +13,19 @@ import pymysql, pymysql.cursors
 import xlsxwriter as xlsxwriter
 from openpyxl import load_workbook
 
-IS_PRODUCTION = False  # Local
-# IS_PRODUCTION = True  # Prod
-
-if IS_PRODUCTION:
-    DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
-    DB_USER = "fmadmin"
-    DB_PASS = "oU8pPQxh"
-    DB_PORT = 3306
-    DB_NAME = "dme_db_dev"  # Dev
-    # DB_NAME = "dme_db_prod"  # Prod
-
-    API_URL = "http://3.105.62.128/api"  # Dev
-    # API_URL = "http://13.55.64.102/api"  # Prod
-    RESULT_DIR = "/var/www/html/dme_api/static/uploaded/pricing_only/result/"
-    SRC_DIR = "/var/www/html/dme_api/static/uploaded/pricing_only/indata/"
-    SRC_INPROGRESS_DIR = (
-        "/var/www/html/dme_api/static/uploaded/pricing_only/inprogress/"
-    )
-    SRC_ACHIEVE_DIR = "/var/www/html/dme_api/static/uploaded/pricing_only/achieve/"
-else:
-    DB_HOST = "localhost"
-    DB_USER = "root"
-    DB_PASS = ""
-    DB_PORT = 3306
-    DB_NAME = "deliver_me"
-
-    API_URL = "http://localhost:8000/api"  # Local
-    RESULT_DIR = "./../dme_api/static/uploaded/pricing_only/result/"
-    SRC_DIR = "./../dme_api/static/uploaded/pricing_only/indata/"
-    SRC_INPROGRESS_DIR = "./../dme_api/static/uploaded/pricing_only/inprogress/"
-    SRC_ACHIEVE_DIR = "./../dme_api/static/uploaded/pricing_only/achieve/"
+from _env import (
+    DB_HOST,
+    DB_USER,
+    DB_PASS,
+    DB_PORT,
+    DB_NAME,
+    API_URL,
+    PO_RESULT_DIR as RESULT_DIR,
+    PO_SRC_DIR as SRC_DIR,
+    PO_SRC_INPROGRESS_DIR as SRC_INPROGRESS_DIR,
+    PO_SRC_ACHIEVE_DIR as SRC_ACHIEVE_DIR,
+)
+from _options_lib import get_option, set_option
 
 
 def replace_null(array):
@@ -335,26 +317,49 @@ if __name__ == "__main__":
         print("#901 src dir does not exist! path:", SRC_DIR)
         exit(1)
 
-    for fname in os.listdir(SRC_DIR):
-        fpath = os.path.join(SRC_DIR, fname)
+    try:
+        option = get_option(mysqlcon, "pricing_only")
 
-        if os.path.isfile(fpath) and fname.endswith(".xlsx"):
-            try:
-                shutil.move(SRC_DIR + fname, SRC_INPROGRESS_DIR + fname)
-                _update_file_info(
-                    mysqlcon, fname, SRC_INPROGRESS_DIR + fname, "In progress: 0%"
-                )
-                file_path = do_process(mysqlcon, SRC_INPROGRESS_DIR + fname, fname)
-                shutil.move(SRC_INPROGRESS_DIR + fname, SRC_ACHIEVE_DIR + fname)
-                _update_file_info(
-                    mysqlcon, fname, SRC_ACHIEVE_DIR + fname, "Done: 100%"
-                )
-                file_name = file_path.split("/")[-1]
-                _insert_file_info(mysqlcon, file_name, file_path, "Generated")
-            except Exception as e:
-                traceback.print_exc()
-                _update_file_info(
-                    mysqlcon, fname, SRC_INPROGRESS_DIR + fname, f"Stopped... {str(e)}"
-                )
+        if int(option["option_value"]) == 0:
+            print("#905 - `pricing_only` option is OFF")
+        elif option["is_running"]:
+            print("#905 - `pricing_only` script is already RUNNING")
+        else:
+            print("#906 - `pricing_only` option is ON")
+            set_option(mysqlcon, "pricing_only", True)
 
+            for fname in os.listdir(SRC_DIR):
+                fpath = os.path.join(SRC_DIR, fname)
+
+                if os.path.isfile(fpath) and fname.endswith(".xlsx"):
+                    try:
+                        shutil.move(SRC_DIR + fname, SRC_INPROGRESS_DIR + fname)
+                        _update_file_info(
+                            mysqlcon,
+                            fname,
+                            SRC_INPROGRESS_DIR + fname,
+                            "In progress: 0%",
+                        )
+                        file_path = do_process(
+                            mysqlcon, SRC_INPROGRESS_DIR + fname, fname
+                        )
+                        shutil.move(SRC_INPROGRESS_DIR + fname, SRC_ACHIEVE_DIR + fname)
+                        _update_file_info(
+                            mysqlcon, fname, SRC_ACHIEVE_DIR + fname, "Done: 100%"
+                        )
+                        file_name = file_path.split("/")[-1]
+                        _insert_file_info(mysqlcon, file_name, file_path, "Generated")
+                    except Exception as e:
+                        traceback.print_exc()
+                        _update_file_info(
+                            mysqlcon,
+                            fname,
+                            SRC_INPROGRESS_DIR + fname,
+                            f"Stopped... {str(e)}",
+                        )
+    except OSError as e:
+        print(str(e))
+
+    set_option(mysqlcon, "pricing_only", False)
+    mysqlcon.close()
     print("#999 Finished %s" % datetime.datetime.now())

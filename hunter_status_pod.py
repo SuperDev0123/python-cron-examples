@@ -5,52 +5,21 @@ import datetime
 import pymysql, pymysql.cursors
 import requests
 
-IS_DEBUG = False
-IS_PRODUCTION = True  # Dev
-# IS_PRODUCTION = False  # Local
-
-if IS_PRODUCTION:
-    DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
-    DB_USER = "fmadmin"
-    DB_PASS = "oU8pPQxh"
-    DB_PORT = 3306
-    # DB_NAME = "dme_db_dev"  # Dev
-    DB_NAME = "dme_db_prod"  # Prod
-else:
-    DB_HOST = "localhost"
-    DB_USER = "root"
-    DB_PASS = "root"
-    DB_PORT = 3306
-    DB_NAME = "deliver_me"
-
-if IS_PRODUCTION:
-    # API_URL = "http://3.105.62.128/api"  # Dev
-    API_URL = "http://13.55.64.102/api"  # Prod
-else:
-    API_URL = "http://localhost:8000/api"  # Local
+from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
+from _options_lib import get_option, set_option
 
 
-def get_option(mysqlcon, flag_name):
-    with mysqlcon.cursor() as cursor:
-        sql = "SELECT * \
-                FROM `dme_options` \
-                WHERE option_name=%s"
-        cursor.execute(sql, (flag_name))
-        dme_option = cursor.fetchone()
-
-        return dme_option
-
-
-def get_bookings(mysqlcon):
+def get_in_progress_bookings(mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
                 FROM `dme_bookings` \
                 WHERE `vx_freight_provider`=%s and \
-                (`b_status` is NULL or (`b_status`<>%s and `b_status`<>%s and `b_status`<>%s and `z_pod_url` is NULL)) and \
-                (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
+                (`b_status`<>%s and `b_status`<>%s and `b_status`<>%s and `b_status`<>%s and `z_pod_url` is NULL) \
                 ORDER BY id DESC \
                 LIMIT 200"
-        cursor.execute(sql, ("Hunter", "Ready for booking", "Closed", "Delivered", ""))
+        cursor.execute(
+            sql, ("Hunter", "Ready for booking", "Cancelled", "Closed", "Delivered")
+        )
         # sql = "SELECT * FROM dme_bookings WHERE id > 0 ORDER BY id DESC LIMIT 1000"
         # cursor.execute(sql)
         bookings = cursor.fetchall()
@@ -97,7 +66,7 @@ def do_pod(booking):
 
 def do_process(mysqlcon):
     # Get 200 Hunter bookings
-    bookings = get_bookings(mysqlcon)
+    bookings = get_in_progress_bookings(mysqlcon)
     print("#200 - Booking cnt to process: ", len(bookings))
 
     if len(bookings) > 0:
@@ -150,11 +119,15 @@ if __name__ == "__main__":
 
         if int(option["option_value"]) == 0:
             print("#905 - `hunter_status_pod` option is OFF")
+        elif option["is_running"]:
+            print("#905 - `hunter_status_pod` script is already RUNNING")
         else:
             print("#906 - `hunter_status_pod` option is ON")
+            set_option(mysqlcon, "hunter_status_pod", True)
             do_process(mysqlcon)
     except OSError as e:
         print(str(e))
 
-    print("#909 - Finished %s" % datetime.datetime.now())
+    set_option(mysqlcon, "hunter_status_pod", False)
     mysqlcon.close()
+    print("#909 - Finished %s" % datetime.datetime.now())

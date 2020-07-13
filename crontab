@@ -20,40 +20,37 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 # 
 # m h  dom mon dow   command
-@reboot /bin/bash /home/dme/nginx.sh
-*/2 * * * * /bin/bash /home/ubuntu/check_nginx.sh
-* * * * *    python3 /opt/xlsimport/import.py >> /opt/xlsimport/import.log 2>&1
-#*/2 * * * * /home/dme/BookAllied.sh
-#*/30 * * * * /home/dme/StartrackAuAutoLabel.sh
-#*/30 * * * * /home/dme/StartrackAuAutoBook.sh
-#* */2 * * * /home/dme/StartrackAuTriggerTracking.sh
-#0 */3 * * * /home/dme/TriggerTrack_Allied.sh
-#*/2 * * * * /home/dme/BookSt.sh
-*/2 * * * * /bin/bash /home/dme/EnableDisableCrons.sh
-#*/5 * * * * /home/dme/Push2FM.sh > /home/dme/Push2FM.log
-#*/5 * * * * /home/dme/pullRecords/PullFromFM.sh > /home/dme/pullRecords/PullFromFM.log
-#*/5 * * * * /home/dme/pullModified/PullFromFM.sh > /home/dme/pullModified/PullFromFM.log
-#*/30 * * * * /home/dme/pushBooking/pushBookings.sh > /home/dme/pushBooking/pushBookings.log
-*/2 * * * * /home/dme/MoveSuccess2ToBookings.sh > /home/dme/MoveSuccess2ToBookings.log
-*/5 * * * * /opt/chrons/cope_au_move_label.sh
-*/5 * * * * /opt/chrons/cope_au_move_pod.sh
-0 */1 * * * /opt/chrons/cope_status_report.sh
-*/5 * * * * /opt/chrons/store_bookings.sh
-*/5 * * * * /opt/chrons/upload_csv_sftp.sh
-*/5 * * * * /opt/chrons/upload_xml_allied_sftp.sh
-*/59 * * * * /opt/chrons/scan_label_cope.sh
-*/5 * * * * /opt/chrons/cope_au_move_connote.sh
-#1 0 * * * /opt/chrons/zip_new_pods.sh
-*/30 * * * * /opt/chrons/st_scan_signed_name_time.sh
-*/5 * * * * /opt/chrons/st_auto.sh
-#*/10 * * * * /opt/chrons/append_status_history_feedback.sh
-#*/5 * * * * /opt/chrons/plum_au_scan_ok.sh
-*/30 * * * * /opt/chrons/tnt_status_pod.sh
+# Enable/Disable
+*/2 * * * * /bin/bash /opt/chrons/EnableDisableCrons.sh
 
-# Auth status tracking and POD
+# NGINX
+@reboot /bin/bash /opt/chrons/nginx.sh
+*/2 * * * * /bin/bash /opt/chrons/check_nginx.sh
+
+# Import from Sharepoint
+* * * * * sudo python3 /opt/chrons/sharepoint_import.py >> /opt/chrons/sharepoint_import.log 2>&1
+
+# Mapping
+*/2 * * * * /opt/chrons/MoveSuccess2ToBookings.sh > /opt/chrons/MoveSuccess2ToBookings.log
+
+# Tansfer - !DEV ONLY!
+# */2 * * * * /opt/chrons/TransferBookings.sh
+# */2 * * * * /opt/chrons/TruncateBookings.sh
+# */2 * * * * /opt/chrons/TransferBookingRelated.sh
+# */2 * * * * /opt/chrons/TruncateBookingRelated.sh
+
+# Startrack
+*/30 * * * * /opt/chrons/st_auto_book_label.sh
+*/5 * * * * /opt/chrons/st_status_pod.sh
+
+# TNT
 */30 * * * * sudo python3 /opt/chrons/tnt_status_pod.py >> /opt/chrons/tnt_status_pod.log 2>&1
-*/25 * * * * sudo python3 /opt/chrons/sendle_status_pod.py >> /opt/chrons/sendle_status_pod.log 2>&1
+
+# Hunter
 */20 * * * * sudo python3 /opt/chrons/hunter_status_pod.py >> /opt/chrons/hunter_status_pod.log 2>&1
+
+# Sendle
+*/25 * * * * sudo python3 /opt/chrons/sendle_status_pod.py >> /opt/chrons/sendle_status_pod.log 2>&1
 
 # Pricing-Only and Pricing-Rule
 * * * * * sudo python3 /opt/chrons/pricing_only.py >> /opt/chrons/pricing_only.log 2>&1
@@ -62,3 +59,26 @@
 # BookingSet
 * * * * * sudo python3 /opt/chrons/auto_pricing_set.py >> /opt/chrons/auto_pricing_set.log 2>&1
 * * * * * sudo python3 /opt/chrons/auto_book_label_set.py >> /opt/chrons/auto_book_label_set.log 2>&1
+
+# web_2_FM
+* * * * * sudo python3 /opt/chrons/web_2_fm_new.py >> /opt/chrons/web_2_fm_new.log 2>&1
+* * * * * sudo python3 /opt/chrons/web_2_fm_modified.py >> /opt/chrons/web_2_fm_modified.log 2>&1
+
+# ZIP POD
+# 1 0 * * * /opt/chrons/zip_new_pods.sh
+
+# Upload
+# */5 * * * * /opt/chrons/upload_csv_sftp.sh
+# */5 * * * * /opt/chrons/upload_xml_allied_sftp.sh
+
+# Plum
+# */5 * * * * /opt/chrons/plum_au_scan_ok.sh
+
+# Cope
+# */5 * * * * /opt/chrons/cope_au_move_label.sh
+# */5 * * * * /opt/chrons/cope_au_move_pod.sh
+# 0 */1 * * * /opt/chrons/cope_status_report.sh
+# */5 * * * * /opt/chrons/store_bookings.sh
+# */5 * * * * /opt/chrons/cope_au_move_connote.sh
+# */59 * * * * /opt/chrons/scan_label_cope.sh
+# */10 * * * * /opt/chrons/append_status_history_feedback.sh

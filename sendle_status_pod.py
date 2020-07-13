@@ -5,29 +5,8 @@ import datetime
 import pymysql, pymysql.cursors
 import requests
 
-IS_DEBUG = False
-IS_PRODUCTION = True  # Dev
-# IS_PRODUCTION = False  # Local
-
-if IS_PRODUCTION:
-    DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
-    DB_USER = "fmadmin"
-    DB_PASS = "oU8pPQxh"
-    DB_PORT = 3306
-    # DB_NAME = "dme_db_dev"  # Dev
-    DB_NAME = "dme_db_prod"  # Prod
-else:
-    DB_HOST = "localhost"
-    DB_USER = "root"
-    DB_PASS = "root"
-    DB_PORT = 3306
-    DB_NAME = "deliver_me"
-
-if IS_PRODUCTION:
-    # API_URL = "http://3.105.62.128/api"  # Dev
-    API_URL = "http://13.55.64.102/api"  # Prod
-else:
-    API_URL = "http://localhost:8000/api"  # Local
+from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
+from _options_lib import get_option, set_option
 
 
 def get_option(mysqlcon, flag_name):
@@ -155,11 +134,15 @@ if __name__ == "__main__":
 
         if int(option["option_value"]) == 0:
             print("#905 - `sendle_status_pod` option is OFF")
+        elif option["is_running"]:
+            print("#905 - `sendle_status_pod` script is already RUNNING")
         else:
             print("#906 - `sendle_status_pod` option is ON")
+            set_option(mysqlcon, "pricing_rules", True)
             do_process(mysqlcon)
     except OSError as e:
         print(str(e))
 
-    print("#909 - Finished %s" % datetime.datetime.now())
+    set_option(mysqlcon, "sendle_status_pod", False)
     mysqlcon.close()
+    print("#909 - Finished %s" % datetime.datetime.now())

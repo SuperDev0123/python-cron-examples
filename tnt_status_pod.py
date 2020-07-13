@@ -5,52 +5,22 @@ import datetime
 import pymysql, pymysql.cursors
 import requests
 
-IS_DEBUG = False
-IS_PRODUCTION = True  # Dev
-# IS_PRODUCTION = False  # Local
-
-if IS_PRODUCTION:
-    DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
-    DB_USER = "fmadmin"
-    DB_PASS = "oU8pPQxh"
-    DB_PORT = 3306
-    # DB_NAME = "dme_db_dev"  # Dev
-    DB_NAME = "dme_db_prod"  # Prod
-else:
-    DB_HOST = "localhost"
-    DB_USER = "root"
-    DB_PASS = "root"
-    DB_PORT = 3306
-    DB_NAME = "deliver_me"
-
-if IS_PRODUCTION:
-    # API_URL = "http://3.105.62.128/api"  # Dev
-    API_URL = "http://13.55.64.102/api"  # Prod
-else:
-    API_URL = "http://localhost:8000/api"  # Local
+from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
+from _options_lib import get_option, set_option
 
 
-def get_option(mysqlcon, flag_name):
-    with mysqlcon.cursor() as cursor:
-        sql = "SELECT * \
-                FROM `dme_options` \
-                WHERE option_name=%s"
-        cursor.execute(sql, (flag_name))
-        dme_option = cursor.fetchone()
-
-        return dme_option
-
-
-def get_bookings(mysqlcon):
+def get_in_progress_bookings(mysqlcon):
+    # TODO - consider error field or not?
     with mysqlcon.cursor() as cursor:
         sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
                 FROM `dme_bookings` \
                 WHERE `vx_freight_provider`=%s and \
-                (`b_status` is NULL or (`b_status`<>%s and `b_status`<>%s)) and \
-                (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
+                (`b_status`<>%s and `b_status`<>%s and `b_status`<>%s and `b_status`<>%s) \
                 ORDER BY id DESC \
                 LIMIT 200"
-        cursor.execute(sql, ("TNT", "Ready for booking", "Delivered", ""))
+        cursor.execute(
+            sql, ("TNT", "Closed", "Cancelled", "Ready for booking", "Delivered")
+        )
         bookings = cursor.fetchall()
 
         return bookings
@@ -101,7 +71,7 @@ def do_pod(booking):
 
 def do_process(mysqlcon):
     # Get 200 TNT bookings
-    bookings = get_bookings(mysqlcon)
+    bookings = get_in_progress_bookings(mysqlcon)
     print("#200 - Booking cnt to process: ", len(bookings))
 
     for booking in bookings:
@@ -129,6 +99,14 @@ def do_process(mysqlcon):
             counter += 1
             time.sleep(10)
 
+    # Track again - TNT requires it(1st get failed, 2nd get success)
+    for booking in bookings:
+        print("#201 - Processing Again: ***", booking["b_bookingID_Visual"], "***")
+        result = do_tracking(booking)
+
+        if "b_status" in result and result["b_status"] == "Delivered":
+            do_pod(booking)
+
 
 if __name__ == "__main__":
     print("#900 - Running %s" % datetime.datetime.now())
@@ -152,11 +130,15 @@ if __name__ == "__main__":
 
         if int(option["option_value"]) == 0:
             print("#905 - `tnt_status_pod` option is OFF")
+        elif option["is_running"]:
+            print("#905 - `tnt_status_pod` script is already RUNNING")
         else:
             print("#906 - `tnt_status_pod` option is ON")
+            set_option(mysqlcon, "tnt_status_pod", True)
             do_process(mysqlcon)
     except OSError as e:
         print(str(e))
 
-    print("#909 - Finished %s" % datetime.datetime.now())
+    set_option(mysqlcon, "tnt_status_pod", False)
     mysqlcon.close()
+    print("#909 - Finished %s" % datetime.datetime.now())
