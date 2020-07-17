@@ -186,7 +186,7 @@ class Site(object):
         }
         response = self._do_http_post_with_header(url, {}, headers)
 
-    def download_file(self, filename, filepath):
+    def download_file(self, filename, filepath, downloadpath):
         """Download file from relative file path
         """
         url = "".join(
@@ -194,7 +194,7 @@ class Site(object):
         )
         response = self._do_http_get(url)
 
-        path = filepath
+        path = downloadpath
         if not os.path.exists(path):
             os.makedirs(path)
 
