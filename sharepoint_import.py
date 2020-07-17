@@ -621,7 +621,7 @@ def download_from_sharepoint(dbcon):
             send_duplicate_email(filename)
         elif ".xls" in filename.lower() and not filename in archive_files:
             print("#601 File downloading... ", filepath)
-            file_content = site.download_file(filename=filename, filepath=filepath)
+            file_content = site.download_file(filename=filename, filepath=DOWNLOAD_DIR)
             print("#602 File downloaded!")
 
             dme_file = {}
