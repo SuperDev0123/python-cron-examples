@@ -194,7 +194,7 @@ class Site(object):
         )
         response = self._do_http_get(url)
 
-        path = DOWNLOAD_DIR
+        path = filepath
         if not os.path.exists(path):
             os.makedirs(path)
 
