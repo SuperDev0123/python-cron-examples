@@ -110,6 +110,7 @@ def do_process(mysqlcon):
 
 if __name__ == "__main__":
     print("#900 - Running %s" % datetime.datetime.now())
+    set_option(mysqlcon, "tnt_status_pod", True)
 
     try:
         mysqlcon = pymysql.connect(
@@ -134,7 +135,6 @@ if __name__ == "__main__":
             print("#905 - `tnt_status_pod` script is already RUNNING")
         else:
             print("#906 - `tnt_status_pod` option is ON")
-            set_option(mysqlcon, "tnt_status_pod", True)
             do_process(mysqlcon)
     except OSError as e:
         print(str(e))

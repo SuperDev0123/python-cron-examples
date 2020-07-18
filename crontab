@@ -44,13 +44,13 @@
 */30 * * * * /opt/chrons/st_status_pod.py >> /opt/chrons/st_status_pod.log 2>&1
 
 # TNT
-*/30 * * * * sudo python3 /opt/chrons/tnt_status_pod.py >> /opt/chrons/tnt_status_pod.log 2>&1
+*/35 * * * * sudo python3 /opt/chrons/tnt_status_pod.py >> /opt/chrons/tnt_status_pod.log 2>&1
 
 # Hunter
-*/20 * * * * sudo python3 /opt/chrons/hunter_status_pod.py >> /opt/chrons/hunter_status_pod.log 2>&1
+*/25 * * * * sudo python3 /opt/chrons/hunter_status_pod.py >> /opt/chrons/hunter_status_pod.log 2>&1
 
 # Sendle
-*/25 * * * * sudo python3 /opt/chrons/sendle_status_pod.py >> /opt/chrons/sendle_status_pod.log 2>&1
+*/30 * * * * sudo python3 /opt/chrons/sendle_status_pod.py >> /opt/chrons/sendle_status_pod.log 2>&1
 
 # Pricing-Only and Pricing-Rule
 * * * * * sudo python3 /opt/chrons/pricing_only.py >> /opt/chrons/pricing_only.log 2>&1

@@ -177,6 +177,7 @@ def do_process(mysqlcon, option):
 
 if __name__ == "__main__":
     print("#900 - Started %s" % datetime.now())
+    set_option(mysqlcon, "web_2_fm_modified", True)
 
     try:
         mysqlcon = pymysql.connect(
@@ -201,7 +202,6 @@ if __name__ == "__main__":
             print("#905 - `web_2_fm_modified` script is already RUNNING")
         else:
             print("#906 - `web_2_fm_modified` option is ON")
-            set_option(mysqlcon, "web_2_fm_modified", True)
             print("#910 - Processing...")
             do_process(mysqlcon, option)
     except Exception as e:

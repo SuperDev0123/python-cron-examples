@@ -174,6 +174,7 @@ def do_process(mysqlcon):
 
 if __name__ == "__main__":
     print("#900 Started %s" % datetime.datetime.now())
+    set_option(mysqlcon, "auto_book_label_set", True)
 
     try:
         mysqlcon = pymysql.connect(
@@ -198,12 +199,11 @@ if __name__ == "__main__":
             print("#905 - `auto_book_label_set` script is already RUNNING")
         else:
             print("#906 - `auto_book_label_set` option is ON")
-            set_option(mysqlcon, "auto_book_label_set", True)
             print("#910 - Processing...")
             do_process(mysqlcon)
     except Exception as e:
         print("#904 Error: ", str(e))
 
-    set_option(mysqlcon, "auto_book_label_set", True)
+    set_option(mysqlcon, "auto_book_label_set", False)
     mysqlcon.close()
     print("#999 Finished %s" % datetime.datetime.now())

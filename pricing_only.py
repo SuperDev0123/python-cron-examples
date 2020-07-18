@@ -298,6 +298,7 @@ def _insert_file_info(mysqlcon, fname, fpath, note):
 
 if __name__ == "__main__":
     print("#900 Started %s" % datetime.datetime.now())
+    set_option(mysqlcon, "pricing_only", True)
 
     try:
         mysqlcon = pymysql.connect(
@@ -326,7 +327,6 @@ if __name__ == "__main__":
             print("#905 - `pricing_only` script is already RUNNING")
         else:
             print("#906 - `pricing_only` option is ON")
-            set_option(mysqlcon, "pricing_only", True)
 
             for fname in os.listdir(SRC_DIR):
                 fpath = os.path.join(SRC_DIR, fname)
@@ -360,6 +360,6 @@ if __name__ == "__main__":
     except OSError as e:
         print(str(e))
 
-    set_option(mysqlcon, "pricing_only", False)
     mysqlcon.close()
+    set_option(mysqlcon, "pricing_only", False)
     print("#999 Finished %s" % datetime.datetime.now())

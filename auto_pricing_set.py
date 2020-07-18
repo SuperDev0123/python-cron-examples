@@ -116,6 +116,7 @@ def do_process(mysqlcon):
 
 if __name__ == "__main__":
     print("#900 Started %s" % datetime.datetime.now())
+    set_option(mysqlcon, "auto_pricing_set", True)
 
     try:
         mysqlcon = pymysql.connect(
@@ -140,12 +141,11 @@ if __name__ == "__main__":
             print("#905 - `auto_pricing_set` script is already RUNNING")
         else:
             print("#906 - `auto_pricing_set` option is ON")
-            set_option(mysqlcon, "auto_pricing_set", True)
             print("#910 - Processing...")
             do_process(mysqlcon)
     except Exception as e:
         print("#904 Error: ", str(e))
 
-    set_option(mysqlcon, "auto_pricing_set", True)
     mysqlcon.close()
+    set_option(mysqlcon, "auto_pricing_set", False)
     print("#999 Finished %s" % datetime.datetime.now())

@@ -479,6 +479,7 @@ def do_process(mysqlcon, fpath, fname):
 
 if __name__ == "__main__":
     print("#900 Started %s" % datetime.datetime.now())
+    set_option(mysqlcon, "pricing_rules", True)
 
     try:
         mysqlcon = pymysql.connect(
@@ -507,7 +508,6 @@ if __name__ == "__main__":
             print("#905 - `pricing_rules` script is already RUNNING")
         else:
             print("#906 - `pricing_rules` option is ON")
-            set_option(mysqlcon, "pricing_rules", True)
 
             for fname in os.listdir(SRC_DIR):
                 fpath = os.path.join(SRC_DIR, fname)
@@ -538,8 +538,8 @@ if __name__ == "__main__":
                         )
 
     except OSError as e:
-        print(str(e))
+        print("Error:", str(e))
 
-    set_option(mysqlcon, "pricing_rules", False)
     mysqlcon.close()
+    set_option(mysqlcon, "pricing_rules", False)
     print("#999 Finished %s" % datetime.datetime.now())

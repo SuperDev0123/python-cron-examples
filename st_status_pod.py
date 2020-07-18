@@ -323,6 +323,7 @@ def csv_write(fpath, f, mysqlcon):
 
 if __name__ == "__main__":
     print("#900 - Running %s" % datetime.datetime.now())
+    set_option(mysqlcon, "st_status_pod", True)
 
     try:
         mysqlcon = pymysql.connect(
@@ -351,7 +352,6 @@ if __name__ == "__main__":
             print("#905 - `st_status_pod` script is already RUNNING")
         else:
             print("#906 - `st_status_pod` option is ON")
-            set_option(mysqlcon, "st_status_pod", True)
             print("#910 - Processing...")
 
             # Download .FTP files
@@ -403,6 +403,6 @@ if __name__ == "__main__":
     except Exception as e:
         print("Error 904:", str(e))
 
-    set_option(mysqlcon, "st_status_pod", False)
     mysqlcon.close()
+    set_option(mysqlcon, "st_status_pod", False)
     print("#999 - Finished %s" % datetime.datetime.now())

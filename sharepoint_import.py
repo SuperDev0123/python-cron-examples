@@ -700,6 +700,7 @@ def download_from_sharepoint(dbcon):
 
 if __name__ == "__main__":
     print("Started %s" % datetime.now())
+    set_option(dbcon, "xls_import", True)
 
     try:
         dbcon = pymysql.connect(
@@ -724,7 +725,6 @@ if __name__ == "__main__":
             print("#905 - `xls_import` script is already RUNNING")
         else:
             print("#906 - `xls_import` option is ON")
-            set_option(dbcon, "xls_import", True)
             print("#910 - Processing...")
             download_from_sharepoint(dbcon)
     except Exception as e:
