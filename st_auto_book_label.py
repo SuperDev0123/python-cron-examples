@@ -112,7 +112,7 @@ if __name__ == "__main__":
             print("#906 - `st_auto_book_label` option is ON")
             set_option(mysqlcon, "st_auto_book_label", True)
             print("#910 - Processing...")
-            do_process(mysqlcon, option)
+            do_process(mysqlcon)
             set_option(mysqlcon, "st_auto_book_label", False)
     except Exception as e:
         print("Error 904:", str(e))
