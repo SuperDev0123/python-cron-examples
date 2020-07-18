@@ -379,10 +379,7 @@ if __name__ == "__main__":
                             str(datetime.datetime.now().strftime("%d-%m-%Y__%H_%M_%S"))
                             + ".csv"
                         )
-                        if IS_PRODUCTION:
-                            f = open(CSV_DIR + csv_name, "w")
-                        else:
-                            f = open(CSV_DIR + csv_name, "w")
+                        f = open(CSV_DIR + csv_name, "w")
                         csv_write(fpath, f, mysqlcon)
                         f.close()
 
