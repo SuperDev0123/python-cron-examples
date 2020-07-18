@@ -716,7 +716,6 @@ if __name__ == "__main__":
         exit(1)
 
     try:
-        set_option(mysqlcon, "xls_import", True)
         option = get_option(dbcon, "xls_import")
 
         if int(option["option_value"]) == 0:
@@ -725,11 +724,13 @@ if __name__ == "__main__":
             print("#905 - `xls_import` script is already RUNNING")
         else:
             print("#906 - `xls_import` option is ON")
+            set_option(dbcon, "xls_import", True)
             print("#910 - Processing...")
             download_from_sharepoint(dbcon)
+            set_option(dbcon, "xls_import", False)
     except Exception as e:
         print("Error 904:", str(e))
+        set_option(dbcon, "xls_import", False)
 
-    set_option(dbcon, "xls_import", False)
     dbcon.close()
     print("#999 - Finished %s" % datetime.now())

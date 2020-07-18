@@ -89,11 +89,11 @@ def do_process(mysqlcon):
         print("#201 - Processing: ***", booking["b_bookingID_Visual"], "***")
         result = do_tracking(booking)
 
-        Sendle do NOT support POD
+        # Sendle do NOT support POD
         if "b_status" in result and result["b_status"] == "Delivered":
             do_pod(booking)
 
-    Get 20 Sendle bookings that b_status is `Delivered` but missed POD
+    # Get 20 Sendle bookings that b_status is `Delivered` but missed POD
     bookings = get_bookings_missing_pod(mysqlcon)
     print("#210 - Booking(missing POD) cnt to process: ", len(bookings))
 
@@ -140,9 +140,10 @@ if __name__ == "__main__":
         else:
             print("#906 - `sendle_status_pod` option is ON")
             do_process(mysqlcon)
+            set_option(mysqlcon, "sendle_status_pod", False)
     except OSError as e:
-        print(str(e))
+        print("Error:", str(e))
+        set_option(mysqlcon, "sendle_status_pod", False)
 
-    set_option(mysqlcon, "sendle_status_pod", False)
     mysqlcon.close()
     print("#909 - Finished %s" % datetime.datetime.now())

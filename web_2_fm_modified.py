@@ -193,7 +193,6 @@ if __name__ == "__main__":
         exit(1)
 
     try:
-        set_option(mysqlcon, "web_2_fm_modified", True)
         option = get_option(mysqlcon, "web_2_fm_modified")
 
         if int(option["option_value"]) == 0:
@@ -202,11 +201,13 @@ if __name__ == "__main__":
             print("#905 - `web_2_fm_modified` script is already RUNNING")
         else:
             print("#906 - `web_2_fm_modified` option is ON")
+            set_option(mysqlcon, "web_2_fm_modified", True)
             print("#910 - Processing...")
             do_process(mysqlcon, option)
+            set_option(mysqlcon, "web_2_fm_modified", False)
     except Exception as e:
         print("Error 904:", str(e))
+        set_option(mysqlcon, "web_2_fm_modified", False)
 
-    set_option(mysqlcon, "web_2_fm_modified", False)
     mysqlcon.close()
     print("#999 - Finished %s" % datetime.now())

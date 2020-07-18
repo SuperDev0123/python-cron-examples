@@ -115,7 +115,6 @@ if __name__ == "__main__":
         exit(1)
 
     try:
-        set_option(mysqlcon, "hunter_status_pod", True)
         option = get_option(mysqlcon, "hunter_status_pod")
 
         if int(option["option_value"]) == 0:
@@ -124,10 +123,12 @@ if __name__ == "__main__":
             print("#905 - `hunter_status_pod` script is already RUNNING")
         else:
             print("#906 - `hunter_status_pod` option is ON")
+            set_option(mysqlcon, "hunter_status_pod", True)
             do_process(mysqlcon)
+            set_option(mysqlcon, "hunter_status_pod", False)
     except OSError as e:
-        print(str(e))
+        set_option(mysqlcon, "hunter_status_pod", False)
+        print("Error:", str(e))
 
-    set_option(mysqlcon, "hunter_status_pod", False)
     mysqlcon.close()
     print("#909 - Finished %s" % datetime.datetime.now())

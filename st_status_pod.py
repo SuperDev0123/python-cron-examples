@@ -343,7 +343,6 @@ if __name__ == "__main__":
         exit(1)
 
     try:
-        set_option(mysqlcon, "st_status_pod", True)
         option = get_option(mysqlcon, "st_status_pod")
 
         if int(option["option_value"]) == 0:
@@ -352,6 +351,7 @@ if __name__ == "__main__":
             print("#905 - `st_status_pod` script is already RUNNING")
         else:
             print("#906 - `st_status_pod` option is ON")
+            set_option(mysqlcon, "st_status_pod", True)
             print("#910 - Processing...")
 
             # Download .FTP files
@@ -364,8 +364,10 @@ if __name__ == "__main__":
                     sftp_server_infos["st"]["local_filepath"],
                     sftp_server_infos["st"]["local_filepath_archive"],
                 )
+                set_option(mysqlcon, "st_status_pod", False)
             except OSError as e:
                 print("Failed download .FTP files from remote. Error: ", str(e))
+                set_option(mysqlcon, "st_status_pod", False)
 
             try:
                 for fname in sorted(os.listdir(FTP_DIR)):
@@ -398,11 +400,13 @@ if __name__ == "__main__":
                         shutil.move(FTP_DIR + fname, ARCHIVE_FTP_DIR + fname)
                         print("@109 Moved .FTP file:", fpath)
 
+                    set_option(mysqlcon, "st_status_pod", False)
             except OSError as e:
                 print(str(e))
+                set_option(mysqlcon, "st_status_pod", False)
     except Exception as e:
         print("Error 904:", str(e))
+        set_option(mysqlcon, "st_status_pod", False)
 
     mysqlcon.close()
-    set_option(mysqlcon, "st_status_pod", False)
     print("#999 - Finished %s" % datetime.datetime.now())

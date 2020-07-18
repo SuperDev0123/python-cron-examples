@@ -132,7 +132,6 @@ if __name__ == "__main__":
         exit(1)
 
     try:
-        set_option(mysqlcon, "auto_book_label_set", True)
         option = get_option(mysqlcon, "auto_pricing_set")
 
         if int(option["option_value"]) == 0:
@@ -141,11 +140,13 @@ if __name__ == "__main__":
             print("#905 - `auto_pricing_set` script is already RUNNING")
         else:
             print("#906 - `auto_pricing_set` option is ON")
+            set_option(mysqlcon, "auto_book_label_set", True)
             print("#910 - Processing...")
             do_process(mysqlcon)
+            set_option(mysqlcon, "auto_pricing_set", False)
     except Exception as e:
+        set_option(mysqlcon, "auto_pricing_set", False)
         print("#904 Error: ", str(e))
 
     mysqlcon.close()
-    set_option(mysqlcon, "auto_pricing_set", False)
     print("#999 Finished %s" % datetime.datetime.now())

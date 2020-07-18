@@ -318,7 +318,6 @@ if __name__ == "__main__":
         exit(1)
 
     try:
-        set_option(mysqlcon, "pricing_only", True)
         option = get_option(mysqlcon, "pricing_only")
 
         if int(option["option_value"]) == 0:
@@ -327,6 +326,7 @@ if __name__ == "__main__":
             print("#905 - `pricing_only` script is already RUNNING")
         else:
             print("#906 - `pricing_only` option is ON")
+            set_option(mysqlcon, "pricing_only", True)
 
             for fname in os.listdir(SRC_DIR):
                 fpath = os.path.join(SRC_DIR, fname)
@@ -357,9 +357,11 @@ if __name__ == "__main__":
                             SRC_INPROGRESS_DIR + fname,
                             f"Stopped... {str(e)}",
                         )
+
+            set_option(mysqlcon, "pricing_only", False)
     except OSError as e:
-        print(str(e))
+        set_option(mysqlcon, "pricing_only", False)
+        print("Error:", str(e))
 
     mysqlcon.close()
-    set_option(mysqlcon, "pricing_only", False)
     print("#999 Finished %s" % datetime.datetime.now())
