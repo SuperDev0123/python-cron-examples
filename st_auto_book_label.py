@@ -102,6 +102,7 @@ if __name__ == "__main__":
         exit(1)
 
     try:
+        set_option(mysqlcon, "st_auto_book_label", True)
         option = get_option(mysqlcon, "st_auto_book_label")
 
         if int(option["option_value"]) == 0:

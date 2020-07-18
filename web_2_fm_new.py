@@ -185,7 +185,6 @@ def do_process(mysqlcon, option):
 
 if __name__ == "__main__":
     print("#900 - Started %s" % datetime.now())
-    set_option(mysqlcon, "web_2_fm_new", True)
 
     try:
         mysqlcon = pymysql.connect(
@@ -202,6 +201,7 @@ if __name__ == "__main__":
         exit(1)
 
     try:
+        set_option(mysqlcon, "web_2_fm_new", True)
         option = get_option(mysqlcon, "web_2_fm_new")
 
         if int(option["option_value"]) == 0:

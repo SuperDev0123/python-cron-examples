@@ -323,7 +323,6 @@ def csv_write(fpath, f, mysqlcon):
 
 if __name__ == "__main__":
     print("#900 - Running %s" % datetime.datetime.now())
-    set_option(mysqlcon, "st_status_pod", True)
 
     try:
         mysqlcon = pymysql.connect(
@@ -344,6 +343,7 @@ if __name__ == "__main__":
         exit(1)
 
     try:
+        set_option(mysqlcon, "st_status_pod", True)
         option = get_option(mysqlcon, "st_status_pod")
 
         if int(option["option_value"]) == 0:

@@ -479,7 +479,6 @@ def do_process(mysqlcon, fpath, fname):
 
 if __name__ == "__main__":
     print("#900 Started %s" % datetime.datetime.now())
-    set_option(mysqlcon, "pricing_rules", True)
 
     try:
         mysqlcon = pymysql.connect(
@@ -500,6 +499,7 @@ if __name__ == "__main__":
         exit(1)
 
     try:
+        set_option(mysqlcon, "pricing_rules", True)
         option = get_option(mysqlcon, "pricing_rules")
 
         if int(option["option_value"]) == 0:

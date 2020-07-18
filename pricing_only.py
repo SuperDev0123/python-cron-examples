@@ -298,7 +298,6 @@ def _insert_file_info(mysqlcon, fname, fpath, note):
 
 if __name__ == "__main__":
     print("#900 Started %s" % datetime.datetime.now())
-    set_option(mysqlcon, "pricing_only", True)
 
     try:
         mysqlcon = pymysql.connect(
@@ -319,6 +318,7 @@ if __name__ == "__main__":
         exit(1)
 
     try:
+        set_option(mysqlcon, "pricing_only", True)
         option = get_option(mysqlcon, "pricing_only")
 
         if int(option["option_value"]) == 0:

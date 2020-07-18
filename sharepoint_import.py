@@ -700,7 +700,6 @@ def download_from_sharepoint(dbcon):
 
 if __name__ == "__main__":
     print("Started %s" % datetime.now())
-    set_option(dbcon, "xls_import", True)
 
     try:
         dbcon = pymysql.connect(
@@ -717,6 +716,7 @@ if __name__ == "__main__":
         exit(1)
 
     try:
+        set_option(mysqlcon, "xls_import", True)
         option = get_option(dbcon, "xls_import")
 
         if int(option["option_value"]) == 0:
