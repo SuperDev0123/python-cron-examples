@@ -1,5 +1,5 @@
 #!/bin/bash
-arr=("MoveSuccess2ToBookings")
+arr=("MoveSuccess2ToBookings", "TransferBookings", "TruncateBookings", "TransferBookingRelated", "TruncateBookingRelated")
 
 for i in "${arr[@]}"
 do
