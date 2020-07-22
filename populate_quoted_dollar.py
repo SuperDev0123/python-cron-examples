@@ -20,10 +20,10 @@ def get_bookings(mysqlcon):
         return bookings
 
 
-def update_booking(booking, quoted_dollar, mysqlcon):
+def update_booking(booking, cost_fl, mysqlcon):
     cursor = mysqlcon.cursor()
-    sql = "UPDATE dme_bookings SET inv_sell_quoted=%s WHERE id=%s"
-    cursor.execute(sql, (quoted_dollar, booking["id"]))
+    sql = "UPDATE dme_bookings SET inv_cost_quoted=%s WHERE id=%s"
+    cursor.execute(sql, (cost_fl, booking["id"]))
     mysqlcon.commit()
 
 
@@ -53,17 +53,22 @@ def do_process(mysqlcon):
 
         cost_fl = float(booking["inv_cost_quoted"]) * (1 + fp_markupfuel_levy_percent)
 
-        if cost_fl < float(client_min_markup_startingcostvalue):
-            quoted_dollar = cost_fl * (1 + client_markup_percent)
-        else:
-            cost_mu = cost_fl * client_markup_percent
+        update_booking(booking, cost_fl, mysqlcon)
 
-            if cost_mu > client_min_markup_value:
-                quoted_dollar = cost_fl + cost_mu
-            else:
-                quoted_dollar = cost_fl + client_min_markup_value
+        ###
+        # Calculate inv_sell_quoted
+        ###
+        # if cost_fl < float(client_min_markup_startingcostvalue):
+        #     quoted_dollar = cost_fl * (1 + client_markup_percent)
+        # else:
+        #     cost_mu = cost_fl * client_markup_percent
 
-        update_booking(booking, quoted_dollar, mysqlcon)
+        #     if cost_mu > client_min_markup_value:
+        #         quoted_dollar = cost_fl + cost_mu
+        #     else:
+        #         quoted_dollar = cost_fl + client_min_markup_value
+
+        # update_booking(booking, quoted_dollar, mysqlcon)
 
 
 if __name__ == "__main__":
