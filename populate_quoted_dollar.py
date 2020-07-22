@@ -38,7 +38,7 @@ def get_quotes(mysqlcon):
         return quotes
 
 
-def update_quotes(quote, quoted_dollar, mysqlcon):
+def update_quote(quote, quoted_dollar, mysqlcon):
     cursor = mysqlcon.cursor()
     sql = "UPDATE api_booking_quotes SET client_mu_1_minimum_values=%s WHERE id=%s"
     cursor.execute(sql, (quoted_dollar, quote["id"]))
