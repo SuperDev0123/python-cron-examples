@@ -8,7 +8,7 @@ from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
 
 def get_bookings(mysqlcon):
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT id, inv_cost_quoted, inv_sell_quoted, b_status, vx_freight_provider \
+        sql = "SELECT id, inv_cost_quoted, inv_sell_quoted, b_status, vx_freight_provider, pk_booking_id \
                 FROM `dme_bookings` \
                 WHERE `b_client_name`=%s and `b_dateBookedDate` is not NULL and `x_manual_booked_flag`=%s and \
                 b_status not in ('Cancelled', 'Closed', 'Ready for Booking', 'Entered') and inv_cost_quoted is not NULL \
@@ -27,9 +27,27 @@ def update_booking(booking, cost_fl, mysqlcon):
     mysqlcon.commit()
 
 
+def get_quotes(mysqlcon):
+    with mysqlcon.cursor() as cursor:
+        sql = "SELECT id, fee \
+                FROM `api_booking_quotes` \
+                WHERE `fk_client_id` = %s"
+        cursor.execute(sql, ("Tempo Pty Ltd"))
+        quotes = cursor.fetchall()
+
+        return quotes
+
+
+def update_quotes(quote, quoted_dollar, mysqlcon):
+    cursor = mysqlcon.cursor()
+    sql = "UPDATE api_booking_quotes SET client_mu_1_minimum_values=%s WHERE id=%s"
+    cursor.execute(sql, (quoted_dollar, quote["id"]))
+    mysqlcon.commit()
+
+
 def do_process(mysqlcon):
-    bookings = get_bookings(mysqlcon)
-    print("Bookings cnt:", len(bookings))
+    # bookings = get_bookings(mysqlcon)
+    # print("Bookings cnt:", len(bookings))
 
     capital_fl = 0.1341
     hunter_fl = 0.18
@@ -40,7 +58,14 @@ def do_process(mysqlcon):
     client_min_markup_startingcostvalue = 20
     client_min_markup_value = 18
 
-    for booking in bookings:
+    # fk_booking_ids = []
+    # for booking in bookings:
+    #     fk_booking_ids.append('"' + booking["pk_booking_id"] + '"')
+
+    quotes = get_quotes(mysqlcon)
+    print("Quotes cnt:", len(quotes))
+
+    for quote in quotes:
         quoted_dollar = 0
         fp_markupfuel_levy_percent = 0
 
@@ -53,22 +78,17 @@ def do_process(mysqlcon):
 
         cost_fl = float(booking["inv_cost_quoted"]) * (1 + fp_markupfuel_levy_percent)
 
-        update_booking(booking, cost_fl, mysqlcon)
+        if cost_fl < float(client_min_markup_startingcostvalue):
+            quoted_dollar = cost_fl * (1 + client_markup_percent)
+        else:
+            cost_mu = cost_fl * client_markup_percent
 
-        ###
-        # Calculate inv_sell_quoted
-        ###
-        # if cost_fl < float(client_min_markup_startingcostvalue):
-        #     quoted_dollar = cost_fl * (1 + client_markup_percent)
-        # else:
-        #     cost_mu = cost_fl * client_markup_percent
+            if cost_mu > client_min_markup_value:
+                quoted_dollar = cost_fl + cost_mu
+            else:
+                quoted_dollar = cost_fl + client_min_markup_value
 
-        #     if cost_mu > client_min_markup_value:
-        #         quoted_dollar = cost_fl + cost_mu
-        #     else:
-        #         quoted_dollar = cost_fl + client_min_markup_value
-
-        # update_booking(booking, quoted_dollar, mysqlcon)
+        update_quote(quote, quoted_dollar, mysqlcon)
 
 
 if __name__ == "__main__":
