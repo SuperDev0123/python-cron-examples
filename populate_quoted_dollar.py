@@ -29,7 +29,7 @@ def update_booking(booking, cost_fl, mysqlcon):
 
 def get_quotes(mysqlcon):
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT id, fee \
+        sql = "SELECT id, fee, fk_freight_provider_id \
                 FROM `api_booking_quotes` \
                 WHERE `fk_client_id` = %s"
         cursor.execute(sql, ("Tempo Pty Ltd"))
@@ -69,14 +69,14 @@ def do_process(mysqlcon):
         quoted_dollar = 0
         fp_markupfuel_levy_percent = 0
 
-        if booking["vx_freight_provider"].lower() == "capital":
+        if quote["fk_freight_provider_id"].lower() == "capital":
             fp_markupfuel_levy_percent = capital_fl
-        elif booking["vx_freight_provider"].lower() == "tnt":
+        elif quote["fk_freight_provider_id"].lower() == "tnt":
             fp_markupfuel_levy_percent = tnt_fl
-        elif booking["vx_freight_provider"].lower() == "hunter":
+        elif quote["fk_freight_provider_id"].lower() == "hunter":
             fp_markupfuel_levy_percent = hunter_fl
 
-        cost_fl = float(booking["inv_cost_quoted"]) * (1 + fp_markupfuel_levy_percent)
+        cost_fl = float(quote["fee"]) * (1 + fp_markupfuel_levy_percent)
 
         if cost_fl < float(client_min_markup_startingcostvalue):
             quoted_dollar = cost_fl * (1 + client_markup_percent)
