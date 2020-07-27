@@ -201,10 +201,10 @@ if __name__ == "__main__":
             set_option(mysqlcon, "auto_book_label_set", True)
             print("#910 - Processing...")
             do_process(mysqlcon)
-            set_option(mysqlcon, "auto_book_label_set", False)
     except Exception as e:
         print("#904 Error: ", str(e))
         set_option(mysqlcon, "auto_book_label_set", False)
 
+    set_option(mysqlcon, "auto_book_label_set", False)
     mysqlcon.close()
     print("#999 Finished %s" % datetime.datetime.now())

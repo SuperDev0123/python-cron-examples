@@ -11,28 +11,30 @@ from _datetime_lib import convert_to_AU_SYDNEY_tz
 from _options_lib import get_option, set_option
 
 
-def get_begin_timestamp(option):
-    if option and "arg2" in option:
-        return option["arg2"]
+def get_latest_pushed_b_bookingID_Visual(option):
+    if option and "arg1" in option:
+        return option["arg1"]
 
 
-def _trun_off_flag(mysqlcon, flag_name):
+def set_latest_pushed_b_bookingID_Visual(mysqlcon, b_bookingID_Visual):
     with mysqlcon.cursor() as cursor:
-        sql = "UPDATE `dme_options` \
-                SET option_value=%s \
-                WHERE option_name=%s"
-        cursor.execute(sql, (0, flag_name))
+        sql = "UPDATE `dme_options` SET arg1=%s WHERE option_name=%s"
+        cursor.execute(sql, (int(b_bookingID_Visual) + 1, "web_2_fm_new"))
         mysqlcon.commit()
 
 
-def get_bookings(mysqlcon, begin_ts):
-    # Get bookings which modified after begin_ts and then delta(z_ModifiedTimestamp, z_CreatedTimestamp) is over 5 min
+def get_bookings(mysqlcon, b_bookingID_Visual):
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT * FROM `dme_bookings` \
-                WHERE z_ModifiedTimestamp>%s and z_ModifiedTimestamp - z_CreatedTimestamp>%s \
-                    and b_client_name<>%s \
-                ORDER BY id"
-        cursor.execute(sql, (begin_ts, 300, "BioPak"))
+        sql = "SELECT * FROM `dme_bookings` WHERE b_bookingID_Visual>=%s and b_client_name<>%s ORDER BY id"
+        cursor.execute(sql, (b_bookingID_Visual, "BioPak"))
+        results = cursor.fetchall()
+        return results
+
+
+def get_bookings_in_visual_ids(mysqlcon, b_bookingID_Visuals):
+    with mysqlcon.cursor() as cursor:
+        sql = f"SELECT * FROM `dme_bookings` WHERE b_bookingID_Visual in ({','.join(b_bookingID_Visuals)}) and b_client_name<>'BioPak' ORDER BY id"
+        cursor.execute(sql)
         results = cursor.fetchall()
         return results
 
@@ -113,20 +115,37 @@ def write_worksheet(name, workbook, worksheet, table, fields_info):
             col_index += 1
 
 
-def do_process(mysqlcon, option):
-    # Get begin timestamp - arg2 field of dme_options table
-    begin_ts = get_begin_timestamp(option)
+def do_process(mysqlcon):
+    # Get latested pushed b_bookingID_Visual
+    b_bookingID_Visuals = [
+        "138128",
+        "144346",
+        "148339",
+        "148722",
+        "148733",
+        "149025",
+        "149742",
+        "149783",
+        "150038",
+        "150203",
+        "151372",
+        "152580",
+        "152586",
+        "153616",
+    ]
+    # b_bookingID_Visual = get_latest_pushed_b_bookingID_Visual(option)
 
-    if not begin_ts:
-        print(
-            "#400 DB is not ready for this process(dme_options table has no `arg2` field)"
-        )
+    # if not b_bookingID_Visual:
+    #     print(
+    #         "#400 DB is not ready for this process(dme_options table has no `arg1` field)"
+    #     )
 
     # Query DB
     print("#800 Quering DB...")
-    bookings = get_bookings(mysqlcon, begin_ts)
+    # bookings = get_bookings(mysqlcon, b_bookingID_Visual)
+    bookings = get_bookings_in_visual_ids(mysqlcon, b_bookingID_Visuals)
     booking_fields_info = get_fields_info(mysqlcon, "dme_bookings")
-    print(f"#801 - Begin timestamp: {begin_ts} Bookings cnt: {len(bookings)}")
+    print("#801 - Bookings cnt:", len(bookings))
 
     if not bookings:
         return True
@@ -144,12 +163,12 @@ def do_process(mysqlcon, option):
     print("#803 - Booking Lines Data cnt:", len(booking_line_datas))
 
     # File name
-    local_filepath = "./temp_files/web_2_fm_modified"
+    local_filepath = "./temp_files/web_2_fm_new"
 
     if not os.path.exists(local_filepath):
         os.makedirs(local_filepath)
 
-    file_name = f'modified_{len(bookings)}_gte_{bookings[0]["b_bookingID_Visual"]}_{convert_to_AU_SYDNEY_tz(datetime.now()).strftime("%d-%m-%Y %H_%M_%S")}.xlsx'
+    file_name = f'new_{len(bookings)}_gte_{bookings[0]["b_bookingID_Visual"]}_{convert_to_AU_SYDNEY_tz(datetime.now()).strftime("%d-%m-%Y %H_%M_%S")}.xlsx'
     file_path = f"{local_filepath}/{file_name}"
 
     # Create workbook and worksheets
@@ -176,15 +195,17 @@ def do_process(mysqlcon, option):
     workbook.close()
     print(f"#806 File is saved on local - {file_path}")
 
-    # Uploading file to sharepoint
-    print("#807 Uploading file to sharepoint...")
-    result = upload_file_to_sharepoint(local_filepath, file_name)
+    # # Uploading file to sharepoint
+    # print("#807 Uploading file to sharepoint...")
+    # result = upload_file_to_sharepoint(local_filepath, file_name)
 
-    if result:
-        print("#808 Uploaded to sharepoint!")
+    # if result:
+    #     print("#808 Uploaded to sharepoint!")
 
-    # Turn off self flag
-    _trun_off_flag(mysqlcon, "web_2_fm_modified")
+    # # Update latest pushed b_bookingID_Visual
+    # set_latest_pushed_b_bookingID_Visual(
+    #     mysqlcon, bookings[len(bookings) - 1]["b_bookingID_Visual"]
+    # )
 
 
 if __name__ == "__main__":
@@ -205,21 +226,10 @@ if __name__ == "__main__":
         exit(1)
 
     try:
-        option = get_option(mysqlcon, "web_2_fm_modified")
-
-        if int(option["option_value"]) == 0:
-            print("#905 - `web_2_fm_modified` option is OFF")
-        elif option["is_running"]:
-            print("#905 - `web_2_fm_modified` script is already RUNNING")
-        else:
-            print("#906 - `web_2_fm_modified` option is ON")
-            set_option(mysqlcon, "web_2_fm_modified", True)
-            print("#910 - Processing...")
-            do_process(mysqlcon, option)
-            set_option(mysqlcon, "web_2_fm_modified", False)
+        print("#910 - Processing...")
+        do_process(mysqlcon)
     except Exception as e:
         print("Error 904:", str(e))
-        set_option(mysqlcon, "web_2_fm_modified", False)
 
     mysqlcon.close()
     print("#999 - Finished %s" % datetime.now())

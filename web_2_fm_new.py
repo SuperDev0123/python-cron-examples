@@ -16,6 +16,15 @@ def get_latest_pushed_b_bookingID_Visual(option):
         return option["arg1"]
 
 
+def _trun_off_flag(mysqlcon, flag_name):
+    with mysqlcon.cursor() as cursor:
+        sql = "UPDATE `dme_options` \
+                SET option_value=%s \
+                WHERE option_name=%s"
+        cursor.execute(sql, (0, flag_name))
+        mysqlcon.commit()
+
+
 def set_latest_pushed_b_bookingID_Visual(mysqlcon, b_bookingID_Visual):
     with mysqlcon.cursor() as cursor:
         sql = "UPDATE `dme_options` SET arg1=%s WHERE option_name=%s"
@@ -181,6 +190,9 @@ def do_process(mysqlcon, option):
     set_latest_pushed_b_bookingID_Visual(
         mysqlcon, bookings[len(bookings) - 1]["b_bookingID_Visual"]
     )
+
+    # Turn off self flag
+    _trun_off_flag(mysqlcon, "web_2_fm_new")
 
 
 if __name__ == "__main__":
