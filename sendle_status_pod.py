@@ -24,13 +24,13 @@ def get_bookings(mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
                 FROM `dme_bookings` \
-                WHERE `vx_freight_provider`=%s and `z_api_issue_update_flag_500`=%s and \
+                WHERE `vx_freight_provider`=%s and `z_api_issue_update_flag_500`=%s and `z_lock_status` <> %s and \
                 (`b_status` is NULL or (`b_status`<>%s and `b_status`<>%s and `b_status`<>%s)) and \
                 (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
                 ORDER BY id DESC \
                 LIMIT 200"
         cursor.execute(
-            sql, ("Sendle", "1", "Ready for booking", "Delivered", "Closed", "")
+            sql, ("Sendle", "1", 1, "Ready for booking", "Delivered", "Closed", "")
         )
         bookings = cursor.fetchall()
 
