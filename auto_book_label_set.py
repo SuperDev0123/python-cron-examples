@@ -201,7 +201,7 @@ if __name__ == "__main__":
             set_option(mysqlcon, "auto_book_label_set", False, time1)
     except Exception as e:
         print("#904 Error: ", str(e))
-        set_option(mysqlcon, "auto_book_label_set", False)
+        set_option(mysqlcon, "auto_book_label_set", False, time1)
 
     mysqlcon.close()
     print("#999 Finished %s" % datetime.datetime.now())
