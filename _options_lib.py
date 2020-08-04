@@ -2,6 +2,7 @@
 # V 1.0
 # Released Date: 2020-07-12
 
+import time
 from datetime import datetime
 
 
@@ -16,7 +17,7 @@ def get_option(mysqlcon, flag_name):
         return dme_option
 
 
-def set_option(mysqlcon, flag_name, is_running):
+def set_option(mysqlcon, flag_name, is_running, start_time):
     with mysqlcon.cursor() as cursor:
         if is_running:
             sql = "UPDATE `dme_options` \
@@ -24,9 +25,10 @@ def set_option(mysqlcon, flag_name, is_running):
                     WHERE option_name=%s"
             cursor.execute(sql, (is_running, datetime.now(), flag_name))
         else:
+            time2 = time.time()
             sql = "UPDATE `dme_options` \
-                    SET is_running=%s, end_time=%s \
+                    SET is_running=%s, end_time=%s, elapsed_seconds=%s \
                     WHERE option_name=%s"
-            cursor.execute(sql, (is_running, datetime.now(), flag_name))
+            cursor.execute(sql, (is_running, datetime.now(), flag_name, time2 - time1))
 
         mysqlcon.commit()

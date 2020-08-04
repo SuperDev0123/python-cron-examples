@@ -2,10 +2,9 @@
 
 import sys
 import os
-import errno
 import shutil
+import time
 import datetime
-import uuid
 import requests
 import json
 import traceback
@@ -298,6 +297,7 @@ def _insert_file_info(mysqlcon, fname, fpath, note):
 
 if __name__ == "__main__":
     print("#900 Started %s" % datetime.datetime.now())
+    time1 = time.time()
 
     try:
         mysqlcon = pymysql.connect(
@@ -358,7 +358,9 @@ if __name__ == "__main__":
                             f"Stopped... {str(e)}",
                         )
 
-            set_option(mysqlcon, "pricing_only", False)
+            time2 = time.time()
+            print("#998 Spent time: ", (time2 - time1), "s")
+            set_option(mysqlcon, "pricing_only", False, time1)
     except OSError as e:
         set_option(mysqlcon, "pricing_only", False)
         print("Error:", str(e))

@@ -2,16 +2,12 @@
 
 import sys
 import os
-import errno
-import shutil
 import datetime
-import uuid
+import time
 import requests
 import json
 import traceback
 import pymysql, pymysql.cursors
-import xlsxwriter as xlsxwriter
-from openpyxl import load_workbook
 
 from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
 from _options_lib import get_option, set_option
@@ -116,6 +112,7 @@ def do_process(mysqlcon):
 
 if __name__ == "__main__":
     print("#900 Started %s" % datetime.datetime.now())
+    time1 = time.time()
 
     try:
         mysqlcon = pymysql.connect(
@@ -143,7 +140,9 @@ if __name__ == "__main__":
             set_option(mysqlcon, "auto_book_label_set", True)
             print("#910 - Processing...")
             do_process(mysqlcon)
-            set_option(mysqlcon, "auto_pricing_set", False)
+            time2 = time.time()
+            print("#998 Spent time: ", (time2 - time1), "s")
+            set_option(mysqlcon, "auto_pricing_set", False, time1)
     except Exception as e:
         set_option(mysqlcon, "auto_pricing_set", False)
         print("#904 Error: ", str(e))

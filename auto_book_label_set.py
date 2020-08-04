@@ -2,16 +2,12 @@
 
 import sys
 import os
-import errno
-import shutil
 import datetime
-import uuid
 import requests
 import json
 import traceback
+import time
 import pymysql, pymysql.cursors
-import xlsxwriter as xlsxwriter
-from openpyxl import load_workbook
 
 from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
 from _options_lib import get_option, set_option
@@ -198,13 +194,16 @@ if __name__ == "__main__":
             print("#905 - `auto_book_label_set` script is already RUNNING")
         else:
             print("#906 - `auto_book_label_set` option is ON")
+            time1 = time.time()
             set_option(mysqlcon, "auto_book_label_set", True)
             print("#910 - Processing...")
             do_process(mysqlcon)
+            time2 = time.time()
+            print("#998 Spent time: ", (time2 - time1), "s")
+            set_option(mysqlcon, "auto_book_label_set", False, time1)
     except Exception as e:
         print("#904 Error: ", str(e))
         set_option(mysqlcon, "auto_book_label_set", False)
 
-    set_option(mysqlcon, "auto_book_label_set", False)
     mysqlcon.close()
     print("#999 Finished %s" % datetime.datetime.now())

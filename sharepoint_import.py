@@ -2,6 +2,7 @@
 
 import sys
 import os
+import time
 import shutil
 import uuid
 import traceback
@@ -700,6 +701,7 @@ def download_from_sharepoint(dbcon):
 
 if __name__ == "__main__":
     print("Started %s" % datetime.now())
+    time1 = time.time()
 
     try:
         dbcon = pymysql.connect(
@@ -727,7 +729,9 @@ if __name__ == "__main__":
             set_option(dbcon, "xls_import", True)
             print("#910 - Processing...")
             download_from_sharepoint(dbcon)
-            set_option(dbcon, "xls_import", False)
+            time2 = time.time()
+            print("#998 Spent time: ", (time2 - time1), "s")
+            set_option(dbcon, "xls_import", False, time1)
     except Exception as e:
         print("Error 904:", str(e))
         set_option(dbcon, "xls_import", False)

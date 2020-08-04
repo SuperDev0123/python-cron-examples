@@ -323,6 +323,7 @@ def csv_write(fpath, f, mysqlcon):
 
 if __name__ == "__main__":
     print("#900 - Running %s" % datetime.datetime.now())
+    time1 = time.time()
 
     try:
         mysqlcon = pymysql.connect(
@@ -364,7 +365,6 @@ if __name__ == "__main__":
                     sftp_server_infos["st"]["local_filepath"],
                     sftp_server_infos["st"]["local_filepath_archive"],
                 )
-                set_option(mysqlcon, "st_status_pod", False)
             except OSError as e:
                 print("Failed download .FTP files from remote. Error: ", str(e))
                 set_option(mysqlcon, "st_status_pod", False)
@@ -397,7 +397,9 @@ if __name__ == "__main__":
                         shutil.move(FTP_DIR + fname, ARCHIVE_FTP_DIR + fname)
                         print("@109 Moved .FTP file:", fpath)
 
-                    set_option(mysqlcon, "st_status_pod", False)
+                    time2 = time.time()
+                    print("#998 Spent time: ", (time2 - time1), "s")
+                    set_option(mysqlcon, "st_status_pod", False, time1)
             except OSError as e:
                 print(str(e))
                 set_option(mysqlcon, "st_status_pod", False)

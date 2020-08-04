@@ -110,6 +110,7 @@ def do_process(mysqlcon):
 
 if __name__ == "__main__":
     print("#900 - Running %s" % datetime.datetime.now())
+    time1 = time.time()
 
     try:
         mysqlcon = pymysql.connect(
@@ -136,7 +137,9 @@ if __name__ == "__main__":
             print("#906 - `tnt_status_pod` option is ON")
             set_option(mysqlcon, "tnt_status_pod", True)
             do_process(mysqlcon)
-            set_option(mysqlcon, "tnt_status_pod", False)
+            time2 = time.time()
+            print("#998 Spent time: ", (time2 - time1), "s")
+            set_option(mysqlcon, "tnt_status_pod", False, time1)
     except OSError as e:
         print("#904 Error:", str(e))
         set_option(mysqlcon, "tnt_status_pod", False)

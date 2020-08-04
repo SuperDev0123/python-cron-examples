@@ -118,20 +118,19 @@ def write_worksheet(name, workbook, worksheet, table, fields_info):
 def do_process(mysqlcon):
     # Get latested pushed b_bookingID_Visual
     b_bookingID_Visuals = [
-        "138128",
-        "144346",
-        "148339",
-        "148722",
-        "148733",
         "149025",
-        "149742",
-        "149783",
-        "150038",
-        "150203",
-        "151372",
-        "152580",
-        "152586",
-        "153616",
+        "146275",
+        "147700",
+        "147627",
+        "147519",
+        "147518",
+        "147517",
+        "147511",
+        "146615",
+        "147156",
+        "146525",
+        "146277",
+        "144346",
     ]
     # b_bookingID_Visual = get_latest_pushed_b_bookingID_Visual(option)
 
