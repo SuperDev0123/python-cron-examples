@@ -35,8 +35,8 @@ def set_option(mysqlcon, flag_name, is_running, start_time=None):
                 (
                     is_running,
                     datetime.now(),
-                    flag_name,
                     str(int(round(time2 - start_time))),
+                    flag_name,
                 ),
             )
 
