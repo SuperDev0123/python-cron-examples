@@ -225,12 +225,10 @@ if __name__ == "__main__":
             set_option(mysqlcon, "web_2_fm_new", True)
             print("#910 - Processing...")
             do_process(mysqlcon, option)
-            time2 = time.time()
-            print("#998 Spent time: ", (time2 - time1), "s")
             set_option(mysqlcon, "web_2_fm_new", False, time1)
     except Exception as e:
         print("Error 904:", str(e))
-        set_option(mysqlcon, "web_2_fm_new", False)
+        set_option(mysqlcon, "web_2_fm_new", False, time1)
 
     mysqlcon.close()
     print("#999 - Finished %s" % datetime.now())

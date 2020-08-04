@@ -140,12 +140,10 @@ if __name__ == "__main__":
             set_option(mysqlcon, "auto_book_label_set", True)
             print("#910 - Processing...")
             do_process(mysqlcon)
-            time2 = time.time()
-            print("#998 Spent time: ", (time2 - time1), "s")
             set_option(mysqlcon, "auto_pricing_set", False, time1)
     except Exception as e:
-        set_option(mysqlcon, "auto_pricing_set", False)
         print("#904 Error: ", str(e))
+        set_option(mysqlcon, "auto_pricing_set", False, time1)
 
     mysqlcon.close()
     print("#999 Finished %s" % datetime.datetime.now())

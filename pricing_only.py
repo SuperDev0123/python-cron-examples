@@ -358,12 +358,10 @@ if __name__ == "__main__":
                             f"Stopped... {str(e)}",
                         )
 
-            time2 = time.time()
-            print("#998 Spent time: ", (time2 - time1), "s")
             set_option(mysqlcon, "pricing_only", False, time1)
     except OSError as e:
-        set_option(mysqlcon, "pricing_only", False)
         print("Error:", str(e))
+        set_option(mysqlcon, "pricing_only", False, time1)
 
     mysqlcon.close()
     print("#999 Finished %s" % datetime.datetime.now())

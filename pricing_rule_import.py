@@ -536,12 +536,11 @@ if __name__ == "__main__":
                             SRC_INPROGRESS_DIR + fname,
                             f"Failed... {str(e)}",
                         )
-            time2 = time.time()
-            print("#998 Spent time: ", (time2 - time1), "s")
+
             set_option(mysqlcon, "pricing_rules", False, time1)
     except OSError as e:
         print("Error:", str(e))
-        set_option(mysqlcon, "pricing_rules", False)
+        set_option(mysqlcon, "pricing_rules", False, time1)
 
     mysqlcon.close()
     print("#999 Finished %s" % datetime.datetime.now())

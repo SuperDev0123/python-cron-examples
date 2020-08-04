@@ -137,12 +137,10 @@ if __name__ == "__main__":
             print("#906 - `tnt_status_pod` option is ON")
             set_option(mysqlcon, "tnt_status_pod", True)
             do_process(mysqlcon)
-            time2 = time.time()
-            print("#998 Spent time: ", (time2 - time1), "s")
             set_option(mysqlcon, "tnt_status_pod", False, time1)
     except OSError as e:
         print("#904 Error:", str(e))
-        set_option(mysqlcon, "tnt_status_pod", False)
+        set_option(mysqlcon, "tnt_status_pod", False, time1)
 
     mysqlcon.close()
     print("#909 - Finished %s" % datetime.datetime.now())

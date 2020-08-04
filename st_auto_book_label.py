@@ -114,12 +114,10 @@ if __name__ == "__main__":
             set_option(mysqlcon, "st_auto_book_label", True)
             print("#910 - Processing...")
             do_process(mysqlcon)
-            time2 = time.time()
-            print("#998 Spent time: ", (time2 - time1), "s")
             set_option(mysqlcon, "st_auto_book_label", False, time1)
     except Exception as e:
         print("Error 904:", str(e))
-        set_option(mysqlcon, "st_auto_book_label", False)
+        set_option(mysqlcon, "st_auto_book_label", False, time1)
 
     mysqlcon.close()
     print("#999 - Finished %s" % datetime.datetime.now())

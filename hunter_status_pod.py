@@ -126,11 +126,9 @@ if __name__ == "__main__":
             print("#906 - `hunter_status_pod` option is ON")
             set_option(mysqlcon, "hunter_status_pod", True)
             do_process(mysqlcon)
-            time2 = time.time()
-            print("#998 Spent time: ", (time2 - time1), "s")
             set_option(mysqlcon, "hunter_status_pod", False, time1)
     except OSError as e:
-        set_option(mysqlcon, "hunter_status_pod", False)
+        set_option(mysqlcon, "hunter_status_pod", False, time1)
         print("Error:", str(e))
 
     mysqlcon.close()

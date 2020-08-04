@@ -367,7 +367,7 @@ if __name__ == "__main__":
                 )
             except OSError as e:
                 print("Failed download .FTP files from remote. Error: ", str(e))
-                set_option(mysqlcon, "st_status_pod", False)
+                set_option(mysqlcon, "st_status_pod", False, time1)
 
             try:
                 for fname in sorted(os.listdir(FTP_DIR)):
@@ -397,15 +397,13 @@ if __name__ == "__main__":
                         shutil.move(FTP_DIR + fname, ARCHIVE_FTP_DIR + fname)
                         print("@109 Moved .FTP file:", fpath)
 
-                    time2 = time.time()
-                    print("#998 Spent time: ", (time2 - time1), "s")
                     set_option(mysqlcon, "st_status_pod", False, time1)
             except OSError as e:
                 print(str(e))
-                set_option(mysqlcon, "st_status_pod", False)
+                set_option(mysqlcon, "st_status_pod", False, time1)
     except Exception as e:
         print("Error 904:", str(e))
-        set_option(mysqlcon, "st_status_pod", False)
+        set_option(mysqlcon, "st_status_pod", False, time1)
 
     mysqlcon.close()
     print("#999 - Finished %s" % datetime.datetime.now())

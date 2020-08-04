@@ -141,12 +141,10 @@ if __name__ == "__main__":
         else:
             print("#906 - `sendle_status_pod` option is ON")
             do_process(mysqlcon)
-            time2 = time.time()
-            print("#998 Spent time: ", (time2 - time1), "s")
             set_option(mysqlcon, "sendle_status_pod", False, time1)
     except OSError as e:
         print("Error:", str(e))
-        set_option(mysqlcon, "sendle_status_pod", False)
+        set_option(mysqlcon, "sendle_status_pod", False, time1)
 
     mysqlcon.close()
     print("#909 - Finished %s" % datetime.datetime.now())
