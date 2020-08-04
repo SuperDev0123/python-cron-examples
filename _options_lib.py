@@ -17,7 +17,7 @@ def get_option(mysqlcon, flag_name):
         return dme_option
 
 
-def set_option(mysqlcon, flag_name, is_running, start_time):
+def set_option(mysqlcon, flag_name, is_running, start_time=None):
     with mysqlcon.cursor() as cursor:
         if is_running:
             sql = "UPDATE `dme_options` \
@@ -29,6 +29,8 @@ def set_option(mysqlcon, flag_name, is_running, start_time):
             sql = "UPDATE `dme_options` \
                     SET is_running=%s, end_time=%s, elapsed_seconds=%s \
                     WHERE option_name=%s"
-            cursor.execute(sql, (is_running, datetime.now(), flag_name, time2 - time1))
+            cursor.execute(
+                sql, (is_running, datetime.now(), flag_name, time2 - start_time)
+            )
 
         mysqlcon.commit()
