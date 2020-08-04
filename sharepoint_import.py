@@ -734,7 +734,8 @@ if __name__ == "__main__":
             set_option(dbcon, "xls_import", False, time1)
     except Exception as e:
         print("Error 904:", str(e))
-        set_option(dbcon, "xls_import", False)
+        print("#998 Spent time: ", (time2 - time1), "s")
+        set_option(dbcon, "xls_import", False, time1)
 
     dbcon.close()
     print("#999 - Finished %s" % datetime.now())
