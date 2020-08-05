@@ -397,7 +397,7 @@ if __name__ == "__main__":
                         shutil.move(FTP_DIR + fname, ARCHIVE_FTP_DIR + fname)
                         print("@109 Moved .FTP file:", fpath)
 
-                    set_option(mysqlcon, "st_status_pod", False, time1)
+                set_option(mysqlcon, "st_status_pod", False, time1)
             except OSError as e:
                 print(str(e))
                 set_option(mysqlcon, "st_status_pod", False, time1)
