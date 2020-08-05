@@ -13,13 +13,13 @@ def get_in_progress_bookings(mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
                 FROM `dme_bookings` \
-                WHERE `vx_freight_provider`=%s and `z_lock_status` <> %s and \
+                WHERE `vx_freight_provider`=%s and (`z_lock_status`=%s OR `z_lock_status` IS NULL) and \
                 (`b_status`<>%s and `b_status`<>%s and `b_status`<>%s and `b_status`<>%s and `z_pod_url` is NULL) \
                 ORDER BY id DESC \
                 LIMIT 200"
         cursor.execute(
             sql,
-            ("Hunter", "1", "Ready for booking", "Cancelled", "Closed", "Delivered"),
+            ("Hunter", "0", "Ready for booking", "Cancelled", "Closed", "Delivered"),
         )
         # sql = "SELECT * FROM dme_bookings WHERE id > 0 ORDER BY id DESC LIMIT 1000"
         # cursor.execute(sql)
