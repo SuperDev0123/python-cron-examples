@@ -170,6 +170,7 @@ def do_process(mysqlcon):
 
 if __name__ == "__main__":
     print("#900 Started %s" % datetime.datetime.now())
+    time1 = time.time()
 
     try:
         mysqlcon = pymysql.connect(
