@@ -19,7 +19,7 @@ def get_in_progress_bookings(mysqlcon):
                 ORDER BY id DESC \
                 LIMIT 200"
         cursor.execute(
-            sql, ("TNT", 1, "Closed", "Cancelled", "Ready for booking", "Delivered")
+            sql, ("TNT", "1", "Closed", "Cancelled", "Ready for booking", "Delivered")
         )
         bookings = cursor.fetchall()
 

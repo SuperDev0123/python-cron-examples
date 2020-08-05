@@ -18,7 +18,8 @@ def get_in_progress_bookings(mysqlcon):
                 ORDER BY id DESC \
                 LIMIT 200"
         cursor.execute(
-            sql, ("Hunter", 1, "Ready for booking", "Cancelled", "Closed", "Delivered")
+            sql,
+            ("Hunter", "1", "Ready for booking", "Cancelled", "Closed", "Delivered"),
         )
         # sql = "SELECT * FROM dme_bookings WHERE id > 0 ORDER BY id DESC LIMIT 1000"
         # cursor.execute(sql)
