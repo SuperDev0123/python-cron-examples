@@ -494,8 +494,8 @@ def do_import(dbcon, cur, filename):
     pk_header_ids = []
     for header in headers:
         pk_header_ids.append(header["pk_header_id"])
-        print(f"#805 - Updating files table note info ...", cur.lastrowid)
 
+    print(f"#805 - Updating files table note info ...", cur.lastrowid)
     save_dme_note(dbcon, cur.lastrowid, ", ".join(pk_header_ids))
 
     # Insert to DB
