@@ -492,8 +492,11 @@ def do_import(dbcon, cur, filename):
 
     # Insert to DB
     for header in headers:
+        pk_header_ids = []
+
         for line in lines:
             if line["header_id"] == header["id"]:
+                pk_header_ids.append(header["pk_header_id"])
                 line["client_booking_id"] = header["pk_header_id"]
                 line["v_client_pk_consigment_num"] = header["pk_header_id"]
 
@@ -508,7 +511,7 @@ def do_import(dbcon, cur, filename):
                         insert_line_detail(cur, delete_keys(line_detail))
                 insert_line(cur, delete_keys(line))
         insert_header(cur, delete_keys(header))
-        save_dme_note(dbcon, cur.lastrowid, pk_header_id)
+        save_dme_note(dbcon, cur.lastrowid, ", ".join(pk_header_ids))
         dbcon.commit()
 
     return True
