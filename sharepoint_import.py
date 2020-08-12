@@ -491,6 +491,7 @@ def do_import(dbcon, cur, filename):
         row += 1
 
     # Insert to DB
+    print(f"#804 - Inserting to DB...")
     pk_header_ids = []
     for header in headers:
         pk_header_ids.append(header["pk_header_id"])
@@ -512,6 +513,11 @@ def do_import(dbcon, cur, filename):
                 insert_line(cur, delete_keys(line))
         insert_header(cur, delete_keys(header))
 
+    print(
+        f"#805 - Updating files table note info ...",
+        cur.lastrowid,
+        ", ".join(pk_header_ids),
+    )
     save_dme_note(dbcon, cur.lastrowid, ", ".join(pk_header_ids))
     dbcon.commit()
 
