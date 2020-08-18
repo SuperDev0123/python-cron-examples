@@ -66,16 +66,16 @@ def update_modified_timestamp(mysqlcon, pk_booking_ids):
         now_timestamp = str(datetime.now())[:19]
 
         # Update dme_bookings
-        sql = f"UPDATE dme_bookings SET z_ModifiedTimestamp={now_timestamp} WHERE pk_booking_id in ({','.join(pk_booking_ids)})"
-        cursor.execute(sql)
+        sql = f"UPDATE dme_bookings SET z_ModifiedTimestamp=%s WHERE pk_booking_id in ({','.join(pk_booking_ids)})"
+        cursor.execute(sql, (now_timestamp))
 
         # Update dme_booking_lines
-        sql = f"UPDATE dme_booking_lines SET z_modifiedTimeStamp={now_timestamp} WHERE fk_booking_id in ({','.join(pk_booking_ids)})"
-        cursor.execute(sql)
+        sql = f"UPDATE dme_booking_lines SET z_modifiedTimeStamp=%s WHERE fk_booking_id in ({','.join(pk_booking_ids)})"
+        cursor.execute(sql, (now_timestamp))
 
         # Update dme_booking_lines_data
-        sql = f"UPDATE dme_booking_lines_data SET z_modifiedTimeStamp={now_timestamp} WHERE fk_booking_id in ({','.join(pk_booking_ids)})"
-        cursor.execute(sql)
+        sql = f"UPDATE dme_booking_lines_data SET z_modifiedTimeStamp=%s WHERE fk_booking_id in ({','.join(pk_booking_ids)})"
+        cursor.execute(sql, (now_timestamp))
 
         mysqlcon.commit()
 
