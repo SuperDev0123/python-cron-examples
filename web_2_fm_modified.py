@@ -183,9 +183,6 @@ def do_process(mysqlcon, option):
     if result:
         print("#808 Uploaded to sharepoint!")
 
-    # Turn off self flag
-    _trun_off_flag(mysqlcon, "web_2_fm_modified")
-
 
 if __name__ == "__main__":
     print("#900 - Started %s" % datetime.now())
@@ -216,7 +213,11 @@ if __name__ == "__main__":
             print("#906 - `web_2_fm_modified` option is ON")
             set_option(mysqlcon, "web_2_fm_modified", True)
             print("#910 - Processing...")
+
             do_process(mysqlcon, option)
+
+            # Turn off self flag
+            _trun_off_flag(mysqlcon, "web_2_fm_modified")
             set_option(mysqlcon, "web_2_fm_modified", False, time1)
     except Exception as e:
         print("Error 904:", str(e))
