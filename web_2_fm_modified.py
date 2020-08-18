@@ -21,7 +21,7 @@ def _trun_off_flag(mysqlcon, flag_name):
         sql = "UPDATE `dme_options` \
                 SET option_value=%s, arg2=%s \
                 WHERE option_name=%s"
-        cursor.execute(sql, (0, flag_name, datetime.now()))
+        cursor.execute(sql, (0, datetime.now(), flag_name))
         mysqlcon.commit()
 
 
