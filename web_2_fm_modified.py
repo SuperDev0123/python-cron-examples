@@ -63,7 +63,7 @@ def get_fields_info(mysqlcon, table_name):
 
 def update_modified_timestamp(mysqlcon, pk_booking_ids):
     with mysqlcon.cursor() as cursor:
-        now_timestamp = datetime.now()
+        now_timestamp = str(datetime.now())[:19]
 
         # Update dme_bookings
         sql = f"UPDATE dme_bookings SET z_ModifiedTimestamp={now_timestamp} WHERE pk_booking_id in ({','.join(pk_booking_ids)})"
