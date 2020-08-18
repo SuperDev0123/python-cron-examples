@@ -19,9 +19,9 @@ def get_begin_timestamp(option):
 def _trun_off_flag(mysqlcon, flag_name):
     with mysqlcon.cursor() as cursor:
         sql = "UPDATE `dme_options` \
-                SET option_value=%s \
+                SET option_value=%s, arg2=%s \
                 WHERE option_name=%s"
-        cursor.execute(sql, (0, flag_name))
+        cursor.execute(sql, (0, flag_name, datetime.now()))
         mysqlcon.commit()
 
 
