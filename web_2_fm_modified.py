@@ -19,9 +19,9 @@ def get_begin_timestamp(option):
 def _trun_off_flag(mysqlcon, flag_name):
     with mysqlcon.cursor() as cursor:
         sql = "UPDATE `dme_options` \
-                SET option_value=%s, arg2=%s \
+                SET option_value=%s \
                 WHERE option_name=%s"
-        cursor.execute(sql, (0, datetime.now(), flag_name))
+        cursor.execute(sql, (0, flag_name))
         mysqlcon.commit()
 
 
@@ -59,6 +59,25 @@ def get_fields_info(mysqlcon, table_name):
         cursor.execute(sql)
         results = cursor.fetchall()
         return results
+
+
+def update_modified_timestamp(mysqlcon, pk_booking_ids):
+    with mysqlcon.cursor() as cursor:
+        now_timestamp = datetime.now()
+
+        # Update dme_bookings
+        sql = f"UPDATE dme_bookings SET z_ModifiedTimestamp={now_timestamp} WHERE pk_booking_id in ({','.join(pk_booking_ids)})"
+        cursor.execute(sql)
+
+        # Update dme_booking_lines
+        sql = f"UPDATE dme_booking_lines SET z_modifiedTimeStamp={now_timestamp} WHERE fk_booking_id in ({','.join(pk_booking_ids)})"
+        cursor.execute(sql)
+
+        # Update dme_booking_lines_data
+        sql = f"UPDATE dme_booking_lines_data SET z_modifiedTimeStamp={now_timestamp} WHERE fk_booking_id in ({','.join(pk_booking_ids)})"
+        cursor.execute(sql)
+
+        mysqlcon.commit()
 
 
 def upload_file_to_sharepoint(file_path, file_name):
@@ -182,6 +201,8 @@ def do_process(mysqlcon, option):
 
     if result:
         print("#808 Uploaded to sharepoint!")
+
+    update_modified_timestamp(mysqlcon, pk_booking_ids)
 
 
 if __name__ == "__main__":
