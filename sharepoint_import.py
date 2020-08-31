@@ -316,31 +316,35 @@ def do_import(dbcon, cur, filename):
 
         if (
             not worksheet0["BH%i" % row].value == None
-            and worksheet0["BH%i" % row].value.lower() == "no"
+            str(and worksheet0["BH%i" % row].value).lower() == "no"
         ):
             header["b_012_b_driver_bring_connote"] = 0
         else:
             header["b_012_b_driver_bring_connote"] = 1
+
         if (
             not worksheet0["BI%i" % row].value == None
-            and worksheet0["BI%i" % row].value.lower() == "no"
+            str(and worksheet0["BI%i" % row].value).lower() == "no"
         ):
             header["b_019_b_pu_tail_lift"] = 0
         else:
             header["b_019_b_pu_tail_lift"] = 1
+
         header["b_020_b_pu_num_operators"] = worksheet0["BJ%i" % row].value
+
         if (
             not worksheet0["BK%i" % row].value == None
-            and worksheet0["BK%i" % row].value.lower() == "no"
+            str(and worksheet0["BK%i" % row].value).lower() == "no"
         ):
             header["b_041_b_del_tail_lift"] = 0
         else:
             header["b_041_b_del_tail_lift"] = 1
+
         header["b_042_b_del_num_operators"] = worksheet0["BL%i" % row].value
 
         if (
             not worksheet0["BM%i" % row].value == None
-            and worksheet0["BM%i" % row].value.lower() == "no"
+            and str(worksheet0["BM%i" % row].value).lower() == "no"
         ):
             header["b_013_b_package_job"] = 0
         else:
