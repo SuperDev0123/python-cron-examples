@@ -316,7 +316,7 @@ def do_import(dbcon, cur, filename):
 
         if (
             not worksheet0["BH%i" % row].value == None
-            str(and worksheet0["BH%i" % row].value).lower() == "no"
+            and str(worksheet0["BH%i" % row].value).lower() == "no"
         ):
             header["b_012_b_driver_bring_connote"] = 0
         else:
@@ -324,7 +324,7 @@ def do_import(dbcon, cur, filename):
 
         if (
             not worksheet0["BI%i" % row].value == None
-            str(and worksheet0["BI%i" % row].value).lower() == "no"
+            and str(worksheet0["BI%i" % row].value).lower() == "no"
         ):
             header["b_019_b_pu_tail_lift"] = 0
         else:
@@ -334,7 +334,7 @@ def do_import(dbcon, cur, filename):
 
         if (
             not worksheet0["BK%i" % row].value == None
-            str(and worksheet0["BK%i" % row].value).lower() == "no"
+            and str(worksheet0["BK%i" % row].value).lower() == "no"
         ):
             header["b_041_b_del_tail_lift"] = 0
         else:
