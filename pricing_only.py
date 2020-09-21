@@ -106,8 +106,9 @@ def read_xls(file):
                 "de_To_Address_State": worksheet0["AP%i" % row].value,
                 "de_To_Address_Suburb": worksheet0["AO%i" % row].value,
                 "client_warehouse_code": worksheet0["I%i" % row].value,
-                "vx_serviceName": "R",
-                "b_client_name": "Pricing-Only",
+                "vx_serviceName": "R",  # hardcoded
+                "b_client_name": "Pricing-Only",  # hardcoded
+                "kf_client_id": "461162D2-90C7-BF4E-A905-0242ac130003",  # hardcoded
             }
             bookings.append(booking)
 
