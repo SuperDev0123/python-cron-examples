@@ -41,21 +41,10 @@ def get_bookings_missing_pod(mysqlcon):
                 FROM `dme_bookings` \
                 WHERE `vx_freight_provider`=%s AND `b_client_name`=%s AND z_pod_url IS NULL \
                     AND (`z_lock_status`=%s OR `z_lock_status` IS NULL) \
-                    AND (`b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s) \
+                    AND `b_status`==%s \
                 ORDER BY id DESC \
                 LIMIT 20"
-        cursor.execute(
-            sql,
-            (
-                "TNT",
-                "Tempo Pty Ltd",
-                "0",
-                "Ready for booking",
-                "Cancelled",
-                "Closed",
-                "Delivered",
-            ),
-        )
+        cursor.execute(sql, ("Hunter", "Tempo Pty Ltd", "0", "Delivered"))
         bookings = cursor.fetchall()
 
         return bookings
