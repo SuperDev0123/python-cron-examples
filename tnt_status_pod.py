@@ -13,9 +13,9 @@ def get_in_progress_bookings(mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
                 FROM `dme_bookings` \
-                WHERE `vx_freight_provider`=%s and `b_client_name`=%s \
-                    and (`z_lock_status`=%s OR `z_lock_status` IS NULL) \
-                    and (`b_status`<>%s and `b_status`<>%s and `b_status`<>%s and `b_status`<>%s) \
+                WHERE `vx_freight_provider`=%s AND `b_client_name`=%s \
+                    AND (`z_lock_status`=%s OR `z_lock_status` IS NULL) \
+                    AND (`b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s) \
                 ORDER BY id DESC \
                 LIMIT 200"
         cursor.execute(
@@ -39,10 +39,23 @@ def get_bookings_missing_pod(mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
                 FROM `dme_bookings` \
-                WHERE `vx_freight_provider`=%s and `b_client_name`=%s and b_status=%s and z_pod_url is NULL \
+                WHERE `vx_freight_provider`=%s AND `b_client_name`=%s AND z_pod_url IS NULL \
+                    AND (`z_lock_status`=%s OR `z_lock_status` IS NULL) \
+                    AND (`b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s) \
                 ORDER BY id DESC \
                 LIMIT 20"
-        cursor.execute(sql, ("TNT", "Tempo Pty Ltd", "Delivered"))
+        cursor.execute(
+            sql,
+            (
+                "TNT",
+                "Tempo Pty Ltd",
+                "0",
+                "Ready for booking",
+                "Cancelled",
+                "Closed",
+                "Delivered",
+            ),
+        )
         bookings = cursor.fetchall()
 
         return bookings
