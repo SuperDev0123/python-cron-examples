@@ -137,7 +137,7 @@ if __name__ == "__main__":
             print("#905 - `auto_pricing_set` script is already RUNNING")
         else:
             print("#906 - `auto_pricing_set` option is ON")
-            set_option(mysqlcon, "auto_book_label_set", True)
+            set_option(mysqlcon, "auto_pricing_set", True)
             print("#910 - Processing...")
             do_process(mysqlcon)
             set_option(mysqlcon, "auto_pricing_set", False, time1)
