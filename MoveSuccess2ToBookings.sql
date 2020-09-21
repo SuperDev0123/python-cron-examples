@@ -11,7 +11,7 @@ DECLARE booking_created_for_email char(255);
 DECLARE bookingID_Visual int(11);
 
 
-DECLARE EXIT HANDLER FOR SQLEXCEPTION 
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
     GET DIAGNOSTICS CONDITION 1
     @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
@@ -217,13 +217,11 @@ WHERE success IN (2,3,4,6);
 
 
 SET bookingID_Visual = v_start_b_bookingID_Visual;
-
 bookingCreatedEmail: REPEAT 
-
     SELECT 
          SUBSTRING_INDEX(SUBSTRING_INDEX(dme_bookings.booking_Created_For, ' ', 1), ' ', -1),
          TRIM(SUBSTR(dme_bookings.booking_Created_For, LOCATE(' ', dme_bookings.booking_Created_For))),
-         dme_clients.pk_id_dme_client INTO last_name, first_name, pk_id_dme_client
+         dme_clients.pk_id_dme_client INTO first_name, last_name, pk_id_dme_client
     FROM
         dme_bookings 
     INNER JOIN dme_clients 
@@ -232,23 +230,26 @@ bookingCreatedEmail: REPEAT
 
     SELECT first_name, last_name, pk_id_dme_client;
     
-    If (first_name = "")
+    If last_name = ""
         THEN
+            -- SELECT 'Only first_name';
             SELECT email INTO booking_created_for_email
             FROM dme_client_employees
-            WHERE name_first IS NULL AND name_last=last_name AND fk_id_dme_client_id=pk_id_dme_client;
+            WHERE name_last IS NULL AND name_first=first_name AND fk_id_dme_client_id=pk_id_dme_client;
         ELSE
+            -- SELECT 'first_name, last_name';
             SELECT email INTO booking_created_for_email
             FROM dme_client_employees
-            WHERE name_first=first_name AND name_last=last_name AND fk_id_dme_client_id=pk_id_dme_client;
+            WHERE name_first=last_name AND name_last=first_name AND fk_id_dme_client_id=pk_id_dme_client;
     END If;
 
     SELECT booking_created_for_email;
 
-    UPDATE dme_bookings SET booking_Created_For_Email = booking_created_for_email WHERE b_bookingID_Visual = bookingID_Visual;
+    UPDATE dme_bookings SET booking_Created_For_Email = booking_created_for_email
+    WHERE b_bookingID_Visual = bookingID_Visual;
     
     Set bookingID_Visual = bookingID_Visual + 1;
-UNTIL bookingID_Visual > v_end_b_bookingID_Visual          
+UNTIL bookingID_Visual > v_end_b_bookingID_Visual
 END REPEAT bookingCreatedEmail;
 
 
