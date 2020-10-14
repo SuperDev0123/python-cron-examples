@@ -232,7 +232,7 @@ class Site(object):
         url = "".join(
             [
                 self.site_url,
-                f"_api/Web/GetFileByServerRelativeUrl('{src_relative_path}')/moveTo (newurl='{dest_path}',flags=1)",
+                f"_api/Web/GetFileByServerRelativeUrl(@src)/moveTo (newurl=@dest,flags=1)?@src='{src_relative_path}'&@dest='{dest_path}'",
             ]
         )
 
