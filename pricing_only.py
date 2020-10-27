@@ -190,20 +190,23 @@ def do_process(mysqlcon, fpath, fname):
     worksheet.write("W1", "de_To_Address_Suburb", bold)
     worksheet.write("X1", "client_warehouse_code", bold)
     worksheet.write("Y1", "Freight Provider", bold)
-    worksheet.write("Z1", "Service Name", bold)
-    worksheet.write("AA1", "FP Price", bold)
-    worksheet.write("AB1", "DME Price", bold)
-    worksheet.write("AC1", "Tax Type", bold)
-    worksheet.write("AD1", "Tax Amount", bold)
-    worksheet.write("AE1", "Etd", bold)
-    worksheet.write("AF1", "mu_percentage_fuel_levy", bold)
+    worksheet.write("Z1", "Account Code", bold)
+    worksheet.write("AA1", "Service Name", bold)
+    worksheet.write("AB1", "FP Price", bold)
+    worksheet.write("AC1", "DME Price", bold)
+    worksheet.write("AD1", "Tax Type", bold)
+    worksheet.write("AE1", "Tax Amount", bold)
+    worksheet.write("AF1", "Etd", bold)
+    worksheet.write("AG1", "mu_percentage_fuel_levy", bold)
 
     bookings, booking_lines = read_xls(fpath)
     bookings = replace_null(bookings)
     booking_lines = replace_null(booking_lines)
 
-    for booking in bookings:
+    for index, booking in enumerate(bookings):
         lines = []
+        note = f"In progress: {index / len(bookings) * 100}%"
+        _update_file_info(mysqlcon, fname, fpath, note)
 
         for booking_line in booking_lines:
             if booking["pk_booking_id"] == booking_line["fk_booking_id"]:
@@ -212,18 +215,20 @@ def do_process(mysqlcon, fpath, fname):
         pricing_response = do_pricing(booking, lines)
 
         if "results" in pricing_response:
-            lowest = None
+            # Deactivate `lowest`
+            # lowest = None
 
             for pricing in pricing_response["results"]:
-                if not lowest:
-                    lowest = pricing
-                else:
-                    if int(lowest["client_mu_1_minimum_values"]) >= int(
-                        pricing["client_mu_1_minimum_values"]
-                    ):
-                        lowest = pricing
+                #     if not lowest:
+                #         lowest = pricing
+                #     else:
+                #         if int(lowest["client_mu_1_minimum_values"]) >= int(
+                #             pricing["client_mu_1_minimum_values"]
+                #         ):
+                #             lowest = pricing
 
-            if lowest:
+                # if lowest:
+                # if True:
                 worksheet.write(row, col + 0, booking["pk_booking_id"])
                 worksheet.write(row, col + 1, booking["puPickUpAvailFrom_Date"])
                 worksheet.write(row, col + 2, booking["b_clientReference_RA_Numbers"])
@@ -249,17 +254,14 @@ def do_process(mysqlcon, fpath, fname):
                 worksheet.write(row, col + 22, booking["de_To_Address_Suburb"])
                 worksheet.write(row, col + 23, booking["client_warehouse_code"])
                 worksheet.write(row, col + 24, pricing["fk_freight_provider_id"])
-                worksheet.write(row, col + 25, pricing["service_name"])
-                worksheet.write(row, col + 26, pricing["fee"])
-                worksheet.write(row, col + 27, pricing["client_mu_1_minimum_values"])
-                worksheet.write(row, col + 28, pricing["tax_id_1"])
-                worksheet.write(row, col + 29, pricing["tax_value_1"])
-                worksheet.write(row, col + 30, pricing["etd"])
-                worksheet.write(row, col + 31, pricing["mu_percentage_fuel_levy"])
-
-                if row - 2 != 0:
-                    note = f"In progress: {int((row - 2) / len(bookings) * 100)}%"
-                    _update_file_info(mysqlcon, fname, fpath, note)
+                worksheet.write(row, col + 25, pricing["account_code"])
+                worksheet.write(row, col + 26, pricing["service_name"])
+                worksheet.write(row, col + 27, pricing["fee"])
+                worksheet.write(row, col + 28, pricing["client_mu_1_minimum_values"])
+                worksheet.write(row, col + 29, pricing["tax_id_1"])
+                worksheet.write(row, col + 30, pricing["tax_value_1"])
+                worksheet.write(row, col + 31, pricing["etd"])
+                worksheet.write(row, col + 32, pricing["mu_percentage_fuel_levy"])
 
                 row += 1
 
