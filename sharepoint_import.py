@@ -7,16 +7,10 @@ import shutil
 import uuid
 import traceback
 import copy
-import smtplib
 import pytz
 from datetime import date, timedelta, datetime
 import pymysql, pymysql.cursors
 from openpyxl import load_workbook
-from email.mime.application import MIMEApplication
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.image import MIMEImage
-from email.utils import COMMASPACE, formatdate
 
 from _env import (
     DB_HOST,
@@ -36,6 +30,7 @@ from _env import (
 from _sharepoint_lib import Office365, Site
 from _options_lib import get_option, set_option
 from _datetime_lib import convert_to_UTC_tz
+from _email_lib import send_email
 
 
 def insert_dme_file(dbcur, file):
@@ -527,36 +522,6 @@ def do_import(dbcon, cur, filename):
 
     dbcon.commit()
     return True
-
-
-def send_email(
-    send_to,
-    send_cc,
-    subject,
-    text,
-    files=None,
-    mime_type="plain",
-    server="localhost",
-    use_tls=True,
-):
-    assert isinstance(send_to, list)
-
-    msg = MIMEMultipart()
-    msg["From"] = EMAIL_HOST_USER
-    msg["To"] = COMMASPACE.join(send_to)
-    msg["Cc"] = COMMASPACE.join(send_cc)
-    msg["Date"] = formatdate(localtime=True)
-    msg["Subject"] = subject
-    msg.attach(MIMEText(text, mime_type))
-
-    smtp = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT)
-
-    if use_tls:
-        smtp.starttls()
-
-    smtp.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
-    smtp.sendmail(EMAIL_HOST_USER, send_to + send_cc, msg.as_string())
-    smtp.close()
 
 
 def send_error_email(filename, error):
