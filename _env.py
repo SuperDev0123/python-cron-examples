@@ -16,7 +16,7 @@ DB_NAME = "deliver_me"
 
 API_URL = "http://localhost:8000/api"  # Local
 USERNAME = "dme"
-PASSWORD = "password#123"
+PASSWORD = "LRyuNp3zn[XE_`8-"
 
 # SI - Sharepoint import
 SI_DOWNLOAD_DIR = "./xls/downloaded"
@@ -41,6 +41,10 @@ PR_SRC_DIR = "./../dme_api/static/uploaded/pricing_rule/indata/"
 PR_SRC_INPROGRESS_DIR = "./../dme_api/static/uploaded/pricing_rule/inprogress/"
 PR_SRC_ACHIEVE_DIR = "./../dme_api/static/uploaded/pricing_rule/achieve/"
 
+# SAPB1 - CSV INPUT
+SAPB1_CSV_INPUT_DIR = "./dir01/"
+SAPB1_CSV_INPUT_ACHIEVE_DIR = "./dir02/"
+
 
 # **************
 # ***  DEV   ***
@@ -54,12 +58,12 @@ PR_SRC_ACHIEVE_DIR = "./../dme_api/static/uploaded/pricing_rule/achieve/"
 
 # API_URL = "http://3.105.62.128/api"  # Dev
 # USERNAME = "dme"
-# PASSWORD = "pass#123"
+# PASSWORD = "LRyuNp3zn[XE_`8-"
 
 # SI - Sharepoint import
-SI_DOWNLOAD_DIR = "/opt/chrons/xls/downloaded"
-SI_IMPORT_DIR = "/opt/chrons/xls/imported"
-SI_ERROR_DIR = "/opt/chrons/xls/issued"
+# SI_DOWNLOAD_DIR = "/opt/chrons/xls/downloaded"
+# SI_IMPORT_DIR = "/opt/chrons/xls/imported"
+# SI_ERROR_DIR = "/opt/chrons/xls/issued"
 
 # ST - Startrack
 # ST_FTP_DIR = "/home/cope_au/dme_sftp/startrack_au/ftp/indata/"
@@ -79,6 +83,9 @@ SI_ERROR_DIR = "/opt/chrons/xls/issued"
 # PR_SRC_INPROGRESS_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/inprogress/"
 # PR_SRC_ACHIEVE_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/achieve/"
 
+# SAPB1 - CSV INPUT
+# SAPB1_CSV_INPUT_DIR = "/dme_sftp/sapb1/order_transaction_csvs/indata/"
+# SAPB1_CSV_INPUT_ACHIEVE_DIR = "/dme_sftp/sapb1/order_transaction_csvs/processed/"
 
 # **************
 # ***  PROD  ***
@@ -91,6 +98,8 @@ SI_ERROR_DIR = "/opt/chrons/xls/issued"
 # DB_NAME = "dme_db_prod"  # Prod
 
 # API_URL = "http://13.55.64.102/api"  # Prod
+# USERNAME = "dme"
+# PASSWORD = "LRyuNp3zn[XE_`8-"
 
 # ST - Startrack
 # ST_FTP_DIR = "/home/cope_au/dme_sftp/startrack_au/ftp/indata/"
@@ -111,3 +120,7 @@ SI_ERROR_DIR = "/opt/chrons/xls/issued"
 # PR_SRC_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/indata/"
 # PR_SRC_INPROGRESS_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/inprogress/"
 # PR_SRC_ACHIEVE_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/achieve/"
+
+# SAPB1 - CSV INPUT
+# SAPB1_CSV_INPUT_DIR = "/dme_sftp/sapb1/order_transaction_csvs/indata/"
+# SAPB1_CSV_INPUT_ACHIEVE_DIR = "/dme_sftp/sapb1/order_transaction_csvs/processed/"
