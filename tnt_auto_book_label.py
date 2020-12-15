@@ -16,7 +16,7 @@ def get_bookings(mysqlcon):
                 WHERE `vx_freight_provider`=%s and `b_dateBookedDate` is NULL and `b_status`=%s and \
                 (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
                 ORDER BY id DESC \
-                LIMIT 3"
+                LIMIT 10"
         cursor.execute(sql, ("TNT", "Ready for booking", ""))
         bookings = cursor.fetchall()
 

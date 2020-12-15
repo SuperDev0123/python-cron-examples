@@ -9,28 +9,26 @@ from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
 from _options_lib import get_option, set_option
 
 
-def get_option(mysqlcon, flag_name):
-    with mysqlcon.cursor() as cursor:
-        sql = "SELECT * \
-                FROM `dme_options` \
-                WHERE option_name=%s"
-        cursor.execute(sql, (flag_name))
-        dme_option = cursor.fetchone()
-
-        return dme_option
-
-
-def get_bookings(mysqlcon):
+def get_in_progress_bookings(mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
                 FROM `dme_bookings` \
-                WHERE `vx_freight_provider`=%s and `z_api_issue_update_flag_500`=%s and `z_lock_status` <> %s and \
-                (`b_status` is NULL or (`b_status`<>%s and `b_status`<>%s and `b_status`<>%s)) and \
-                (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
+                WHERE `vx_freight_provider`=%s AND `b_client_name`=%s \
+                    AND (`z_lock_status`=%s OR `z_lock_status` IS NULL) \
+                    AND (`b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s) \
                 ORDER BY id DESC \
                 LIMIT 200"
         cursor.execute(
-            sql, ("Sendle", "1", 1, "Ready for booking", "Delivered", "Closed", "")
+            sql,
+            (
+                "Sendle",
+                "Tempo Pty Ltd",
+                "0",
+                "Ready for booking",
+                "Cancelled",
+                "Closed",
+                "Delivered",
+            ),
         )
         bookings = cursor.fetchall()
 
@@ -41,10 +39,12 @@ def get_bookings_missing_pod(mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
                 FROM `dme_bookings` \
-                WHERE `vx_freight_provider`=%s and b_status=%s and z_pod_url is NULL \
+                WHERE `vx_freight_provider`=%s AND `b_client_name`=%s AND z_pod_url IS NULL \
+                    AND (`z_lock_status`=%s OR `z_lock_status` IS NULL) \
+                    AND `b_status`=%s \
                 ORDER BY id DESC \
                 LIMIT 20"
-        cursor.execute(sql, ("Sendle", "Delivered"))
+        cursor.execute(sql, ("Sendle", "Tempo Pty Ltd", "0", "Delivered"))
         bookings = cursor.fetchall()
 
         return bookings
@@ -82,7 +82,7 @@ def do_pod(booking):
 
 def do_process(mysqlcon):
     # Get 200 Sendle bookings
-    bookings = get_bookings(mysqlcon)
+    bookings = get_in_progress_bookings(mysqlcon)
     print("#200 - Booking cnt to process: ", len(bookings))
 
     for booking in bookings:
