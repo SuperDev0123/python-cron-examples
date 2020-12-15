@@ -1,6 +1,7 @@
 CREATE DEFINER=`fmadmin`@`%` PROCEDURE `MoveSuccess2ToBookings`()
 BEGIN
 
+-- Variables
 DECLARE v_b_bookingID_Visual int(11);
 DECLARE v_start_b_bookingID_Visual int(11);
 DECLARE v_end_b_bookingID_Visual int(11);
@@ -9,6 +10,7 @@ DECLARE last_name char(64);
 DECLARE pk_id_dme_client int(11);
 DECLARE booking_created_for_email char(255);
 DECLARE bookingID_Visual int(11);
+DECLARE api_booking_quote_id int(11);
 
 
 DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -17,10 +19,10 @@ DECLARE EXIT HANDLER FOR SQLEXCEPTION
     @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
     SELECT @p1 AS RETURNED_SQLSTATE, @p2 AS MESSAGE_TEXT;
         ROLLBACK;
-        Drop TABLE IF EXISTS dme_memory;
+        DROP TABLE IF EXISTS dme_memory;
     END;
 
-Drop TABLE IF EXISTS dme_memory;
+DROP TABLE IF EXISTS dme_memory;
 START TRANSACTION;
 
 SELECT max(b_bookingID_Visual) into v_b_bookingID_Visual FROM dme_bookings;
@@ -31,7 +33,7 @@ END If;
 
 SELECT 'Starting with Visual Id ' + v_b_bookingID_Visual;
 
-Set v_start_b_bookingID_Visual = v_b_bookingID_Visual + 1;
+SET v_start_b_bookingID_Visual = v_b_bookingID_Visual + 1;
 
 
 INSERT INTO `dme_bookings` 
@@ -63,7 +65,7 @@ INSERT INTO `dme_bookings`
     `b_status`, `b_client_booking_ref_num`, `b_client_del_note_num`,
     `b_client_order_num`, `b_client_sales_inv_num`, `b_client_warehouse_code`,
     `b_client_name`, `delivery_kpi_days`, `z_api_issue_update_flag_500`,
-    `x_manual_booked_flag`, `x_booking_Created_With`)
+    `x_manual_booked_flag`, `x_booking_Created_With`, `api_booking_quote_id`)
 SELECT bok_1.pk_header_id, bok_1.b_000_1_b_clientReference_RA_Numbers, b_000_2_b_price,
     bok_1.b_000_b_total_lines, bok_1.b_001_b_freight_provider, b_002_b_vehicle_type,
     bok_1.b_005_b_created_for, bok_1.b_006_b_created_for_email, b_007_b_ready_status,
@@ -91,33 +93,27 @@ SELECT bok_1.pk_header_id, bok_1.b_000_1_b_clientReference_RA_Numbers, b_000_2_b
     bok_1.b_063_b_del_email, vx_serviceType_XXX, bok_1.b_000_3_consignment_number,
     CASE 
         WHEN success = 2
-            AND bok_1.b_000_3_consignment_number IS NOT NULL 
-            AND bok_1.b_000_3_consignment_number <> "" 
+            AND (bok_1.b_000_3_consignment_number IS NOT NULL AND bok_1.b_000_3_consignment_number <> "")
             THEN 'Booked'
-        WHEN success = 2 
-            AND (bok_1.b_000_3_consignment_number IS NULL
-            OR bok_1.b_000_3_consignment_number = "") 
+        WHEN success = 2
+            AND (bok_1.b_000_3_consignment_number IS NULL OR bok_1.b_000_3_consignment_number = "") 
             THEN 'Ready for booking'
-        WHEN success = 3 
-            THEN 'Ready for XML'
-        WHEN success = 4 
-            THEN 'Ready for CSV'
-        WHEN success = 6
-            THEN ''
+        WHEN success = 4
+            THEN 'Picking'
     END,
-    bok_1.z_test, b_client_del_note_num,
+    bok_1.client_booking_id, b_client_del_note_num,
     b_client_order_num, b_client_sales_inv_num, b_client_warehouse_code,
     dme_clients.company_name , IFNULL(delivery_days, 14),
     CASE WHEN success = 2 THEN 1 WHEN success = 3 THEN 0 WHEN success= 4 THEN 0 END,
     CASE WHEN success = 6 THEN 1 ELSE 0 END,
-    bok_1.x_booking_Created_With
+    bok_1.x_booking_Created_With, bok_1.quote_id
 FROM bok_1_headers bok_1
 LEFT OUTER JOIN dme_clients ON fk_client_id=dme_account_num
 LEFT OUTER JOIN utl_fp_delivery_times ON (b_001_b_freight_provider = fp_name AND cast(b_059_b_del_address_postalcode AS UNSIGNED) 
 BETWEEN postal_code_from AND postal_code_to), (SELECT @a:= v_b_bookingID_Visual) AS a 
-WHERE success IN (2,3,4,6);
+WHERE success IN (2,4);
 
-Set v_end_b_bookingID_Visual = v_start_b_bookingID_Visual + (ROW_COUNT() - 1);
+SET v_end_b_bookingID_Visual = v_start_b_bookingID_Visual + (ROW_COUNT() - 1);
 
 SELECT 'Rows moved to dme_bookings = ' + ROW_COUNT();
 
@@ -141,16 +137,12 @@ and kf_client_id is not null and b_client_sales_inv_num is not null and length(b
 group by kf_client_id, b_client_sales_inv_num
 having count(*) > 1;
 
-
 Update dme_bookings join dme_memory on dme_bookings.id=dme_memory.id
-Set dme_bookings.b_error_Capture = Concat('SINV is duplicated in bookingID = ' , dme_memory.b_bookingID_Visual_List),
-    dme_bookings.b_status = 'On Hold'
-;
+SET dme_bookings.b_error_Capture = Concat('SINV is duplicated in bookingID = ' , dme_memory.b_bookingID_Visual_List), dme_bookings.b_status = 'On Hold';
 
-Drop TABLE dme_memory;
+DROP TABLE dme_memory;
 
-UPDATE bok_1_headers SET success=1
-WHERE success IN (2,3,4,6);
+UPDATE bok_1_headers SET success=1 WHERE success IN (2,4);
 
 
 SELECT 'Starting move of booking lines';
@@ -187,11 +179,11 @@ SELECT client_booking_id, l_009_weight_per_each,
     l_008_weight_UOM, z_createdTimeStamp, l_004_dim_UOM,
     client_item_reference, pk_booking_lines_id
 FROM `bok_2_lines`
-WHERE success IN (2,3,4,6);
+WHERE success IN (2,4);
 
 SELECT 'Rows moved to dme_booking_lines = ' + ROW_COUNT();
 
-UPDATE bok_2_lines SET success=1 WHERE success IN (2,3,4,6);
+UPDATE bok_2_lines SET success=1 WHERE success IN (2,4);
 
 
 SELECT 'Starting move of booking lines data';
@@ -208,27 +200,27 @@ SELECT v_client_pk_consigment_num, ld_001_qty,
     ld_008_client_ref_number, z_createdByAccount, z_createdTimeStamp,
     z_modifiedByAccount, z_modifiedTimeStamp, fk_booking_lines_id
 FROM `bok_3_lines_data`
-WHERE success IN (2,3,4,6);
+WHERE success IN (2,4);
 
 SELECT 'Rows moved to dme_booking_lines_data = ' + ROW_COUNT();
 
-UPDATE bok_3_lines_data SET success=1
-WHERE success IN (2,3,4,6);
+UPDATE bok_3_lines_data SET success=1 WHERE success IN (2,4);
 
 
 SET bookingID_Visual = v_start_b_bookingID_Visual;
 bookingCreatedEmail: REPEAT 
     SELECT 
-         SUBSTRING_INDEX(SUBSTRING_INDEX(dme_bookings.booking_Created_For, ' ', 1), ' ', -1),
-         TRIM(SUBSTR(dme_bookings.booking_Created_For, LOCATE(' ', dme_bookings.booking_Created_For))),
-         dme_clients.pk_id_dme_client INTO first_name, last_name, pk_id_dme_client
-    FROM
-        dme_bookings 
+        SUBSTRING_INDEX(SUBSTRING_INDEX(dme_bookings.booking_Created_For, ' ', 1), ' ', -1),
+        TRIM(SUBSTR(dme_bookings.booking_Created_For, LOCATE(' ', dme_bookings.booking_Created_For))),
+        dme_bookings.api_booking_quote_id, dme_clients.pk_id_dme_client
+    INTO first_name, last_name, api_booking_quote_id, pk_id_dme_client
+    FROM dme_bookings 
     INNER JOIN dme_clients 
     ON dme_bookings.b_client_name=dme_clients.company_name AND dme_bookings.kf_client_id=dme_clients.dme_account_num
     WHERE dme_bookings.b_bookingID_Visual = bookingID_Visual;
 
-    SELECT first_name, last_name, pk_id_dme_client;
+    -- Populate 'booking_created_for'
+    SELECT first_name, last_name, api_booking_quote_id, pk_id_dme_client;
     
     If last_name = ""
         THEN
@@ -245,10 +237,19 @@ bookingCreatedEmail: REPEAT
 
     SELECT booking_created_for_email;
 
-    UPDATE dme_bookings SET booking_Created_For_Email = booking_created_for_email
+    UPDATE dme_bookings
+    SET booking_Created_For_Email = booking_created_for_email
     WHERE b_bookingID_Visual = bookingID_Visual;
+
+    -- Populate 'Quoted Cost' and 'Quoted $'
+    If api_booking_quote_id THEN
+        UPDATE dme_bookings booking
+        INNER JOIN api_booking_quotes quote ON booking.api_booking_quote_id = quote.id
+        SET booking.inv_sell_quoted = quote.client_mu_1_minimum_values, booking.inv_cost_quoted = quote.fee * (1 + quote.mu_percentage_fuel_levy)
+        WHERE booking.b_bookingID_Visual = bookingID_Visual;
+    END If;
     
-    Set bookingID_Visual = bookingID_Visual + 1;
+    SET bookingID_Visual = bookingID_Visual + 1;
 UNTIL bookingID_Visual > v_end_b_bookingID_Visual
 END REPEAT bookingCreatedEmail;
 

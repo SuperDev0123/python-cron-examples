@@ -33,7 +33,7 @@ def get_bookings(mysqlcon, b_bookingID_Visual):
 
 def get_bookings_in_visual_ids(mysqlcon, b_bookingID_Visuals):
     with mysqlcon.cursor() as cursor:
-        sql = f"SELECT * FROM `dme_bookings` WHERE b_bookingID_Visual in ({','.join(b_bookingID_Visuals)}) and b_client_name<>'BioPak' ORDER BY id"
+        sql = f"SELECT * FROM `dme_bookings` WHERE v_FPBookingNumber in ('8137','5902','DME000152253','DME000153233','DME000153235','FF494035','FF495163','FF495163','FF495767','FF495766','FF494033','FF494571','FF495165','9DEL01359','INV-0251','BPOS3006982','DME154615') and b_client_name<>'BioPak' ORDER BY id"
         cursor.execute(sql)
         results = cursor.fetchall()
         return results
@@ -117,21 +117,7 @@ def write_worksheet(name, workbook, worksheet, table, fields_info):
 
 def do_process(mysqlcon):
     # Get latested pushed b_bookingID_Visual
-    b_bookingID_Visuals = [
-        "149025",
-        "146275",
-        "147700",
-        "147627",
-        "147519",
-        "147518",
-        "147517",
-        "147511",
-        "146615",
-        "147156",
-        "146525",
-        "146277",
-        "144346",
-    ]
+    b_bookingID_Visuals = ["8137"]
     # b_bookingID_Visual = get_latest_pushed_b_bookingID_Visual(option)
 
     # if not b_bookingID_Visual:
