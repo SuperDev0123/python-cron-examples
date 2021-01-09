@@ -45,6 +45,14 @@ PR_SRC_ACHIEVE_DIR = "./../dme_api/static/uploaded/pricing_rule/achieve/"
 SAPB1_CSV_INPUT_DIR = "./dir01/"
 SAPB1_CSV_INPUT_ACHIEVE_DIR = "./dir02/"
 
+# HTC - Hunter Tracking CSV Input
+HTC_REMOTE_DIR = "/tracking/indata/"
+HTC_LOCAL_DIR = "./dir01/"
+
+# STTCO - State Transport CSV Output (For BOOK)
+STTCO_DIR = "./dir01/"
+STTCO_ACHIEVE_DIR = "./dir02/"
+
 
 # **************
 # ***  DEV   ***
@@ -87,6 +95,15 @@ SAPB1_CSV_INPUT_ACHIEVE_DIR = "./dir02/"
 # SAPB1_CSV_INPUT_DIR = "/dme_sftp/sapb1/order_transaction_csvs/indata/"
 # SAPB1_CSV_INPUT_ACHIEVE_DIR = "/dme_sftp/sapb1/order_transaction_csvs/processed/"
 
+# HTC - Hunter Tracking CSV Input
+# HTC_REMOTE_DIR = "/tracking/indata/"
+# HTC_LOCAL_DIR = "/dme_sftp/hunter/tracking/csv/indata/"
+
+# STTCO - State Transport CSV Output (For BOOK)
+# STTCO_DIR = "./dme_sftp/state_transport/book/csv/outdata/"
+# STTCO_ARCHIVE_DIR = "./dme_sftp/state_transport/book/csv/archive/"
+
+
 # **************
 # ***  PROD  ***
 # **************
@@ -100,6 +117,11 @@ SAPB1_CSV_INPUT_ACHIEVE_DIR = "./dir02/"
 # API_URL = "http://13.55.64.102/api"  # Prod
 # USERNAME = "dme"
 # PASSWORD = "LRyuNp3zn[XE_`8-"
+
+# SI - Sharepoint import
+# SI_DOWNLOAD_DIR = "/opt/chrons/xls/downloaded"
+# SI_IMPORT_DIR = "/opt/chrons/xls/imported"
+# SI_ERROR_DIR = "/opt/chrons/xls/issued"
 
 # ST - Startrack
 # ST_FTP_DIR = "/home/cope_au/dme_sftp/startrack_au/ftp/indata/"
@@ -124,3 +146,11 @@ SAPB1_CSV_INPUT_ACHIEVE_DIR = "./dir02/"
 # SAPB1 - CSV INPUT
 # SAPB1_CSV_INPUT_DIR = "/dme_sftp/sapb1/order_transaction_csvs/indata/"
 # SAPB1_CSV_INPUT_ACHIEVE_DIR = "/dme_sftp/sapb1/order_transaction_csvs/processed/"
+
+# HTC - Hunter Tracking CSV Input
+# HTC_REMOTE_DIR = "/tracking/indata/"
+# HTC_LOCAL_DIR = "/dme_sftp/hunter/tracking/csv/indata/"
+
+# STTCO - State Transport CSV Output (For BOOK)
+# STTCO_DIR = "./dme_sftp/state_transport/book/csv/outdata/"
+# STTCO_ARCHIVE_DIR = "./dme_sftp/state_transport/book/csv/archive/"
