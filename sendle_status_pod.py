@@ -35,19 +35,19 @@ def get_in_progress_bookings(mysqlcon):
         return bookings
 
 
-def get_bookings_missing_pod(mysqlcon):
-    with mysqlcon.cursor() as cursor:
-        sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
-                FROM `dme_bookings` \
-                WHERE `vx_freight_provider`=%s AND `b_client_name`=%s AND z_pod_url IS NULL \
-                    AND (`z_lock_status`=%s OR `z_lock_status` IS NULL) \
-                    AND `b_status`=%s \
-                ORDER BY id DESC \
-                LIMIT 20"
-        cursor.execute(sql, ("Sendle", "Tempo Pty Ltd", "0", "Delivered"))
-        bookings = cursor.fetchall()
+# def get_bookings_missing_pod(mysqlcon):
+#     with mysqlcon.cursor() as cursor:
+#         sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
+#                 FROM `dme_bookings` \
+#                 WHERE `vx_freight_provider`=%s AND `b_client_name`=%s AND z_pod_url IS NULL \
+#                     AND (`z_lock_status`=%s OR `z_lock_status` IS NULL) \
+#                     AND `b_status`=%s \
+#                 ORDER BY id DESC \
+#                 LIMIT 20"
+#         cursor.execute(sql, ("Sendle", "Tempo Pty Ltd", "0", "Delivered"))
+#         bookings = cursor.fetchall()
 
-        return bookings
+#         return bookings
 
 
 def do_tracking(booking):
@@ -68,16 +68,16 @@ def do_tracking(booking):
     return data0
 
 
-def do_pod(booking):
-    url = API_URL + "/fp-api/sendle/pod/"
-    data = {"booking_id": booking["id"]}
+# def do_pod(booking):
+#     url = API_URL + "/fp-api/sendle/pod/"
+#     data = {"booking_id": booking["id"]}
 
-    response = requests.post(url, params={}, json=data)
-    response0 = response.content.decode("utf8")
-    data0 = json.loads(response0)
-    # s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
-    # print("@210 - POD result:", s0)
-    return data0
+#     response = requests.post(url, params={}, json=data)
+#     response0 = response.content.decode("utf8")
+#     data0 = json.loads(response0)
+#     # s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
+#     # print("@210 - POD result:", s0)
+#     return data0
 
 
 def do_process(mysqlcon):
@@ -90,26 +90,26 @@ def do_process(mysqlcon):
         result = do_tracking(booking)
 
         # Sendle do NOT support POD
-        if "b_status" in result and result["b_status"] == "Delivered":
-            do_pod(booking)
+        # if "b_status" in result and result["b_status"] == "Delivered":
+        #     do_pod(booking)
 
     # Get 20 Sendle bookings that b_status is `Delivered` but missed POD
-    bookings = get_bookings_missing_pod(mysqlcon)
-    print("#210 - Booking(missing POD) cnt to process: ", len(bookings))
+    # bookings = get_bookings_missing_pod(mysqlcon)
+    # print("#210 - Booking(missing POD) cnt to process: ", len(bookings))
 
-    for booking in bookings:
-        print("#211 - Processing: ***", booking["b_bookingID_Visual"], "***")
-        counter = 0
-        result = None
+    # for booking in bookings:
+    #     print("#211 - Processing: ***", booking["b_bookingID_Visual"], "***")
+    #     counter = 0
+    #     result = None
 
-        while counter < 3:
-            result = do_pod(booking)
+    #     while counter < 3:
+    #         result = do_pod(booking)
 
-            if "message" in result and "successfully" in result["message"]:
-                break
+    #         if "message" in result and "successfully" in result["message"]:
+    #             break
 
-            counter += 1
-            time.sleep(10)
+    #         counter += 1
+    #         time.sleep(10)
 
 
 if __name__ == "__main__":
