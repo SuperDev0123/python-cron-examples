@@ -89,6 +89,11 @@ def do_process(mysqlcon):
         print("#201 - Processing: ***", booking["b_bookingID_Visual"], "***")
         result = do_tracking(booking)
 
+        ###
+        # Sendle does not provide POD api.
+        # DME employees should manually download POD file from Sendle portal and upload on DME platform.
+        ###
+
         # Sendle do NOT support POD
         # if "b_status" in result and result["b_status"] == "Delivered":
         #     do_pod(booking)
