@@ -25,7 +25,7 @@ def do_update_service_code(fp_name):
 def do_process(mysqlcon):
     for fp_name in AVAILABLE_FPS:
         print("@100 - Freight Provider name:", fp_name)
-        result = do_update_service_code(_fp_name.lower())
+        result = do_update_service_code(fp_name.lower())
 
 
 if __name__ == "__main__":
