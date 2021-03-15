@@ -12,7 +12,7 @@ import base64
 import shutil
 import pysftp
 
-production = True  # Dev & Prod
+production = True  # Dev
 # production = False # Local
 
 # start check if xmls folder exists
