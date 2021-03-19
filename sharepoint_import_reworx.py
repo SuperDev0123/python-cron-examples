@@ -370,7 +370,7 @@ def do_import(dbcon, cur, filename):
         header["zb_144_date_4"] = None
         header["zb_145_date_5"] = None
         header["pk_header_id"] = pk_header_id
-        header["fk_client_id"] = "1af6bcd2-6148-11eb-ae93-0242ac130002"
+        header["fk_client_id"] = "feb8c98f-3156-4241-8413-86c7af99bf4e"
         header["b_000_3_consignment_number"] = ""
         header["x_booking_Created_With"] = "Imported(Sharepoint)"
 
