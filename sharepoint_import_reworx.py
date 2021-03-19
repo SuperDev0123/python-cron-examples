@@ -559,12 +559,12 @@ def download_from_sharepoint(dbcon):
     username = "goldj@deliver-me.com.au"
     password = "qos131QOS131*"
     site_url = "https://delivermeee.sharepoint.com/sites/DeliverMECustomerSite/"
-    folderpath = "Shared Documents/Bookings/Jason L/1_Drop"
+    folderpath = "Shared Documents/Bookings/Reworx/1_Drop"
     completed_path = (
-        f"/sites/DeliverMECustomerSite/Shared Documents/Bookings/Jason L/3_Completed"
+        f"/sites/DeliverMECustomerSite/Shared Documents/Bookings/Reworx/3_Completed"
     )
     error_path = (
-        f"/sites/DeliverMECustomerSite/Shared Documents/Bookings/Jason L/4_ErrorToCheck"
+        f"/sites/DeliverMECustomerSite/Shared Documents/Bookings/Reworx/4_ErrorToCheck"
     )
     DEV_SUFFIX = "_Test"
 
@@ -698,21 +698,21 @@ if __name__ == "__main__":
         exit(1)
 
     try:
-        option = get_option(dbcon, "xls_import_jason_l")
+        option = get_option(dbcon, "xls_import_reworx")
 
         if int(option["option_value"]) == 0:
-            print("#905 - `xls_import_jason_l` option is OFF")
+            print("#905 - `xls_import_reworx` option is OFF")
         elif option["is_running"]:
-            print("#905 - `xls_import_jason_l` script is already RUNNING")
+            print("#905 - `xls_import_reworx` script is already RUNNING")
         else:
-            print("#906 - `xls_import_jason_l` option is ON")
-            set_option(dbcon, "xls_import_jason_l", True)
+            print("#906 - `xls_import_reworx` option is ON")
+            set_option(dbcon, "xls_import_reworx", True)
             print("#910 - Processing...")
             download_from_sharepoint(dbcon)
-            set_option(dbcon, "xls_import_jason_l", False, time1)
+            set_option(dbcon, "xls_import_reworx", False, time1)
     except Exception as e:
         print("Error 904:", str(e))
-        set_option(dbcon, "xls_import_jason_l", False, time1)
+        set_option(dbcon, "xls_import_reworx", False, time1)
 
     dbcon.close()
     print("#999 - Finished %s" % datetime.now())
