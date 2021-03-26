@@ -253,7 +253,7 @@ def do_process(mysqlcon, fpath, fname):
                 worksheet.write(row, col + 21, booking["de_To_Address_State"])
                 worksheet.write(row, col + 22, booking["de_To_Address_Suburb"])
                 worksheet.write(row, col + 23, booking["client_warehouse_code"])
-                worksheet.write(row, col + 24, pricing["fk_freight_provider_id"])
+                worksheet.write(row, col + 24, pricing["freight_provider"])
                 worksheet.write(row, col + 25, pricing["account_code"])
                 worksheet.write(row, col + 26, pricing["service_name"])
                 worksheet.write(row, col + 27, pricing["fee"])
