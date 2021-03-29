@@ -13,7 +13,8 @@ def get_in_progress_bookings(mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
                 FROM `dme_bookings` \
-                WHERE `vx_freight_provider`=%s and `b_client_name`=%s \
+                WHERE `vx_freight_provider`=%s \
+                    AND (`b_client_name`=%s OR `b_client_name`=%s OR `b_client_name`=%s) \
                     and (`z_lock_status`=%s OR `z_lock_status` IS NULL) \
                     and (`b_status`<>%s and `b_status`<>%s and `b_status`<>%s and `b_status`<>%s) \
                 ORDER BY id DESC \
@@ -23,6 +24,8 @@ def get_in_progress_bookings(mysqlcon):
             (
                 "Hunter",
                 "Tempo Pty Ltd",
+                "Plum Products Australia Ltd",
+                "Reworx",
                 "0",
                 "Ready for booking",
                 "Cancelled",
