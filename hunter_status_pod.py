@@ -14,7 +14,7 @@ def get_in_progress_bookings(mysqlcon):
         sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
                 FROM `dme_bookings` \
                 WHERE `vx_freight_provider`=%s \
-                    AND (`b_client_name`=%s OR `b_client_name`=%s OR `b_client_name`=%s) \
+                    AND (`b_client_name`=%s OR `b_client_name`=%s OR `b_client_name`=%s OR `b_client_name`=%s) \
                     AND (`z_lock_status`=%s OR `z_lock_status` IS NULL) \
                     AND (`b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s) \
                 ORDER BY id DESC \
@@ -26,6 +26,7 @@ def get_in_progress_bookings(mysqlcon):
                 "Tempo Pty Ltd",
                 "Plum Products Australia Ltd",
                 "Reworx",
+                "Cinnamon Creations",
                 "0",
                 "Ready for booking",
                 "Cancelled",
