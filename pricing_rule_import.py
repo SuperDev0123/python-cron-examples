@@ -27,6 +27,7 @@ from _env import (
     PR_SRC_INPROGRESS_DIR as SRC_INPROGRESS_DIR,
     PR_SRC_ACHIEVE_DIR as SRC_ACHIEVE_DIR,
 )
+from _options_lib import get_option, set_option
 
 
 def get_token():
@@ -133,8 +134,9 @@ def read_xls(file):
         timing = {}
         timing["id"] = ws["A%i" % row].value
         timing["fp_delivery_service_code"] = ws["B%i" % row].value
-        timing["min"] = set_null(ws["C%i" % row].value)
-        timing["max"] = set_null(ws["D%i" % row].value)
+        timing["time_uom"] = ws["C%i" % row].value
+        timing["min"] = set_null(ws["D%i" % row].value)
+        timing["max"] = set_null(ws["E%i" % row].value)
 
         if timing["max"]:
             timing["fp_03_delivery_hours"] = int(timing["max"]) * 24
@@ -297,7 +299,7 @@ def _populate_etd_id(rules, freight_provider, rule_type, timings=[]):
                 ):
                     rule["etd_id"] = etd["id"]
                     break
-            elif rule_type == "rule_type_02" and timings:
+            elif rule_type in ["rule_type_02", "rule_type_03"] and timings:
                 if (
                     rule["service_timing_code"].lower()
                     == etd["fp_delivery_service_code"].lower()
@@ -344,6 +346,7 @@ def get_or_create_freight_provider(token, rule, freight_providers):
             data0["result"]["xls_id"] = fp_id
             return data0["result"]
         except Exception as e:
+            traceback.print_exc()
             print("@219 Error - ", str(e))
             exit(1)
 
@@ -368,10 +371,15 @@ def get_or_create_objects(token, objects, name, rules=None):
                     f"@203 - Diff index - xls index: {obj['id']}, result: {data0['result']['id']}"
                 )
 
-                if rules and not name in ["vehicles", "availabilities"]:
+                if rules and not name in ["vehicles", "availabilities", "fp-cost"]:
                     for rule in rules:
                         if rule[f"{name[:-1]}_id"] == obj["id"]:
                             rule[f"{name[:-1]}_id"] = int(data0["result"]["id"])
+
+                if rules and name == "fp-cost":
+                    for rule in rules:
+                        if rule[f"cost_id"] == obj["id"]:
+                            rule[f"cost_id"] = int(data0["result"]["id"])
 
             if data0["isCreated"]:
                 created_count += 1
@@ -383,10 +391,11 @@ def get_or_create_objects(token, objects, name, rules=None):
             data0["result"]["xls_id"] = obj["id"]
             results.append(data0["result"])
         except Exception as e:
+            traceback.print_exc()
             print("@209 Error - ", str(e))
             exit(1)
 
-    print(f"@204 - Created count: {created_count}, Exist count: {exist_count}")
+    print(f"@204 - Created count: {created_count}, Existing count: {exist_count}")
     return results
 
 
@@ -449,7 +458,7 @@ def do_process(mysqlcon, fpath, fname):
         SRC_INPROGRESS_DIR + fname,
         "In progress: 30% --- Get or Create Costs...",
     )
-    costs = get_or_create_objects(token, costs, "costs", rules)
+    costs = get_or_create_objects(token, costs, "fp-cost", rules)
 
     _update_file_info(
         mysqlcon,
@@ -491,6 +500,7 @@ if __name__ == "__main__":
             cursorclass=pymysql.cursors.DictCursor,
         )
     except Exception as e:
+        traceback.print_exc()
         print("Mysql DB connection error!", e)
         exit(1)
 
