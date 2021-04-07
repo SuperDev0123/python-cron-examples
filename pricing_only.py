@@ -215,6 +215,31 @@ def do_process(mysqlcon, fpath, fname):
 
         pricing_response = do_pricing(booking, lines)
 
+        worksheet.write(row, col + 0, booking["pk_booking_id"])
+        worksheet.write(row, col + 1, booking["puPickUpAvailFrom_Date"])
+        worksheet.write(row, col + 2, booking["b_clientReference_RA_Numbers"])
+        worksheet.write(row, col + 3, booking["puCompany"])
+        worksheet.write(row, col + 4, booking["pu_Contact_F_L_Name"])
+        worksheet.write(row, col + 5, booking["pu_Email"])
+        worksheet.write(row, col + 6, booking["pu_Phone_Main"])
+        worksheet.write(row, col + 7, booking["pu_Address_Street_1"])
+        worksheet.write(row, col + 8, booking["pu_Address_street_2"])
+        worksheet.write(row, col + 9, booking["pu_Address_Country"])
+        worksheet.write(row, col + 10, booking["pu_Address_PostalCode"])
+        worksheet.write(row, col + 11, booking["pu_Address_State"])
+        worksheet.write(row, col + 12, booking["pu_Address_Suburb"])
+        worksheet.write(row, col + 13, booking["deToCompanyName"])
+        worksheet.write(row, col + 14, booking["de_to_Contact_F_LName"])
+        worksheet.write(row, col + 15, booking["de_Email"])
+        worksheet.write(row, col + 16, booking["de_to_Phone_Main"])
+        worksheet.write(row, col + 17, booking["de_To_Address_Street_1"])
+        worksheet.write(row, col + 18, booking["de_To_Address_Street_2"])
+        worksheet.write(row, col + 19, booking["de_To_Address_Country"])
+        worksheet.write(row, col + 20, booking["de_To_Address_PostalCode"])
+        worksheet.write(row, col + 21, booking["de_To_Address_State"])
+        worksheet.write(row, col + 22, booking["de_To_Address_Suburb"])
+        worksheet.write(row, col + 23, booking["client_warehouse_code"])
+
         if "results" in pricing_response:
             # Deactivate `lowest`
             # lowest = None
@@ -230,30 +255,7 @@ def do_process(mysqlcon, fpath, fname):
 
                 # if lowest:
                 # if True:
-                worksheet.write(row, col + 0, booking["pk_booking_id"])
-                worksheet.write(row, col + 1, booking["puPickUpAvailFrom_Date"])
-                worksheet.write(row, col + 2, booking["b_clientReference_RA_Numbers"])
-                worksheet.write(row, col + 3, booking["puCompany"])
-                worksheet.write(row, col + 4, booking["pu_Contact_F_L_Name"])
-                worksheet.write(row, col + 5, booking["pu_Email"])
-                worksheet.write(row, col + 6, booking["pu_Phone_Main"])
-                worksheet.write(row, col + 7, booking["pu_Address_Street_1"])
-                worksheet.write(row, col + 8, booking["pu_Address_street_2"])
-                worksheet.write(row, col + 9, booking["pu_Address_Country"])
-                worksheet.write(row, col + 10, booking["pu_Address_PostalCode"])
-                worksheet.write(row, col + 11, booking["pu_Address_State"])
-                worksheet.write(row, col + 12, booking["pu_Address_Suburb"])
-                worksheet.write(row, col + 13, booking["deToCompanyName"])
-                worksheet.write(row, col + 14, booking["de_to_Contact_F_LName"])
-                worksheet.write(row, col + 15, booking["de_Email"])
-                worksheet.write(row, col + 16, booking["de_to_Phone_Main"])
-                worksheet.write(row, col + 17, booking["de_To_Address_Street_1"])
-                worksheet.write(row, col + 18, booking["de_To_Address_Street_2"])
-                worksheet.write(row, col + 19, booking["de_To_Address_Country"])
-                worksheet.write(row, col + 20, booking["de_To_Address_PostalCode"])
-                worksheet.write(row, col + 21, booking["de_To_Address_State"])
-                worksheet.write(row, col + 22, booking["de_To_Address_Suburb"])
-                worksheet.write(row, col + 23, booking["client_warehouse_code"])
+
                 worksheet.write(row, col + 24, pricing["freight_provider"])
                 worksheet.write(row, col + 25, pricing["account_code"])
                 worksheet.write(row, col + 26, pricing["service_name"])
