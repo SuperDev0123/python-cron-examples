@@ -122,6 +122,7 @@ def read_xls(file):
             "e_weightUOM": worksheet0["DG%i" % row].value,
             "e_item": worksheet0["CZ%i" % row].value,
             "packagingType": worksheet0["CW%i" % row].value,
+            "e_type_of_packaging": worksheet0["CW%i" % row].value,
             "e_qty": worksheet0["CX%i" % row].value,
         }
         booking_lines.append(booking_line)
