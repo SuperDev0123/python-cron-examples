@@ -382,7 +382,7 @@ def get_or_create_objects(token, objects, name, rules=None):
             data0 = json.loads(response0)
             if int(obj["id"]) != int(data0["result"]["id"]):
                 print(
-                    f"@203 - Diff index - xls index: {obj['id']}, result: {data0['result']['id']}"
+                    f"@203 - [{name}] Diff index - xls index: {obj['id']}, result: {data0['result']['id']}"
                 )
 
                 if rules and not name in ["vehicles", "availabilities", "fp-cost"]:
@@ -391,9 +391,12 @@ def get_or_create_objects(token, objects, name, rules=None):
                             rule[f"{name[:-1]}_id"] = int(data0["result"]["id"])
 
                 if rules and name == "fp-cost":
-                    for rule in rules:
+                    for rule in rules[obj["id"] - 1 :]:
                         if rule[f"cost_id"] == obj["id"]:
-                            rule[f"cost_id"] = int(data0["result"]["id"])
+                            print(
+                                f"@204 - RuleIdx: {rule['id']}, RuleCostId: {rule['cost_id']} -> {data0['result']['id']}"
+                            )
+                            rule[f"cost_id"] = data0["result"]["id"]
 
             if data0["isCreated"]:
                 created_count += 1
