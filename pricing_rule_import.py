@@ -90,6 +90,19 @@ def set_null(value):
     return value if value else None
 
 
+def del_dollar_sign(value):
+    """
+    1) delete $ sign
+    2) delete , delimiter
+
+    i.e: $1,462.809 -> 1462.809
+    """
+    if value:
+        return value.split("$")[-1].replace(",", "")
+    else:
+        return None
+
+
 def read_xls(file):
     wb = load_workbook(filename=file, data_only=True)
 
@@ -103,10 +116,9 @@ def read_xls(file):
         and "Rules" in wb.sheetnames
         and "Postal Zones" in wb.sheetnames
     ):
-        print(
-            "#910 - Tabs are required - 'Freight Provider', 'Timing', 'Vehicle', 'Availability', 'Cost', 'Rules', 'Postal Zones'"
-        )
-        exit(1)
+        message = "#910 - Tabs are required - 'Freight Provider', 'Timing', 'Vehicle', 'Availability', 'Cost', 'Rules', 'Postal Zones'"
+        print(message)
+        raise Exception(message)
 
     ws = wb["Freight Provider"]
     row = 3
@@ -214,11 +226,11 @@ def read_xls(file):
         cost["UOM_charge"] = ws["B%i" % row].value
         cost["start_qty"] = set_null(ws["C%i" % row].value)
         cost["end_qty"] = set_null(ws["D%i" % row].value)
-        cost["basic_charge"] = set_null(ws["E%i" % row].value)
-        cost["min_charge"] = set_null(ws["F%i" % row].value)
-        cost["per_UOM_charge"] = set_null(ws["G%i" % row].value)
-        cost["oversize_premium"] = set_null(ws["H%i" % row].value)
-        cost["oversize_price"] = set_null(ws["I%i" % row].value)
+        cost["basic_charge"] = del_dollar_sign(set_null(ws["E%i" % row].value))
+        cost["min_charge"] = del_dollar_sign(set_null(ws["F%i" % row].value))
+        cost["per_UOM_charge"] = del_dollar_sign(set_null(ws["G%i" % row].value))
+        cost["oversize_premium"] = del_dollar_sign(set_null(ws["H%i" % row].value))
+        cost["oversize_price"] = del_dollar_sign(set_null(ws["I%i" % row].value))
         cost["m3_to_kg_factor"] = set_null(ws["J%i" % row].value)
         cost["dim_UOM"] = set_null(ws["K%i" % row].value)
         cost["price_up_to_length"] = set_null(ws["L%i" % row].value)
@@ -259,8 +271,9 @@ def read_xls(file):
         rule["vehicle_type"] = set_null(ws["P%i" % row].value)
 
         if not rule["freight_provider_id"] or not rule["cost_id"]:
-            print(f'#409 - Error: Rule({rule["id"]}) missed foreign key(s)')
-            exit(1)
+            message = f'#409 - Error: Rule({rule["id"]}) missed foreign key(s)'
+            print(message)
+            raise Exception(message)
 
         rules.append(rule)
         row += 1
@@ -347,8 +360,9 @@ def get_or_create_freight_provider(token, rule, freight_providers):
             return data0["result"]
         except Exception as e:
             traceback.print_exc()
-            print("@219 Error - ", str(e))
-            exit(1)
+            message = "@219 Error - ", str(e)
+            print(message)
+            raise Exception(message)
 
 
 def get_or_create_objects(token, objects, name, rules=None):
@@ -392,8 +406,9 @@ def get_or_create_objects(token, objects, name, rules=None):
             results.append(data0["result"])
         except Exception as e:
             traceback.print_exc()
-            print("@209 Error - ", str(e))
-            exit(1)
+            message = "@208 Error - ", str(e)
+            print(message)
+            raise Exception(message)
 
     print(f"@204 - Created count: {created_count}, Existing count: {exist_count}")
     return results
@@ -403,8 +418,9 @@ def do_process(mysqlcon, fpath, fname):
     token = get_token()
 
     if not token:
-        print("# 99 - Can't login with givin credentials")
-        exit(1)
+        message = "# 99 - Can't login with givin credentials"
+        print(message)
+        raise Exception(message)
 
     print("# 100 - Reading XLS")
     _update_file_info(
@@ -428,10 +444,9 @@ def do_process(mysqlcon, fpath, fname):
     if not freight_provider["rule_type_code"]:
         _set_rule_type_of_fp(mysqlcon, freight_provider, rule_type)
     if rule_type != freight_provider["rule_type_code"]:
-        print(
-            f"# 501 Error: Freight Provider({freight_provider['fp_company_name']}) has this Rule Type({freight_provider['rule_type_code']}). But imported Rule({rule['id']}) with wrong Rule Type({rule_type})"
-        )
-        exit(1)
+        message = f"# 501 Error: Freight Provider({freight_provider['fp_company_name']}) has this Rule Type({freight_provider['rule_type_code']}). But imported Rule({rule['id']}) with wrong Rule Type({rule_type})"
+        print(message)
+        raise Exception(message)
 
     print("# 102 - Get or Create Vehicles...")
     _update_file_info(
@@ -539,6 +554,7 @@ if __name__ == "__main__":
                             mysqlcon, fname, SRC_ACHIEVE_DIR + fname, "Done: 100%"
                         )
                     except Exception as e:
+                        shutil.move(SRC_INPROGRESS_DIR + fname, SRC_DIR + fname)
                         traceback.print_exc()
                         _update_file_info(
                             mysqlcon,
