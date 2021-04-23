@@ -12,7 +12,7 @@ def get_bookings(mysqlcon):
         sql = """
                 SELECT id, s_05_Latest_Pick_Up_Date_TimeSet, b_dateBookedDate, puPickUpAvailFrom_Date, pu_PickUp_Avail_Time_Hours, pu_PickUp_Avail_Time_Minutes
                 FROM dme_bookings
-                WHERE s_05_Latest_Pick_Up_Date_TimeSet is NULL AND b_dateBookedDate IS NOT NULL;
+                WHERE s_05_Latest_Pick_Up_Date_TimeSet IS NOT NULL OR b_dateBookedDate IS NOT NULL;
             """
         cursor.execute(sql)
         bookings = cursor.fetchall()
@@ -22,13 +22,22 @@ def get_bookings(mysqlcon):
 
 def update_booking(booking, mysqlcon):
     cursor = mysqlcon.cursor()
-    sql = "UPDATE dme_bookings SET puPickUpAvailFrom_Date=%s, pu_PickUp_Avail_Time_Hours=%s, pu_PickUp_Avail_Time_Minutes=%s, s_05_Latest_Pick_Up_Date_TimeSet=%s WHERE id=%s"
+    # sql = "UPDATE dme_bookings SET puPickUpAvailFrom_Date=%s, pu_PickUp_Avail_Time_Hours=%s, pu_PickUp_Avail_Time_Minutes=%s, s_05_Latest_Pick_Up_Date_TimeSet=%s WHERE id=%s"
+    # cursor.execute(
+    #     sql,
+    #     (
+    #         booking["puPickUpAvailFrom_Date"],
+    #         booking["pu_PickUp_Avail_Time_Hours"],
+    #         booking["pu_PickUp_Avail_Time_Minutes"],
+    #         booking["s_05_Latest_Pick_Up_Date_TimeSet"],
+    #         booking["id"],
+    #     ),
+    # )
+    sql = "UPDATE dme_bookings SET puPickUpAvailFrom_Date=%s, s_05_Latest_Pick_Up_Date_TimeSet=%s WHERE id=%s"
     cursor.execute(
         sql,
         (
             booking["puPickUpAvailFrom_Date"],
-            booking["pu_PickUp_Avail_Time_Hours"],
-            booking["pu_PickUp_Avail_Time_Minutes"],
             booking["s_05_Latest_Pick_Up_Date_TimeSet"],
             booking["id"],
         ),
@@ -41,54 +50,80 @@ def do_process(mysqlcon):
     print("Bookings cnt:", len(bookings))
 
     for booking in bookings:
-        if (
-            booking["puPickUpAvailFrom_Date"]
-            and booking["pu_PickUp_Avail_Time_Hours"] is None
-        ):
-            booking["pu_PickUp_Avail_Time_Hours"] = 10
+        ### Phase #1
 
-        if (
-            not booking["puPickUpAvailFrom_Date"]
-            or not booking["s_05_Latest_Pick_Up_Date_TimeSet"]
-        ):
-            print(
-                f'#100 Booking PK:{booking["id"]}, Booked Date: {booking["b_dateBookedDate"]}'
-            )
+        # if (
+        #     booking["puPickUpAvailFrom_Date"]
+        #     and booking["pu_PickUp_Avail_Time_Hours"] is None
+        # ):
+        #     booking["pu_PickUp_Avail_Time_Hours"] = 10
 
-            is_booked_after_cutoff = False
-            booked_hour = booking["b_dateBookedDate"].time().hour + 10
+        # if (
+        #     not booking["puPickUpAvailFrom_Date"]
+        #     or not booking["s_05_Latest_Pick_Up_Date_TimeSet"]
+        # ):
+        #     print(
+        #         f'#100 Booking PK:{booking["id"]}, Booked Date: {booking["b_dateBookedDate"]}'
+        #     )
 
-            if booked_hour > 24:
-                booked_hour = booked_hour - 24
+        #     is_booked_after_cutoff = False
+        #     booked_hour = booking["b_dateBookedDate"].time().hour + 10
 
-            if booked_hour > 12:
-                is_booked_after_cutoff = True
+        #     if booked_hour > 24:
+        #         booked_hour = booked_hour - 24
 
-            if is_booked_after_cutoff:
-                booking["puPickUpAvailFrom_Date"] = (
-                    booking["b_dateBookedDate"] + timedelta(days=1)
-                ).date()
-                booking["pu_PickUp_Avail_Time_Hours"] = 10
-                booking["pu_PickUp_Avail_Time_Minutes"] = 0
+        #     if booked_hour > 12:
+        #         is_booked_after_cutoff = True
+
+        #     if is_booked_after_cutoff:
+        #         booking["puPickUpAvailFrom_Date"] = (
+        #             booking["b_dateBookedDate"] + timedelta(days=1)
+        #         ).date()
+        #         booking["pu_PickUp_Avail_Time_Hours"] = 10
+        #         booking["pu_PickUp_Avail_Time_Minutes"] = 0
+        #         booking["s_05_Latest_Pick_Up_Date_TimeSet"] = booking[
+        #             "b_dateBookedDate"
+        #         ] + timedelta(days=1)
+        #         booking["s_05_Latest_Pick_Up_Date_TimeSet"].replace(hour=0)
+        #     else:
+        #         booking["puPickUpAvailFrom_Date"] = booking["b_dateBookedDate"].date()
+        #         booking["pu_PickUp_Avail_Time_Hours"] = (
+        #             (booking["b_dateBookedDate"] + timedelta(hours=10)).time().hour
+        #         )
+        #         booking["pu_PickUp_Avail_Time_Minutes"] = (
+        #             booking["b_dateBookedDate"].time().minute
+        #         )
+        #         booking["s_05_Latest_Pick_Up_Date_TimeSet"] = booking[
+        #             "b_dateBookedDate"
+        #         ]
+
+        #     print(
+        #         f'#200 Booked Next Day: {is_booked_after_cutoff}, PU From: {booking["puPickUpAvailFrom_Date"]}, {booking["pu_PickUp_Avail_Time_Hours"]}:{booking["pu_PickUp_Avail_Time_Minutes"]}'
+        #     )
+
+        ### Phase #2
+
+        print(
+            f'#100 Booking PK:{booking["id"]}, Booked Date: {booking["b_dateBookedDate"]}, s_05: {booking["s_05_Latest_Pick_Up_Date_TimeSet"]}'
+        )
+
+        if booking["puPickUpAvailFrom_Date"]:
+            weekno = booking["puPickUpAvailFrom_Date"].weekday()
+
+            if weekno > 4:
+                booking["puPickUpAvailFrom_Date"] = booking[
+                    "puPickUpAvailFrom_Date"
+                ] + timedelta(days=7 - weekno)
+                print(f'@200 - Booked Date: {booking["puPickUpAvailFrom_Date"]}')
+
+        if booking["s_05_Latest_Pick_Up_Date_TimeSet"]:
+            weekno = booking["s_05_Latest_Pick_Up_Date_TimeSet"].weekday()
+
+            if weekno > 4:
                 booking["s_05_Latest_Pick_Up_Date_TimeSet"] = booking[
-                    "b_dateBookedDate"
-                ] + timedelta(days=1)
-                booking["s_05_Latest_Pick_Up_Date_TimeSet"].replace(hour=0)
-            else:
-                booking["puPickUpAvailFrom_Date"] = booking["b_dateBookedDate"].date()
-                booking["pu_PickUp_Avail_Time_Hours"] = (
-                    (booking["b_dateBookedDate"] + timedelta(hours=10)).time().hour
-                )
-                booking["pu_PickUp_Avail_Time_Minutes"] = (
-                    booking["b_dateBookedDate"].time().minute
-                )
-                booking["s_05_Latest_Pick_Up_Date_TimeSet"] = booking[
-                    "b_dateBookedDate"
-                ]
-
-            print(
-                f'#200 Booked Next Day: {is_booked_after_cutoff}, PU From: {booking["puPickUpAvailFrom_Date"]}, {booking["pu_PickUp_Avail_Time_Hours"]}:{booking["pu_PickUp_Avail_Time_Minutes"]}'
-            )
+                    "s_05_Latest_Pick_Up_Date_TimeSet"
+                ] + timedelta(days=7 - weekno)
+                print(f'@300 - s_05: {booking["s_05_Latest_Pick_Up_Date_TimeSet"]}')
 
         update_booking(booking, mysqlcon)
 
