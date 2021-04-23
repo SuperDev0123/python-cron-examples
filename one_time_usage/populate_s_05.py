@@ -117,7 +117,9 @@ def do_process(mysqlcon):
                 print(f'@200 - Booked Date: {booking["puPickUpAvailFrom_Date"]}')
 
         if booking["s_05_Latest_Pick_Up_Date_TimeSet"]:
-            weekno = booking["s_05_Latest_Pick_Up_Date_TimeSet"].weekday()
+            weekno = (
+                booking["s_05_Latest_Pick_Up_Date_TimeSet"] + timedelta(hours=10)
+            ).weekday()
 
             if weekno > 4:
                 booking["s_05_Latest_Pick_Up_Date_TimeSet"] = booking[
