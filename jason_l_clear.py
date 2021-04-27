@@ -11,7 +11,7 @@ from _options_lib import get_option, set_option
 
 def get_bookings(mysqlcon):
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT `id`, `pk_header_id`, `b_client_order_num`, `b_client_sales_inv_num` \
+        sql = "SELECT `pk_auto_id`, `pk_header_id`, `b_client_order_num`, `b_client_sales_inv_num` \
                 FROM `bok_1_headers` \
                 WHERE `fk_client_id`=%s and z_CreatedTimestamp < now() - interval 10 minute"
         cursor.execute(sql, ("1af6bcd2-6148-11eb-ae93-0242ac130002"))
@@ -25,8 +25,8 @@ def delete_booking_and_booking_lines(booking, mysqlcon):
         sql = "DELETE FROM bok_2_lines WHERE fk_header_id=%s"
         cursor.execute(sql, (booking.pk_header_id))
 
-        sql = "DELETE FROM bok_1_headers WHERE id=%s"
-        cursor.execute(sql, (booking.id))
+        sql = "DELETE FROM bok_1_headers WHERE pk_auto_id=%s"
+        cursor.execute(sql, (booking.pk_auto_id))
 
 
 def do_process(mysqlcon):
