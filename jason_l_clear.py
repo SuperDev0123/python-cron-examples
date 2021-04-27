@@ -23,10 +23,10 @@ def get_bookings(mysqlcon):
 def delete_booking_and_booking_lines(booking, mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "DELETE FROM bok_2_lines WHERE fk_header_id=%s"
-        cursor.execute(sql, (booking.pk_header_id))
+        cursor.execute(sql, (booking["pk_header_id"]))
 
         sql = "DELETE FROM bok_1_headers WHERE pk_auto_id=%s"
-        cursor.execute(sql, (booking.pk_auto_id))
+        cursor.execute(sql, (booking["pk_auto_id"]))
 
 
 def do_process(mysqlcon):
@@ -38,7 +38,7 @@ def do_process(mysqlcon):
 
     for booking in bookings:
         print(
-            f"#201 - Order Number: {booking.b_client_order_num}, Sales Invoice No: {booking.b_client_sales_inv_num}"
+            f"#201 - Order Number: {booking['b_client_order_num']}, Sales Invoice No: {booking['b_client_sales_inv_num']}"
         )
 
         delete_booking_and_booking_lines(booking, mysqlcon)
