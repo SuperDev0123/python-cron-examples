@@ -98,7 +98,7 @@ def del_dollar_sign(value):
     i.e: $1,462.809 -> 1462.809
     """
     if value:
-        return value.split("$")[-1].replace(",", "")
+        return str(value).split("$")[-1].replace(",", "")
     else:
         return None
 
@@ -268,7 +268,8 @@ def read_xls(file):
         rule["pu_state"] = set_null(ws["M%i" % row].value)
         rule["pu_suburb"] = set_null(ws["N%i" % row].value)
         rule["both_way"] = ws["O%i" % row].value
-        rule["vehicle_type"] = set_null(ws["P%i" % row].value)
+        # rule["vehicle_type"] = set_null(ws["P%i" % row].value)
+        rule["vehicle_id"] = set_null(ws["P%i" % row].value)
 
         if not rule["freight_provider_id"] or not rule["cost_id"]:
             message = f'#409 - Error: Rule({rule["id"]}) missed foreign key(s)'
@@ -281,18 +282,18 @@ def read_xls(file):
     return freight_providers, timings, vehicles, availabilities, costs, rules
 
 
-def _populate_vehicle_id(rules, vehicles):
-    for rule in rules:
-        if not rule["vehicle_type"]:
-            rule["vehicle_id"] = None
-            del rule["vehicle_type"]
-            continue
+# def _populate_vehicle_id(rules, vehicles):
+#     for rule in rules:
+#         if not rule["vehicle_type"]:
+#             rule["vehicle_id"] = None
+#             del rule["vehicle_type"]
+#             continue
 
-        for vehicle in vehicles:
-            if rule["vehicle_type"] == vehicle["description"]:
-                rule["vehicle_id"] = vehicle["id"]
-                del rule["vehicle_type"]
-                break
+#         for vehicle in vehicles:
+#             if rule["vehicle_type"] == vehicle["description"]:
+#                 rule["vehicle_id"] = vehicle["id"]
+#                 del rule["vehicle_type"]
+#                 break
 
 
 def _populate_etd_id(rules, freight_provider, rule_type, timings=[]):
@@ -307,7 +308,8 @@ def _populate_etd_id(rules, freight_provider, rule_type, timings=[]):
         for etd in etds:
             if rule_type == "rule_type_01":
                 if (
-                    rule["service_timing_code"].lower()
+                    rule["service_timing_code"]
+                    and rule["service_timing_code"].lower()
                     == etd["fp_delivery_service_code"].lower()
                 ):
                     rule["etd_id"] = etd["id"]
@@ -484,7 +486,7 @@ def do_process(mysqlcon, fpath, fname):
         SRC_INPROGRESS_DIR + fname,
         "In progress: 35% --- Populating Vehicle Id",
     )
-    _populate_vehicle_id(rules, vehicles)
+    # _populate_vehicle_id(rules, vehicles)
     _update_file_info(
         mysqlcon,
         fname,
