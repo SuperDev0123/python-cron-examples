@@ -13,7 +13,7 @@ def get_bookings(mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "SELECT `id`, `pk_header_id`, `b_client_order_num`, `b_client_sales_inv_num` \
                 FROM `bok_1_headers` \
-                WHERE `fk_client_id`=%s, z_CreatedTimestamp < now() - interval 10 minute"
+                WHERE `fk_client_id`=%s and z_CreatedTimestamp < now() - interval 10 minute"
         cursor.execute(sql, ("1af6bcd2-6148-11eb-ae93-0242ac130002"))
         bookings = cursor.fetchall()
 
