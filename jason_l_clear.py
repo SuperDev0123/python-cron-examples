@@ -28,6 +28,12 @@ def delete_booking_and_booking_lines(booking, mysqlcon):
         sql = "DELETE FROM bok_1_headers WHERE pk_auto_id=%s"
         cursor.execute(sql, (booking["pk_auto_id"]))
 
+        sql = "DELETE FROM dme_booking_lines WHERE fk_booking_id=%s"
+        cursor.execute(sql, (booking["pk_header_id"]))
+
+        sql = "DELETE FROM dme_bookings WHERE pk_booking_id=%s"
+        cursor.execute(sql, (booking["pk_header_id"]))
+
 
 def do_process(mysqlcon):
     """
