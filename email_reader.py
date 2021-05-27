@@ -12,13 +12,19 @@ import requests
 from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
 from _options_lib import get_option, set_option
 
+# LOCAL
+# EMAIL_USERNAME = "dev.deliverme@gmail.com"
+# EMAIL_PASSWORD = "Dme1234****"
+# EMAIL_SERVER_NAME = "imap.gmail.com"
 
-EMAIL_USERNAME = "dev.deliverme@gmail.com"
-EMAIL_PASSWORD = "Dme1234****"
+# DEV & PROD
+EMAIL_USERNAME = "data.deliver-me@outlook.com"
+EMAIL_PASSWORD = "Dme1234*"
+EMAIL_SERVER_NAME = "outlook.office365.com"
 
 
 def read_email_from_gmail(account, password):
-    mail = imaplib.IMAP4_SSL("imap.gmail.com")
+    mail = imaplib.IMAP4_SSL(EMAIL_SERVER_NAME)
     mail.login(account, password)
     mail.select("inbox")
 
@@ -26,7 +32,12 @@ def read_email_from_gmail(account, password):
     mail_ids = data[0]
 
     id_list = mail_ids.split()
-    first_email_id = int(id_list[-21])
+
+    if len(id_list) > 21:
+        first_email_id = int(id_list[-21])
+    else:
+        first_email_id = 0
+
     latest_email_id = int(id_list[-1])  # Check 20 recent emails
 
     current_time_seconds = time.time()
@@ -68,37 +79,45 @@ def update_booking(order_number, mysqlcon):
     update booking status if only `b_status` is `Picking`
     """
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT `id`, `b_status` \
-                FROM `dme_bookings` \
-                WHERE `b_client_name`=%s AND `b_client_order_num`=%s"
-        cursor.execute(sql, ("Jason L", order_number))
-        bookings = cursor.fetchall()
+        sql = "SELECT `pk_auto_id`, `pk_header_id`, `b_status` \
+                FROM `bok_1_headers` \
+                WHERE `fk_client_id`=%s AND `b_client_order_num`=%s"
+        cursor.execute(sql, ("1af6bcd2-6148-11eb-ae93-0242ac130002", order_number))
+        bok_1s = cursor.fetchall()
 
-        if len(bookings) == 0:
-            print(f"@401 - No booking found. Order Number: {order_number}")
+        if len(bok_1s) == 0:  # Does not exist
+            print(f"@401 - No Order found. Order Number: {order_number}")
             # TODO - send back error email to JasonL
             return
 
-        booking = bookings[0]
-        if not booking["b_status"] in ["Picking", "Pre Booking"]:
+        bok_1 = bok_1s[0]
+        if not int(bok_1["success"]) in [1, 4]:  # Already mapped
             print(
-                f"@402 - Can`t update Booking status({booking['b_status']}). Order Number: {order_number}"
+                f"@402 - Can`t update Booking status({bok_1['success']}). Order Number: {order_number}"
             )
-            # TODO - send back error email to JasonL
             return
 
-        sql = "UPDATE `dme_bookings` \
-            SET `b_status`=%s, b_dateBookedDate=%s \
-            WHERE `id`=%s"
-        cursor.execute(sql, ("Ready for Despatch", datetime.now(), booking["id"]))
+        sql = "UPDATE `bok_2_lines` \
+            SET `success`=%s \
+            WHERE `fk_header_id`=%s"
+        cursor.execute(sql, (4, bok_1["pk_header_id"]))
+
+        sql = "UPDATE `bok_1_headers` \
+            SET `success`=%s \
+            WHERE `pk_auto_id`=%s"
+        cursor.execute(sql, (4, bok_1["pk_auto_id"]))
+
         mysqlcon.commit()
+
+        # Run map sh
+        os.popen("sh /opt/chrons/MoveSuccess2ToBookings.sh")
 
 
 def do_process(mysqlcon):
     """
     - read emails received in last 10 mins
     - check email subject - "JasonL | order number | picking slip printed"
-    - set the `b_status` as `Ready for Despatch`
+    - map booking from `bok` to `dme_bookings`
     """
 
     print("@800 - Reading 50 recent emails...")
