@@ -76,10 +76,10 @@ def read_email_from_gmail(account, password):
 
 def update_booking(order_number, mysqlcon):
     """
-    update booking status if only `b_status` is `Picking`
+    update bok_1/bok_2s success and map it to dme_bookings
     """
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT `pk_auto_id`, `pk_header_id`, `b_status` \
+        sql = "SELECT `pk_auto_id`, `pk_header_id`, `success` \
                 FROM `bok_1_headers` \
                 WHERE `fk_client_id`=%s AND `b_client_order_num`=%s"
         cursor.execute(sql, ("1af6bcd2-6148-11eb-ae93-0242ac130002", order_number))
