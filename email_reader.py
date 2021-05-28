@@ -91,7 +91,7 @@ def update_booking(order_number, mysqlcon):
             return
 
         bok_1 = bok_1s[0]
-        if not int(bok_1["success"]) in [1, 4]:  # Already mapped
+        if not int(bok_1["success"]) in [1, 3]:  # Already mapped
             print(
                 f"@402 - Can`t update Booking status({bok_1['success']}). Order Number: {order_number}"
             )
