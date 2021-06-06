@@ -37,6 +37,8 @@ def delete_booking_and_booking_lines(booking, mysqlcon):
 
 def do_process(mysqlcon):
     """
+    [TEST USAGE ONLY]
+    
     Clear JasonL bookings created in last 10 minuntes
     """
     bookings = get_bookings(mysqlcon)

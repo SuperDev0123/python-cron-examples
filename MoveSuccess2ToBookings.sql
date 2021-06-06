@@ -37,7 +37,7 @@ SET v_start_b_bookingID_Visual = v_b_bookingID_Visual + 1;
 
 
 INSERT INTO `dme_bookings` 
-    (`pk_booking_id`, `b_clientReference_RA_Numbers`, `DME_price_from_client`, 
+    (`pk_booking_id`, `b_clientReference_RA_Numbers`,
     `total_lines_qty_override`, `vx_freight_provider`, `v_vehicle_Type`, 
     `booking_Created_For`, `booking_Created_For_Email`, `x_ReadyStatus`, 
     `b_booking_Priority`, `b_handling_Instructions`, `pu_PickUp_Instructions_Contact`, 
@@ -62,11 +62,13 @@ INSERT INTO `dme_bookings`
     `vx_serviceName`, `b_booking_Category`, `b_booking_Notes`, 
     `puCompany`, `pu_Email`, `pu_Phone_Mobile`, 
     `de_Email`, `v_service_Type`, `v_FPBookingNumber`,
-    `b_status`, `b_client_booking_ref_num`, `b_client_del_note_num`,
+    `b_status`, 
+    `b_status_category`,
+    `b_client_booking_ref_num`, `b_client_del_note_num`,
     `b_client_order_num`, `b_client_sales_inv_num`, `b_client_warehouse_code`,
     `b_client_name`, `delivery_kpi_days`, `z_api_issue_update_flag_500`,
     `x_manual_booked_flag`, `x_booking_Created_With`, `api_booking_quote_id`)
-SELECT bok_1.pk_header_id, bok_1.b_000_1_b_clientReference_RA_Numbers, b_000_2_b_price,
+SELECT bok_1.pk_header_id, bok_1.b_000_1_b_clientReference_RA_Numbers,
     bok_1.b_000_b_total_lines, bok_1.b_001_b_freight_provider, b_002_b_vehicle_type,
     bok_1.b_005_b_created_for, bok_1.b_006_b_created_for_email, b_007_b_ready_status,
     bok_1.b_009_b_priority, bok_1.b_014_b_pu_handling_instructions, b_015_b_pu_instructions_contact,
@@ -100,6 +102,16 @@ SELECT bok_1.pk_header_id, bok_1.b_000_1_b_clientReference_RA_Numbers, b_000_2_b
             THEN 'Ready for booking'
         WHEN success = 4
             THEN 'Picking'
+    END,
+    CASE 
+        WHEN success = 2
+            AND (bok_1.b_000_3_consignment_number IS NOT NULL AND bok_1.b_000_3_consignment_number <> "")
+            THEN 'Booked'
+        WHEN success = 2
+            AND (bok_1.b_000_3_consignment_number IS NULL OR bok_1.b_000_3_consignment_number = "") 
+            THEN 'Pre Booking'
+        WHEN success = 4
+            THEN 'Pre Booking'
     END,
     bok_1.client_booking_id, b_client_del_note_num,
     b_client_order_num, b_client_sales_inv_num, b_client_warehouse_code,
@@ -154,7 +166,8 @@ INSERT INTO dme_booking_lines
     e_item_type, e_pallet_Type, fk_booking_id,
     e_dimLength, e_dimWidth, e_dimHeight,
     e_weightUOM, z_createdTimeStamp, e_dimUOM,
-    client_item_reference, pk_booking_lines_id)
+    client_item_reference, pk_booking_lines_id, zbl_121_integer_1,
+    zbl_102_text_2, is_deleted)
 SELECT client_booking_id, l_009_weight_per_each,
     CASE
         WHEN upper(l_004_dim_UOM) = "CM"
@@ -177,7 +190,8 @@ SELECT client_booking_id, l_009_weight_per_each,
     e_item_type, e_pallet_type, v_client_pk_consigment_num,
     l_005_dim_length, l_006_dim_width, l_007_dim_height,
     l_008_weight_UOM, z_createdTimeStamp, l_004_dim_UOM,
-    client_item_reference, pk_booking_lines_id
+    client_item_reference, pk_booking_lines_id, zbl_121_integer_1,
+    zbl_102_text_2, is_deleted
 FROM `bok_2_lines`
 WHERE success IN (2,4);
 
