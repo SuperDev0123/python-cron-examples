@@ -12,6 +12,8 @@ from _env import (
     DB_NAME,
     STTCO_DIR,
     STTCO_ARCHIVE_DIR,
+    CCO_DIR,
+    CCO_ARCHIVE_DIR
 )
 from _options_lib import get_option, set_option
 from _upload_download import upload_sftp
@@ -47,15 +49,25 @@ sftp_server_infos = [
     #     "local_filepath": "/home/cope_au/dme_sftp/cope_au/pickup_ext/dhl_au/",
     #     "local_filepath_archive": "/home/cope_au/dme_sftp/cope_au/pickup_ext/dhl_au/archive/",
     # },
+    # {
+    #     # 'State Transport' PROD server info
+    #     "fp_name": "State Transport",
+    #     "host": "batchprocessing.hubsystems.com.au",
+    #     "username": "state-deliverme",
+    #     "password": "Wp#S8Y:x^Dgc7",
+    #     "sftp_filepath": "/in/",
+    #     "local_filepath": STTCO_DIR,
+    #     "local_filepath_archive": STTCO_ARCHIVE_DIR,
+    # },
     {
-        # 'State Transport' PROD server info
-        "fp_name": "State Transport",
-        "host": "batchprocessing.hubsystems.com.au",
-        "username": "state-deliverme",
-        "password": "Wp#S8Y:x^Dgc7",
-        "sftp_filepath": "/in/",
-        "local_filepath": STTCO_DIR,
-        "local_filepath_archive": STTCO_ARCHIVE_DIR,
+        # CENTURY booking csv 
+        "fp_name": "Century",
+        "host": "test.centurycouriers.com.au",
+        "username": "biopak",
+        "password": "WiadOyn4",
+        "sftp_filepath": "/input/",
+        "local_filepath": CCO_DIR,
+        "local_filepath_archive": CCO_ARCHIVE_DIR
     }
 ]
 

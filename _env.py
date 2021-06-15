@@ -10,7 +10,7 @@ EMAIL_HOST_PASSWORD = "Dme35718&*"
 
 DB_HOST = "localhost"
 DB_USER = "root"
-DB_PASS = ""
+DB_PASS = "password"
 DB_PORT = 3306
 DB_NAME = "deliver_me"
 
@@ -33,17 +33,17 @@ ST_ARCHIVE_CSV_DIR = "/Users/admin/work/goldmine/scripts/dir02/"
 PO_RESULT_DIR = "./../dme_api/static/uploaded/pricing_only/result/"
 PO_SRC_DIR = "./../dme_api/static/uploaded/pricing_only/indata/"
 PO_SRC_INPROGRESS_DIR = "./../dme_api/static/uploaded/pricing_only/inprogress/"
-PO_SRC_ACHIEVE_DIR = "./../dme_api/static/uploaded/pricing_only/achieve/"
+PO_SRC_ARCHIVE_DIR = "./../dme_api/static/uploaded/pricing_only/aRchive/"
 
 # PR - Pricing Rule
 PR_RESULT_DIR = "./../dme_api/static/uploaded/pricing_rule/result/"
 PR_SRC_DIR = "./../dme_api/static/uploaded/pricing_rule/indata/"
 PR_SRC_INPROGRESS_DIR = "./../dme_api/static/uploaded/pricing_rule/inprogress/"
-PR_SRC_ACHIEVE_DIR = "./../dme_api/static/uploaded/pricing_rule/achieve/"
+PR_SRC_ARCHIVE_DIR = "./../dme_api/static/uploaded/pricing_rule/aRchive/"
 
 # SAPB1 - CSV INPUT
 SAPB1_CSV_INPUT_DIR = "./dir01/"
-SAPB1_CSV_INPUT_ACHIEVE_DIR = "./dir02/"
+SAPB1_CSV_INPUT_ARCHIVE_DIR = "./dir02/"
 
 # HTC - Hunter Tracking CSV Input
 HTC_REMOTE_DIR = "/tracking/indata/"
@@ -51,7 +51,11 @@ HTC_LOCAL_DIR = "./dir01/"
 
 # STTCO - State Transport CSV Output (For BOOK)
 STTCO_DIR = "./dir01/"
-STTCO_ACHIEVE_DIR = "./dir02/"
+STTCO_ARCHIVE_DIR = "./dir02/"
+
+# CTCO - Century CSV Outpue (For Book)
+CCO_DIR = "./../dme_api/static/csvs/"
+CCO_ARCHIVE_DIR = "./../dme_api/static/csvs_archive/"
 
 
 # **************
@@ -83,17 +87,17 @@ STTCO_ACHIEVE_DIR = "./dir02/"
 # PO_RESULT_DIR = "/var/www/html/dme_api/static/uploaded/pricing_only/result/"
 # PO_SRC_DIR = "/var/www/html/dme_api/static/uploaded/pricing_only/indata/"
 # PO_SRC_INPROGRESS_DIR = "/var/www/html/dme_api/static/uploaded/pricing_only/inprogress/"
-# PO_SRC_ACHIEVE_DIR = "/var/www/html/dme_api/static/uploaded/pricing_only/achieve/"
+# PO_SRC_ARCHIVE_DIR = "/var/www/html/dme_api/static/uploaded/pricing_only/aRchive/"
 
 # PR - Pricing Rule
 # PR_RESULT_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/result/"
 # PR_SRC_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/indata/"
 # PR_SRC_INPROGRESS_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/inprogress/"
-# PR_SRC_ACHIEVE_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/achieve/"
+# PR_SRC_ARCHIVE_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/aRchive/"
 
 # SAPB1 - CSV INPUT
 # SAPB1_CSV_INPUT_DIR = "/dme_sftp/sapb1/order_transaction_csvs/indata/"
-# SAPB1_CSV_INPUT_ACHIEVE_DIR = "/dme_sftp/sapb1/order_transaction_csvs/processed/"
+# SAPB1_CSV_INPUT_ARCHIVE_DIR = "/dme_sftp/sapb1/order_transaction_csvs/processed/"
 
 # HTC - Hunter Tracking CSV Input
 # HTC_REMOTE_DIR = "/tracking/indata/"
@@ -135,17 +139,17 @@ STTCO_ACHIEVE_DIR = "./dir02/"
 # PO_SRC_INPROGRESS_DIR = (
 #     "/var/www/html/dme_api/static/uploaded/pricing_only/inprogress/"
 # )
-# PO_SRC_ACHIEVE_DIR = "/var/www/html/dme_api/static/uploaded/pricing_only/achieve/"
+# PO_SRC_ARCHIVE_DIR = "/var/www/html/dme_api/static/uploaded/pricing_only/aRchive/"
 
 # PR - Pricing Rule
 # PR_RESULT_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/result/"
 # PR_SRC_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/indata/"
 # PR_SRC_INPROGRESS_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/inprogress/"
-# PR_SRC_ACHIEVE_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/achieve/"
+# PR_SRC_ARCHIVE_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/aRchive/"
 
 # SAPB1 - CSV INPUT
 # SAPB1_CSV_INPUT_DIR = "/dme_sftp/sapb1/order_transaction_csvs/indata/"
-# SAPB1_CSV_INPUT_ACHIEVE_DIR = "/dme_sftp/sapb1/order_transaction_csvs/processed/"
+# SAPB1_CSV_INPUT_ARCHIVE_DIR = "/dme_sftp/sapb1/order_transaction_csvs/processed/"
 
 # HTC - Hunter Tracking CSV Input
 # HTC_REMOTE_DIR = "/tracking/indata/"
