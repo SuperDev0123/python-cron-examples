@@ -137,7 +137,7 @@ def do_process(mysqlcon):
             order_number = subject_items[1].strip().lower()
 
             # Prevent '135000-' case
-            if order_number.split("-") > 1 and order_number.split("-")[1] == "":
+            if len(order_number.split("-")) > 1 and order_number.split("-")[1] == "":
                 order_number = order_number.split("-")[0]
 
             print(f"\n@801 - order_number: {order_number}")
