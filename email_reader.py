@@ -103,6 +103,11 @@ def update_booking(order_number, mysqlcon):
             WHERE `fk_header_id`=%s"
         cursor.execute(sql, (4, bok_1["pk_header_id"]))
 
+        sql = "UPDATE `bok_3_lines_data` \
+            SET `success`=%s \
+            WHERE `fk_header_id`=%s"
+        cursor.execute(sql, (4, bok_1["pk_header_id"]))
+
         sql = "UPDATE `bok_1_headers` \
             SET `success`=%s \
             WHERE `pk_auto_id`=%s"
