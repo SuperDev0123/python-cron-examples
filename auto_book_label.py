@@ -21,7 +21,7 @@ TYPE_2 = 2  # JasonL
 def get_bookings(mysqlcon, type):
     with mysqlcon.cursor() as cursor:
         if type == TYPE_1:  # Plum
-            sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider` \
+            sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider`, `kf_client_id` \
                     FROM `dme_bookings` \
                     WHERE `b_dateBookedDate` is NULL and `b_status`=%s and `kf_client_id`=%s and \
                     (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
@@ -95,6 +95,8 @@ def do_process(mysqlcon):
                 {booking["vx_freight_provider"].lower()} not in ["hunter", "capital"]
                 and "message" in result
                 and "Successfully booked" in result["message"]
+                and booking["kf_client_id"]
+                != "1af6bcd2-6148-11eb-ae93-0242ac130002"  # JasonL
             ):
                 do_get_label(booking)
 
