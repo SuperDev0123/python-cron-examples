@@ -3,7 +3,7 @@ Python version 3.7.0
 Script version 1.0
 
 Avaialble clients:
-	* Plum Products Australia Ltd(461162D2-90C7-BF4E-A905-000000000004)
+    * Plum Products Australia Ltd(461162D2-90C7-BF4E-A905-000000000004)
 
 """
 import os, sys, time, json
@@ -14,19 +14,33 @@ import requests
 from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
 from _options_lib import get_option, set_option
 
+TYPE_1 = 1  # Plum
+TYPE_2 = 2  # JasonL
 
-def get_bookings(mysqlcon):
+
+def get_bookings(mysqlcon, type):
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider` \
-                FROM `dme_bookings` \
-                WHERE `b_dateBookedDate` is NULL and `b_status`=%s and `kf_client_id`=%s and \
-                (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
-                ORDER BY id DESC \
-                LIMIT 10"
-        cursor.execute(
-            sql, ("Ready for booking", "461162D2-90C7-BF4E-A905-000000000004", "")
-        )
-        bookings = cursor.fetchall()
+        if type == TYPE_1:  # Plum
+            sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider` \
+                    FROM `dme_bookings` \
+                    WHERE `b_dateBookedDate` is NULL and `b_status`=%s and `kf_client_id`=%s and \
+                    (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
+                    ORDER BY id DESC \
+                    LIMIT 10"
+            cursor.execute(
+                sql, ("Ready for Booking", "461162D2-90C7-BF4E-A905-000000000004", "")
+            )
+            bookings = cursor.fetchall()
+        elif type == TYPE_2:  # JasonL
+            sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider` \
+                    FROM `dme_bookings` \
+                    WHERE `b_status`=%s and `kf_client_id`=%s \
+                    ORDER BY id DESC \
+                    LIMIT 10"
+            cursor.execute(
+                sql, ("Ready for Despatch", "1af6bcd2-6148-11eb-ae93-0242ac130002")
+            )
+            bookings = cursor.fetchall()
 
         return bookings
 
@@ -38,7 +52,7 @@ def do_book(booking):
     response0 = response.content.decode("utf8")
     data0 = json.loads(response0)
     s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
-    print("@210 - ", s0)
+    print("@210 - BOOK result: ", s0)
     return data0
 
 
@@ -49,17 +63,32 @@ def do_get_label(booking):
     response0 = response.content.decode("utf8")
     data0 = json.loads(response0)
     s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
-    print("@220 - ", s0)
+    print("@220 - LABEL result: ", s0)
     return data0
 
 
 def do_process(mysqlcon):
-    bookings = get_bookings(mysqlcon)
-    print("#200 - Booking cnt to process: ", len(bookings))
+    bookings = get_bookings(mysqlcon, TYPE_1)  # Plum
+    print("#200 - Booking cnt to process(Plum): ", len(bookings))
 
     if len(bookings) > 0:
         for booking in bookings:
-            print("#200 - Processing: ***", booking["b_bookingID_Visual"], "***")
+            print("#201 - Processing: ***", booking["b_bookingID_Visual"], "***")
+            result = do_book(booking)
+
+            if (
+                {booking["vx_freight_provider"].lower()} not in ["hunter", "capital"]
+                and "message" in result
+                and "Successfully booked" in result["message"]
+            ):
+                do_get_label(booking)
+
+    bookings = get_bookings(mysqlcon, TYPE_2)  # JasonL
+    print("#202 - Booking cnt to process(JasonL): ", len(bookings))
+
+    if len(bookings) > 0:
+        for booking in bookings:
+            print("#203 - Processing: ***", booking["b_bookingID_Visual"], "***")
             result = do_book(booking)
 
             if (
