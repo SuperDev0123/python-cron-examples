@@ -68,20 +68,20 @@ def do_get_label(booking):
 
 
 def do_process(mysqlcon):
-    bookings = get_bookings(mysqlcon, TYPE_1)  # Plum
-    print("#200 - Booking cnt to process(Plum): ", len(bookings))
+    # bookings = get_bookings(mysqlcon, TYPE_1)  # Plum
+    # print("#200 - Booking cnt to process(Plum): ", len(bookings))
 
-    if len(bookings) > 0:
-        for booking in bookings:
-            print("#201 - Processing: ***", booking["b_bookingID_Visual"], "***")
-            result = do_book(booking)
+    # if len(bookings) > 0:
+    #     for booking in bookings:
+    #         print("#201 - Processing: ***", booking["b_bookingID_Visual"], "***")
+    #         result = do_book(booking)
 
-            if (
-                {booking["vx_freight_provider"].lower()} not in ["hunter", "capital"]
-                and "message" in result
-                and "Successfully booked" in result["message"]
-            ):
-                do_get_label(booking)
+    #         if (
+    #             {booking["vx_freight_provider"].lower()} not in ["hunter", "capital"]
+    #             and "message" in result
+    #             and "Successfully booked" in result["message"]
+    #         ):
+    #             do_get_label(booking)
 
     bookings = get_bookings(mysqlcon, TYPE_2)  # JasonL
     print("#202 - Booking cnt to process(JasonL): ", len(bookings))
@@ -90,15 +90,6 @@ def do_process(mysqlcon):
         for booking in bookings:
             print("#203 - Processing: ***", booking["b_bookingID_Visual"], "***")
             result = do_book(booking)
-
-            if (
-                {booking["vx_freight_provider"].lower()} not in ["hunter", "capital"]
-                and "message" in result
-                and "Successfully booked" in result["message"]
-                and booking["kf_client_id"]
-                != "1af6bcd2-6148-11eb-ae93-0242ac130002"  # JasonL
-            ):
-                do_get_label(booking)
 
 
 if __name__ == "__main__":
