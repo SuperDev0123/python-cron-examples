@@ -16,7 +16,7 @@ def get_in_progress_bookings(mysqlcon):
                 WHERE `vx_freight_provider`=%s \
                     AND (`b_client_name`=%s OR `b_client_name`=%s) \
                     AND (`z_lock_status`=%s OR `z_lock_status` IS NULL) \
-                    AND (`b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s) \
+                    AND (`b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s) \
                 ORDER BY id DESC \
                 LIMIT 2"
         cursor.execute(
