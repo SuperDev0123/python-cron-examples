@@ -54,7 +54,7 @@ def get_bookings_missing_pod(mysqlcon):
 
 
 def do_tracking(booking):
-    url = API_URL + "/fp-api/tnt/tracking/"
+    url = API_URL + "/fp-api/allied/tracking/"
     data = {"booking_id": booking["id"]}
 
     response = requests.post(url, params={}, json=data)
@@ -72,7 +72,7 @@ def do_tracking(booking):
 
 
 def do_pod(booking):
-    url = API_URL + "/fp-api/tnt/pod/"
+    url = API_URL + "/fp-api/allied/pod/"
     data = {"booking_id": booking["id"]}
 
     response = requests.post(url, params={}, json=data)
@@ -84,7 +84,7 @@ def do_pod(booking):
 
 
 def do_process(mysqlcon):
-    # Get 200 TNT bookings
+    # Get 200 Allied bookings
     bookings = get_in_progress_bookings(mysqlcon)
     print("#200 - Booking cnt to process: ", len(bookings))
 
@@ -96,8 +96,8 @@ def do_process(mysqlcon):
             do_pod(booking)
 
     # Get 20 TNT bookings that b_status is `Delivered` but missed POD
-    bookings = get_bookings_missing_pod(mysqlcon)
-    print("#210 - Booking(missing POD) cnt to process: ", len(bookings))
+    # bookings = get_bookings_missing_pod(mysqlcon)
+    # print("#210 - Booking(missing POD) cnt to process: ", len(bookings))
 
     # for booking in bookings:
     #     print("#211 - Processing: ***", booking["b_bookingID_Visual"], "***")
