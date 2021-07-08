@@ -51,7 +51,11 @@ HTC_LOCAL_DIR = "./dir01/"
 
 # STTCO - State Transport CSV Output (For BOOK)
 STTCO_DIR = "./dir01/"
-STTCO_ACHIEVE_DIR = "./dir02/"
+STTCO_ARCHIVE_DIR = "./dir02/"
+
+# CCO - Century CSV Output (For BOOK)
+CCO_DIR = "./dir01/"
+CCO_ARCHIVE_DIR = "./dir02/"
 
 
 # **************
@@ -103,6 +107,9 @@ STTCO_ACHIEVE_DIR = "./dir02/"
 # STTCO_DIR = "./dme_sftp/state_transport/book/csv/outdata/"
 # STTCO_ARCHIVE_DIR = "./dme_sftp/state_transport/book/csv/archive/"
 
+# CCO - Century CSV Output (For BOOK)
+# CCO_DIR = "./dme_sftp/century/book_csv/outdata/"
+# CCO_ARCHIVE_DIR = "./dme_sftp/century/book_csv/archive/"
 
 # **************
 # ***  PROD  ***
@@ -154,3 +161,7 @@ STTCO_ACHIEVE_DIR = "./dir02/"
 # STTCO - State Transport CSV Output (For BOOK)
 # STTCO_DIR = "./dme_sftp/state_transport/book/csv/outdata/"
 # STTCO_ARCHIVE_DIR = "./dme_sftp/state_transport/book/csv/archive/"
+
+# CCO - Century CSV Output (For BOOK)
+# CCO_DIR = "./dme_sftp/century/book_csv/outdata/"
+# CCO_ARCHIVE_DIR = "./dme_sftp/century/book_csv/archive/"

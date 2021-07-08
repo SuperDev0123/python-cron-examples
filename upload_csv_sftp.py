@@ -96,9 +96,13 @@ if __name__ == "__main__":
 
                     for fname in os.listdir(sftp_server_info["local_filepath"]):
                         fpath = os.path.join(sftp_server_info["local_filepath"], fname)
-                        print("@1 - ", fpath)
-                        if os.path.isfile(fpath) and fname.endswith(".csv"):
-                            print("@100 Detect csv file:", fpath)
+
+                        if (
+                            os.path.isfile(fpath)
+                            and fname.endswith(".csv")
+                            and sftp_server_info["fp_name"] in fname
+                        ):
+                            print(f"#902 uploading: {fname}")
                             upload_sftp(
                                 sftp_server_info["host"],
                                 sftp_server_info["username"],
