@@ -53,7 +53,7 @@ HTC_LOCAL_DIR = "./dir01/"
 STTCO_DIR = "./dir01/"
 STTCO_ARCHIVE_DIR = "./dir02/"
 
-# CTCO - Century CSV Outpue (For Book)
+# CTCO - Century CSV Output (For Book)
 CCO_DIR = "./../dme_api/static/csvs/"
 CCO_ARCHIVE_DIR = "./../dme_api/static/csvs_archive/"
 
