@@ -1,6 +1,7 @@
 import os
 import pysftp
 import shutil
+import ftplib
 
 
 def download_sftp(
@@ -70,3 +71,34 @@ def upload_sftp(
                 print("@209 Moved csv file:", filename)
 
         sftp_con.close()
+
+
+def upload_ftp(
+    host,
+    username,
+    password,
+    ftp_filepath,
+    local_filepath,
+    local_filepath_archive,
+    filename,
+):
+    # Establish connection
+    session = ftplib.FTP(host, username, password)
+    print("@202 - Connected to ftp")
+
+    # Change dir
+    session.cwd(ftp_filepath)
+
+    with open(local_filepath + filename, "rb") as file:
+        print(f"@203 - file: {local_filepath + filename}({file})")
+        session.storbinary("STOR %s" % filename, file)
+
+    if not os.path.exists(local_filepath_archive):
+        os.makedirs(local_filepath_archive)
+    shutil.move(local_filepath + filename, local_filepath_archive + filename)
+    print(
+        f"@209 Moved csv file: {local_filepath + filename} -> {local_filepath_archive + filename}"
+    )
+
+    # Quit
+    session.quit()

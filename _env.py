@@ -107,6 +107,9 @@ CCO_ARCHIVE_DIR = "./../dme_api/static/csvs_archive/"
 # STTCO_DIR = "./dme_sftp/state_transport/book/csv/outdata/"
 # STTCO_ARCHIVE_DIR = "./dme_sftp/state_transport/book/csv/archive/"
 
+# CCO - Century CSV Output (For BOOK)
+# CCO_DIR = "./dme_sftp/century/book_csv/outdata/"
+# CCO_ARCHIVE_DIR = "./dme_sftp/century/book_csv/archive/"
 
 # **************
 # ***  PROD  ***
@@ -158,3 +161,7 @@ CCO_ARCHIVE_DIR = "./../dme_api/static/csvs_archive/"
 # STTCO - State Transport CSV Output (For BOOK)
 # STTCO_DIR = "./dme_sftp/state_transport/book/csv/outdata/"
 # STTCO_ARCHIVE_DIR = "./dme_sftp/state_transport/book/csv/archive/"
+
+# CCO - Century CSV Output (For BOOK)
+# CCO_DIR = "./dme_sftp/century/book_csv/outdata/"
+# CCO_ARCHIVE_DIR = "./dme_sftp/century/book_csv/archive/"
