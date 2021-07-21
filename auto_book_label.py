@@ -32,7 +32,7 @@ def get_bookings(mysqlcon, type):
             )
             bookings = cursor.fetchall()
         elif type == TYPE_2:  # JasonL
-            sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider` \
+            sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider`, `kf_client_id` \
                     FROM `dme_bookings` \
                     WHERE `b_status`=%s and `kf_client_id`=%s \
                     ORDER BY id DESC \
@@ -90,6 +90,13 @@ def do_process(mysqlcon):
         for booking in bookings:
             print("#203 - Processing: ***", booking["b_bookingID_Visual"], "***")
             result = do_book(booking)
+
+            if (
+                {booking["vx_freight_provider"].lower()} not in ["tnt"]
+                and "message" in result
+                and "Successfully booked" in result["message"]
+            ):
+                do_get_label(booking)
 
 
 if __name__ == "__main__":
