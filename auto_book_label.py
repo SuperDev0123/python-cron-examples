@@ -91,12 +91,12 @@ def do_process(mysqlcon):
             print("#203 - Processing: ***", booking["b_bookingID_Visual"], "***")
             result = do_book(booking)
 
-            if (
-                {booking["vx_freight_provider"].lower()} not in ["tnt"]
-                and "message" in result
-                and "Successfully booked" in result["message"]
-            ):
-                do_get_label(booking)
+            # if (
+            #     {booking["vx_freight_provider"].lower()} not in ["tnt"]
+            #     and "message" in result
+            #     and "Successfully booked" in result["message"]
+            # ):
+            #     do_get_label(booking)
 
 
 if __name__ == "__main__":

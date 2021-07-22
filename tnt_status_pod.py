@@ -18,7 +18,7 @@ def get_in_progress_bookings(mysqlcon):
                     AND (`z_lock_status`=%s OR `z_lock_status` IS NULL) \
                     AND (`b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s) \
                 ORDER BY id DESC \
-                LIMIT 200"
+                LIMIT 500"
         cursor.execute(
             sql,
             (
