@@ -46,14 +46,27 @@ def get_bookings(mysqlcon, type):
 
 
 def do_book(booking):
-    url = API_URL + f"/fp-api/{booking['vx_freight_provider'].lower()}/book/"
-    data = {"booking_id": booking["id"]}
-    response = requests.post(url, params={}, json=data)
-    response0 = response.content.decode("utf8")
-    data0 = json.loads(response0)
-    s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
-    print("@210 - BOOK result: ", s0)
-    return data0
+    if not booking["vx_freight_provider"].lower() in ["century"]:  # Via FP API
+        url = API_URL + f"/fp-api/{booking['vx_freight_provider'].lower()}/book/"
+        data = {"booking_id": booking["id"]}
+        response = requests.post(url, params={}, json=data)
+        response0 = response.content.decode("utf8")
+        data0 = json.loads(response0)
+        s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
+        print("@210 - BOOK (via FP API) result: ", s0)
+        return data0
+    else:  # Via CSV
+        url = API_URL + f"/get-csv/"
+        data = {
+            "bookingIds": [booking.id],
+            "vx_freight_provider": booking["vx_freight_provider"],
+        }
+        response = requests.post(url, params={}, json=data)
+        response0 = response.content.decode("utf8")
+        data0 = json.loads(response0)
+        s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
+        print("@211 - BOOK (via CSV) result: ", s0)
+        return data0
 
 
 def do_get_label(booking):
