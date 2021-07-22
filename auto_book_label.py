@@ -58,7 +58,7 @@ def do_book(booking):
     else:  # Via CSV
         url = API_URL + f"/get-csv/"
         data = {
-            "bookingIds": [booking.id],
+            "bookingIds": [booking["id"]],
             "vx_freight_provider": booking["vx_freight_provider"],
         }
         response = requests.post(url, params={}, json=data)
