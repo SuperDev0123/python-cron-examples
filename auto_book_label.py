@@ -11,11 +11,35 @@ import datetime
 import pymysql, pymysql.cursors
 import requests
 
-from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
+from _env import (
+    DB_HOST,
+    DB_USER,
+    DB_PASS,
+    DB_PORT,
+    DB_NAME,
+    API_URL,
+    USERNAME,
+    PASSWORD,
+)
 from _options_lib import get_option, set_option
 
 TYPE_1 = 1  # Plum
 TYPE_2 = 2  # JasonL
+
+
+def get_token():
+    url = API_URL + "/api-token-auth/"
+    data = {"username": USERNAME, "password": PASSWORD}
+    response = requests.post(url, params={}, json=data)
+    response0 = response.content.decode("utf8")
+    data0 = json.loads(response0)
+
+    if "token" in data0:
+        print("@101 - Token: ", data0["token"])
+        return data0["token"]
+    else:
+        print("@400 - ", data0["non_field_errors"])
+        return None
 
 
 def get_bookings(mysqlcon, type):
@@ -45,7 +69,7 @@ def get_bookings(mysqlcon, type):
         return bookings
 
 
-def do_book(booking):
+def do_book(booking, token):
     if not booking["vx_freight_provider"].lower() in ["century"]:  # Via FP API
         url = API_URL + f"/fp-api/{booking['vx_freight_provider'].lower()}/book/"
         data = {"booking_id": booking["id"]}
@@ -61,7 +85,8 @@ def do_book(booking):
             "bookingIds": [booking["id"]],
             "vx_freight_provider": booking["vx_freight_provider"],
         }
-        response = requests.post(url, params={}, json=data)
+        headers = {"Authorization": f"JWT {token}"}
+        response = requests.post(url, params={}, json=data, headers=headers)
         response0 = response.content.decode("utf8")
         data0 = json.loads(response0)
         s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
@@ -81,6 +106,8 @@ def do_get_label(booking):
 
 
 def do_process(mysqlcon):
+    token = get_token()
+
     # bookings = get_bookings(mysqlcon, TYPE_1)  # Plum
     # print("#200 - Booking cnt to process(Plum): ", len(bookings))
 
@@ -102,7 +129,7 @@ def do_process(mysqlcon):
     if len(bookings) > 0:
         for booking in bookings:
             print("#203 - Processing: ***", booking["b_bookingID_Visual"], "***")
-            result = do_book(booking)
+            result = do_book(booking, token)
 
             # if (
             #     {booking["vx_freight_provider"].lower()} not in ["tnt"]
