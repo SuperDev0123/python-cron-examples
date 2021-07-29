@@ -69,6 +69,19 @@ def get_bookings(mysqlcon, type):
         return bookings
 
 
+def reset_booking(mysqlcon, booking):
+    with mysqlcon.cursor() as cursor:
+        # JasonL & TNT
+        if booking["kf_client_id"] == "1af6bcd2-6148-11eb-ae93-0242ac130002":
+            sql = "UPDATE `dme_bookings` \
+                    SET `v_FPBookingNumber`=NULL, `b_status`=%s, `b_dateBookedDate`=NULL, `b_error_Capture`=%s \
+                    WHERE id=%s"
+            cursor.execute(
+                sql, ("Ready for Despatch", "Error while BOOK on TNT.", booking["id"])
+            )
+            mysqlcon.commit()
+
+
 def do_book(booking, token):
     if not booking["vx_freight_provider"].lower() in ["century"]:  # Via FP API
         url = API_URL + f"/fp-api/{booking['vx_freight_provider'].lower()}/book/"
@@ -136,7 +149,10 @@ def do_process(mysqlcon):
                 and "message" in result
                 and "Successfully booked" in result["message"]
             ):
-                do_get_label(booking)
+                label_result = do_get_label(booking)
+
+                if "Successfully" not in result.get("message"):
+                    reset_booking(booking, mysqlcon)
 
 
 if __name__ == "__main__":
