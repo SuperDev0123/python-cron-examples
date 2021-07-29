@@ -132,7 +132,7 @@ def do_process(mysqlcon):
             result = do_book(booking, token)
 
             if (
-                {booking["vx_freight_provider"].lower()} in ["tnt"]
+                booking["vx_freight_provider"].lower() == "tnt"
                 and "message" in result
                 and "Successfully booked" in result["message"]
             ):
