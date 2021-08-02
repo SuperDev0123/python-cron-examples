@@ -170,7 +170,7 @@ def do_process(mysqlcon):
                 label_result = do_get_label(booking)
 
                 if "Successfully" not in label_result["message"]:
-                    reset_booking(booking, mysqlcon, label_result["message"])
+                    reset_booking(mysqlcon, booking, label_result["message"])
                     send_email_to_admins(booking, label_result["message"], "getlabel")
 
 
