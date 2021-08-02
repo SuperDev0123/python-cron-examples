@@ -84,15 +84,15 @@ def reset_booking(mysqlcon, booking, error_msg):
 def send_email_to_admins(booking, error_msg, type):
     text = (
         f"This email is from DME CRONJOB:"
-        + f"\n\nBooking Id: {booking['b_bookingID_Visual']}\nOrderNum: {booking['b_client_order_num']}\nFreight Provider: {booking['vx_freight_provider']}\nError: {error_msg}"
-        + f"\n\nPlease reply to all if you are going to resolve the issue.\nAfter resolved, reply to all - 'Resolved'"
+        + f"\n\n\n\nError Info:\nBooking Id: {booking['b_bookingID_Visual']}\nOrderNum: {booking['b_client_order_num']}\nFreight Provider: {booking['vx_freight_provider']}\nError: {error_msg}"
+        + f"\n\n\n\nPlease reply to all if you are going to resolve the issue.\nAfter resolved, reply to all - 'Resolved'"
         + f"\nWhen you got unknown issue while resolving issue, please contact DME lead developer - Gold(goldj@deliver-me.com.au)"
         + f"\n\nRegards,\nDME CRONJOB"
     )
     send_email(
         ["bookings@deliver-me.com.au", "stephenm@deliver-me.com.au"],
         ["petew@deliver-me.com.au", "goldj@deliver-me.com.au"],
-        f"Error happend while '{type.upper}'",
+        f"Error happend while '{type.upper()}'",
         text,
     )
 
