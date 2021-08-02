@@ -282,18 +282,12 @@ def read_xls(file):
     return freight_providers, timings, vehicles, availabilities, costs, rules
 
 
-# def _populate_vehicle_id(rules, vehicles):
-#     for rule in rules:
-#         if not rule["vehicle_type"]:
-#             rule["vehicle_id"] = None
-#             del rule["vehicle_type"]
-#             continue
-
-#         for vehicle in vehicles:
-#             if rule["vehicle_type"] == vehicle["description"]:
-#                 rule["vehicle_id"] = vehicle["id"]
-#                 del rule["vehicle_type"]
-#                 break
+def _populate_vehicle_id(rules, vehicles):
+    for rule in rules:
+        for vehicle in vehicles:
+            if rule["vehicle_id"] == vehicle["xls_id"]:
+                rule["vehicle_id"] = vehicle["id"]
+                break
 
 
 def _populate_etd_id(rules, freight_provider, rule_type, timings=[]):
@@ -486,7 +480,7 @@ def do_process(mysqlcon, fpath, fname):
         SRC_INPROGRESS_DIR + fname,
         "In progress: 35% --- Populating Vehicle Id",
     )
-    # _populate_vehicle_id(rules, vehicles)
+    _populate_vehicle_id(rules, vehicles)
     _update_file_info(
         mysqlcon,
         fname,
