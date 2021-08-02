@@ -22,6 +22,7 @@ from _env import (
     PASSWORD,
 )
 from _options_lib import get_option, set_option
+from _email_lib import send_email
 
 TYPE_1 = 1  # Plum
 TYPE_2 = 2  # JasonL
@@ -45,7 +46,7 @@ def get_token():
 def get_bookings(mysqlcon, type):
     with mysqlcon.cursor() as cursor:
         if type == TYPE_1:  # Plum
-            sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider`, `kf_client_id` \
+            sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider`, `kf_client_id`, `b_client_order_num` \
                     FROM `dme_bookings` \
                     WHERE `b_dateBookedDate` is NULL and `b_status`=%s and `kf_client_id`=%s and \
                     (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
@@ -56,7 +57,7 @@ def get_bookings(mysqlcon, type):
             )
             bookings = cursor.fetchall()
         elif type == TYPE_2:  # JasonL
-            sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider`, `kf_client_id` \
+            sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider`, `kf_client_id`, `b_client_order_num` \
                     FROM `dme_bookings` \
                     WHERE `b_status`=%s and `kf_client_id`=%s \
                     ORDER BY id DESC \
@@ -69,17 +70,31 @@ def get_bookings(mysqlcon, type):
         return bookings
 
 
-def reset_booking(mysqlcon, booking):
+def reset_booking(mysqlcon, booking, error_msg):
     with mysqlcon.cursor() as cursor:
         # JasonL & TNT
         if booking["kf_client_id"] == "1af6bcd2-6148-11eb-ae93-0242ac130002":
             sql = "UPDATE `dme_bookings` \
                     SET `v_FPBookingNumber`=NULL, `b_status`=%s, `b_dateBookedDate`=NULL, `b_error_Capture`=%s \
                     WHERE id=%s"
-            cursor.execute(
-                sql, ("Ready for Despatch", "Error while BOOK on TNT.", booking["id"])
-            )
+            cursor.execute(sql, ("Ready for Despatch", error_msg, booking["id"]))
             mysqlcon.commit()
+
+
+def send_email_to_admins(booking, error_msg, type):
+    text = (
+        f"This email is from DME CRONJOB:"
+        + "\n\nBooking Id: {booking['b_bookingID_Visual']}\nOrderNum: {booking['b_client_order_num']}\nFreight Provider: {booking['vx_freight_provider']}\nError: {error_msg}"
+        + "\n\nPlease reply to all if you are going to resolve the issue.\nAfter resolved, reply to all - 'Resolved'"
+        + "\nWhen you got unknown issue while resolving issue, please contact DME lead developer - Gold(goldj@deliver-me.com.au)"
+        + "\n\nRegards,\nDME CRONJOB"
+    )
+    send_email(
+        ["bookings@deliver-me.com.au", "stephenm@deliver-me.com.au"],
+        ["petew@deliver-me.com.au", "goldj@deliver-me.com.au"],
+        f"Error happend while '{type.upper}'",
+        text,
+    )
 
 
 def do_book(booking, token):
@@ -144,6 +159,9 @@ def do_process(mysqlcon):
             print("#203 - Processing: ***", booking["b_bookingID_Visual"], "***")
             result = do_book(booking, token)
 
+            if not "successfully" in result["message"].lower():
+                send_email_to_admins(booking, result["message"], "book")
+
             if (
                 booking["vx_freight_provider"].lower() == "tnt"
                 and "message" in result
@@ -151,8 +169,9 @@ def do_process(mysqlcon):
             ):
                 label_result = do_get_label(booking)
 
-                if "Successfully" not in result.get("message"):
-                    reset_booking(booking, mysqlcon)
+                if "Successfully" not in label_result["message"]:
+                    reset_booking(booking, mysqlcon, label_result["message"])
+                    send_email_to_admins(booking, label_result["message"], "getlabel")
 
 
 if __name__ == "__main__":
