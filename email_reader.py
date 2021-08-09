@@ -60,7 +60,7 @@ def _pull_order(order_number):
         "booking": {
             "b_client_order_num": order_number,
             "shipping_type": "DMEA",
-            "b_client_sales_inv_num": {order_number},
+            "b_client_sales_inv_num": order_number,
             "b_053_b_del_delivery_type": "business",
         }
     }
