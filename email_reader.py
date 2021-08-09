@@ -190,7 +190,7 @@ def _check_quote(order_number, mysqlcon):
             cursor.execute(sql, (booking["pk_booking_id"], 0))
             quotes = cursor.fetchall()
 
-            if len(quotes) > 0:
+            if len(quotes) == 0:
                 text = f"Dear {booking['b_client_name']}\n\
                     Sales Order {order_number} has been received by the warehouse to ship with either address and / or item line errors OR no freight provider selected. \
                     This will prevent freight being booked. Please go Deliver-ME booking {booking['b_bookingID_Visual']} and review the address and line information. \
