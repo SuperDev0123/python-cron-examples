@@ -140,7 +140,7 @@ def update_booking(order_number, mysqlcon):
                 WHERE `fk_client_id`=%s AND `b_client_order_num`=%s"
         cursor.execute(sql, ("1af6bcd2-6148-11eb-ae93-0242ac130002", order_number))
         bok_1 = cursor.fetchone()
-        print(f"@403 - ", bok_1)`
+        print(f"@403 - ", bok_1)
 
         if int(bok_1["success"]) in [1, 4]:  # Already mapped
             print(
