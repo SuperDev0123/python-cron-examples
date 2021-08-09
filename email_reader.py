@@ -9,7 +9,16 @@ import os, sys, json
 import pymysql, pymysql.cursors
 import requests
 
-from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
+from _env import (
+    DB_HOST,
+    DB_USER,
+    DB_PASS,
+    DB_PORT,
+    DB_NAME,
+    API_URL,
+    USERNAME,
+    PASSWORD,
+)
 from _options_lib import get_option, set_option
 from _email_lib import send_email
 
@@ -22,6 +31,46 @@ from _email_lib import send_email
 EMAIL_USERNAME = "data.deliver-me@outlook.com"
 EMAIL_PASSWORD = "Dme1234*"
 EMAIL_SERVER_NAME = "outlook.office365.com"
+
+
+def get_token():
+    url = API_URL + "/api-token-auth/"
+    data = {"username": USERNAME, "password": PASSWORD}
+    response = requests.post(url, params={}, json=data)
+    response0 = response.content.decode("utf8")
+    data0 = json.loads(response0)
+
+    if "token" in data0:
+        print("@101 - Token: ", data0["token"])
+        return data0["token"]
+    else:
+        print("@400 - ", data0["non_field_errors"])
+        return None
+
+
+def _pull_order(order_number):
+    token = get_token()
+
+    url = API_URL + "/api/boks/"
+    data = {
+        "booking": {
+            "b_client_order_num": order_number,
+            "shipping_type": "DMEA",
+            "b_client_sales_inv_num": {order_number},
+            "b_053_b_del_delivery_type": "business",
+        }
+    }
+    headers = {"Authorization": f"JWT {token}"}
+    response = requests.post(url, params={}, json=data, headers=headers)
+    response0 = response.content.decode("utf8")
+    data0 = json.loads(response0)
+
+    if "token" in data0:
+        print("@901 - Result: ", data0)
+        return data0
+    else:
+        print("@904 - ", data0)
+        return None
 
 
 def read_email_from_gmail(account, password):
@@ -88,8 +137,15 @@ def update_booking(order_number, mysqlcon):
 
         if len(bok_1s) == 0:  # Does not exist
             print(f"@401 - No Order found. Order Number: {order_number}")
-            # TODO - send back error email to JasonL
-            return False
+
+            # Pull Order from JasonL
+            _pull_order(order_number)
+
+            sql = "SELECT `pk_auto_id`, `pk_header_id`, `success` \
+                    FROM `bok_1_headers` \
+                    WHERE `fk_client_id`=%s AND `b_client_order_num`=%s"
+            cursor.execute(sql, ("1af6bcd2-6148-11eb-ae93-0242ac130002", order_number))
+            bok_1s = cursor.fetchall()
 
         bok_1 = bok_1s[0]
         if int(bok_1["success"]) in [1, 4]:  # Already mapped
