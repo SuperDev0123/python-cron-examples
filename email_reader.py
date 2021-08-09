@@ -55,7 +55,7 @@ def _pull_order(order_number):
     """
     token = get_token()
 
-    url = API_URL + "/api/boks/"
+    url = API_URL + "/boks/"
     data = {
         "booking": {
             "b_client_order_num": order_number,
