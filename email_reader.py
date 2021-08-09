@@ -174,8 +174,8 @@ def _check_quote(order_number, mysqlcon):
     check quotes and send email when doesn't exist
     """
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT `id`, `pk_header_id`, `de_email`, `b_client_name`, `b_booking_visualID` \
-                FROM `dme_bookings` \
+        sql = "SELECT `id`, `pk_booking_id`, `de_email`, `b_client_name`, `b_booking_visualID` \
+                FROM `bok_1_headers` \
                 WHERE `fk_client_id`=%s AND `b_client_order_num`=%s"
         cursor.execute(sql, ("1af6bcd2-6148-11eb-ae93-0242ac130002", order_number))
         booking = cursor.fetchone()
@@ -184,7 +184,7 @@ def _check_quote(order_number, mysqlcon):
             sql = "SELECT `id` \
                     FROM `api_booking_quotes` \
                     WHERE `fk_client_id`=%s AND `is_used`=%s"
-            cursor.execute(sql, (booking["fk_booking_id"], 0))
+            cursor.execute(sql, (booking["pk_booking_id"], 0))
             quotes = cursor.fetchall()
 
             if len(quotes) > 0:
