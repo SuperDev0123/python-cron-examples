@@ -176,6 +176,9 @@ def _check_quote(order_number, mysqlcon):
     """
     check quotes and send email when doesn't exist
     """
+    time.sleep(5)
+    booking = None
+
     with mysqlcon.cursor() as cursor:
         mysqlcon.commit()
         sql = "SELECT `id`, `pk_booking_id`, `de_email`, `b_client_name`, `b_bookingID_Visual` \
@@ -184,31 +187,31 @@ def _check_quote(order_number, mysqlcon):
         cursor.execute(sql, ("1af6bcd2-6148-11eb-ae93-0242ac130002", order_number))
         booking = cursor.fetchone()
 
-        if booking:
-            sql = "SELECT `id` \
-                    FROM `api_booking_quotes` \
-                    WHERE `fk_booking_id`=%s AND `is_used`=%s"
-            cursor.execute(sql, (booking["pk_booking_id"], 0))
-            quotes = cursor.fetchall()
+    if booking:
+        sql = "SELECT `id` \
+                FROM `api_booking_quotes` \
+                WHERE `fk_booking_id`=%s AND `is_used`=%s"
+        cursor.execute(sql, (booking["pk_booking_id"], 0))
+        quotes = cursor.fetchall()
 
-            if len(quotes) == 0:
-                text = f"Dear {booking['b_client_name']}\n\
-                    Sales Order {order_number} has been received by the warehouse to ship with either address and / or item line errors OR no freight provider selected. \
-                    This will prevent freight being booked. Please go Deliver-ME booking {booking['b_bookingID_Visual']} and review the address and line information. \
-                    When complete click 'Update' and then 'Price & Time Calc (FC)'. Select the appropriate provider. \
-                    Your booking will then be ready for the warehouse to process."
-                send_email(
-                    ["customerservice@jasonl.com.au"],
-                    [
-                        "stephenm@deliver-me.com.au",
-                        "petew@deliver-me.com.au",
-                        "goldj@deliver-me.com.au",
-                    ],
-                    f"No Quotes",
-                    text,
-                )
-        else:
-            print(f"@403 - Booking doesn't exist! Order Number: {order_number}")
+        if len(quotes) == 0:
+            text = f"Dear {booking['b_client_name']}\n\
+                Sales Order {order_number} has been received by the warehouse to ship with either address and / or item line errors OR no freight provider selected. \
+                This will prevent freight being booked. Please go Deliver-ME booking {booking['b_bookingID_Visual']} and review the address and line information. \
+                When complete click 'Update' and then 'Price & Time Calc (FC)'. Select the appropriate provider. \
+                Your booking will then be ready for the warehouse to process."
+            send_email(
+                ["customerservice@jasonl.com.au"],
+                [
+                    "stephenm@deliver-me.com.au",
+                    "petew@deliver-me.com.au",
+                    "goldj@deliver-me.com.au",
+                ],
+                f"No Quotes",
+                text,
+            )
+    else:
+        print(f"@403 - Booking doesn't exist! Order Number: {order_number}")
 
 
 def do_process(mysqlcon):
