@@ -4,6 +4,7 @@
 import imaplib
 import email
 import time
+import json
 from datetime import datetime
 import os, sys, json
 import pymysql, pymysql.cursors
@@ -64,7 +65,7 @@ def _pull_order(order_number):
         }
     }
     headers = {"Authorization": f"JWT {token}"}
-    response = requests.post(url, params={}, json=data, headers=headers)
+    response = requests.post(url, params={}, json=json.dumps(data), headers=headers)
     response0 = response.content.decode("utf8")
     data0 = json.loads(response0)
 
