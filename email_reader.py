@@ -49,6 +49,9 @@ def get_token():
 
 
 def _pull_order(order_number):
+    """
+    Pull an Order from JasonL
+    """
     token = get_token()
 
     url = API_URL + "/api/boks/"
@@ -65,12 +68,8 @@ def _pull_order(order_number):
     response0 = response.content.decode("utf8")
     data0 = json.loads(response0)
 
-    if "token" in data0:
-        print("@901 - Result: ", data0)
-        return data0
-    else:
-        print("@904 - ", data0)
-        return None
+    print("@901 - Result: ", data0)
+    return data0
 
 
 def read_email_from_gmail(account, password):
