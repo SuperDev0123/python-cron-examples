@@ -133,6 +133,7 @@ def update_booking(order_number, mysqlcon):
             _pull_order(order_number)
 
     with mysqlcon.cursor() as cursor:
+        mysqlcon.commit()
         print(f"@402 - Auto PULLED! Order Number: {order_number}")
         sql = "SELECT `pk_auto_id`, `pk_header_id`, `success` \
                 FROM `bok_1_headers` \
