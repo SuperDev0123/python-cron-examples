@@ -132,13 +132,14 @@ def update_booking(order_number, mysqlcon):
             # Pull Order from JasonL
             _pull_order(order_number)
 
-            print(f"@402 - Auto PULLED! Order Number: {order_number}")
-            sql = "SELECT `pk_auto_id`, `pk_header_id`, `success` \
-                    FROM `bok_1_headers` \
-                    WHERE `fk_client_id`=%s AND `b_client_order_num`=%s"
-            cursor.execute(sql, ("1af6bcd2-6148-11eb-ae93-0242ac130002", order_number))
-            bok_1s = cursor.fetchall()
-            print(f"@403 - ", len(bok_1s))
+    with mysqlcon.cursor() as cursor:
+        print(f"@402 - Auto PULLED! Order Number: {order_number}")
+        sql = "SELECT `pk_auto_id`, `pk_header_id`, `success` \
+                FROM `bok_1_headers` \
+                WHERE `fk_client_id`=%s AND `b_client_order_num`=%s"
+        cursor.execute(sql, ("1af6bcd2-6148-11eb-ae93-0242ac130002", order_number))
+        bok_1s = cursor.fetchone()
+        print(f"@403 - ", len(bok_1s))
 
         bok_1 = bok_1s[0]
         if int(bok_1["success"]) in [1, 4]:  # Already mapped
