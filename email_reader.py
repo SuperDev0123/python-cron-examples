@@ -177,6 +177,7 @@ def _check_quote(order_number, mysqlcon):
     check quotes and send email when doesn't exist
     """
     with mysqlcon.cursor() as cursor:
+        mysqlcon.commit()
         sql = "SELECT `id`, `pk_booking_id`, `de_email`, `b_client_name`, `b_bookingID_Visual` \
                 FROM `dme_bookings` \
                 WHERE `kf_client_id`=%s AND `b_client_order_num`=%s"
