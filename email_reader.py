@@ -188,11 +188,12 @@ def _check_quote(order_number, mysqlcon):
         booking = cursor.fetchone()
 
     if booking:
-        sql = "SELECT `id` \
-                FROM `api_booking_quotes` \
-                WHERE `fk_booking_id`=%s AND `is_used`=%s"
-        cursor.execute(sql, (booking["pk_booking_id"], 0))
-        quotes = cursor.fetchall()
+        with mysqlcon.cursor() as cursor:
+            sql = "SELECT `id` \
+                    FROM `api_booking_quotes` \
+                    WHERE `fk_booking_id`=%s AND `is_used`=%s"
+            cursor.execute(sql, (booking["pk_booking_id"], 0))
+            quotes = cursor.fetchall()
 
         if len(quotes) == 0:
             text = f"Dear {booking['b_client_name']}\n\
