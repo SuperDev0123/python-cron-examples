@@ -56,7 +56,7 @@ def _pull_order(order_number):
         }
     }
     headers = {"Authorization": f"JWT {token}"}
-    response = requests.post(url, params={}, json=json.dumps(data), headers=headers)
+    response = requests.post(url, params={}, json=data, headers=headers)
     response0 = response.content.decode("utf8")
     data0 = json.loads(response0)
 
