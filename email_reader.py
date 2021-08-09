@@ -243,7 +243,9 @@ def do_process(mysqlcon):
             print(
                 f"\n@802 - order_number: {order_number}, {'MAPPED!' if is_updated else 'NOT MAPPED'}"
             )
-            _check_quote(order_number, mysqlcon)
+
+            if is_updated:
+                _check_quote(order_number, mysqlcon)
 
 
 if __name__ == "__main__":
