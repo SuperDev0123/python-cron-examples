@@ -10,16 +10,7 @@ import os, sys, json
 import pymysql, pymysql.cursors
 import requests
 
-from _env import (
-    DB_HOST,
-    DB_USER,
-    DB_PASS,
-    DB_PORT,
-    DB_NAME,
-    API_URL,
-    USERNAME,
-    PASSWORD,
-)
+from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
 from _options_lib import get_option, set_option
 from _email_lib import send_email
 
@@ -36,7 +27,7 @@ EMAIL_SERVER_NAME = "outlook.office365.com"
 
 def get_token():
     url = API_URL + "/api-token-auth/"
-    data = {"username": USERNAME, "password": PASSWORD}
+    data = {"username": "jason.l_bizsystem", "password": "(Pkm7s,9]Z&Fyw9Q"}
     response = requests.post(url, params={}, json=data)
     response0 = response.content.decode("utf8")
     data0 = json.loads(response0)
