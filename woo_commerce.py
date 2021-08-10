@@ -61,8 +61,8 @@ def get_product_from_woocommerce(product_id):
 
 
 def add_or_update_orders():
-    from_ts = "2021-08-01T00:00:00"
-    to_ts = "2021-08-09T00:00:00"
+    from_ts = "2021-08-08T00:00:00"
+    to_ts = "2021-08-10T00:00:00"
     orders = get_orders_from_woocommerce(from_ts, to_ts)
     print(
         f"@100 [GET ORDER] from_ts: {from_ts}, to_ts: {to_ts}, order_cnt: {len(orders)}"
