@@ -9,12 +9,12 @@ import datetime
 import uuid
 import redis
 
-production = False  # Local
-# production = True  # Prod
+# production = False  # Local
+production = True  # Prod
 
 if production:
     UPLOAD_DIR = "/var/www/html/dme_api/media/onedrive"
-    IMPORT_DIR = "/opt/xlsimport/xls"
+    IMPORT_DIR = "./xls"
     DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"  # New db
     DB_USER = "fmadmin"
     DB_PASS = "oU8pPQxh"

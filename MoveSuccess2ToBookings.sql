@@ -36,7 +36,7 @@ SELECT 'Starting with Visual Id ' + v_b_bookingID_Visual;
 SET v_start_b_bookingID_Visual = v_b_bookingID_Visual + 1;
 
 
-INSERT INTO `dme_bookings` 
+INSERT IGNORE INTO `dme_bookings` 
     (`pk_booking_id`, `b_clientReference_RA_Numbers`,
     `total_lines_qty_override`, `vx_freight_provider`, `v_vehicle_Type`, 
     `booking_Created_For`, `booking_Created_For_Email`, `x_ReadyStatus`, 
@@ -67,7 +67,16 @@ INSERT INTO `dme_bookings`
     `b_client_booking_ref_num`, `b_client_del_note_num`,
     `b_client_order_num`, `b_client_sales_inv_num`, `b_client_warehouse_code`,
     `b_client_name`, `delivery_kpi_days`, `z_api_issue_update_flag_500`,
-    `x_manual_booked_flag`, `x_booking_Created_With`, `api_booking_quote_id`)
+    `x_manual_booked_flag`, `x_booking_Created_With`, `api_booking_quote_id`,
+    `booking_type`, `vx_fp_order_id`, `b_error_Capture`,
+    `pu_Address_Type`, `de_To_AddressType`
+    `pu_no_of_assists`, `de_no_of_assists`,
+    `pu_location`, `de_to_location`,
+    `pu_access`, `de_access`,
+    `pu_floor_number`, `de_floor_number`,
+    `pu_floor_access_by`, `de_to_floor_access_by`,
+    `pu_service`, `de_service`
+    )
 SELECT bok_1.pk_header_id, bok_1.b_000_1_b_clientReference_RA_Numbers,
     bok_1.b_000_b_total_lines, bok_1.b_001_b_freight_provider, b_002_b_vehicle_type,
     bok_1.b_005_b_created_for, bok_1.b_006_b_created_for_email, b_007_b_ready_status,
@@ -118,7 +127,15 @@ SELECT bok_1.pk_header_id, bok_1.b_000_1_b_clientReference_RA_Numbers,
     dme_clients.company_name , IFNULL(delivery_days, 14),
     CASE WHEN success = 2 THEN 1 WHEN success = 3 THEN 0 WHEN success= 4 THEN 0 END,
     CASE WHEN success = 6 THEN 1 ELSE 0 END,
-    bok_1.x_booking_Created_With, bok_1.quote_id
+    bok_1.x_booking_Created_With, bok_1.quote_id,
+    bok_1.b_092_booking_type, '', bok_1.zb_105_text_5,
+    bok_1.b_027_b_pu_address_type, bok_1.b_053_b_del_address_type,
+    bok_1.b_072_b_pu_no_of_assists, bok_1.b_073_b_del_no_of_assists,
+    bok_1.b_078_b_pu_location, bok_1.b_068_b_del_location,
+    bok_1.b_074_b_pu_access, bok_1.b_075_b_del_access,
+    bok_1.b_079_b_pu_floor_number, bok_1.b_069_b_del_floor_number,
+    bok_1.pu_floor_access_by, bok_1.de_to_floor_access_by,
+    bok_1.pu_service, bok_1.de_service
 FROM bok_1_headers bok_1
 LEFT OUTER JOIN dme_clients ON fk_client_id=dme_account_num
 LEFT OUTER JOIN utl_fp_delivery_times ON (b_001_b_freight_provider = fp_name AND cast(b_059_b_del_address_postalcode AS UNSIGNED) 
@@ -159,7 +176,7 @@ UPDATE bok_1_headers SET success=1 WHERE success IN (2,4);
 
 SELECT 'Starting move of booking lines';
 
-INSERT INTO dme_booking_lines
+INSERT IGNORE INTO dme_booking_lines
     (e_spec_clientRMA_Number, e_weightPerEach,
     e_1_Total_dimCubicMeter, e_Total_KG_weight,
     e_item, e_qty, e_type_of_packaging,
@@ -202,7 +219,7 @@ UPDATE bok_2_lines SET success=1 WHERE success IN (2,4);
 
 SELECT 'Starting move of booking lines data';
 
-INSERT INTO dme_booking_lines_data 
+INSERT IGNORE INTO dme_booking_lines_data 
     (fk_booking_id, quantity,
     modelNumber, itemDescription, itemFaultDescription,
     itemSerialNumbers, insuranceValueEach, gap_ra,

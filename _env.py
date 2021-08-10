@@ -163,5 +163,5 @@ CCO_ARCHIVE_DIR = "./dir02/"
 # STTCO_ARCHIVE_DIR = "./dme_sftp/state_transport/book/csv/archive/"
 
 # CCO - Century CSV Output (For BOOK)
-# CCO_DIR = "./dme_sftp/century/book_csv/outdata/"
-# CCO_ARCHIVE_DIR = "./dme_sftp/century/book_csv/archive/"
+# CCO_DIR = "/dme_sftp/century_au/book_csv/outdata/"
+# CCO_ARCHIVE_DIR = "/dme_sftp/century_au/book_csv/archive/"
