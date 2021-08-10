@@ -197,10 +197,10 @@ def _check_quote(order_number, mysqlcon):
 
         if len(quotes) == 0:
             text = f"Dear {booking['b_client_name']}\n\
-                Sales Order {order_number} has been received by the warehouse to ship with either address and / or item line errors OR no freight provider selected. \
-                This will prevent freight being booked. Please go Deliver-ME booking {booking['b_bookingID_Visual']} and review the address and line information. \
-                When complete click 'Update' and then 'Price & Time Calc (FC)'. Select the appropriate provider. \
-                Your booking will then be ready for the warehouse to process."
+Sales Order {order_number} has been received by the warehouse to ship with either address and / or item line errors OR no freight provider selected. \
+This will prevent freight being booked. Please go Deliver-ME booking {booking['b_bookingID_Visual']} and review the address and line information. \
+When complete click 'Update' and then 'Price & Time Calc (FC)'. Select the appropriate provider. \
+Your booking will then be ready for the warehouse to process."
             send_email(
                 ["customerservice@jasonl.com.au"],
                 [
@@ -211,6 +211,9 @@ def _check_quote(order_number, mysqlcon):
                 f"No Quotes",
                 text,
             )
+            print("@405 - 'No Quotes' email is sent!")
+        else:
+            print("@406 - Quotes are available. ")
     else:
         print(f"@403 - Booking doesn't exist! Order Number: {order_number}")
 
