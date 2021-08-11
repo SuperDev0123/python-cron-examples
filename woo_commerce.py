@@ -61,8 +61,8 @@ def get_product_from_woocommerce(product_id):
 
 
 def add_or_update_orders():
-    from_ts = "2021-08-08T00:00:00"
-    to_ts = "2021-08-10T00:00:00"
+    from_ts = "2021-08-07T00:00:00"
+    to_ts = "2021-08-12T00:00:00"
     orders = get_orders_from_woocommerce(from_ts, to_ts)
     print(
         f"@100 [GET ORDER] from_ts: {from_ts}, to_ts: {to_ts}, order_cnt: {len(orders)}"
@@ -71,8 +71,12 @@ def add_or_update_orders():
 
     for order in orders:
         print(
-            f"@101 [ORDER] orderId: {order['id']}, product_cnt: {len(order['line_items'])}"
+            f"@101 [ORDER] orderId: {order['id']}, Order Status: {order['status']}, product_cnt: {len(order['line_items'])}"
         )
+
+        if order["status"] != "processing":
+            continue
+
         booking = {
             "pk_header_id": str(uuid.uuid4()),
             "b_client_warehouse_code": "BSD_MERRYLANDS",
@@ -112,9 +116,9 @@ def add_or_update_orders():
             + order["shipping"]["last_name"],
             "b_055_b_del_address_street_1": order["shipping"]["address_1"],
             "b_056_b_del_address_street_2": order["shipping"]["address_2"],
-            "b_057_b_del_address_state": order["shipping"]["address_2"],
-            "b_058_b_del_address_suburb": order["shipping"]["address_2"],
-            "b_059_b_del_address_postalcode": order["shipping"]["address_2"],
+            "b_057_b_del_address_state": order["shipping"]["state"],
+            "b_058_b_del_address_suburb": order["shipping"]["city"],
+            "b_059_b_del_address_postalcode": order["shipping"]["postcode"],
             "b_060_b_del_address_country": "Australia",
             "b_061_b_del_contact_full_name": order["shipping"]["first_name"]
             + order["shipping"]["last_name"],
