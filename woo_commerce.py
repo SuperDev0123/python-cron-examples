@@ -44,7 +44,9 @@ def get_token():
 
 def get_orders_from_woocommerce(from_date, to_date):
     try:
-        order_list = wcapi.get(f"orders?after={from_date}&before={to_date}").json()
+        order_list = wcapi.get(
+            f"orders?after={from_date}&before={to_date}&per_page=30&status=processing"
+        ).json()
         return order_list
     except Exception as e:
         print(f"Get orders error: {e}")
@@ -149,10 +151,8 @@ def add_or_update_orders():
                         }
                     }
                 )
-        break
 
     data = {"booking": booking, "booking_lines": booking_lines}
-    print("@105 - ", data)
 
     url = API_URL + "/boks/"
     headers = {"Authorization": f"JWT {token}"}
