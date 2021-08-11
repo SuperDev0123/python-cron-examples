@@ -149,16 +149,15 @@ def add_or_update_orders():
                     }
                 )
 
-    data = {"booking": booking, "booking_lines": booking_lines}
+        data = {"booking": booking, "booking_lines": booking_lines}
 
-    url = API_URL + "/boks/"
-    headers = {"Authorization": f"JWT {token}"}
-    response = requests.post(url, params={}, json=data, headers=headers)
-    response0 = response.content.decode("utf8")
-    data0 = json.loads(response0)
+        url = API_URL + "/boks/"
+        headers = {"Authorization": f"JWT {token}"}
+        response = requests.post(url, params={}, json=data, headers=headers)
+        response0 = response.content.decode("utf8")
+        data0 = json.loads(response0)
 
-    print("@901 - Result: ", data0)
-    return data0
+        print("@901 - Result: ", data0)
 
 
 if __name__ == "__main__":
