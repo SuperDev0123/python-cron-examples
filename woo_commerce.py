@@ -45,7 +45,7 @@ def get_token():
 def get_orders_from_woocommerce(from_date, to_date):
     try:
         order_list = wcapi.get(
-            f"orders?after={from_date}&before={to_date}&per_page=30&status=processing"
+            f"orders?after={from_date}&before={to_date}&per_page=30&status=completed&orderby=id&order=desc"
         ).json()
         return order_list
     except Exception as e:
@@ -63,7 +63,7 @@ def get_product_from_woocommerce(product_id):
 
 
 def add_or_update_orders():
-    from_ts = "2021-08-01T00:00:00"
+    from_ts = "2021-07-01T00:00:00"
     to_ts = "2021-08-12T00:00:00"
     orders = get_orders_from_woocommerce(from_ts, to_ts)
     print(
@@ -75,9 +75,6 @@ def add_or_update_orders():
         print(
             f"@101 [ORDER] orderId: {order['id']}, Order Status: {order['status']}, product_cnt: {len(order['line_items'])}"
         )
-
-        if order["status"] != "processing":
-            continue
 
         booking = {
             "pk_header_id": str(uuid.uuid4()),
