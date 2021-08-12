@@ -40,19 +40,18 @@ def get_token():
         return None
 
 
-def _pull_order(order_number):
+def _pull_order(order_number, token, shipping_type, b_53):
     """
     Pull an Order from JasonL
     """
-    token = get_token()
 
     url = API_URL + "/boks/"
     data = {
         "booking": {
             "b_client_order_num": order_number,
-            "shipping_type": "DMEA",
+            "shipping_type": shipping_type,
             "b_client_sales_inv_num": order_number,
-            "b_053_b_del_delivery_type": "business",
+            "b_053_b_del_delivery_type": b_53,
         }
     }
     headers = {"Authorization": f"JWT {token}"}
@@ -115,23 +114,23 @@ def read_email_from_gmail(account, password):
     return res
 
 
-def update_booking(order_number, mysqlcon):
+def update_booking(mysqlcon, order_number, token):
     """
     update bok_1/bok_2s success and map it to dme_bookings
     """
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT `pk_auto_id`, `pk_header_id`, `success` \
+        sql = "SELECT `pk_auto_id`, `pk_header_id`, `success`, `b_092_booking_type`, `b_053_b_del_delivery_type` \
                 FROM `bok_1_headers` \
                 WHERE `fk_client_id`=%s AND `b_client_order_num`=%s"
         cursor.execute(sql, ("1af6bcd2-6148-11eb-ae93-0242ac130002", order_number))
-        bok_1s = cursor.fetchall()
+        bok_1 = cursor.fetchone()
 
-        if len(bok_1s) == 0:  # Does not exist
-            print(f"@401 - No Order found. Order Number: {order_number}")
+        shipping_type = bok_1["b_092_booking_type"] if bok_1 else "DMEM"
+        b_53 = bok_1["b_053_b_del_delivery_type"] if bok_1 else "business"
 
-            # Pull Order from JasonL
-            _pull_order(order_number)
-            print(f"@402 - Auto PULLED! Order Number: {order_number}")
+        # Pull Order from JasonL
+        _pull_order(order_number, token, shipping_type, b_53)
+        print(f"@402 - PULLED! Order Number: {order_number}")
 
     with mysqlcon.cursor() as cursor:
         mysqlcon.commit()
@@ -227,6 +226,7 @@ def do_process(mysqlcon):
 
     print("@800 - Reading 50 recent emails...")
     emails = read_email_from_gmail(EMAIL_USERNAME, EMAIL_PASSWORD)
+    token = get_token()
 
     for email in emails:
         subject = email["subject"]
@@ -246,7 +246,7 @@ def do_process(mysqlcon):
                 order_number = order_number.split("-")[0]
 
             print(f"\n@801 - order_number: {order_number}")
-            is_updated = update_booking(order_number, mysqlcon)
+            is_updated = update_booking(mysqlcon, order_number, token)
 
             print(
                 f"\n@802 - order_number: {order_number}, {'MAPPED!' if is_updated else 'NOT MAPPED'}"
