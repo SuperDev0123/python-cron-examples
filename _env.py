@@ -125,18 +125,18 @@ CCO_ARCHIVE_DIR = "./dir02/"
 # USERNAME = "dme"
 # PASSWORD = "LRyuNp3zn[XE_`8-"
 
-# SI - Sharepoint import
+# # SI - Sharepoint import
 # SI_DOWNLOAD_DIR = "/opt/chrons/xls/downloaded"
 # SI_IMPORT_DIR = "/opt/chrons/xls/imported"
 # SI_ERROR_DIR = "/opt/chrons/xls/issued"
 
-# ST - Startrack
+# # ST - Startrack
 # ST_FTP_DIR = "/home/cope_au/dme_sftp/startrack_au/ftp/indata/"
 # ST_ARCHIVE_FTP_DIR = "/home/cope_au/dme_sftp/startrack_au/ftp/archive/"
 # ST_CSV_DIR = "/home/cope_au/dme_sftp/startrack_au/pickup_ext/indata/"
 # ST_ARCHIVE_CSV_DIR = "/home/cope_au/dme_sftp/startrack_au/pickup_ext/archive/"
 
-# PO - Pricing Only
+# # PO - Pricing Only
 # PO_RESULT_DIR = "/var/www/html/dme_api/static/uploaded/pricing_only/result/"
 # PO_SRC_DIR = "/var/www/html/dme_api/static/uploaded/pricing_only/indata/"
 # PO_SRC_INPROGRESS_DIR = (
@@ -144,24 +144,24 @@ CCO_ARCHIVE_DIR = "./dir02/"
 # )
 # PO_SRC_ACHIEVE_DIR = "/var/www/html/dme_api/static/uploaded/pricing_only/achieve/"
 
-# PR - Pricing Rule
+# # PR - Pricing Rule
 # PR_RESULT_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/result/"
 # PR_SRC_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/indata/"
 # PR_SRC_INPROGRESS_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/inprogress/"
 # PR_SRC_ACHIEVE_DIR = "/var/www/html/dme_api/static/uploaded/pricing_rule/achieve/"
 
-# SAPB1 - CSV INPUT
+# # SAPB1 - CSV INPUT
 # SAPB1_CSV_INPUT_DIR = "/dme_sftp/sapb1/order_transaction_csvs/indata/"
 # SAPB1_CSV_INPUT_ACHIEVE_DIR = "/dme_sftp/sapb1/order_transaction_csvs/processed/"
 
-# HTC - Hunter Tracking CSV Input
+# # HTC - Hunter Tracking CSV Input
 # HTC_REMOTE_DIR = "/tracking/indata/"
 # HTC_LOCAL_DIR = "/dme_sftp/hunter/tracking/csv/indata/"
 
-# STTCO - State Transport CSV Output (For BOOK)
+# # STTCO - State Transport CSV Output (For BOOK)
 # STTCO_DIR = "./dme_sftp/state_transport/book/csv/outdata/"
 # STTCO_ARCHIVE_DIR = "./dme_sftp/state_transport/book/csv/archive/"
 
-# CCO - Century CSV Output (For BOOK)
+# # CCO - Century CSV Output (For BOOK)
 # CCO_DIR = "/dme_sftp/century_au/book_csv/outdata/"
 # CCO_ARCHIVE_DIR = "/dme_sftp/century_au/book_csv/archive/"

@@ -119,14 +119,14 @@ def update_booking(mysqlcon, order_number, token):
     update bok_1/bok_2s success and map it to dme_bookings
     """
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT `pk_auto_id`, `pk_header_id`, `success`, `b_092_booking_type`, `b_053_b_del_delivery_type` \
+        sql = "SELECT `pk_auto_id`, `pk_header_id`, `success`, `b_092_booking_type`, `b_053_b_del_address_type` \
                 FROM `bok_1_headers` \
                 WHERE `fk_client_id`=%s AND `b_client_order_num`=%s"
         cursor.execute(sql, ("1af6bcd2-6148-11eb-ae93-0242ac130002", order_number))
         bok_1 = cursor.fetchone()
 
         shipping_type = bok_1["b_092_booking_type"] if bok_1 else "DMEM"
-        b_53 = bok_1["b_053_b_del_delivery_type"] if bok_1 else "business"
+        b_53 = bok_1["b_053_b_del_address_type"] if bok_1 else "business"
 
         # Pull Order from JasonL
         _pull_order(order_number, token, shipping_type, b_53)
