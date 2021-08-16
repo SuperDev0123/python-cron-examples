@@ -109,6 +109,8 @@ def read_xls(file):
                 "vx_serviceName": "R",  # hardcoded
                 "b_client_name": "Pricing-Only",  # hardcoded
                 "kf_client_id": "461162D2-90C7-BF4E-A905-0242ac130003",  # hardcoded
+                "pu_Address_Type": "business",  # hardcoded
+                "de_To_AddressType": "business",  # hardcoded
             }
             bookings.append(booking)
 
