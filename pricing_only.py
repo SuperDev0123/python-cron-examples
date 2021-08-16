@@ -111,6 +111,8 @@ def read_xls(file):
                 "kf_client_id": "461162D2-90C7-BF4E-A905-0242ac130003",  # hardcoded
                 "pu_Address_Type": "business",  # hardcoded
                 "de_To_AddressType": "business",  # hardcoded
+                "b_booking_tail_lift_pickup": 0,  # hardcoded
+                "b_booking_tail_lift_deliver": 0,  # hardcoded
             }
             bookings.append(booking)
 
