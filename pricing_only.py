@@ -118,7 +118,7 @@ def read_xls(file):
             bookings.append(booking)
 
         booking_line = {
-            "pk_lines_id": uuid.uuid4()
+            "pk_lines_id": uuid.uuid4(),
             "fk_booking_id": pk_booking_id,
             "e_dimWidth": worksheet0["DE%i" % row].value,
             "e_dimHeight": worksheet0["DF%i" % row].value,
