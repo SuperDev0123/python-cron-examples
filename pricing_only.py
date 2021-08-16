@@ -59,7 +59,7 @@ def read_xls(file):
         if pk_booking_id == None:  # Best way to determine end of row?
             break
         else:
-            pk_booking_id = pk_booking_id + "_pricing_only"
+            pk_booking_id = str(pk_booking_id) + "_pricing_only"
 
         if not last_pk_booking_id or pk_booking_id != last_pk_booking_id:
             last_pk_booking_id = pk_booking_id

@@ -528,11 +528,7 @@ def send_error_email(filename, error):
     text = f"There is an issue with this file ({filename}) \n\n error is {error} \n\nplease correct the file and rename it with _x2, x3 etc and re-drop it into the drop folder."
     send_email(
         ["bookings@deliver-me.com.au"],
-        [
-            "petew@deliver-me.com.au",
-            "greatroyalone@outlook.com",
-            "goldj@deliver-me.com.au",
-        ],
+        ["dev.deliverme@gmail.com", "goldj@deliver-me.com.au"],
         "Error",
         text,
     )
@@ -542,11 +538,7 @@ def send_duplicate_email(filename):
     text = f"file ({filename}) (is a duplicate file) \n\nPlease check the file in error directory and dme system. \n\nIf it needs to be imported, change   the file name and re-drop it into the drop folder."
     send_email(
         ["bookings@deliver-me.com.au"],
-        [
-            "petew@deliver-me.com.au",
-            "greatroyalone@outlook.com",
-            "goldj@deliver-me.com.au",
-        ],
+        ["dev.deliverme@gmail.com", "goldj@deliver-me.com.au"],
         "Duplicated",
         text,
     )

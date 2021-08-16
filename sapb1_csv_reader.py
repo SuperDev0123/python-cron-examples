@@ -61,11 +61,7 @@ def do_process(fpath, mysqlcon):
                 error_msg = f"#913 - File has wrong line - {i}: {line}"
                 send_email(
                     [],
-                    [
-                        "petew@deliver-me.com.au",
-                        "greatroyalone@outlook.com",
-                        "goldj@deliver-me.com.au",
-                    ],
+                    ["dev.deliverme@gmail.com"],
                     "Error on 'SAPB1 CSV READER'",
                     error_msg,
                 )

@@ -206,11 +206,7 @@ When complete click 'Update' and then 'Price & Time Calc (FC)'. Select the appro
 Your booking will then be ready for the warehouse to process."
             send_email(
                 ["customerservice@jasonl.com.au"],
-                [
-                    "stephenm@deliver-me.com.au",
-                    "petew@deliver-me.com.au",
-                    "goldj@deliver-me.com.au",
-                ],
+                ["stephenm@deliver-me.com.au", "dev.deliverme@gmail.com"],
                 f"No Quotes",
                 text,
             )
