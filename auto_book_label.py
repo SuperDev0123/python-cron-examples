@@ -156,22 +156,28 @@ def do_process(mysqlcon):
 
     if len(bookings) > 0:
         for booking in bookings:
-            print("#203 - Processing: ***", booking["b_bookingID_Visual"], "***")
-            result = do_book(booking, token)
+            try:
+                print("#203 - Processing: ***", booking["b_bookingID_Visual"], "***")
+                result = do_book(booking, token)
 
-            if not "successfully" in result["message"].lower():
-                send_email_to_admins(booking, result["message"], "book")
+                if not "successfully" in result["message"].lower():
+                    send_email_to_admins(booking, result["message"], "book")
 
-            if (
-                booking["vx_freight_provider"].lower() == "tnt"
-                and "message" in result
-                and "Successfully booked" in result["message"]
-            ):
-                label_result = do_get_label(booking)
+                if (
+                    booking["vx_freight_provider"].lower() == "tnt"
+                    and "message" in result
+                    and "Successfully booked" in result["message"]
+                ):
+                    label_result = do_get_label(booking)
 
-                if "Successfully" not in label_result["message"]:
-                    reset_booking(mysqlcon, booking, label_result["message"])
-                    send_email_to_admins(booking, label_result["message"], "getlabel")
+                    if "Successfully" not in label_result["message"]:
+                        reset_booking(mysqlcon, booking, label_result["message"])
+                        send_email_to_admins(
+                            booking, label_result["message"], "getlabel"
+                        )
+            except Exception as e:
+                print(f"#209 Exception - {str(e)}")
+                pass
 
 
 if __name__ == "__main__":
