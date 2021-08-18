@@ -1,5 +1,7 @@
 # Python 3.6.6
 # V 1.0
+
+import traceback
 import os, sys, time, json
 from datetime import datetime
 import pymysql, pymysql.cursors
@@ -227,6 +229,7 @@ if __name__ == "__main__":
             do_process(mysqlcon, option)
             set_option(mysqlcon, "web_2_fm_new", False, time1)
     except Exception as e:
+        traceback.print_exc()
         print("Error 904:", str(e))
         set_option(mysqlcon, "web_2_fm_new", False, time1)
 
