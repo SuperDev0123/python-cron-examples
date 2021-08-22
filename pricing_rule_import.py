@@ -89,6 +89,9 @@ def _set_rule_type_of_fp(mysqlcon, freight_provider, rule_type):
 def set_null(value):
     return value if value else None
 
+# Set None if cell is empty, else convert into String
+def str_or_none(value):
+    return str(value) if value else None
 
 def del_dollar_sign(value):
     """
@@ -151,9 +154,9 @@ def read_xls(file):
         timing["max"] = set_null(ws["E%i" % row].value)
 
         if timing["max"]:
-            timing["fp_03_delivery_hours"] = int(timing["max"]) * 24
+            timing["fp_03_delivery_hours"] = int(timing["max"])
         else:
-            timing["fp_03_delivery_hours"] = int(timing["min"]) * 24
+            timing["fp_03_delivery_hours"] = int(timing["min"])
 
         timings.append(timing)
         row += 1
@@ -197,20 +200,20 @@ def read_xls(file):
         availability["id"] = ws["A%i" % row].value
         availability["freight_provider_id"] = ws["B%i" % row].value
         availability["code"] = ws["C%i" % row].value
-        availability["mon_start"] = set_null(ws["D%i" % row].value)
-        availability["mon_end"] = set_null(ws["E%i" % row].value)
-        availability["tue_start"] = set_null(ws["F%i" % row].value)
-        availability["tue_end"] = set_null(ws["G%i" % row].value)
-        availability["wed_start"] = set_null(ws["H%i" % row].value)
-        availability["wed_end"] = set_null(ws["I%i" % row].value)
-        availability["thu_start"] = set_null(ws["J%i" % row].value)
-        availability["thu_end"] = set_null(ws["K%i" % row].value)
-        availability["fri_start"] = set_null(ws["L%i" % row].value)
-        availability["fri_end"] = set_null(ws["M%i" % row].value)
-        availability["sat_start"] = set_null(ws["N%i" % row].value)
-        availability["sat_end"] = set_null(ws["O%i" % row].value)
-        availability["sun_start"] = set_null(ws["P%i" % row].value)
-        availability["sun_end"] = set_null(ws["Q%i" % row].value)
+        availability["mon_start"] = str_or_none(ws["D%i" % row].value)
+        availability["mon_end"] = str_or_none(ws["E%i" % row].value)
+        availability["tue_start"] = str_or_none(ws["F%i" % row].value)
+        availability["tue_end"] = str_or_none(ws["G%i" % row].value)
+        availability["wed_start"] = str_or_none(ws["H%i" % row].value)
+        availability["wed_end"] = str_or_none(ws["I%i" % row].value)
+        availability["thu_start"] = str_or_none(ws["J%i" % row].value)
+        availability["thu_end"] = str_or_none(ws["K%i" % row].value)
+        availability["fri_start"] = str_or_none(ws["L%i" % row].value)
+        availability["fri_end"] = str_or_none(ws["M%i" % row].value)
+        availability["sat_start"] = str_or_none(ws["N%i" % row].value)
+        availability["sat_end"] = str_or_none(ws["O%i" % row].value)
+        availability["sun_start"] = str_or_none(ws["P%i" % row].value)
+        availability["sun_end"] = str_or_none(ws["Q%i" % row].value)
         availabilities.append(availability)
         row += 1
 
