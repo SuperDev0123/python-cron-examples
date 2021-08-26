@@ -19,4 +19,4 @@ if __name__ == "__main__":
         print(filename, "-", new_filename)
         shutil.move(source_url + filename, source_url + new_filename)
 
-    print("#901 - Finished %s" % datetime.datetime.now())
+    print("#901 - Finished %s\n\n\n" % datetime.datetime.now())

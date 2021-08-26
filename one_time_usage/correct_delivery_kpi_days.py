@@ -86,5 +86,5 @@ if __name__ == "__main__":
     bookings = get_bookings(mysqlcon)
     fix_delivery_kpi_days(bookings, mysqlcon)
 
-    print("#901 - Finished %s" % datetime.datetime.now())
+    print("#901 - Finished %s\n\n\n" % datetime.datetime.now())
     mysqlcon.close()

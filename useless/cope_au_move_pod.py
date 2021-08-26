@@ -283,5 +283,5 @@ if __name__ == "__main__":
                         except IOError as e:
                             print("#104 Unable to copy or move file. %s" % e)
 
-    print("#901 - Finished %s" % datetime.datetime.now())
+    print("#901 - Finished %s\n\n\n" % datetime.datetime.now())
     mysqlcon.close()

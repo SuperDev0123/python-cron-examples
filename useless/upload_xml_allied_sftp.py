@@ -61,6 +61,8 @@ def upload_sftp(fname, fpath):
 
 
 if __name__ == "__main__":
+    print("#900 - Running %s" % datetime.datetime.now())
+
     try:
         for fname in os.listdir(local_filepath):
             fpath = os.path.join(local_filepath, fname)
@@ -71,3 +73,7 @@ if __name__ == "__main__":
 
     except OSError as e:
         print(str(e))
+
+    print("#901 - Finished %s\n\n\n" % datetime.datetime.now())
+    mysqlcon.close()
+

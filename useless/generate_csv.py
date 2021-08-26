@@ -314,5 +314,5 @@ if __name__ == '__main__':
     csv_write(f, bookings, mysqlcon)
     f.close()
 
-    print('#901 - Finished %s' % datetime.datetime.now())
+    print('#901 - Finished %s\n\n\n' % datetime.datetime.now())
     mysqlcon.close()

@@ -157,4 +157,4 @@ if __name__ == "__main__":
         set_option(mysqlcon, "sendle_status_pod", False, time1)
 
     mysqlcon.close()
-    print("#909 - Finished %s" % datetime.datetime.now())
+    print("#909 - Finished %s\n\n\n" % datetime.datetime.now())

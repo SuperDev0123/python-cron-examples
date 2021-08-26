@@ -88,4 +88,4 @@ if __name__ == '__main__':
 
             visual_id += 1
 
-    print('#999 - Finished %s' % datetime.datetime.now())
+    print('#999 - Finished %s\n\n\n' % datetime.datetime.now())

@@ -100,3 +100,6 @@ if __name__ == '__main__':
             results.append({"Created Log ID": oneLog.id})
         except KeyError:
             results.append({"Error": "Too many request"})
+
+    print("#901 - Finished %s\n\n\n" % datetime.datetime.now())
+    mysqlcon.close()
