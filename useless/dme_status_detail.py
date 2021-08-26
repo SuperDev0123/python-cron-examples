@@ -148,5 +148,5 @@ if __name__ == "__main__":
     except OSError as e:
         print("#903 Error", str(e))
 
-    print("#999 - Finished %s" % datetime.datetime.now())
+    print("#999 - Finished %s\n\n\n" % datetime.datetime.now())
     mysqlcon.close()

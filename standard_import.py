@@ -945,3 +945,6 @@ if __name__ == "__main__":
         print(str(e))
 
     dbcon.close()
+
+    print("#999 - Finished %s\n\n\n" % datetime.now())
+

@@ -115,4 +115,4 @@ if __name__ == "__main__":
         print("#904 Error: ", str(e))
 
     mysqlcon.close()
-    print("#999 Finished %s" % datetime.datetime.now())
+    print("#999 Finished %s\n\n\n" % datetime.datetime.now())

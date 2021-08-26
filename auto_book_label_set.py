@@ -205,4 +205,4 @@ if __name__ == "__main__":
         set_option(mysqlcon, "auto_book_label_set", False, time1)
 
     mysqlcon.close()
-    print("#999 Finished %s" % datetime.datetime.now())
+    print("#999 Finished %s\n\n\n" % datetime.datetime.now())

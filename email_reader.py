@@ -295,4 +295,4 @@ if __name__ == "__main__":
         set_option(mysqlcon, "check_received_emails", False, time1)
 
     mysqlcon.close()
-    print("#909 - Finished %s" % datetime.now())
+    print("#909 - Finished %s\n\n\n" % datetime.now())

@@ -245,4 +245,4 @@ if __name__ == "__main__":
         set_option(mysqlcon, "web_2_fm_modified", False, time1)
 
     mysqlcon.close()
-    print("#999 - Finished %s" % datetime.now())
+    print("#999 - Finished %s\n\n\n" % datetime.now())

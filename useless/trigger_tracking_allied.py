@@ -293,3 +293,7 @@ if __name__ == "__main__":
                 print("error : ", e)
         except KeyError as e:
             print("error : ", e)
+
+    print("#901 - Finished %s\n\n\n" % datetime.datetime.now())
+    mysqlcon.close()
+

@@ -181,7 +181,7 @@ if __name__ == "__main__":
         print("Error 904:", str(e))
 
         # set_option(mysqlcon, "st_status_pod", False, time1)
-    print("#999 - Finished %s" % datetime.datetime.now())
+    print("#999 - Finished %s\n\n\n" % datetime.datetime.now())
 
 
 # // order data sample

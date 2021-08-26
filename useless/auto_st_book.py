@@ -148,5 +148,5 @@ if __name__ == "__main__":
     else:
         print("#001 - No booing to be updated!")
 
-    print("#901 - Finished %s" % datetime.datetime.now())
+    print("#901 - Finished %s\n\n\n" % datetime.datetime.now())
     mysqlcon.close()
