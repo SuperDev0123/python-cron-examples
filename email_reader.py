@@ -125,7 +125,7 @@ def update_booking(mysqlcon, order_number, token):
         cursor.execute(sql, ("1af6bcd2-6148-11eb-ae93-0242ac130002", order_number))
         bok_1 = cursor.fetchone()
 
-        shipping_type = bok_1["b_092_booking_type"] if bok_1 else "DMEM"
+        shipping_type = bok_1["b_092_booking_type"] if bok_1 else "DMEA"
         b_53 = bok_1["b_053_b_del_address_type"] if bok_1 else "business"
 
         # Pull Order from JasonL
