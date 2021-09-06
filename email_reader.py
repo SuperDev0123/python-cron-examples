@@ -95,6 +95,13 @@ def read_email_from_gmail(account, password):
             email_from = msg["from"]
             email_received_time = msg["Date"]
 
+            b = email.message_from_string(response_part)
+            if b.is_multipart():
+                for payload in b.get_payload():
+                    print("@1 - ", payload.get_payload())
+            else:
+                print("@2  ", b.get_payload())
+
             if len(email_received_time) == 29:
                 email_received_time = email_received_time[:25] + " +0000"  # GMT
             else:
