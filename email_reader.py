@@ -89,7 +89,7 @@ def read_email_from_gmail(account, password):
         b = email.message_from_bytes(data[0][1])
         if b.is_multipart():
             # Not the case
-            pass
+            continue
         else:
             content = b.get_payload()
 
@@ -142,6 +142,14 @@ def update_booking(mysqlcon, order_number, shipping_type, address_type, token):
         else:
             shipping_type = shipping_type
             b_53 = address_type
+
+            if b_53 and b_53[0].upper() == "B":
+                b_53 = "Business"
+            elif b_53 and b_53[0].upper == "R":
+                b_53 = "Residential"
+            else:
+                send_email_no_address_type(order_number)
+                return False
 
         # Pull Order from JasonL
         _pull_order(order_number, token, shipping_type, b_53)
@@ -234,6 +242,10 @@ Your booking will then be ready for the warehouse to process."
             print("@406 - Quotes are available. ")
     else:
         print(f"@403 - Booking doesn't exist! Order Number: {order_number}")
+
+
+def send_email_no_address_type(order_number):
+    pass
 
 
 def do_process(mysqlcon):
