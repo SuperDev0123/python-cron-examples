@@ -54,6 +54,7 @@ def _pull_order(order_number, token, shipping_type, b_53):
             "b_053_b_del_delivery_type": b_53,
         }
     }
+    print("@900 - Data: ", data)
     headers = {"Authorization": f"JWT {token}"}
     response = requests.post(url, params={}, json=data, headers=headers)
     response0 = response.content.decode("utf8")
