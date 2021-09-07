@@ -309,7 +309,7 @@ def do_process(mysqlcon):
         content = email["content"]
         content_items = content.split("|")
 
-        print('#200 - Email content': content)
+        print("#200 - Email content", content)
 
         if len(content_items) != 5:
             continue
