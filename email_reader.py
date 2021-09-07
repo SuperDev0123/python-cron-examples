@@ -371,7 +371,7 @@ if __name__ == "__main__":
             set_option(mysqlcon, "check_received_emails", True)
             do_process(mysqlcon)
             set_option(mysqlcon, "check_received_emails", False, time1)
-    except OSError as e:
+    except Exception as e:
         print("#904 Error:", str(e))
         set_option(mysqlcon, "check_received_emails", False, time1)
 
