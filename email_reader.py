@@ -63,9 +63,9 @@ def _pull_order(order_number, token, shipping_type, b_53):
     return data0
 
 
-def read_email_from_gmail(account, password):
+def read_email_from_gmail():
     mail = imaplib.IMAP4_SSL(EMAIL_SERVER_NAME)
-    mail.login(account, password)
+    mail.login(EMAIL_USERNAME, EMAIL_PASSWORD)
     mail.select("inbox")
 
     result, data = mail.search(None, "ALL")
@@ -90,10 +90,15 @@ def read_email_from_gmail(account, password):
         if b.is_multipart():
             for part in b.get_payload():
                 content = part.get_payload()
+                if isinstance(content, list):
+                    content = content[0].get_payload()
+                    content = content.replace("Pronto Xi Event Id: 83", "")
+                    content = content.replace("Jason L Office Furniture", "")
+                    content = content.replace("\r\n", "")
                 break
         else:
             content = b.get_payload()
-        print("@! - ", content)
+
         for response_part in data:
             if not isinstance(response_part, tuple):
                 continue
@@ -130,6 +135,8 @@ def update_booking(mysqlcon, order_number, shipping_type, address_type, token):
     """
     update bok_1/bok_2s success and map it to dme_bookings
     """
+
+    has_no_address_type = False
     with mysqlcon.cursor() as cursor:
         sql = "SELECT `pk_auto_id`, `pk_header_id`, `success`, `b_092_booking_type`, `b_053_b_del_address_type` \
                 FROM `bok_1_headers` \
@@ -142,15 +149,21 @@ def update_booking(mysqlcon, order_number, shipping_type, address_type, token):
             b_53 = bok_1["b_053_b_del_address_type"]
         else:
             shipping_type = shipping_type
-            b_53 = address_type
+            b_53 = None
 
             if b_53 and b_53[0].upper() == "B":
                 b_53 = "Business"
             elif b_53 and b_53[0].upper == "R":
                 b_53 = "Residential"
-            else:
-                send_email_no_address_type(order_number)
-                return False
+
+        if not shipping_type or not b_53:
+            has_no_address_type = True
+
+            if not shipping_type:
+                shipping_type = "DMEA"
+
+            if not b_53:
+                b_53 = "Business"
 
         # Pull Order from JasonL
         _pull_order(order_number, token, shipping_type, b_53)
@@ -195,6 +208,18 @@ def update_booking(mysqlcon, order_number, shipping_type, address_type, token):
 
         # Run map sh
         os.popen("sh /opt/chrons/MoveSuccess2ToBookings.sh")
+
+        if has_no_address_type:
+            time.sleep(5)
+            mysqlcon.commit()
+
+            sql = "SELECT `b_bookingID_Visual` \
+                FROM `dme_bookings` \
+                WHERE `kf_client_id`=%s AND `b_client_order_num`=%s"
+            cursor.execute(sql, ("1af6bcd2-6148-11eb-ae93-0242ac130002", order_number))
+            booking = cursor.fetchone()
+            print(f"@404 - ", booking)
+            send_email_no_address_type(order_number, booking["b_bookingID_Visual"])
 
         return True
 
@@ -245,8 +270,22 @@ Your booking will then be ready for the warehouse to process."
         print(f"@403 - Booking doesn't exist! Order Number: {order_number}")
 
 
-def send_email_no_address_type(order_number):
-    pass
+def send_email_no_address_type(order_number, b_bookingID_Visual):
+    text = f"The address type for Sales Order ({order_number}), Deliver-ME Booking ({b_bookingID_Visual}) was not set to Business or Residential in Pronto prior to the booking being sent to Deliver-ME. \
+Your booking has thus been created in Deliver-ME with the delivery address defaulted to type - Business. \
+Freight pricing will be calculated for this address type. If you need to change it you can do so in Deliver-ME. \
+If you update this setting, don't forget to click the 'Update' button to save your changes and then click the 'Price & Time Calc (FC)' button to select your freight option for this change."
+    send_email(
+        ["customerservice@jasonl.com.au"],
+        [
+            "stephenm@deliver-me.com.au",
+            "petew@deliver-me.com.au",
+            "dev.deliverme@gmail.com",
+        ],
+        f"No Delivery Address Type OR No Shipping Type",
+        text,
+    )
+    print("@410 - 'No Address Type' email is sent!")
 
 
 def do_process(mysqlcon):
@@ -260,7 +299,7 @@ def do_process(mysqlcon):
     """
 
     print("@800 - Reading 50 recent emails...")
-    emails = read_email_from_gmail(EMAIL_USERNAME, EMAIL_PASSWORD)
+    emails = read_email_from_gmail()
     token = get_token()
 
     for email in emails:
