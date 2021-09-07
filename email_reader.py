@@ -88,11 +88,12 @@ def read_email_from_gmail(account, password):
 
         b = email.message_from_bytes(data[0][1])
         if b.is_multipart():
-            # Not the case
-            continue
+            for part in b.get_payload():
+                content = part.get_payload()
+                break
         else:
             content = b.get_payload()
-
+        print("@! - ", content)
         for response_part in data:
             if not isinstance(response_part, tuple):
                 continue
