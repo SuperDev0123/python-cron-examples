@@ -318,7 +318,7 @@ def do_process(mysqlcon):
             content_items[0].strip().lower() == "jasonl"
             and "picking slip printed" in content_items[4].strip().lower()
         ):
-            order_number = content_items[1].strip().lower()
+            order_number = content_items[1].strip()
             shipping_type = content_items[2].strip()
             address_type = content_items[3].strip()
 
@@ -327,7 +327,7 @@ def do_process(mysqlcon):
                 order_number = order_number.split("-")[0]
 
             print(
-                f"\n@801 - order_number: {order_number}, {shipping_type}, {address_type}"
+                f"@801 - order_number: {order_number}, {shipping_type}, {address_type}"
             )
             is_updated = update_booking(
                 mysqlcon, order_number, shipping_type, address_type, token
