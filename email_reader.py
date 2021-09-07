@@ -86,6 +86,13 @@ def read_email_from_gmail(account, password):
     for i in range(latest_email_id, first_email_id, -1):
         result, data = mail.fetch(str(i), "(RFC822)")
 
+        b = email.message_from_bytes(data[0][1])
+        if b.is_multipart():
+            # Not the case
+            pass
+        else:
+            content = b.get_payload()
+
         for response_part in data:
             if not isinstance(response_part, tuple):
                 continue
@@ -94,13 +101,6 @@ def read_email_from_gmail(account, password):
             email_subject = msg["subject"]
             email_from = msg["from"]
             email_received_time = msg["Date"]
-
-            b = email.message_from_string(response_part)
-            if b.is_multipart():
-                for payload in b.get_payload():
-                    print("@1 - ", payload.get_payload())
-            else:
-                print("@2  ", b.get_payload())
 
             if len(email_received_time) == 29:
                 email_received_time = email_received_time[:25] + " +0000"  # GMT
@@ -115,13 +115,17 @@ def read_email_from_gmail(account, password):
 
             if time_diff <= 60 * 10:  # Check if received in last 10 mins
                 res.append(
-                    {"subject": email_subject, "received_time": str(received_time_obj)}
+                    {
+                        "subject": email_subject,
+                        "received_time": str(received_time_obj),
+                        "content": content,
+                    }
                 )
 
     return res
 
 
-def update_booking(mysqlcon, order_number, token):
+def update_booking(mysqlcon, order_number, shipping_type, address_type, token):
     """
     update bok_1/bok_2s success and map it to dme_bookings
     """
@@ -132,8 +136,12 @@ def update_booking(mysqlcon, order_number, token):
         cursor.execute(sql, ("1af6bcd2-6148-11eb-ae93-0242ac130002", order_number))
         bok_1 = cursor.fetchone()
 
-        shipping_type = bok_1["b_092_booking_type"] if bok_1 else "DMEA"
-        b_53 = bok_1["b_053_b_del_address_type"] if bok_1 else "business"
+        if bok_1:
+            shipping_type = bok_1["b_092_booking_type"]
+            b_53 = bok_1["b_053_b_del_address_type"]
+        else:
+            shipping_type = shipping_type
+            b_53 = address_type
 
         # Pull Order from JasonL
         _pull_order(order_number, token, shipping_type, b_53)
@@ -233,6 +241,9 @@ def do_process(mysqlcon):
     - read emails received in last 10 mins
     - check email subject - "JasonL | order number | picking slip printed"
     - map booking from `bok` to `dme_bookings`
+
+    REFACTOR:
+    - check email subject - "JasonL | (order)-(suffix) | (shipping type) | (address type) | picking slip printed"
     """
 
     print("@800 - Reading 50 recent emails...")
@@ -242,22 +253,30 @@ def do_process(mysqlcon):
     for email in emails:
         subject = email["subject"]
         subject_items = subject.split("|")
+        content = email["content"]
+        content_items = content.split("|")
 
-        if len(subject_items) != 3:
+        if len(content_items) != 5:
             continue
 
         if (
-            subject_items[0].strip().lower() == "jasonl"
-            and subject_items[2].strip().lower() == "picking slip printed"
+            content_items[0].strip().lower() == "jasonl"
+            and "picking slip printed" in content_items[4].strip().lower()
         ):
-            order_number = subject_items[1].strip().lower()
+            order_number = content_items[1].strip().lower()
+            shipping_type = content_items[2].strip()
+            address_type = content_items[3].strip()
 
             # Prevent '135000-' case
             if len(order_number.split("-")) > 1 and order_number.split("-")[1] == "":
                 order_number = order_number.split("-")[0]
 
-            print(f"\n@801 - order_number: {order_number}")
-            is_updated = update_booking(mysqlcon, order_number, token)
+            print(
+                f"\n@801 - order_number: {order_number}, {shipping_type}, {address_type}"
+            )
+            is_updated = update_booking(
+                mysqlcon, order_number, shipping_type, address_type, token
+            )
 
             print(
                 f"\n@802 - order_number: {order_number}, {'MAPPED!' if is_updated else 'NOT MAPPED'}"
