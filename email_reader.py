@@ -73,8 +73,8 @@ def read_email_from_gmail():
 
     id_list = mail_ids.split()
 
-    if len(id_list) > 21:
-        first_email_id = int(id_list[-21])
+    if len(id_list) > 51:
+        first_email_id = int(id_list[-51])
     else:
         first_email_id = 0
 
