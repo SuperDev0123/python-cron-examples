@@ -119,7 +119,7 @@ def read_email_from_gmail():
 
             time_diff = current_time_seconds - received_time_obj.timestamp()
 
-            if time_diff <= 60 * 60 * 5:  # Check if received in last 10 mins
+            if time_diff <= 600 * 100:  # Check if received in last 10 mins
                 res.append(
                     {
                         "subject": email_subject,
