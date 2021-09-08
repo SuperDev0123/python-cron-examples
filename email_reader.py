@@ -296,7 +296,7 @@ def do_process(mysqlcon):
     - map booking from `bok` to `dme_bookings`
 
     REFACTOR:
-    - check email subject - "JasonL | (order)-(suffix) | (shipping type) | (address type) | picking slip printed"
+    - check email content - "JasonL | (order)-(suffix) | (shipping type) | (address type) | picking slip printed"
     """
 
     print("@800 - Reading 50 recent emails...")
@@ -304,12 +304,8 @@ def do_process(mysqlcon):
     token = get_token()
 
     for email in emails:
-        subject = email["subject"]
-        subject_items = subject.split("|")
         content = email["content"]
         content_items = content.split("|")
-
-        print("#200 - Email content", content)
 
         if len(content_items) != 5:
             continue
