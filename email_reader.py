@@ -15,14 +15,14 @@ from _options_lib import get_option, set_option
 from _email_lib import send_email
 
 # LOCAL
-# EMAIL_USERNAME = "dev.deliverme@gmail.com"
-# EMAIL_PASSWORD = "Dme1234****"
-# EMAIL_SERVER_NAME = "imap.gmail.com"
+EMAIL_USERNAME = "dev.deliverme@gmail.com"
+EMAIL_PASSWORD = "Dme1234****"
+EMAIL_SERVER_NAME = "imap.gmail.com"
 
 # DEV & PROD
-EMAIL_USERNAME = "data.deliver-me@outlook.com"
-EMAIL_PASSWORD = "Dme1234*"
-EMAIL_SERVER_NAME = "outlook.office365.com"
+# EMAIL_USERNAME = "data.deliver-me@outlook.com"
+# EMAIL_PASSWORD = "Dme1234*"
+# EMAIL_SERVER_NAME = "outlook.office365.com"
 
 
 def get_token():
@@ -74,8 +74,8 @@ def read_email_from_gmail():
 
     id_list = mail_ids.split()
 
-    if len(id_list) > 21:
-        first_email_id = int(id_list[-21])
+    if len(id_list) > 51:
+        first_email_id = int(id_list[-51])
     else:
         first_email_id = 0
 
