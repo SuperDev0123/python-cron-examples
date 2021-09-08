@@ -152,9 +152,9 @@ def update_booking(mysqlcon, order_number, shipping_type, address_type, token):
             shipping_type = shipping_type
             b_53 = None
 
-            if b_53 and b_53[0].upper() == "B":
+            if address_type and address_type[0].upper() == "B":
                 b_53 = "Business"
-            elif b_53 and b_53[0].upper == "R":
+            elif address_type and address_type[0].upper == "R":
                 b_53 = "Residential"
 
         if not shipping_type or not b_53:
@@ -322,9 +322,7 @@ def do_process(mysqlcon):
             if len(order_number.split("-")) > 1 and order_number.split("-")[1] == "":
                 order_number = order_number.split("-")[0]
 
-            print(
-                f"@801 - order_number: {order_number}, {shipping_type}, {address_type}"
-            )
+            print(f"@801 - {content}")
             is_updated = update_booking(
                 mysqlcon, order_number, shipping_type, address_type, token
             )
