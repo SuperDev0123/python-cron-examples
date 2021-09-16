@@ -88,17 +88,20 @@ def read_email_from_gmail():
         result, data = mail.fetch(str(i), "(RFC822)")
 
         b = email.message_from_bytes(data[0][1])
-        if b.is_multipart():
-            for part in b.get_payload():
-                content = part.get_payload()
-                if isinstance(content, list):
-                    content = content[0].get_payload()
-                    content = content.replace("Pronto Xi Event Id: 83", "")
-                    content = content.replace("Jason L Office Furniture", "")
-                    content = content.replace("\r\n", "")
-                break
-        else:
-            content = b.get_payload()
+        try:
+            if b.is_multipart():
+                for part in b.get_payload():
+                    content = part.get_payload()
+                    if isinstance(content, list):
+                        content = content[0].get_payload()
+                        content = content.replace("Pronto Xi Event Id: 83", "")
+                        content = content.replace("Jason L Office Furniture", "")
+                        content = content.replace("\r\n", "")
+                    break
+            else:
+                content = b.get_payload()
+        except Exception as e:
+            pass
 
         for response_part in data:
             if not isinstance(response_part, tuple):
