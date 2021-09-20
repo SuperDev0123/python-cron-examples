@@ -89,9 +89,11 @@ def _set_rule_type_of_fp(mysqlcon, freight_provider, rule_type):
 def set_null(value):
     return value if value else None
 
+
 # Set None if cell is empty, else convert into String
 def str_or_none(value):
     return str(value) if value else None
+
 
 def del_dollar_sign(value):
     """
@@ -154,9 +156,9 @@ def read_xls(file):
         timing["max"] = set_null(ws["E%i" % row].value)
 
         if timing["max"]:
-            timing["fp_03_delivery_hours"] = int(timing["max"])
+            timing["fp_03_delivery_hours"] = int(timing["max"]) * 24
         else:
-            timing["fp_03_delivery_hours"] = int(timing["min"])
+            timing["fp_03_delivery_hours"] = int(timing["min"]) * 24
 
         timings.append(timing)
         row += 1
