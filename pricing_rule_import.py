@@ -393,7 +393,7 @@ def get_or_create_objects(token, objects, name, rules=None):
 
                 if rules and name == "fp-cost":
                     for rule in rules[obj["id"] - 1 :]:
-                        if rule[f"cost_id"] == obj["id"]:
+                        if int(rule[f"cost_id"]) == int(obj["id"]):
                             print(
                                 f"@204 - RuleIdx: {rule['id']}, RuleCostId: {rule['cost_id']} -> {data0['result']['id']}"
                             )
