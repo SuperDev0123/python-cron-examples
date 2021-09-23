@@ -157,7 +157,7 @@ def update_booking(mysqlcon, order_number, shipping_type, address_type, token):
 
             if address_type and address_type[0].upper() == "B":
                 b_53 = "Business"
-            elif address_type and address_type[0].upper == "R":
+            elif address_type and address_type[0].upper() == "R":
                 b_53 = "Residential"
 
         if not shipping_type or not b_53:
