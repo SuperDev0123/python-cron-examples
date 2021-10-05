@@ -40,10 +40,7 @@ def replace_null(array):
 def read_xls(file):
     wb = load_workbook(filename=file, data_only=True)
 
-    if (
-        "Import Headers and Lines" in wb.sheetnames
-        and "Import Detail Lines" in wb.sheetnames
-    ):
+    if "Import Headers and Lines" in wb.sheetnames:
         worksheet0 = wb["Import Headers and Lines"]
     else:
         print("#910 - File format is not supported.")
@@ -107,13 +104,18 @@ def read_xls(file):
                 "de_To_Address_State": worksheet0["AP%i" % row].value,
                 "de_To_Address_Suburb": worksheet0["AO%i" % row].value,
                 "client_warehouse_code": worksheet0["I%i" % row].value,
+                "pu_Address_Type": worksheet0["EG%i" % row].value or "business",
+                "de_To_AddressType": worksheet0["EH%i" % row].value or "business",
+                "b_booking_tail_lift_pickup": worksheet0["EI%i" % row].value or 0,
+                "b_booking_tail_lift_deliver": worksheet0["EJ%i" % row].value or 0,
                 "vx_serviceName": "R",  # hardcoded
                 "b_client_name": "Pricing-Only",  # hardcoded
                 "kf_client_id": "461162D2-90C7-BF4E-A905-0242ac130003",  # hardcoded
-                "pu_Address_Type": "business",  # hardcoded
-                "de_To_AddressType": "business",  # hardcoded
-                "b_booking_tail_lift_pickup": 0,  # hardcoded
-                "b_booking_tail_lift_deliver": 0,  # hardcoded
+                "pu_PickUp_By_Date": str(
+                    (datetime.datetime.now() + datetime.timedelta(days=1)).date()
+                ),
+                "pu_PickUp_By_Time_Hours": "10",
+                "pu_PickUp_By_Time_Minutes": "00",
             }
             bookings.append(booking)
 
@@ -130,6 +132,7 @@ def read_xls(file):
             "packagingType": worksheet0["CW%i" % row].value,
             "e_type_of_packaging": worksheet0["CW%i" % row].value,
             "e_qty": worksheet0["CX%i" % row].value,
+            "packed_status": "original",
         }
         booking_lines.append(booking_line)
         row += 1
@@ -196,15 +199,17 @@ def do_process(mysqlcon, fpath, fname):
     worksheet.write("V1", "de_To_Address_State", bold)
     worksheet.write("W1", "de_To_Address_Suburb", bold)
     worksheet.write("X1", "client_warehouse_code", bold)
-    worksheet.write("Y1", "Freight Provider", bold)
-    worksheet.write("Z1", "Account Code", bold)
-    worksheet.write("AA1", "Service Name", bold)
-    worksheet.write("AB1", "FP Price", bold)
-    worksheet.write("AC1", "DME Price", bold)
-    worksheet.write("AD1", "Tax Type", bold)
-    worksheet.write("AE1", "Tax Amount", bold)
-    worksheet.write("AF1", "Etd", bold)
-    worksheet.write("AG1", "mu_percentage_fuel_levy", bold)
+    worksheet.write("Y1", "pu_Address_Type", bold)
+    worksheet.write("Z1", "de_to_address_type", bold)
+    worksheet.write("AA1", "Freight Provider", bold)
+    worksheet.write("AB1", "Account Code", bold)
+    worksheet.write("AC1", "Service Name", bold)
+    worksheet.write("AD1", "FP Price", bold)
+    worksheet.write("AE1", "DME Price", bold)
+    worksheet.write("AF1", "Tax Type", bold)
+    worksheet.write("AG1", "Tax Amount", bold)
+    worksheet.write("AH1", "Etd", bold)
+    worksheet.write("AI1", "mu_percentage_fuel_levy", bold)
 
     bookings, booking_lines = read_xls(fpath)
     bookings = replace_null(bookings)
@@ -245,6 +250,8 @@ def do_process(mysqlcon, fpath, fname):
         worksheet.write(row, col + 21, booking["de_To_Address_State"])
         worksheet.write(row, col + 22, booking["de_To_Address_Suburb"])
         worksheet.write(row, col + 23, booking["client_warehouse_code"])
+        worksheet.write(row, col + 24, booking["pu_Address_Type"])
+        worksheet.write(row, col + 25, booking["de_To_AddressType"])
 
         if "results" in pricing_response:
             # Deactivate `lowest`
@@ -262,15 +269,15 @@ def do_process(mysqlcon, fpath, fname):
                 # if lowest:
                 # if True:
 
-                worksheet.write(row, col + 24, pricing["freight_provider"])
-                worksheet.write(row, col + 25, pricing["account_code"])
-                worksheet.write(row, col + 26, pricing["service_name"])
-                worksheet.write(row, col + 27, pricing["fee"])
-                worksheet.write(row, col + 28, pricing["client_mu_1_minimum_values"])
-                worksheet.write(row, col + 29, pricing["tax_id_1"])
-                worksheet.write(row, col + 30, pricing["tax_value_1"])
-                worksheet.write(row, col + 31, pricing["etd"])
-                worksheet.write(row, col + 32, pricing["mu_percentage_fuel_levy"])
+                worksheet.write(row, col + 26, pricing["freight_provider"])
+                worksheet.write(row, col + 27, pricing["account_code"])
+                worksheet.write(row, col + 28, pricing["service_name"])
+                worksheet.write(row, col + 29, pricing["fee"])
+                worksheet.write(row, col + 30, pricing["client_mu_1_minimum_values"])
+                worksheet.write(row, col + 31, pricing["tax_id_1"])
+                worksheet.write(row, col + 32, pricing["tax_value_1"])
+                worksheet.write(row, col + 33, pricing["etd"])
+                worksheet.write(row, col + 34, pricing["mu_percentage_fuel_levy"])
 
                 row += 1
 
