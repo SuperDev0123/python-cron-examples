@@ -226,60 +226,60 @@ def do_process(mysqlcon, fpath, fname):
 
         pricing_response = do_pricing(booking, lines)
 
-        worksheet.write(row, col + 0, booking["pk_booking_id"])
-        worksheet.write(row, col + 1, booking["puPickUpAvailFrom_Date"])
-        worksheet.write(row, col + 2, booking["b_clientReference_RA_Numbers"])
-        worksheet.write(row, col + 3, booking["puCompany"])
-        worksheet.write(row, col + 4, booking["pu_Contact_F_L_Name"])
-        worksheet.write(row, col + 5, booking["pu_Email"])
-        worksheet.write(row, col + 6, booking["pu_Phone_Main"])
-        worksheet.write(row, col + 7, booking["pu_Address_Street_1"])
-        worksheet.write(row, col + 8, booking["pu_Address_street_2"])
-        worksheet.write(row, col + 9, booking["pu_Address_Country"])
-        worksheet.write(row, col + 10, booking["pu_Address_PostalCode"])
-        worksheet.write(row, col + 11, booking["pu_Address_State"])
-        worksheet.write(row, col + 12, booking["pu_Address_Suburb"])
-        worksheet.write(row, col + 13, booking["deToCompanyName"])
-        worksheet.write(row, col + 14, booking["de_to_Contact_F_LName"])
-        worksheet.write(row, col + 15, booking["de_Email"])
-        worksheet.write(row, col + 16, booking["de_to_Phone_Main"])
-        worksheet.write(row, col + 17, booking["de_To_Address_Street_1"])
-        worksheet.write(row, col + 18, booking["de_To_Address_Street_2"])
-        worksheet.write(row, col + 19, booking["de_To_Address_Country"])
-        worksheet.write(row, col + 20, booking["de_To_Address_PostalCode"])
-        worksheet.write(row, col + 21, booking["de_To_Address_State"])
-        worksheet.write(row, col + 22, booking["de_To_Address_Suburb"])
-        worksheet.write(row, col + 23, booking["client_warehouse_code"])
-        worksheet.write(row, col + 24, booking["pu_Address_Type"])
-        worksheet.write(row, col + 25, booking["de_To_AddressType"])
+        for pricing in pricing_response["results"]:
+            worksheet.write(row, col + 0, booking["pk_booking_id"])
+            worksheet.write(row, col + 1, booking["puPickUpAvailFrom_Date"])
+            worksheet.write(row, col + 2, booking["b_clientReference_RA_Numbers"])
+            worksheet.write(row, col + 3, booking["puCompany"])
+            worksheet.write(row, col + 4, booking["pu_Contact_F_L_Name"])
+            worksheet.write(row, col + 5, booking["pu_Email"])
+            worksheet.write(row, col + 6, booking["pu_Phone_Main"])
+            worksheet.write(row, col + 7, booking["pu_Address_Street_1"])
+            worksheet.write(row, col + 8, booking["pu_Address_street_2"])
+            worksheet.write(row, col + 9, booking["pu_Address_Country"])
+            worksheet.write(row, col + 10, booking["pu_Address_PostalCode"])
+            worksheet.write(row, col + 11, booking["pu_Address_State"])
+            worksheet.write(row, col + 12, booking["pu_Address_Suburb"])
+            worksheet.write(row, col + 13, booking["deToCompanyName"])
+            worksheet.write(row, col + 14, booking["de_to_Contact_F_LName"])
+            worksheet.write(row, col + 15, booking["de_Email"])
+            worksheet.write(row, col + 16, booking["de_to_Phone_Main"])
+            worksheet.write(row, col + 17, booking["de_To_Address_Street_1"])
+            worksheet.write(row, col + 18, booking["de_To_Address_Street_2"])
+            worksheet.write(row, col + 19, booking["de_To_Address_Country"])
+            worksheet.write(row, col + 20, booking["de_To_Address_PostalCode"])
+            worksheet.write(row, col + 21, booking["de_To_Address_State"])
+            worksheet.write(row, col + 22, booking["de_To_Address_Suburb"])
+            worksheet.write(row, col + 23, booking["client_warehouse_code"])
+            worksheet.write(row, col + 24, booking["pu_Address_Type"])
+            worksheet.write(row, col + 25, booking["de_To_AddressType"])
 
-        if "results" in pricing_response:
             # Deactivate `lowest`
             # lowest = None
 
-            for pricing in pricing_response["results"]:
-                #     if not lowest:
-                #         lowest = pricing
-                #     else:
-                #         if int(lowest["client_mu_1_minimum_values"]) >= int(
-                #             pricing["client_mu_1_minimum_values"]
-                #         ):
-                #             lowest = pricing
+            # for pricing in pricing_response["results"]:
+            #     if not lowest:
+            #         lowest = pricing
+            #     else:
+            #         if int(lowest["client_mu_1_minimum_values"]) >= int(
+            #             pricing["client_mu_1_minimum_values"]
+            #         ):
+            #             lowest = pricing
 
-                # if lowest:
-                # if True:
+            # if lowest:
+            # if True:
 
-                worksheet.write(row, col + 26, pricing["freight_provider"])
-                worksheet.write(row, col + 27, pricing["account_code"])
-                worksheet.write(row, col + 28, pricing["service_name"])
-                worksheet.write(row, col + 29, pricing["fee"])
-                worksheet.write(row, col + 30, pricing["client_mu_1_minimum_values"])
-                worksheet.write(row, col + 31, pricing["tax_id_1"])
-                worksheet.write(row, col + 32, pricing["tax_value_1"])
-                worksheet.write(row, col + 33, pricing["etd"])
-                worksheet.write(row, col + 34, pricing["mu_percentage_fuel_levy"])
+            worksheet.write(row, col + 26, pricing["freight_provider"])
+            worksheet.write(row, col + 27, pricing["account_code"])
+            worksheet.write(row, col + 28, pricing["service_name"])
+            worksheet.write(row, col + 29, pricing["fee"])
+            worksheet.write(row, col + 30, pricing["client_mu_1_minimum_values"])
+            worksheet.write(row, col + 31, pricing["tax_id_1"])
+            worksheet.write(row, col + 32, pricing["tax_value_1"])
+            worksheet.write(row, col + 33, pricing["etd"])
+            worksheet.write(row, col + 34, pricing["mu_percentage_fuel_levy"])
 
-                row += 1
+            row += 1
 
     workbook.close()
 
