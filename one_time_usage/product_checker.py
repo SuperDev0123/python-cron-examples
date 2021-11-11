@@ -10,30 +10,7 @@ import pymysql, pymysql.cursors
 import json
 import time
 
-
-
-env_mode = 0 # Local
-#env_mode = 1 # Dev
-# env_mode = 2  # Prod
-
-if env_mode == 0:
-    DB_HOST = 'localhost'
-    DB_USER = 'root'
-    DB_PASS = 'root'
-    DB_PORT = 3306
-    DB_NAME = 'deliver_me'  # Dev
-if env_mode == 1:
-    DB_HOST = 'deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com'
-    DB_USER = 'fmadmin'
-    DB_PASS = 'oU8pPQxh'
-    DB_PORT = 3306
-    DB_NAME = 'dme_db_dev'  # Dev
-elif env_mode == 2:
-    DB_HOST = 'deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com'
-    DB_USER = 'fmadmin'
-    DB_PASS = 'oU8pPQxh'
-    DB_PORT = 3306
-    DB_NAME = 'dme_db_prod'  # Prod
+from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME
 
 
 def get_missing_products():
