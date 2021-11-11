@@ -2,7 +2,7 @@
 
 import sys, time
 import json
-import datetime
+from datetime import datetime
 import pymysql, pymysql.cursors
 import shutil
 from os import listdir, path
@@ -37,33 +37,9 @@ sftp_server_infos = {
     "local_filepath_archive": ARCHIVE_FTP_DIR,
 }
 
-def get_dme_status(fp_status, mysqlcon):
-    try:
-        with mysqlcon.cursor() as cursor:
-            sql = "SELECT `dme_status` FROM `dme_utl_fp_statuses` WHERE `fp_name`=`CENTURY` AND `fp_lookup_status`=%s"
-            cursor.execute(sql, (fp_status))
-            status = cursor.fetchone()
-            return status['dme_status']
-    except:
-        return None
-
         
-def get_booking(consignment_number, mysqlcon):
-    try:
-        with mysqlcon.cursor() as cursor:
-            sql = "SELECT `id`, `b_bookingID_Visual`, `pk_booking_id`, `b_status`, `b_status_API` \
-                    From `dme_bookings` \
-                    WHERE `v_FPBookingNumber`=%s"
-            cursor.execute(sql, (consignment_number))
-            booking = cursor.fetchone()
-
-            return booking
-    except:
-        return None
-
-
 if __name__ == "__main__":
-    print("#900 - Running %s" % datetime.datetime.now())
+    print("#900 - Running %s" % datetime.now())
     time1 = time.time()
 
     try:
@@ -117,16 +93,17 @@ if __name__ == "__main__":
                     content = list(csvreader)[1]
                     consignment_number = content[1]
                     fp_status_code = content[3]
-                    notes = content[5]
-                    event_time_stamp = content[2]
+                    fp_status_details = content[5]
+                    event_time_stamp = datetime.strftime(content[2], '%Y%m%d').timestamp()
 
-                    booking = get_booking(consignment_number, mysqlcon)
                     if booking:
                         status_last = get_dme_status(fp_status_code, mysqlcon)
                         response = requests.post(f"{API_URL}/statushistory/create", data=json.dumps({
-                            'fk_booking_id': booking['pk_booking_id'],
-                            'status_last': status_last,
-                            'event_time_stamp': event_time_stamp
+                            'consignment_number': consignment_number,
+                            'fp_status_code': fp_status_code,
+                            'fp_status_details': fp_status_details,
+                            'event_time_stamp': event_time_stamp,
+                            'is_from_script': True
                         }))
 
                 if response and response.ok:
@@ -138,4 +115,4 @@ if __name__ == "__main__":
         set_option(mysqlcon, "century_status_pod", False, time1)
 
     mysqlcon.close()
-    print("#999 - Finished %s\n\n\n" % datetime.datetime.now())
+    print("#999 - Finished %s\n\n\n" % datetime.now())
