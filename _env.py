@@ -23,6 +23,10 @@ SI_DOWNLOAD_DIR = "./xls/downloaded"
 SI_IMPORT_DIR = "./xls/imported"
 SI_ERROR_DIR = "./xls/issued"
 
+# CENTURY
+CENTURY_FTP_DIR = "./dme_sftp/century_au/status_csv/inprogress/"
+CENTURY_ARCHIVE_FTP_DIR = "./dme_sftp/century_au/status_csv/archive/"
+
 # ST - Startrack
 ST_FTP_DIR = "/Users/admin/work/goldmine/scripts/dir01/"
 ST_ARCHIVE_FTP_DIR = "/Users/admin/work/goldmine/scripts/dir02/"
