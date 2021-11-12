@@ -1,2 +1,0 @@
-customer_order_number,consignment_number,date_of_event,fp_status_code,fp_status,fp_status_details,dme_status,pod_name,reason,cartons_delivered,booking_number
-D_jasonl_21552,DME179081,20210811,Y,CANCELLED_CHARGED,Consignment has been cancelled with charge,CANCELLED_CHARGED,,,,79844
