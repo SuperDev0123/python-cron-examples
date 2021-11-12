@@ -18,6 +18,7 @@ from _env import (
     DB_NAME,
     CENTURY_FTP_DIR as FTP_DIR,
     CENTURY_ARCHIVE_FTP_DIR as ARCHIVE_FTP_DIR,
+    CENTURY_ISSUED_FTP_DIR as ISSUED_FTP_DIR,
     # ST_CSV_DIR as CSV_DIR,
     # ST_ARCHIVE_CSV_DIR as ARCHIVE_CSV_DIR,
     API_URL
@@ -36,6 +37,19 @@ sftp_server_infos = {
     "local_filepath": FTP_DIR,
     "local_filepath_archive": ARCHIVE_FTP_DIR,
 }
+
+
+def get_booking(booking_id, consignment_number, mysqlcon):
+    with mysqlcon.cursor() as cursor:
+        if booking_id:
+            sql = "SELECT `id`, `vx_freight_provider` From `dme_bookings` WHERE `id`=%s"
+            cursor.execute(sql, (booking_id))
+            booking = cursor.fetchone()
+        else:
+            sql = "SELECT `id`, `vx_freight_provider` From `dme_bookings` WHERE `v_FPBookingNumber`=%s"
+            cursor.execute(sql, (consignment_number))
+            booking = cursor.fetchone()
+        return booking
 
         
 if __name__ == "__main__":
@@ -56,8 +70,8 @@ if __name__ == "__main__":
         print("Mysql DB connection error!")
         exit(1)
 
-    if not path.isdir(FTP_DIR) or not path.isdir(CSV_DIR):
-        print('Given argument "%s, %s" is not a directory' % FTP_DIR, CSV_DIR)
+    if not path.isdir(FTP_DIR) or not path.isdir(ARCHIVE_FTP_DIR):
+        print('Given argument "%s, %s" is not a directory' % FTP_DIR, ARCHIVE_FTP_DIR)
         exit(1)
 
     try:
@@ -88,28 +102,54 @@ if __name__ == "__main__":
         
             for file in listdir(FTP_DIR):
                 response = None
+                should_issue = False
                 with open(path.join(FTP_DIR, file), 'r') as csvfile:
-                    csvreader = csv.reader(csvfile)
-                    content = list(csvreader)[1]
-                    consignment_number = content[1]
-                    fp_status_code = content[3]
-                    fp_status_details = content[5]
-                    event_time_stamp = datetime.strftime(content[2], '%Y%m%d').timestamp()
+                    csv_list = list(csv.reader(csvfile))
+                    cols = csv_list[0]
+                    content = csv_list[1]
+                    if 'booking_number' in cols:
+                        index = cols.index('booking_number')
+                        booking_id = content[index]
+                    else:
+                        booking_id = None
 
-                    if booking:
-                        status_last = get_dme_status(fp_status_code, mysqlcon)
-                        response = requests.post(f"{API_URL}/statushistory/create", data=json.dumps({
-                            'consignment_number': consignment_number,
-                            'fp_status_code': fp_status_code,
-                            'fp_status_details': fp_status_details,
-                            'event_time_stamp': event_time_stamp,
-                            'is_from_script': True
-                        }))
+                    if cols[0] == 'customer_order_number':
+                        consignment_number = content[1]
+                        fp_status_code = content[3]
+                        fp_status_details = content[5]
+                        event_time_stamp = datetime.strptime(content[2], '%Y%m%d').strftime('%Y-%m-%d %H:%M:%S.%f')
+                    else:
+                        consignment_number = content[0]
+                        fp_status_code = content[2]
+                        fp_status_details = content[4]
+                        event_time_stamp = datetime.strptime(content[1], '%Y%m%d').strftime('%Y-%m-%d %H:%M:%S.%f')
 
-                if response and response.ok:
-                    shutil.move(path.join(FTP_DIR, file), path.join(ARCHIVE_FTP_DIR, file)) 
+                    if not booking_id and not consignment_number:
+                        print('No booking id and consignment number: ', file)
+                        should_issue = True
+                    else:
+                        booking = get_booking(booking_id, consignment_number, mysqlcon)
+                        if booking and booking['vx_freight_provider'] == 'Century':
+                            headers = {
+                                "content-type": "application/json",
+                            }
+                            response = requests.post(f"{API_URL}/statushistory/save_status_history/", headers=headers, data=json.dumps({
+                                'booking_id': booking['id'],
+                                'consignment_number': consignment_number,
+                                'fp_status_code': fp_status_code,
+                                'fp_status_details': fp_status_details,
+                                'event_time_stamp': event_time_stamp,
+                                'is_from_script': True
+                            }))
+                        else:
+                            print('No booking or wrong freight_provider: ', file)
+                            should_issue = True
 
-            
+                if (response and response.ok):
+                    shutil.move(path.join(FTP_DIR, file), path.join(ARCHIVE_FTP_DIR, file))
+                if should_issue:
+                    shutil.move(path.join(FTP_DIR, file), path.join(ISSUED_FTP_DIR, file))
+            set_option(mysqlcon, "century_status_pod", False, time1)
     except Exception as e:
         print("Error 904:", str(e))
         set_option(mysqlcon, "century_status_pod", False, time1)

@@ -8,11 +8,17 @@ EMAIL_HOST_PASSWORD = "Dme35718&*"
 # **  LOCAL   **
 # **************
 
+# DB_NAME="dme_db_prod"
+# DB_USER="fmadmin"
+# DB_PASS="oU8pPQxh"
+# DB_HOST="deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
+# DB_PORT=3306
+
 DB_HOST = "localhost"
 DB_USER = "root"
 DB_PASS = ""
 DB_PORT = 3306
-DB_NAME = "deliver_me"
+DB_NAME = "dme_db_prod"
 
 API_URL = "http://localhost:8000/api"  # Local
 USERNAME = "dme"
@@ -26,6 +32,7 @@ SI_ERROR_DIR = "./xls/issued"
 # CENTURY
 CENTURY_FTP_DIR = "./dme_sftp/century_au/status_csv/inprogress/"
 CENTURY_ARCHIVE_FTP_DIR = "./dme_sftp/century_au/status_csv/archive/"
+CENTURY_ISSUED_FTP_DIR = "./dme_sftp/century_au/status_csv/issued/"
 
 # ST - Startrack
 ST_FTP_DIR = "/Users/admin/work/goldmine/scripts/dir01/"
