@@ -8,6 +8,7 @@ import pymysql, pymysql.cursors
 import shutil
 import json
 import requests
+import traceback
 
 from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
 from _options_lib import get_option, set_option
@@ -190,6 +191,7 @@ if __name__ == "__main__":
 
         add_or_update_orders()
     except Exception as e:
+        f"@000 traceback: {traceback.format_exc()}"
         print("Error 904:", str(e))
 
         # set_option(mysqlcon, "st_status_pod", False, time1)
