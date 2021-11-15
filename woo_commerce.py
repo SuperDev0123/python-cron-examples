@@ -191,7 +191,7 @@ if __name__ == "__main__":
 
         add_or_update_orders()
     except Exception as e:
-        f"@000 traceback: {traceback.format_exc()}"
+        print(f"@000 traceback: {traceback.format_exc()}")
         print("Error 904:", str(e))
 
         # set_option(mysqlcon, "st_status_pod", False, time1)
