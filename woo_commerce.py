@@ -44,9 +44,19 @@ def get_token():
 
 def get_orders_from_woocommerce(from_date, to_date):
     try:
-        order_list = wcapi.get(
-            f"orders?after={from_date}&before={to_date}&per_page=100&status=Processing&orderby=id&order=desc"
-        ).json()
+        url = f"orders?"
+        url += "per_page=100"
+        url += "&status=Processing"
+        url += "&orderby=id"
+        url += "&order=desc"
+
+        if from_date:
+            url += "&after={from_date}"
+
+        if to_date:
+            url += "&before={to_date}"
+
+        order_list = wcapi.get(url).json()
         return order_list
     except Exception as e:
         print(f"Get orders error: {e}")
@@ -63,8 +73,10 @@ def get_product_from_woocommerce(product_id):
 
 
 def add_or_update_orders():
-    from_ts = "2021-05-01T00:00:00"
-    to_ts = "2021-12-30T00:00:00"
+    # from_ts = "2021-05-01T00:00:00"
+    # to_ts = "2021-12-30T00:00:00"
+    from_ts = None
+    to_ts = None
     orders = get_orders_from_woocommerce(from_ts, to_ts)
     print(
         f"@100 [GET ORDER] from_ts: {from_ts}, to_ts: {to_ts}, order_cnt: {len(orders)}"
