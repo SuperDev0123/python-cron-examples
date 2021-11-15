@@ -47,7 +47,7 @@ def get_orders_from_woocommerce(from_date, to_date):
     try:
         url = f"orders?"
         url += "per_page=100"
-        url += "&status=Processing"
+        url += "&status=processing"
         url += "&orderby=id"
         url += "&order=desc"
 
