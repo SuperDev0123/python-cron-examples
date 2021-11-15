@@ -85,7 +85,6 @@ def add_or_update_orders():
     token = get_token()
 
     for order in orders:
-        print(f"@100 [ORDER] Orders: {orders}")
         print(
             f"@101 [ORDER] orderId: {order['id']}, Order Status: {order['status']}, product_cnt: {len(order['line_items'])}"
         )
