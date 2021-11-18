@@ -3,7 +3,7 @@
 import sys, time
 import os
 import uuid
-import datetime
+from datetime import datetime, timedelta
 import pymysql, pymysql.cursors
 import shutil
 import json
@@ -43,11 +43,13 @@ def get_token():
         return None
 
 
-def get_orders_from_woocommerce(from_date, to_date):
+def get_orders_from_woocommerce(from_date, to_date, status):
+    print(f"params - from_date: {from_date}, to_date: {to_date}, status: {status}")
+
     try:
         url = f"orders?"
         url += "per_page=100"
-        url += "&status=processing"
+        url += f"&status={status}"
         url += "&orderby=id"
         url += "&order=desc"
 
@@ -74,11 +76,12 @@ def get_product_from_woocommerce(product_id):
 
 
 def add_or_update_orders():
-    # from_ts = "2021-05-01T00:00:00"
-    # to_ts = "2021-12-30T00:00:00"
-    from_ts = None
-    to_ts = None
-    orders = get_orders_from_woocommerce(from_ts, to_ts)
+    from_ts = datetime.strptime(datetime.now() - timedelta(hours=12), "%Y-%m-%d %H:%M:%S")
+    to_ts = datetime.strptime(datetime.now(), "%Y-%m-%d %H:%M:%S")
+    # from_ts = None
+    # to_ts = None
+    orders = get_orders_from_woocommerce(from_ts, to_ts, 'processing')
+    orders += get_orders_from_woocommerce(from_ts, to_ts, 'on-hold')
     print(
         f"@100 [GET ORDER] from_ts: {from_ts}, to_ts: {to_ts}, order_cnt: {len(orders)}"
     )
