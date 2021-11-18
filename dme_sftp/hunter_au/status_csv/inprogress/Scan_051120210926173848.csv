@@ -1,0 +1,5 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX187638","","89239","05/11/2021 08:49 +11:00","PLX1876380040062444","On Delivery","Port Macquarie","",""
+"PLX187638","","89239","05/11/2021 08:50 +11:00","PLX1876380050062444","On Delivery","Port Macquarie","",""
+"PLX187638","","89239","05/11/2021 08:50 +11:00","PLX1876380030062444","On Delivery","Port Macquarie","",""
+"PLX187638","","89239","05/11/2021 08:52 +11:00","PLX1876380060062444","On Delivery","Port Macquarie","",""

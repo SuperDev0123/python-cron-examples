@@ -1,0 +1,7 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX018737","67e72d08-a0f8-4966-8b09-f01845c1dc41","87943","06/10/2021 16:01 +11:00","PLX0187370020042259","Linehaul Out","SYDNEY","",""
+"PLX018725","cc4629be-f3fd-44dc-a8b5-ab39549b885f","87935","06/10/2021 16:00 +11:00","PLX0187250030042283","Linehaul Out","SYDNEY","",""
+"PLX018712","cc0fb2c5-8d73-4be5-999a-ec7b480f809b","","06/10/2021 16:00 +11:00","PLX0187120040045115","Linehaul Out","SYDNEY","",""
+"PLX018738","03651f55-400f-4acf-8d26-ba0b83f9a456","87944","06/10/2021 16:00 +11:00","PLX0187380020042380","Linehaul Out","SYDNEY","",""
+"PLX018712","cc0fb2c5-8d73-4be5-999a-ec7b480f809b","","06/10/2021 16:00 +11:00","PLX0187120030045115","Linehaul Out","SYDNEY","",""
+"PLX018725","cc4629be-f3fd-44dc-a8b5-ab39549b885f","87935","06/10/2021 16:00 +11:00","PLX0187250020042283","Linehaul Out","SYDNEY","",""

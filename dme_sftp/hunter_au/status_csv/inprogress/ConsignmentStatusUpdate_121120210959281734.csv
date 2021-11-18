@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME188892</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>4100494926</SenderReference>
+		<StatusDateTime>12/11/2021 09:58 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DMB014881</ConsignmentNumber>
+		<UniqueId>d0757768-27ee-48a3-9bab-aeecff6a77d1</UniqueId>
+		<SenderReference>Claim 1772405 TRA56313</SenderReference>
+		<StatusDateTime>12/11/2021 09:58 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

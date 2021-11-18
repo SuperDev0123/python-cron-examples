@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018979</ConsignmentNumber>
+		<UniqueId>1ea8bd90-4c68-4ad5-90fd-e408f637ab42</UniqueId>
+		<SenderReference>88728</SenderReference>
+		<StatusDateTime>02/11/2021 17:00 +11:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188077</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1888205</SenderReference>
+		<StatusDateTime>03/11/2021 09:21 +11:00</StatusDateTime>
+		<Status>MobileFutilePickup</Status>
+		<StatusTag>Closed / No one home</StatusTag>
+	</StatusEvent>
+</Statuses>

@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX184894","","87961","13/10/2021 09:56 +11:00","plx1848940010042340","On Delivery","TAMWORTH","",""
+"PLX018764","34e7521e-9db1-4a0d-bbb8-0f0ba88e5fdf","88072","13/10/2021 07:41 +11:00","PLX0187640030033139","On Delivery","Bayswater","",""
+"PLX018764","34e7521e-9db1-4a0d-bbb8-0f0ba88e5fdf","88072","13/10/2021 07:41 +11:00","PLX0187640020033139","On Delivery","Bayswater","",""

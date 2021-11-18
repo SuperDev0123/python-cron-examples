@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX018896","dabbf029-db3f-4abf-87ee-fd40d6b3df27","88233","18/10/2021 09:27 +10:00","PLX0188960010044740","Depot In","MACKAY","",""
+"PLX018709","f866815a-3114-4a5f-9abc-f7e9bfde53bd","87915","18/10/2021 09:28 +11:00","PLX0187090030042840","Depot In","Dubbo","",""
+"PLX018779","5c56d0d8-2722-49b3-ae57-aa2ee2b07eed","88033","18/10/2021 09:05 +11:00","PLX0187790010023754","On Delivery","MELBOURNE","",""

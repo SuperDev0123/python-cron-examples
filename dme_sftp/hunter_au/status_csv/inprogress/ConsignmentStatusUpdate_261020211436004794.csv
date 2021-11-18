@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX186616</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88770</SenderReference>
+		<StatusDateTime>26/10/2021 14:32 +08:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX186616</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88770</SenderReference>
+		<StatusDateTime>26/10/2021 14:32 +11:00</StatusDateTime>
+		<Status>MobileLeftAsInstructed</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

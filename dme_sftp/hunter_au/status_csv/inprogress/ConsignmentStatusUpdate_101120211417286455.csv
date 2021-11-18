@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX019179</ConsignmentNumber>
+		<UniqueId>5b47703d-ed2c-483c-be29-fb68eaca040c</UniqueId>
+		<SenderReference>87784</SenderReference>
+		<StatusDateTime>10/11/2021 14:15 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019179</ConsignmentNumber>
+		<UniqueId>5b47703d-ed2c-483c-be29-fb68eaca040c</UniqueId>
+		<SenderReference>87784</SenderReference>
+		<StatusDateTime>10/11/2021 14:15 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DMB014885</ConsignmentNumber>
+		<UniqueId>57c77556-dbbd-4c36-89f7-522b4617ee32</UniqueId>
+		<SenderReference>CS00493003</SenderReference>
+		<StatusDateTime>15/11/2021 10:35 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

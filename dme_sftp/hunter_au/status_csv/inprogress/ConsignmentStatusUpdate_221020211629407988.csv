@@ -1,0 +1,34 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX186738</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88744</SenderReference>
+		<StatusDateTime>22/10/2021 16:10 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186388</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037155</SenderReference>
+		<StatusDateTime>22/10/2021 16:21 +11:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186388</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037155</SenderReference>
+		<StatusDateTime>22/10/2021 16:21 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186388</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037155</SenderReference>
+		<StatusDateTime>22/10/2021 16:22 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

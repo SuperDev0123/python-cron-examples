@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX188113</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89220</SenderReference>
+		<StatusDateTime>10/11/2021 12:00 +11:00</StatusDateTime>
+		<Status>MobileShortDelivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188113</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89220</SenderReference>
+		<StatusDateTime>10/11/2021 12:00 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME189204</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>reference1</SenderReference>
+		<StatusDateTime>10/11/2021 12:01 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

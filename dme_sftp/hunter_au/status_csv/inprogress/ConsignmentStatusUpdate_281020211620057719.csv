@@ -1,0 +1,66 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME187595</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00368211</SenderReference>
+		<StatusDateTime>28/10/2021 16:13 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME187595</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00368211</SenderReference>
+		<StatusDateTime>28/10/2021 16:13 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME187496</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00486693</SenderReference>
+		<StatusDateTime>28/10/2021 16:14 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX187316</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89048</SenderReference>
+		<StatusDateTime>28/10/2021 16:15 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX187318</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89049</SenderReference>
+		<StatusDateTime>28/10/2021 16:15 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX187005</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88978</SenderReference>
+		<StatusDateTime>28/10/2021 16:15 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX187023</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88826</SenderReference>
+		<StatusDateTime>28/10/2021 16:15 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019124</ConsignmentNumber>
+		<UniqueId>115e9cde-80b9-436d-bfb0-9eccef3a6670</UniqueId>
+		<SenderReference>89219</SenderReference>
+		<StatusDateTime>28/10/2021 16:15 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

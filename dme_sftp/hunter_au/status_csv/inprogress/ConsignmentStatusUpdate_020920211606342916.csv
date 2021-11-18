@@ -1,0 +1,362 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>SAL160672</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>SAL160671</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>SAL160673</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>SAL160672</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>SAL160671</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>IMP044151</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>IMP044150</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>IMP044149</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>IMP044151</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>IMP044150</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>IMP044149</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>HUX180958</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>HUX180982</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>HUX180947</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>HUX180958</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>HUX180982</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>HUX180947</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>HUX180978</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>HUX180987</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>HUX180978</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>HUX180987</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>CRS070481</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>NBX191271</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>HUX180984</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>ALD103029</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>AID140142</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:05 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>CAL081693</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:05 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>VUX052801</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:05 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>EZ001010</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>5554</SenderReference>
+		<StatusDateTime>02/09/2021 16:05 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>EZ001011</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:05 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>CRS070481</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>NBX191271</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>HUX180984</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>ALD103029</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>AID140142</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:04 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>CAL081693</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:05 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>VUX052801</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:05 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>EZ001010</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>5554</SenderReference>
+		<StatusDateTime>02/09/2021 16:05 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>AKX191802</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:05 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>EZ001011</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:05 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>AKX191801</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:05 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>AKX191800</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:05 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>AKX191802</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:05 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>AKX191801</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:05 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>AKX191800</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>02/09/2021 16:05 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

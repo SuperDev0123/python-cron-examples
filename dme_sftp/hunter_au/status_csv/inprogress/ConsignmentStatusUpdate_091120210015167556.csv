@@ -1,0 +1,58 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX188498</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89375</SenderReference>
+		<StatusDateTime>09/11/2021 00:05 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019159</ConsignmentNumber>
+		<UniqueId>e97ec58e-44c6-4826-95dd-3ad356ba703b</UniqueId>
+		<SenderReference>89504</SenderReference>
+		<StatusDateTime>09/11/2021 00:05 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019159</ConsignmentNumber>
+		<UniqueId>e97ec58e-44c6-4826-95dd-3ad356ba703b</UniqueId>
+		<SenderReference>89504</SenderReference>
+		<StatusDateTime>09/11/2021 00:14 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019159</ConsignmentNumber>
+		<UniqueId>e97ec58e-44c6-4826-95dd-3ad356ba703b</UniqueId>
+		<SenderReference>89504</SenderReference>
+		<StatusDateTime>09/11/2021 00:06 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188490</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>87533</SenderReference>
+		<StatusDateTime>09/11/2021 00:06 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018978</ConsignmentNumber>
+		<UniqueId>10521567-0521-4e75-b457-902a097f54a0</UniqueId>
+		<SenderReference>88693</SenderReference>
+		<StatusDateTime>09/11/2021 00:05 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019158</ConsignmentNumber>
+		<UniqueId>6278e750-50e1-4ea7-b263-0c8ac0b74e16</UniqueId>
+		<SenderReference>89171</SenderReference>
+		<StatusDateTime>09/11/2021 00:05 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

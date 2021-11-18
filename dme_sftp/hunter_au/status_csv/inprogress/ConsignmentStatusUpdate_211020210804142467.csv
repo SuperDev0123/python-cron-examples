@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX019083</ConsignmentNumber>
+		<UniqueId>c750d7ec-0bca-47e4-a0d7-6f5ec37aafa2</UniqueId>
+		<SenderReference>88876</SenderReference>
+		<StatusDateTime>21/10/2021 08:01 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018818</ConsignmentNumber>
+		<UniqueId>43320bb7-189a-4380-8acf-b14136e1c5f6</UniqueId>
+		<SenderReference>88102</SenderReference>
+		<StatusDateTime>21/10/2021 08:01 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX185803</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88328</SenderReference>
+		<StatusDateTime>21/10/2021 08:02 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
+"PLX019196","5187ca5f-4ddc-4f9d-ab75-811c5f8617d5","88267-RTS","17/11/2021 10:36 +11:00","DriverPickupAcknowledge",""
+"PLX189596","","393503651002107430, 393503651002096239, 393503651002107423, 393503651002107447","17/11/2021 10:36 +11:00","Holding",""

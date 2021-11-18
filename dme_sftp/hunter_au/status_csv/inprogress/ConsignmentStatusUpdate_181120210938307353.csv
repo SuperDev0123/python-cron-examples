@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
+"PLX189829","","393503651002102145","18/11/2021 09:37 +11:00","Assigned",""
+"PLX189631","","393503651002107140, 393503651002107133","18/11/2021 09:37 +11:00","OnDelivery",""
+"DME190201","","CS00466442","18/11/2021 09:37 +11:00","DriverPickupAcknowledge",""

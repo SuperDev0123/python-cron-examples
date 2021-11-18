@@ -1,0 +1,34 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME185791</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22386</SenderReference>
+		<StatusDateTime>22/10/2021 12:52 +11:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185791</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22386</SenderReference>
+		<StatusDateTime>22/10/2021 12:52 +11:00</StatusDateTime>
+		<Status>MobileLeftAsInstructed</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186464</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>57231</SenderReference>
+		<StatusDateTime>22/10/2021 12:52 +11:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186464</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>57231</SenderReference>
+		<StatusDateTime>22/10/2021 12:52 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

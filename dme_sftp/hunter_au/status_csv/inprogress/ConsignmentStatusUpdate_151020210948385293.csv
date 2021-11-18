@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018894</ConsignmentNumber>
+		<UniqueId>6e3915d3-8173-4c8f-bbfc-179212f52b64</UniqueId>
+		<SenderReference>88232</SenderReference>
+		<StatusDateTime>15/10/2021 09:37 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018923</ConsignmentNumber>
+		<UniqueId>5fce19ce-34fa-484d-ac62-dbd425a0af1e</UniqueId>
+		<SenderReference>88269</SenderReference>
+		<StatusDateTime>15/10/2021 09:46 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

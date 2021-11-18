@@ -1,0 +1,34 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018844</ConsignmentNumber>
+		<UniqueId>8b3cbe9d-a6df-4b7c-8976-595f76cb166a</UniqueId>
+		<SenderReference>88172</SenderReference>
+		<StatusDateTime>15/10/2021 12:00 +11:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018916</ConsignmentNumber>
+		<UniqueId>a0ddd101-4bc5-4eaa-b1a6-af0dcad5da68</UniqueId>
+		<SenderReference>88258</SenderReference>
+		<StatusDateTime>15/10/2021 12:00 +11:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018937</ConsignmentNumber>
+		<UniqueId>dbc0258a-cc59-45df-9a29-36469765db7f</UniqueId>
+		<SenderReference>88274</SenderReference>
+		<StatusDateTime>15/10/2021 12:00 +11:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>AA184423</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>15/10/2021 12:00 +11:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

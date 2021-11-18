@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME186446</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00487656</SenderReference>
+		<StatusDateTime>22/10/2021 11:52 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

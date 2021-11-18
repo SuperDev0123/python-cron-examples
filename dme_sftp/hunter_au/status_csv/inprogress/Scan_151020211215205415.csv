@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PL014951","","","15/10/2021 12:10 +11:00","PL0149510040067215","Short","LAUNCESTON","",""
+"PLX018864","f2662d4d-8bd7-42c3-b795-42950d5f5fd2","88143","15/10/2021 12:13 +10:00","PLX0188640010014555","On Delivery","SunshineCoast","",""

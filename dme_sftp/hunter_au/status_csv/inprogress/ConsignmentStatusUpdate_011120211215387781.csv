@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX187021</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88827</SenderReference>
+		<StatusDateTime>01/11/2021 12:13 +11:00</StatusDateTime>
+		<Status>MobileShortDelivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX187021</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88827</SenderReference>
+		<StatusDateTime>01/11/2021 12:13 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

@@ -1,0 +1,6 @@
+ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
+"DME190010","","CS00488628","17/11/2021 11:53 +11:00","DriverPickupAcknowledge",""
+"PLX189027","","393503651002104996","17/11/2021 11:54 +11:00","Delivered",""
+"DME189824","","","17/11/2021 11:54 +11:00","MobileShortDelivered",""
+"DME189824","","","17/11/2021 11:54 +11:00","InTransit",""
+"PLX019173","870cecd7-f8f7-4af9-96c6-c98e87c0be7e","89635","17/11/2021 11:54 +10:00","Holding",""

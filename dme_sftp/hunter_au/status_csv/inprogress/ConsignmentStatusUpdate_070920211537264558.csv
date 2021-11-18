@@ -1,0 +1,34 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>HXX110169</ConsignmentNumber>
+		<UniqueId>11eb7a27-d2b0-42ad-827f-8f21d245282a</UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>07/09/2021 15:34 +10:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>HXX110169</ConsignmentNumber>
+		<UniqueId>11eb7a27-d2b0-42ad-827f-8f21d245282a</UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>07/09/2021 15:34 +10:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>HXX110169</ConsignmentNumber>
+		<UniqueId>11eb7a27-d2b0-42ad-827f-8f21d245282a</UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>07/09/2021 15:36 +10:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>HXX110169</ConsignmentNumber>
+		<UniqueId>11eb7a27-d2b0-42ad-827f-8f21d245282a</UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>07/09/2021 15:36 +09:30</StatusDateTime>
+		<Status>MobileCardLeft</Status>
+		<StatusTag>Carded</StatusTag>
+	</StatusEvent>
+</Statuses>

@@ -1,0 +1,34 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX187855</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>87398</SenderReference>
+		<StatusDateTime>04/11/2021 07:17 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX187855</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>87398</SenderReference>
+		<StatusDateTime>04/11/2021 07:17 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX187855</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>87398</SenderReference>
+		<StatusDateTime>04/11/2021 07:17 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX187855</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>87398</SenderReference>
+		<StatusDateTime>04/11/2021 07:17 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

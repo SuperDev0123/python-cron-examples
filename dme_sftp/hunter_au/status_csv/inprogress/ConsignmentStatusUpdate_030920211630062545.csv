@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>HXX110151</ConsignmentNumber>
+		<UniqueId>ac924891-a93c-4011-b731-05e7a290b1f5</UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>03/09/2021 16:28 +10:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

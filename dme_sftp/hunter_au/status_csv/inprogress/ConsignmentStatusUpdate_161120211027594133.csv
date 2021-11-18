@@ -1,0 +1,114 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX189932</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393255522002539599</SenderReference>
+		<StatusDateTime>16/11/2021 10:27 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189978</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393255522002539582</SenderReference>
+		<StatusDateTime>16/11/2021 10:27 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189860</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393255522002539568</SenderReference>
+		<StatusDateTime>16/11/2021 10:27 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189618</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002105696, 393503651002096710, 393503651002096727, 393503651002096734, 393503651002105672,</SenderReference>
+		<StatusDateTime>16/11/2021 10:27 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189800</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002101711</SenderReference>
+		<StatusDateTime>16/11/2021 10:27 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189875</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106617</SenderReference>
+		<StatusDateTime>16/11/2021 10:27 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189874</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106600</SenderReference>
+		<StatusDateTime>16/11/2021 10:27 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189871</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106679, 393503651002106686</SenderReference>
+		<StatusDateTime>16/11/2021 10:27 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189872</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106709, 393503651002106693</SenderReference>
+		<StatusDateTime>16/11/2021 10:27 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189876</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106624</SenderReference>
+		<StatusDateTime>16/11/2021 10:27 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189877</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106631</SenderReference>
+		<StatusDateTime>16/11/2021 10:27 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189879</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106648</SenderReference>
+		<StatusDateTime>16/11/2021 10:27 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189880</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106655</SenderReference>
+		<StatusDateTime>16/11/2021 10:27 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189873</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106594</SenderReference>
+		<StatusDateTime>16/11/2021 10:27 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

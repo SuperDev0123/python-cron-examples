@@ -1,0 +1,5 @@
+ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
+"DME190058","","","17/11/2021 18:32 +11:00","InDepot",""
+"DME190056","","302118","17/11/2021 18:32 +11:00","InDepot",""
+"DME190063","","CS00494140","17/11/2021 18:32 +11:00","InDepot",""
+"PLX189059","","393503651002100417","17/11/2021 18:42 +10:30","Delivered",""

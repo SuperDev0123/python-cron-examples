@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX188839</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89547</SenderReference>
+		<StatusDateTime>15/11/2021 12:03 +11:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188839</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89547</SenderReference>
+		<StatusDateTime>15/11/2021 12:03 +11:00</StatusDateTime>
+		<Status>MobileLeftAsInstructed</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189080</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89670</SenderReference>
+		<StatusDateTime>15/11/2021 11:59 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

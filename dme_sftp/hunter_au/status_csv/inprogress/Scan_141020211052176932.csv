@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX018817","701d15a3-d67a-4a24-8cc0-71b0fe4fdd5b","88100","14/10/2021 10:50 +10:00","PLX0188170010024128","At Location","BRISBANE","",""
+"PLX018817","701d15a3-d67a-4a24-8cc0-71b0fe4fdd5b","88100","14/10/2021 10:50 +10:00","PLX0188170020024128","At Location","BRISBANE","",""

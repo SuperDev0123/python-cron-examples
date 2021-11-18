@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"DME187648","","298646","01/11/2021 08:06 +11:00","DME1876480010015037","Depot In","ADELAIDE","",""
+"PLX019122","b85d9cb8-4445-4362-a4ed-724b3efc9cb4","89196","01/11/2021 07:35 +11:00","PLX0191220010013216","Linehaul Out","Traralgon","Customer","Customer HX"

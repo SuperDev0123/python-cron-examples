@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>AA183595</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>PLEASE QUOTE PC166013</SenderReference>
+		<StatusDateTime>25/10/2021 16:20 +11:00</StatusDateTime>
+		<Status>MobileFutilePickup</Status>
+		<StatusTag>Closed / No one home</StatusTag>
+	</StatusEvent>
+</Statuses>

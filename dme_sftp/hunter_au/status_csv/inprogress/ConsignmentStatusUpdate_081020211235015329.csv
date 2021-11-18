@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018740</ConsignmentNumber>
+		<UniqueId>40579f33-7051-4723-8233-fa4a62dbf407</UniqueId>
+		<SenderReference>RTS - NO CONNOTE</SenderReference>
+		<StatusDateTime>08/10/2021 12:32 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018740</ConsignmentNumber>
+		<UniqueId>40579f33-7051-4723-8233-fa4a62dbf407</UniqueId>
+		<SenderReference>RTS - NO CONNOTE</SenderReference>
+		<StatusDateTime>08/10/2021 12:32 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

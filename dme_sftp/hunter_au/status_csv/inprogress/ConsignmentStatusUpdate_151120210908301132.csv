@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX188841</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89462</SenderReference>
+		<StatusDateTime>15/11/2021 09:06 +10:30</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188841</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89462</SenderReference>
+		<StatusDateTime>15/11/2021 09:06 +10:30</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

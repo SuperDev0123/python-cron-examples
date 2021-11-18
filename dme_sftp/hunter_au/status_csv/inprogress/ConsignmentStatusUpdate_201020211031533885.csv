@@ -1,0 +1,50 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>AA184526</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>20/10/2021 10:29 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018868</ConsignmentNumber>
+		<UniqueId>40a76f8b-3888-4f9c-8213-e94eefef20f1</UniqueId>
+		<SenderReference>88159</SenderReference>
+		<StatusDateTime>20/10/2021 10:29 +08:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018929</ConsignmentNumber>
+		<UniqueId>8492448f-56ad-4ad6-9912-0c63d522305c</UniqueId>
+		<SenderReference>87828</SenderReference>
+		<StatusDateTime>20/10/2021 10:29 +08:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018953</ConsignmentNumber>
+		<UniqueId>b63e9065-ee07-4251-8a33-fc9d5d735af6</UniqueId>
+		<SenderReference>88315</SenderReference>
+		<StatusDateTime>20/10/2021 10:30 +11:00</StatusDateTime>
+		<Status>MobileShortDelivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018953</ConsignmentNumber>
+		<UniqueId>b63e9065-ee07-4251-8a33-fc9d5d735af6</UniqueId>
+		<SenderReference>88315</SenderReference>
+		<StatusDateTime>20/10/2021 10:30 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186045</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00486347</SenderReference>
+		<StatusDateTime>20/10/2021 10:30 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

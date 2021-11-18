@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME188885</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>6325561</SenderReference>
+		<StatusDateTime>10/11/2021 10:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018808</ConsignmentNumber>
+		<UniqueId>3f5345fe-d48d-4c5b-b512-6f4285ee7d55</UniqueId>
+		<SenderReference>88079</SenderReference>
+		<StatusDateTime>10/11/2021 10:10 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

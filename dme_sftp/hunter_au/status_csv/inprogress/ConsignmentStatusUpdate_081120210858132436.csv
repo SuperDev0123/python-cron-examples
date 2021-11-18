@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX188229</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89409</SenderReference>
+		<StatusDateTime>08/11/2021 08:56 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188445</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>PC167372</SenderReference>
+		<StatusDateTime>08/11/2021 08:47 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

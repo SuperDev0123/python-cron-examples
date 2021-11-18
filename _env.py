@@ -8,11 +8,17 @@ EMAIL_HOST_PASSWORD = "Dme35718&*"
 # **  LOCAL   **
 # **************
 
-DB_HOST = "localhost"
-DB_USER = "root"
-DB_PASS = ""
-DB_PORT = 3306
-DB_NAME = "deliver_me"
+DB_NAME="dme_db_prod"
+DB_USER="fmadmin"
+DB_PASS="oU8pPQxh"
+DB_HOST="deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
+DB_PORT=3306
+
+# DB_HOST = "localhost"
+# DB_USER = "root"
+# DB_PASS = ""
+# DB_PORT = 3306
+# DB_NAME = "deliver_me"
 
 API_URL = "http://localhost:8000/api"  # Local
 USERNAME = "dme"
@@ -22,6 +28,11 @@ PASSWORD = "LRyuNp3zn[XE_`8-"
 SI_DOWNLOAD_DIR = "./xls/downloaded"
 SI_IMPORT_DIR = "./xls/imported"
 SI_ERROR_DIR = "./xls/issued"
+
+# HUNTER
+HUNTER_FTP_DIR = "./dme_sftp/hunter_au/status_csv/inprogress/"
+HUNTER_ARCHIVE_FTP_DIR = "./dme_sftp/hunter_au/status_csv/archive/"
+HUNTER_ISSUED_FTP_DIR = "./dme_sftp/hunter_au/status_csv/issued/"
 
 # ST - Startrack
 ST_FTP_DIR = "/Users/admin/work/goldmine/scripts/dir01/"

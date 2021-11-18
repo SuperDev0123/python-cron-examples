@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX188195","","89349","16/11/2021 08:27 +11:00","PLX1881950020032590","Depot In","Wagga Wagga","",""
+"DME187484","","reference1","16/11/2021 06:14 +11:00","DME1874840010022019","On Delivery","SYDNEY","",""

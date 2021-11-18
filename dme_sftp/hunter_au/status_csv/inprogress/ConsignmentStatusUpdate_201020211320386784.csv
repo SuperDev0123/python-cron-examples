@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX019001</ConsignmentNumber>
+		<UniqueId>03d899c0-5539-4c38-bc61-b4bc1bf7f48f</UniqueId>
+		<SenderReference>88708</SenderReference>
+		<StatusDateTime>20/10/2021 13:12 +11:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019001</ConsignmentNumber>
+		<UniqueId>03d899c0-5539-4c38-bc61-b4bc1bf7f48f</UniqueId>
+		<SenderReference>88708</SenderReference>
+		<StatusDateTime>20/10/2021 13:12 +11:00</StatusDateTime>
+		<Status>MobileRejected</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

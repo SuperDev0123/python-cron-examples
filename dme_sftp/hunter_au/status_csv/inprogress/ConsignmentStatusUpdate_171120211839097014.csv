@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
+"DME189684","","1015222752, 1015507341","17/11/2021 18:37 +11:00","MobileFutilePickup",""
+"DME189684","","1015222752, 1015507341","17/11/2021 18:37 +11:00","PickupReceived",""
+"DME189684","","1015222752, 1015507341","17/11/2021 18:37 +11:00","MobileRejected",""

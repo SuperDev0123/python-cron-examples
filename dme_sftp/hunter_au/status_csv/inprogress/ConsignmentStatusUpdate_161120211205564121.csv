@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME189438</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00492576</SenderReference>
+		<StatusDateTime>16/11/2021 12:04 +11:00</StatusDateTime>
+		<Status>MobileFutilePickup</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME189438</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00492576</SenderReference>
+		<StatusDateTime>16/11/2021 12:04 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME189438</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00492576</SenderReference>
+		<StatusDateTime>16/11/2021 12:04 +11:00</StatusDateTime>
+		<Status>MobileRejected</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

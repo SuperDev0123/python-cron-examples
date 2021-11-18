@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>YY182805</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>15/10/2021 08:45 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018876</ConsignmentNumber>
+		<UniqueId>ec8c1020-a56f-42f9-a634-35aa364661ef</UniqueId>
+		<SenderReference>retrun double up</SenderReference>
+		<StatusDateTime>15/10/2021 08:45 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

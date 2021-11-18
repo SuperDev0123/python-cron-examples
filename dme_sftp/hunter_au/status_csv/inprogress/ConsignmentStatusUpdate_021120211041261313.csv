@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX187692</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89181</SenderReference>
+		<StatusDateTime>02/11/2021 10:38 +11:00</StatusDateTime>
+		<Status>MobileShortDelivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX187692</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89181</SenderReference>
+		<StatusDateTime>02/11/2021 10:38 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME187841</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00490667</SenderReference>
+		<StatusDateTime>02/11/2021 10:39 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

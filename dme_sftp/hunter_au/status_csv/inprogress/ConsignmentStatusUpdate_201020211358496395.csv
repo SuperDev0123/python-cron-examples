@@ -1,0 +1,50 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME186106</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00487234</SenderReference>
+		<StatusDateTime>20/10/2021 13:40 +11:00</StatusDateTime>
+		<Status>MobileFutilePickup</Status>
+		<StatusTag>Inappropriate/insufficient paperwork</StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DMB014868</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00487234</SenderReference>
+		<StatusDateTime>20/10/2021 13:48 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DMB014868</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00487234</SenderReference>
+		<StatusDateTime>20/10/2021 13:48 +11:00</StatusDateTime>
+		<Status>Created</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186106</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00487234</SenderReference>
+		<StatusDateTime>20/10/2021 13:48 +11:00</StatusDateTime>
+		<Status>Holding</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018944</ConsignmentNumber>
+		<UniqueId>d5fc346b-7c3a-4967-be11-997398114c13</UniqueId>
+		<SenderReference>88281</SenderReference>
+		<StatusDateTime>20/10/2021 13:51 +08:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018944</ConsignmentNumber>
+		<UniqueId>d5fc346b-7c3a-4967-be11-997398114c13</UniqueId>
+		<SenderReference>88281</SenderReference>
+		<StatusDateTime>20/10/2021 13:51 +11:00</StatusDateTime>
+		<Status>MobileLeftAsInstructed</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

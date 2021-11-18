@@ -1,0 +1,82 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME189185</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037762</SenderReference>
+		<StatusDateTime>11/11/2021 08:56 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME189177</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22590</SenderReference>
+		<StatusDateTime>11/11/2021 08:56 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME189009</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037543</SenderReference>
+		<StatusDateTime>11/11/2021 08:56 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188976</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037918</SenderReference>
+		<StatusDateTime>11/11/2021 08:56 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188976</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037918</SenderReference>
+		<StatusDateTime>11/11/2021 08:56 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME189009</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037543</SenderReference>
+		<StatusDateTime>11/11/2021 08:56 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME189174</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037751</SenderReference>
+		<StatusDateTime>11/11/2021 08:56 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME189177</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22590</SenderReference>
+		<StatusDateTime>11/11/2021 08:56 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME189185</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037762</SenderReference>
+		<StatusDateTime>11/11/2021 08:56 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188935</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88813</SenderReference>
+		<StatusDateTime>11/11/2021 08:45 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

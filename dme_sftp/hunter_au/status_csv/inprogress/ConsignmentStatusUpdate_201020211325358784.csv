@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME186219</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037563</SenderReference>
+		<StatusDateTime>20/10/2021 13:15 +11:00</StatusDateTime>
+		<Status>MobileLocationClosed</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019024</ConsignmentNumber>
+		<UniqueId>16338b45-abcb-45d1-84d5-917008804dd5</UniqueId>
+		<SenderReference>88800</SenderReference>
+		<StatusDateTime>20/10/2021 13:20 +10:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019024</ConsignmentNumber>
+		<UniqueId>16338b45-abcb-45d1-84d5-917008804dd5</UniqueId>
+		<SenderReference>88800</SenderReference>
+		<StatusDateTime>20/10/2021 13:20 +11:00</StatusDateTime>
+		<Status>MobileLeftAsInstructed</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

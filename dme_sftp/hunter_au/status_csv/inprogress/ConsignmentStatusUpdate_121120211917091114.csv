@@ -1,0 +1,66 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX189075</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89567</SenderReference>
+		<StatusDateTime>12/11/2021 19:07 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188845</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89551</SenderReference>
+		<StatusDateTime>12/11/2021 19:08 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189056</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89617</SenderReference>
+		<StatusDateTime>12/11/2021 19:08 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188746</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89511</SenderReference>
+		<StatusDateTime>12/11/2021 19:07 +11:00</StatusDateTime>
+		<Status>MobileReturnDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188746</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89511</SenderReference>
+		<StatusDateTime>12/11/2021 19:07 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188745</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89510</SenderReference>
+		<StatusDateTime>12/11/2021 19:07 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189080</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89670</SenderReference>
+		<StatusDateTime>12/11/2021 19:07 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019168</ConsignmentNumber>
+		<UniqueId>b35b1874-8a19-4962-be9a-6a932a6ff424</UniqueId>
+		<SenderReference>89662</SenderReference>
+		<StatusDateTime>12/11/2021 19:07 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

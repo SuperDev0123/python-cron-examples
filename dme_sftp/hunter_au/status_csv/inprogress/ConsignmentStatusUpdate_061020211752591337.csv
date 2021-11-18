@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME184689</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>157164</SenderReference>
+		<StatusDateTime>06/10/2021 17:49 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018743</ConsignmentNumber>
+		<UniqueId>6048d4f0-bc0d-4c34-aea3-86c197f6d359</UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>06/10/2021 17:51 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018876</ConsignmentNumber>
+		<UniqueId>ec8c1020-a56f-42f9-a634-35aa364661ef</UniqueId>
+		<SenderReference>retrun double up</SenderReference>
+		<StatusDateTime>11/10/2021 22:12 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

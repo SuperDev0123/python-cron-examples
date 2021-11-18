@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"DME185791","","22386","19/10/2021 17:24 +11:00","DME1857910010012192","Depot In","SYDNEY","",""
+"DME185814","","22343","19/10/2021 17:24 +11:00","DME1858140010013150","Depot In","SYDNEY","",""

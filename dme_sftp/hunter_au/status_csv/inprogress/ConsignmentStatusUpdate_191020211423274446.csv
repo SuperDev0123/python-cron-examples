@@ -1,0 +1,42 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME186241</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>PC167040</SenderReference>
+		<StatusDateTime>19/10/2021 14:20 +11:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186241</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>PC167040</SenderReference>
+		<StatusDateTime>19/10/2021 14:20 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>AA183638</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>19/10/2021 14:20 +11:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>AA183638</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>19/10/2021 14:20 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018818</ConsignmentNumber>
+		<UniqueId>43320bb7-189a-4380-8acf-b14136e1c5f6</UniqueId>
+		<SenderReference>88102</SenderReference>
+		<StatusDateTime>19/10/2021 14:21 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

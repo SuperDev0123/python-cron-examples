@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX018896","dabbf029-db3f-4abf-87ee-fd40d6b3df27","88233","19/10/2021 15:45 +10:00","PLX0188960010044740","On Delivery","MACKAY","",""
+"PLX018896","dabbf029-db3f-4abf-87ee-fd40d6b3df27","88233","19/10/2021 15:45 +10:00","PLX0188960010044740","Floor","MACKAY","",""

@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018796</ConsignmentNumber>
+		<UniqueId>845ffef3-8ae6-4907-bf43-8dc64a79951d</UniqueId>
+		<SenderReference>88083</SenderReference>
+		<StatusDateTime>08/10/2021 14:39 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185354</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>7642191, 7642191</SenderReference>
+		<StatusDateTime>08/10/2021 14:41 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

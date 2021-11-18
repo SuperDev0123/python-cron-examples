@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX019152</ConsignmentNumber>
+		<UniqueId>16a1ee5e-7686-4503-a918-55983948145d</UniqueId>
+		<SenderReference>89458</SenderReference>
+		<StatusDateTime>04/11/2021 00:19 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME187797</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00487818</SenderReference>
+		<StatusDateTime>04/11/2021 00:13 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

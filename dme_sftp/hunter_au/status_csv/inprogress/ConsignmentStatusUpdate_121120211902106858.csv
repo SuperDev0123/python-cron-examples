@@ -1,0 +1,66 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX189077</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002104712, 393503651002104705</SenderReference>
+		<StatusDateTime>12/11/2021 18:53 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189072</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002099742, 393503651002099759</SenderReference>
+		<StatusDateTime>12/11/2021 18:53 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189073</ConsignmentNumber>
+		<UniqueId>68522</UniqueId>
+		<SenderReference>393503651002099728, 393503651002099735</SenderReference>
+		<StatusDateTime>12/11/2021 18:53 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189076</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002104750, 393503651002104743, 393503651002104729, 393503651002104736</SenderReference>
+		<StatusDateTime>12/11/2021 18:53 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189079</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002104682, 393503651002104699</SenderReference>
+		<StatusDateTime>12/11/2021 18:54 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189232</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393277552007026215</SenderReference>
+		<StatusDateTime>12/11/2021 18:54 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189043</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002099551, 393503651002099544, 393503651002099537, 393503651002099711, 393503651002099704,</SenderReference>
+		<StatusDateTime>12/11/2021 18:54 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189237</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393277552007026239</SenderReference>
+		<StatusDateTime>12/11/2021 18:54 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

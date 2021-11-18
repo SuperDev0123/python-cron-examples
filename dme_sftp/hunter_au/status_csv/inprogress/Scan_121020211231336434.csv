@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PL014951","","","12/10/2021 12:28 +11:00","pl014951","Depot In","Devonport","",""
+"PLX185138","","88099","12/10/2021 12:29 +11:00","PLX1851380020053199","On Delivery","MELBOURNE","",""
+"PL014951","","","12/10/2021 12:28 +11:00","pl014951","Depot In","Devonport","",""

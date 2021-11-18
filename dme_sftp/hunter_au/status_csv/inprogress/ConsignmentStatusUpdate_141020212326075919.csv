@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018857</ConsignmentNumber>
+		<UniqueId>da18f603-c7f0-49d0-b93c-530cb0149fc7</UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>14/10/2021 23:23 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

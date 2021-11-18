@@ -1,0 +1,42 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME187060</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22520</SenderReference>
+		<StatusDateTime>01/11/2021 15:45 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188099</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>4771135</SenderReference>
+		<StatusDateTime>01/11/2021 15:46 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188099</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>4771135</SenderReference>
+		<StatusDateTime>01/11/2021 15:46 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME187060</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22520</SenderReference>
+		<StatusDateTime>01/11/2021 15:47 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188101</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1015235505, 1015235548, 1015230766, 1015328334, 1015313125</SenderReference>
+		<StatusDateTime>01/11/2021 15:51 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

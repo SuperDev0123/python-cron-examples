@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME188887</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>3822555</SenderReference>
+		<StatusDateTime>09/11/2021 13:18 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX186756</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88954</SenderReference>
+		<StatusDateTime>09/11/2021 13:08 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX186960</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88931</SenderReference>
+		<StatusDateTime>09/11/2021 13:09 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

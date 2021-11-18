@@ -1,0 +1,66 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX019150</ConsignmentNumber>
+		<UniqueId>1e7d1c35-8d8c-48e4-998d-b1832de56fd0</UniqueId>
+		<SenderReference>89169</SenderReference>
+		<StatusDateTime>09/11/2021 11:11 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188830</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89522</SenderReference>
+		<StatusDateTime>09/11/2021 11:12 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188457</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89420</SenderReference>
+		<StatusDateTime>09/11/2021 11:12 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188452</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89418</SenderReference>
+		<StatusDateTime>09/11/2021 11:12 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188833</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89526</SenderReference>
+		<StatusDateTime>09/11/2021 11:12 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188462</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89421</SenderReference>
+		<StatusDateTime>09/11/2021 11:12 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188464</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89422</SenderReference>
+		<StatusDateTime>09/11/2021 11:12 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019166</ConsignmentNumber>
+		<UniqueId>86b95a4e-ae11-4370-9ab1-4b01c1d8d1d1</UniqueId>
+		<SenderReference>89416</SenderReference>
+		<StatusDateTime>09/11/2021 11:12 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"DME184881","","CS00484274","13/10/2021 09:48 +11:00","DME1848810010013803","On Delivery","MELBOURNE","",""
+"DME184881","","CS00484274","13/10/2021 09:56 +11:00","DME1848810010013803","On Delivery","MELBOURNE","",""

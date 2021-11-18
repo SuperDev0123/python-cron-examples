@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX018775","16865515-b2d8-47fb-b2c9-b65572465c68","87542 30189 double up return","12/10/2021 16:10 +11:00","PLX0187750010022766","Depot In","ADELAIDE","",""
+"PLX018775","16865515-b2d8-47fb-b2c9-b65572465c68","87542 30189 double up return","12/10/2021 16:11 +11:00","PLX0187750020022766","Depot In","ADELAIDE","",""

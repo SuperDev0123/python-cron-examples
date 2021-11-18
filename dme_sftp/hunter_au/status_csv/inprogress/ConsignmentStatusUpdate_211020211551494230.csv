@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX019074</ConsignmentNumber>
+		<UniqueId>217b5777-46c5-47d9-a8b8-633dc93cf99a</UniqueId>
+		<SenderReference>87532</SenderReference>
+		<StatusDateTime>21/10/2021 15:50 +11:00</StatusDateTime>
+		<Status>MobileShortDelivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019074</ConsignmentNumber>
+		<UniqueId>217b5777-46c5-47d9-a8b8-633dc93cf99a</UniqueId>
+		<SenderReference>87532</SenderReference>
+		<StatusDateTime>21/10/2021 15:50 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

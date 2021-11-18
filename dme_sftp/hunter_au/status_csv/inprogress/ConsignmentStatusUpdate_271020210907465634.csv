@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX019116</ConsignmentNumber>
+		<UniqueId>472fc7a2-cb11-4074-8647-c8d69c0af644</UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>27/10/2021 09:05 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX187008</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88982</SenderReference>
+		<StatusDateTime>27/10/2021 09:05 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

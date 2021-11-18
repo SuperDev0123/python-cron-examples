@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX187836","","89281","04/11/2021 02:03 +11:00","PLX1878360010012527","Depot In","Unanderra","",""
+"PLX019136","33435bcd-9146-4a16-8f0a-4deb4ceadd0c","89256","04/11/2021 01:25 +11:00","PLX0191360010012825","On Delivery","Dubbo","",""
+"PLX019136","33435bcd-9146-4a16-8f0a-4deb4ceadd0c","89256","04/11/2021 01:25 +11:00","PLX0191360010012825","Floor","Dubbo","",""

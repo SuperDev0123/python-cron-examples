@@ -1,0 +1,114 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX189879</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106648</SenderReference>
+		<StatusDateTime>16/11/2021 07:11 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189879</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106648</SenderReference>
+		<StatusDateTime>16/11/2021 07:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189881</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106662</SenderReference>
+		<StatusDateTime>16/11/2021 07:11 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189640</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106716, 393503651002106723</SenderReference>
+		<StatusDateTime>16/11/2021 07:11 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189877</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106631</SenderReference>
+		<StatusDateTime>16/11/2021 07:11 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189877</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106631</SenderReference>
+		<StatusDateTime>16/11/2021 07:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189876</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106624</SenderReference>
+		<StatusDateTime>16/11/2021 07:12 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189876</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106624</SenderReference>
+		<StatusDateTime>16/11/2021 07:12 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189872</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106709, 393503651002106693</SenderReference>
+		<StatusDateTime>16/11/2021 07:12 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189872</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106709, 393503651002106693</SenderReference>
+		<StatusDateTime>16/11/2021 07:12 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189871</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106679, 393503651002106686</SenderReference>
+		<StatusDateTime>16/11/2021 07:12 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189871</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106679, 393503651002106686</SenderReference>
+		<StatusDateTime>16/11/2021 07:12 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189874</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106600</SenderReference>
+		<StatusDateTime>16/11/2021 07:12 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189874</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002106600</SenderReference>
+		<StatusDateTime>16/11/2021 07:12 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

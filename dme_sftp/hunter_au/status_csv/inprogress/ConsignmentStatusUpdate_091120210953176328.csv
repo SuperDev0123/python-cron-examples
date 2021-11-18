@@ -1,0 +1,34 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX187310</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89040</SenderReference>
+		<StatusDateTime>09/11/2021 09:50 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188692</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22430</SenderReference>
+		<StatusDateTime>09/11/2021 09:50 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188185</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>85235</SenderReference>
+		<StatusDateTime>09/11/2021 09:51 +11:00</StatusDateTime>
+		<Status>MobileShortDelivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188185</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>85235</SenderReference>
+		<StatusDateTime>09/11/2021 09:51 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

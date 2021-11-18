@@ -1,0 +1,34 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX189244</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002108406, 393503651002108390, 393503651002108383</SenderReference>
+		<StatusDateTime>15/11/2021 08:16 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189244</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002108406, 393503651002108390, 393503651002108383</SenderReference>
+		<StatusDateTime>15/11/2021 08:16 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189503</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002108376, 393503651002108338, 393503651002108369, 393503651002108321</SenderReference>
+		<StatusDateTime>15/11/2021 08:17 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189503</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002108376, 393503651002108338, 393503651002108369, 393503651002108321</SenderReference>
+		<StatusDateTime>15/11/2021 08:17 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

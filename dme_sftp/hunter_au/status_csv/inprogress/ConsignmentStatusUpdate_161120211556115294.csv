@@ -1,0 +1,6 @@
+ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
+"PLX019191","33ce3d1d-7c50-4e05-8430-18459a5f6a70","88218 -RTS","16/11/2021 15:53 +11:00","MobilePickupComplete",""
+"PLX019191","33ce3d1d-7c50-4e05-8430-18459a5f6a70","88218 -RTS","16/11/2021 15:53 +11:00","InTransit",""
+"PLX188746","","89511","16/11/2021 15:53 +11:00","Delivered",""
+"DME188912","","PC171780","16/11/2021 15:54 +11:00","Delivered",""
+"DME190014","","","16/11/2021 15:55 +11:00","PickupReceived",""

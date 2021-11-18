@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DMB014880</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1015470661</SenderReference>
+		<StatusDateTime>09/11/2021 13:21 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DMB014880</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1015470661</SenderReference>
+		<StatusDateTime>09/11/2021 13:21 +11:00</StatusDateTime>
+		<Status>Created</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188861</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1015470661</SenderReference>
+		<StatusDateTime>09/11/2021 13:21 +11:00</StatusDateTime>
+		<Status>Holding</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

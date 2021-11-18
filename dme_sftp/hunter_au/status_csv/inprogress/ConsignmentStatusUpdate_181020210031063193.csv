@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018991</ConsignmentNumber>
+		<UniqueId>2ade2876-bd83-4226-9af6-583485a57554</UniqueId>
+		<SenderReference>88725</SenderReference>
+		<StatusDateTime>18/10/2021 00:30 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018991</ConsignmentNumber>
+		<UniqueId>2ade2876-bd83-4226-9af6-583485a57554</UniqueId>
+		<SenderReference>88725</SenderReference>
+		<StatusDateTime>18/10/2021 00:30 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

@@ -1,0 +1,5 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX019134","db733cc4-6dcb-4f7c-9eb7-d1e8492d5fbf","89244","09/11/2021 12:39 +11:00","PLX0191340020022484","Depot In","Murwillumbah - NCFS","",""
+"PLX188209","","89337","09/11/2021 12:40 +10:00","PLX1882090030044419","Depot In","BRISBANE","",""
+"PLX188062","","89329","09/11/2021 12:40 +10:00","PLX1880620020044358","Depot In","BRISBANE","",""
+"PLX188062","","89329","09/11/2021 12:40 +10:00","PLX1880620030044358","Depot In","BRISBANE","",""

@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX187130","","89016","02/11/2021 10:08 +10:00","PLX1871300030044553","On Delivery","AIR ROAD","",""
+"PLX187130","","89016","02/11/2021 10:08 +10:00","PLX1871300010044553","On Delivery","AIR ROAD","",""
+"PLX187130","","89016","02/11/2021 10:08 +10:00","PLX1871300040044553","On Delivery","AIR ROAD","",""

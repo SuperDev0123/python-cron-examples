@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX019053","30b241d7-1082-4c97-a9d0-55d50e62205b","88846","25/10/2021 08:06 +11:00","88846001","On Delivery","Moss Vale","",""
+"PLX019049","ae7f8534-c52c-4606-85ea-34e13b7b9b1a","88702","25/10/2021 08:33 +11:00","PLX0190490010023723","Depot In","MELBOURNE","",""

@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"DME184988","","1036020","15/10/2021 10:20 +10:00","DME1849880010014285","On Delivery","BRISBANE","",""
+"PLX018828","ea239bad-ca8c-46e4-b15a-687f3250d38a","88118","15/10/2021 10:49 +11:00","PLX0188280020022770","At Location","SYDNEY","",""

@@ -1,0 +1,2 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX019019","1261af1e-521b-49ad-966f-afbcc6d1ef5b","88795","25/10/2021 11:18 +10:30","PLX0190190020045481","Reserved 15","SA_COUNTRY","","WEB SCAN"

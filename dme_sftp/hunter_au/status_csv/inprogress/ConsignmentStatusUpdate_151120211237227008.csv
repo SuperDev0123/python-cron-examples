@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX188848</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002086322, 393503651002086360, 393503651002086339, 393503651002086346, 393503651002086445,</SenderReference>
+		<StatusDateTime>15/11/2021 12:35 +10:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188848</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002086322, 393503651002086360, 393503651002086339, 393503651002086346, 393503651002086445,</SenderReference>
+		<StatusDateTime>15/11/2021 12:35 +11:00</StatusDateTime>
+		<Status>MobileLeftAsInstructed</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018771</ConsignmentNumber>
+		<UniqueId>ff46c1cd-8933-4bf0-bc79-388f62e9cce9</UniqueId>
+		<SenderReference>88018</SenderReference>
+		<StatusDateTime>13/10/2021 07:07 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185644</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00485999</SenderReference>
+		<StatusDateTime>13/10/2021 08:15 +10:30</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

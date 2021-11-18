@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"DME186108","","CS00485963","22/10/2021 09:16 +11:00","DME1861080010013803","Depot In","Geelong","","WEB SCAN"
+"PLX019001","03d899c0-5539-4c38-bc61-b4bc1bf7f48f","88708","22/10/2021 07:43 +11:00","PLX0190010010023030","On Delivery","MELBOURNE","",""

@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>AA179980</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>07/09/2021 10:34 +10:00</StatusDateTime>
+		<Status>Cancelled</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

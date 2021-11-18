@@ -1,0 +1,7 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX018791","9b4515e5-b994-445c-99e9-0ffb3db65caa","88053","15/10/2021 08:12 +11:00","PLX0187910010022372","Depot In","TAMWORTH","",""
+"PLX018880","852d308e-d9c4-46e0-964b-1762918c8b25","84829 extra box return","15/10/2021 07:35 +11:00","PLX0188800010012766","On Delivery","SYDNEY","",""
+"YY182805","","","15/10/2021 07:36 +11:00","YY182805005","On Delivery","SYDNEY","",""
+"PLX018876","ec8c1020-a56f-42f9-a634-35aa364661ef","retrun double up","15/10/2021 07:41 +11:00","PLX0188760010032766","On Delivery","SYDNEY","",""
+"YY182805","","","15/10/2021 07:53 +11:00","YY182805004","On Delivery","SYDNEY","",""
+"PLX018775","16865515-b2d8-47fb-b2c9-b65572465c68","87542 30189 double up return","15/10/2021 07:59 +11:00","PLX0187750020022766","On Delivery","SYDNEY","",""

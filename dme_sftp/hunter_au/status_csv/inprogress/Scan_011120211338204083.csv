@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX186856","","88926","01/11/2021 13:34 +11:00","PLX1868560050012480","Depot In","Lismore - NCFS","","Hunter Express"
+"PLX186856","","88926","01/11/2021 13:34 +11:00","PLX1868560050012480","Linehaul Out","Lismore - NCFS","Murwillumbah - NCFS",""

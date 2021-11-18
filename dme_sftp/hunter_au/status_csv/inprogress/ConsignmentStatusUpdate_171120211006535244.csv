@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
+"PLX189042N","589ce033-e608-473b-a6a4-f3c23dc0023c","","17/11/2021 10:04 +11:00","OnDelivery",""
+"DME189678","","3669942","17/11/2021 10:04 +11:00","OnDelivery",""
+"PLX189031","","89598","17/11/2021 10:05 +11:00","Delivered",""

@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME185173</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>8037178, 8037179, 8037197</SenderReference>
+		<StatusDateTime>07/10/2021 14:00 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185173</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>8037178, 8037179, 8037197</SenderReference>
+		<StatusDateTime>07/10/2021 14:00 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

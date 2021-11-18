@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"AA183787","","","05/10/2021 07:27 +11:00","AA1837870010013803","On Delivery","MELBOURNE","",""
+"AA183381","","","05/10/2021 07:27 +11:00","AA1833810010013803","On Delivery","MELBOURNE","",""

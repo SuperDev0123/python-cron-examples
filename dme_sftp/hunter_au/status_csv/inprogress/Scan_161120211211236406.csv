@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX188190","","89343","16/11/2021 12:05 +11:00","PLX1881900020027019","At Location","HOBART","",""
+"PLX188190","","89343","16/11/2021 12:05 +11:00","PLX1881900010027019","At Location","HOBART","",""

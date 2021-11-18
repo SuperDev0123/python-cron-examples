@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
+"PLX019209","19604f91-2164-44d8-aad9-ff2207222289","90140","18/11/2021 08:59 +11:00","PickupReceived",""
+"PLX019208","dd93fe3d-0f02-4f79-85f1-4d477719f2f8","90139","18/11/2021 08:59 +11:00","Assigned",""

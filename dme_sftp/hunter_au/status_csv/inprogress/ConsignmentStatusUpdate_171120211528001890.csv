@@ -1,0 +1,5 @@
+ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
+"PLX019190","b8b48847-71e9-49a5-8637-1c82d8578691","89733","17/11/2021 15:27 +11:00","Assigned",""
+"DMB014889","","57195","17/11/2021 15:27 +11:00","PickupReceived",""
+"DMB014889","","57195","17/11/2021 15:27 +11:00","Created",""
+"DME189681","","57195","17/11/2021 15:27 +11:00","Holding",""

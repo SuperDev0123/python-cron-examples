@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018809</ConsignmentNumber>
+		<UniqueId>26588469-e40d-43d9-8c04-87226954ad1d</UniqueId>
+		<SenderReference>88085</SenderReference>
+		<StatusDateTime>14/10/2021 09:41 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018809</ConsignmentNumber>
+		<UniqueId>26588469-e40d-43d9-8c04-87226954ad1d</UniqueId>
+		<SenderReference>88085</SenderReference>
+		<StatusDateTime>14/10/2021 09:42 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

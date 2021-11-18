@@ -1,0 +1,114 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX019115</ConsignmentNumber>
+		<UniqueId>739a843a-cca6-4885-a35a-6980c255eb5e</UniqueId>
+		<SenderReference>88972</SenderReference>
+		<StatusDateTime>25/10/2021 07:34 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019112</ConsignmentNumber>
+		<UniqueId>5b633297-8a80-40c0-8854-7ca41c45607e</UniqueId>
+		<SenderReference>88857</SenderReference>
+		<StatusDateTime>25/10/2021 07:34 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019111</ConsignmentNumber>
+		<UniqueId>4741e323-fa20-4fba-bb14-632aa2fb68b3</UniqueId>
+		<SenderReference>88856</SenderReference>
+		<StatusDateTime>25/10/2021 07:34 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019109</ConsignmentNumber>
+		<UniqueId>581d40a9-0347-4cce-bbf8-cfe19439f387</UniqueId>
+		<SenderReference>88899</SenderReference>
+		<StatusDateTime>25/10/2021 07:34 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019108</ConsignmentNumber>
+		<UniqueId>951cd15d-377b-4fd6-9568-65b698a5b2ea</UniqueId>
+		<SenderReference>88905</SenderReference>
+		<StatusDateTime>25/10/2021 07:34 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019107</ConsignmentNumber>
+		<UniqueId>23866930-94ce-46cd-ab7b-428d467afb0f</UniqueId>
+		<SenderReference>88953</SenderReference>
+		<StatusDateTime>25/10/2021 07:34 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019106</ConsignmentNumber>
+		<UniqueId>836aa334-d155-419f-b269-a86837762f63</UniqueId>
+		<SenderReference>88953</SenderReference>
+		<StatusDateTime>25/10/2021 07:34 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019115</ConsignmentNumber>
+		<UniqueId>739a843a-cca6-4885-a35a-6980c255eb5e</UniqueId>
+		<SenderReference>88972</SenderReference>
+		<StatusDateTime>25/10/2021 07:34 +11:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019112</ConsignmentNumber>
+		<UniqueId>5b633297-8a80-40c0-8854-7ca41c45607e</UniqueId>
+		<SenderReference>88857</SenderReference>
+		<StatusDateTime>25/10/2021 07:34 +11:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019111</ConsignmentNumber>
+		<UniqueId>4741e323-fa20-4fba-bb14-632aa2fb68b3</UniqueId>
+		<SenderReference>88856</SenderReference>
+		<StatusDateTime>25/10/2021 07:34 +11:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019109</ConsignmentNumber>
+		<UniqueId>581d40a9-0347-4cce-bbf8-cfe19439f387</UniqueId>
+		<SenderReference>88899</SenderReference>
+		<StatusDateTime>25/10/2021 07:34 +11:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019108</ConsignmentNumber>
+		<UniqueId>951cd15d-377b-4fd6-9568-65b698a5b2ea</UniqueId>
+		<SenderReference>88905</SenderReference>
+		<StatusDateTime>25/10/2021 07:34 +11:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019107</ConsignmentNumber>
+		<UniqueId>23866930-94ce-46cd-ab7b-428d467afb0f</UniqueId>
+		<SenderReference>88953</SenderReference>
+		<StatusDateTime>25/10/2021 07:34 +11:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019106</ConsignmentNumber>
+		<UniqueId>836aa334-d155-419f-b269-a86837762f63</UniqueId>
+		<SenderReference>88953</SenderReference>
+		<StatusDateTime>25/10/2021 07:34 +11:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

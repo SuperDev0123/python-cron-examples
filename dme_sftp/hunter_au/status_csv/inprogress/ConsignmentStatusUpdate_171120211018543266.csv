@@ -1,0 +1,7 @@
+ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
+"DME189672","","1187254","17/11/2021 10:17 +11:00","OnDelivery",""
+"DME189670","","555268","17/11/2021 10:17 +11:00","OnDelivery",""
+"DME189677","","4100495406","17/11/2021 10:17 +11:00","OnDelivery",""
+"DME189210","","CS00478244","17/11/2021 10:17 +11:00","OnDelivery",""
+"PLX189792","","393503651002105108","17/11/2021 10:18 +11:00","Delivered",""
+"PLX189792","","393503651002105108","17/11/2021 10:18 +11:00","MobileLeftAsInstructed",""

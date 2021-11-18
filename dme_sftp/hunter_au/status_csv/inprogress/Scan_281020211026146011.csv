@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX018988","4d1969d0-640a-48ca-9cc3-e0d14a37f463","88324","28/10/2021 10:22 +10:00","PLX0189880030044575","On Delivery","SunshineCoast","",""
+"PLX018988","4d1969d0-640a-48ca-9cc3-e0d14a37f463","88324","28/10/2021 10:23 +10:00","plx018988001","On Delivery","SunshineCoast","",""

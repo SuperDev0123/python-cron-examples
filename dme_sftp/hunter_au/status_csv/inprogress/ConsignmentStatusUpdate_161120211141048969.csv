@@ -1,0 +1,42 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME189174</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037751</SenderReference>
+		<StatusDateTime>16/11/2021 11:35 +10:30</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188190</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89343</SenderReference>
+		<StatusDateTime>16/11/2021 11:35 +11:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME189672</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1187254</SenderReference>
+		<StatusDateTime>16/11/2021 11:36 +10:30</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME189670</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>555268</SenderReference>
+		<StatusDateTime>16/11/2021 11:36 +10:30</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME189671</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>4153602</SenderReference>
+		<StatusDateTime>16/11/2021 11:36 +10:30</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

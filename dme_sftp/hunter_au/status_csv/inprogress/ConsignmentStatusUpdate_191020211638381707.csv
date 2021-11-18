@@ -1,0 +1,58 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX019040</ConsignmentNumber>
+		<UniqueId>c18135ea-df01-444a-96fa-b2590dbcf919</UniqueId>
+		<SenderReference>88149</SenderReference>
+		<StatusDateTime>19/10/2021 16:25 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019036</ConsignmentNumber>
+		<UniqueId>b8426caf-51ca-464a-a987-f85f6a57a6d8</UniqueId>
+		<SenderReference>87866</SenderReference>
+		<StatusDateTime>19/10/2021 16:25 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019014</ConsignmentNumber>
+		<UniqueId>fc4db99e-4dc4-4e40-bf76-e8505d6acc8a</UniqueId>
+		<SenderReference>88789</SenderReference>
+		<StatusDateTime>19/10/2021 16:25 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018999</ConsignmentNumber>
+		<UniqueId>48e1faa2-91f1-4f35-93d5-ab04238a44a9</UniqueId>
+		<SenderReference>88704</SenderReference>
+		<StatusDateTime>19/10/2021 16:25 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018998</ConsignmentNumber>
+		<UniqueId>337b12dc-c0bf-4151-b713-6a9e0f163e8e</UniqueId>
+		<SenderReference>88703</SenderReference>
+		<StatusDateTime>19/10/2021 16:25 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019051</ConsignmentNumber>
+		<UniqueId>6e250d76-4ffe-4a36-93dc-098b96ec7d51</UniqueId>
+		<SenderReference>88766</SenderReference>
+		<StatusDateTime>19/10/2021 16:25 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019059</ConsignmentNumber>
+		<UniqueId>6afaabd0-f11d-4d80-b78c-5131062bf330</UniqueId>
+		<SenderReference>88852</SenderReference>
+		<StatusDateTime>19/10/2021 16:29 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

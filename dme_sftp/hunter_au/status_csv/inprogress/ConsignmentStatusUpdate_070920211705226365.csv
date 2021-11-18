@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>HUX180989</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>ECN001000010</SenderReference>
+		<StatusDateTime>07/09/2021 17:03 +10:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>HUX180989</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>ECN001000010</SenderReference>
+		<StatusDateTime>07/09/2021 17:04 +10:00</StatusDateTime>
+		<Status>MobileCardLeft</Status>
+		<StatusTag>Carded</StatusTag>
+	</StatusEvent>
+</Statuses>

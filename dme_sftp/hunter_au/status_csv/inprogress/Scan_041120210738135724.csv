@@ -1,0 +1,9 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX186954","","88939","04/11/2021 05:45 +11:00","PLX1869540030072259","On Delivery","SYDNEY","",""
+"PLX186954","","88939","04/11/2021 05:45 +11:00","PLX1869540030072259","On Delivery","SYDNEY","",""
+"PLX186954","","88939","04/11/2021 06:00 +11:00","PLX1869540050072259","On Delivery","SYDNEY","",""
+"PLX186954","","88939","04/11/2021 06:12 +11:00","PLX1869540040072259","On Delivery","SYDNEY","",""
+"PLX187018","","88995","04/11/2021 07:15 +11:00","PLX1870180010042372","On Delivery","Glen Innes","",""
+"PLX187018","","88995","04/11/2021 07:31 +11:00","PLX1870180030042372","On Delivery","Glen Innes","",""
+"PLX187018","","88995","04/11/2021 07:32 +11:00","PLX1870180020042372","On Delivery","Glen Innes","",""
+"PLX187509","","89168","04/11/2021 07:37 +11:00","PLX1875090060065125","Depot In","ADELAIDE","",""

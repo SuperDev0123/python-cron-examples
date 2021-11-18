@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
+"DME189549","","","17/11/2021 15:40 +11:00","PickupReceived",""
+"DME187880","","","17/11/2021 15:40 +11:00","PickupReceived",""
+"DME187880","","","17/11/2021 15:40 +11:00","Assigned",""

@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME186942</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>PC170420</SenderReference>
+		<StatusDateTime>26/10/2021 10:51 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186780</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00489017</SenderReference>
+		<StatusDateTime>26/10/2021 10:52 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX186776</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88817</SenderReference>
+		<StatusDateTime>26/10/2021 10:53 +11:00</StatusDateTime>
+		<Status>Holding</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

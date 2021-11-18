@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME185356</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>3313259, 3313267, 3313270</SenderReference>
+		<StatusDateTime>18/10/2021 13:44 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186076</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>261772</SenderReference>
+		<StatusDateTime>18/10/2021 13:45 +11:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186076</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>261772</SenderReference>
+		<StatusDateTime>18/10/2021 13:45 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

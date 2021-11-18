@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"DME188091","","4236139, 4236141, 4236144","05/11/2021 09:12 +10:00","DME1880910010034207","Reserved 4","BRISBANE","",""
+"DME188091","","4236139, 4236141, 4236144","05/11/2021 09:12 +10:00","DME1880910030034207","Reserved 4","BRISBANE","",""

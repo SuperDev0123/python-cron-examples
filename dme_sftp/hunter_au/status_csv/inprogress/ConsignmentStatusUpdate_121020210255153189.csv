@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018878</ConsignmentNumber>
+		<UniqueId>9a696e8c-4029-43b0-9010-1cc9df006bc2</UniqueId>
+		<SenderReference>87981</SenderReference>
+		<StatusDateTime>12/10/2021 02:53 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018897</ConsignmentNumber>
+		<UniqueId>830be4ed-0829-48dc-aeea-f567732ea14e</UniqueId>
+		<SenderReference>88234</SenderReference>
+		<StatusDateTime>22/10/2021 09:43 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186114</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00487881</SenderReference>
+		<StatusDateTime>22/10/2021 09:44 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019046</ConsignmentNumber>
+		<UniqueId>46536690-aeee-448b-a2c4-b920acf8931e</UniqueId>
+		<SenderReference>88181</SenderReference>
+		<StatusDateTime>22/10/2021 09:45 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

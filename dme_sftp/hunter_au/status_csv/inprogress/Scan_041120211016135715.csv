@@ -1,0 +1,7 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"DME187868","","22545","04/11/2021 10:03 +10:00","DME1878680010014034","On Delivery","BRISBANE","",""
+"PLX018857","da18f603-c7f0-49d0-b93c-530cb0149fc7","","04/11/2021 10:05 +11:00","PLX0188570060063862","On Delivery","Traralgon","",""
+"PLX018857","da18f603-c7f0-49d0-b93c-530cb0149fc7","","04/11/2021 10:05 +11:00","PLX0188570050063862","On Delivery","Traralgon","",""
+"PLX187708","","89229","04/11/2021 10:14 +10:00","PLX1877080060074020","Reserved 4","BRISBANE","",""
+"PLX187708","","89229","04/11/2021 10:14 +10:00","PLX1877080050074020","Reserved 4","BRISBANE","",""
+"PLX187708","","89229","04/11/2021 10:14 +10:00","PLX1877080070074020","Reserved 4","BRISBANE","",""

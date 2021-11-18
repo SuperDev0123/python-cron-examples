@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX187846","","89289","11/11/2021 14:17 +11:00","PLX1878460010072390","Depot In","","",""
+"PLX188247","","89105","11/11/2021 14:20 +11:00","PLX1882470070072480","Depot In","Lismore - NCFS","","Towers TPT"
+"DME186941","65773","4023010131","11/11/2021 14:22 +11:00","DME1869410010013172","Depot In","ADELAIDE","",""

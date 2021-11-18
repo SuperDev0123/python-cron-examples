@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX188212","","89366","11/11/2021 11:49 +10:30","PLX1882120010035330","Linehaul Out","ADELAIDE","ONFORWARD","Agent - Cochrans"
+"PLX188212","","89366","11/11/2021 11:49 +10:30","PLX1882120020035330","Linehaul Out","ADELAIDE","ONFORWARD","Agent - Cochrans"

@@ -1,0 +1,34 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME187600</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>298467</SenderReference>
+		<StatusDateTime>29/10/2021 15:40 +11:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME187600</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>298467</SenderReference>
+		<StatusDateTime>29/10/2021 15:40 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME187648</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>298646</SenderReference>
+		<StatusDateTime>29/10/2021 15:40 +11:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME187648</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>298646</SenderReference>
+		<StatusDateTime>29/10/2021 15:40 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

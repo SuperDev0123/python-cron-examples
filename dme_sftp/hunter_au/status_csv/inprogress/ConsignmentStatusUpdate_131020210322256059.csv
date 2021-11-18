@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018820</ConsignmentNumber>
+		<UniqueId>e8cd1e09-30f1-4957-a916-f57dab39286b</UniqueId>
+		<SenderReference>88104</SenderReference>
+		<StatusDateTime>13/10/2021 03:19 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME184836</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22303</SenderReference>
+		<StatusDateTime>13/10/2021 03:19 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

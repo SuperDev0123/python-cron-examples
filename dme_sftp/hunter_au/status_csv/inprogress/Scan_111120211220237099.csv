@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX019166","86b95a4e-ae11-4370-9ab1-4b01c1d8d1d1","89416","11/11/2021 12:17 +11:00","PLX0191660030032650","On Delivery","Wagga Wagga","",""
+"PLX019166","86b95a4e-ae11-4370-9ab1-4b01c1d8d1d1","89416","11/11/2021 12:18 +11:00","PLX0191660010032650","On Delivery","Wagga Wagga","",""

@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME188912</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>PC171780</SenderReference>
+		<StatusDateTime>15/11/2021 10:53 +10:30</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188912</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>PC171780</SenderReference>
+		<StatusDateTime>15/11/2021 10:53 +10:30</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

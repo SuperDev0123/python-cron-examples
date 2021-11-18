@@ -1,0 +1,6 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX187640","","89241","02/11/2021 09:46 +11:00","PLX1876400060062360","Linehaul Out","TAMWORTH","Inverell",""
+"PLX187640","","89241","02/11/2021 09:46 +11:00","PLX1876400020062360","Linehaul Out","TAMWORTH","Inverell",""
+"PLX187640","","89241","02/11/2021 09:46 +11:00","PLX1876400040062360","Linehaul Out","TAMWORTH","Inverell",""
+"PLX187640","","89241","02/11/2021 09:46 +11:00","PLX1876400030062360","Linehaul Out","TAMWORTH","Inverell",""
+"PLX187640","","89241","02/11/2021 09:46 +11:00","PLX1876400010062360","Linehaul Out","TAMWORTH","Inverell",""

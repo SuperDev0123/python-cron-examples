@@ -1,0 +1,74 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX019049</ConsignmentNumber>
+		<UniqueId>ae7f8534-c52c-4606-85ea-34e13b7b9b1a</UniqueId>
+		<SenderReference>88702</SenderReference>
+		<StatusDateTime>22/10/2021 16:06 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186844</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037679</SenderReference>
+		<StatusDateTime>22/10/2021 16:15 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186420</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22487</SenderReference>
+		<StatusDateTime>22/10/2021 16:15 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186420</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22487</SenderReference>
+		<StatusDateTime>22/10/2021 16:16 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186844</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037679</SenderReference>
+		<StatusDateTime>22/10/2021 16:16 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185825</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22402</SenderReference>
+		<StatusDateTime>22/10/2021 16:16 +11:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186399</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22455</SenderReference>
+		<StatusDateTime>22/10/2021 16:17 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186929</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>3546426</SenderReference>
+		<StatusDateTime>22/10/2021 16:18 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019060</ConsignmentNumber>
+		<UniqueId>7543fe4a-b5eb-463c-8154-f5148ffb4b75</UniqueId>
+		<SenderReference>88812</SenderReference>
+		<StatusDateTime>22/10/2021 16:10 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

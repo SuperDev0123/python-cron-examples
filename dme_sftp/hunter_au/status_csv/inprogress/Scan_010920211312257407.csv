@@ -1,0 +1,2 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"HXX110159","","","01/09/2021 13:11 +10:00","HXX1101590010014123","Depot In","BRISBANE","","WEB SCAN"

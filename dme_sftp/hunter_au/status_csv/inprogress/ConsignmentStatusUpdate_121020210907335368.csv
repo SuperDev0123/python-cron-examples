@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018775</ConsignmentNumber>
+		<UniqueId>16865515-b2d8-47fb-b2c9-b65572465c68</UniqueId>
+		<SenderReference>87542 30189 double up return</SenderReference>
+		<StatusDateTime>12/10/2021 09:04 +10:30</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PL014735</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>12/10/2021 09:05 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018775</ConsignmentNumber>
+		<UniqueId>16865515-b2d8-47fb-b2c9-b65572465c68</UniqueId>
+		<SenderReference>87542 30189 double up return</SenderReference>
+		<StatusDateTime>12/10/2021 09:06 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

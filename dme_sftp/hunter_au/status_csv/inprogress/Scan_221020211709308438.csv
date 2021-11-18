@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX019008","dddecbbc-513a-4081-983c-22d8ae4035c0","88716","22/10/2021 16:56 +11:00","PLX0190080020032830","On Delivery","Dubbo","",""
+"PLX019008","dddecbbc-513a-4081-983c-22d8ae4035c0","88716","22/10/2021 16:58 +11:00","PLX0190080030032830","On Delivery","Dubbo","",""
+"PLX018973","21e649e6-9f61-4603-b3fa-85d4d93772f4","86645","22/10/2021 17:02 +11:00","PLX0189730010022830","On Delivery","Dubbo","",""

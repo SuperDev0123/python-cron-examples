@@ -1,0 +1,34 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX189060</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89621</SenderReference>
+		<StatusDateTime>12/11/2021 19:58 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188836</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89545</SenderReference>
+		<StatusDateTime>12/11/2021 19:58 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019174</ConsignmentNumber>
+		<UniqueId>ca6f474a-03d1-4456-9d27-fffafb5c6166</UniqueId>
+		<SenderReference>89297</SenderReference>
+		<StatusDateTime>12/11/2021 19:58 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188847</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89554</SenderReference>
+		<StatusDateTime>12/11/2021 19:59 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

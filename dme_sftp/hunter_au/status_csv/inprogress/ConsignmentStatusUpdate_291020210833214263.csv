@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DMB014872</ConsignmentNumber>
+		<UniqueId>a57fc645-0dcf-4b9a-a8f7-e7d9f1777040</UniqueId>
+		<SenderReference>GAP-17422</SenderReference>
+		<StatusDateTime>29/10/2021 08:31 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019115</ConsignmentNumber>
+		<UniqueId>739a843a-cca6-4885-a35a-6980c255eb5e</UniqueId>
+		<SenderReference>88972</SenderReference>
+		<StatusDateTime>29/10/2021 08:31 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

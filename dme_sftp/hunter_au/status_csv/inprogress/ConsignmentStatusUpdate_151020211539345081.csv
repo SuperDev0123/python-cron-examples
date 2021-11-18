@@ -1,0 +1,66 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018936</ConsignmentNumber>
+		<UniqueId>b887e9ea-81bc-463f-a987-41b061ed6ff1</UniqueId>
+		<SenderReference>88266</SenderReference>
+		<StatusDateTime>15/10/2021 15:37 +11:00</StatusDateTime>
+		<Status>MobileShortDelivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018936</ConsignmentNumber>
+		<UniqueId>b887e9ea-81bc-463f-a987-41b061ed6ff1</UniqueId>
+		<SenderReference>88266</SenderReference>
+		<StatusDateTime>15/10/2021 15:37 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018961</ConsignmentNumber>
+		<UniqueId>a0369534-74da-41cb-9304-31922bc2f5d7</UniqueId>
+		<SenderReference>87111</SenderReference>
+		<StatusDateTime>15/10/2021 15:38 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018971</ConsignmentNumber>
+		<UniqueId>558e253f-0db5-46b1-bd97-dff95ca8c9aa</UniqueId>
+		<SenderReference>88730</SenderReference>
+		<StatusDateTime>15/10/2021 15:38 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018970</ConsignmentNumber>
+		<UniqueId>40759e29-0cea-444b-beb2-6b2bcafba523</UniqueId>
+		<SenderReference>88696</SenderReference>
+		<StatusDateTime>15/10/2021 15:38 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018973</ConsignmentNumber>
+		<UniqueId>21e649e6-9f61-4603-b3fa-85d4d93772f4</UniqueId>
+		<SenderReference>86645</SenderReference>
+		<StatusDateTime>15/10/2021 15:38 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018960</ConsignmentNumber>
+		<UniqueId>cfe8bcac-7cf1-49be-9024-c3b9cfeddef3</UniqueId>
+		<SenderReference>88738</SenderReference>
+		<StatusDateTime>15/10/2021 15:38 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018969</ConsignmentNumber>
+		<UniqueId>25f43bd5-bc59-42a7-9fac-df88bdd2e8c9</UniqueId>
+		<SenderReference>88215</SenderReference>
+		<StatusDateTime>15/10/2021 15:38 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

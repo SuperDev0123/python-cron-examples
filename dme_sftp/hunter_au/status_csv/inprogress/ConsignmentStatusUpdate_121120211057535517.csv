@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX019178</ConsignmentNumber>
+		<UniqueId>770fa410-3603-4915-af3d-e130762e71a1</UniqueId>
+		<SenderReference>return of incorrect item:88122</SenderReference>
+		<StatusDateTime>12/11/2021 10:55 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME189429</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00491499</SenderReference>
+		<StatusDateTime>12/11/2021 10:56 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

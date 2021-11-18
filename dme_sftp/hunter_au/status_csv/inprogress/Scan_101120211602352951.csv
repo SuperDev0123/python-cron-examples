@@ -1,0 +1,5 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX187631","","89213","10/11/2021 16:00 +11:00","PLX1876310040043350","On Delivery","BALLARAT","",""
+"PLX187631","","89213","10/11/2021 16:00 +11:00","PLX1876310020043350","On Delivery","BALLARAT","",""
+"PLX187631","","89213","10/11/2021 16:00 +11:00","PLX1876310030043350","On Delivery","BALLARAT","",""
+"PLX187631","","89213","10/11/2021 16:00 +11:00","PLX1876310010043350","On Delivery","BALLARAT","",""

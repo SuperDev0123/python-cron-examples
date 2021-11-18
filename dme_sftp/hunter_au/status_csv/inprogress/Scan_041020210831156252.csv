@@ -1,0 +1,5 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PL014944","","","04/10/2021 06:18 +10:00","PL0149440010044178","On Delivery","BRISBANE","",""
+"PL014944","","","04/10/2021 06:24 +10:00","pl0149440020044178","On Delivery","BRISBANE","",""
+"PL014944","","","04/10/2021 06:24 +10:00","pl0149440030044178","On Delivery","BRISBANE","",""
+"PL014944","","","04/10/2021 06:25 +10:00","pl0149440040044178","On Delivery","BRISBANE","",""

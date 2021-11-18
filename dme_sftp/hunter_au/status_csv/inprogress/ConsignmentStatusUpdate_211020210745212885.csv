@@ -1,0 +1,34 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME185751</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00487748</SenderReference>
+		<StatusDateTime>21/10/2021 07:42 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186473</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>3316704, 3316981, 3316977, 3316874, 3316867</SenderReference>
+		<StatusDateTime>21/10/2021 07:42 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018818</ConsignmentNumber>
+		<UniqueId>43320bb7-189a-4380-8acf-b14136e1c5f6</UniqueId>
+		<SenderReference>88102</SenderReference>
+		<StatusDateTime>21/10/2021 07:43 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018744</ConsignmentNumber>
+		<UniqueId>94d24ce0-a2b0-4c17-8dd2-17d60fe8aa0b</UniqueId>
+		<SenderReference>87948</SenderReference>
+		<StatusDateTime>13/10/2021 17:00 +11:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX189028</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89589</SenderReference>
+		<StatusDateTime>16/11/2021 10:49 +10:30</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME189680</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>6675845</SenderReference>
+		<StatusDateTime>16/11/2021 10:50 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

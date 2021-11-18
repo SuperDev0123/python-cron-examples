@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX019115</ConsignmentNumber>
+		<UniqueId>739a843a-cca6-4885-a35a-6980c255eb5e</UniqueId>
+		<SenderReference>88972</SenderReference>
+		<StatusDateTime>29/10/2021 12:53 +11:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019115</ConsignmentNumber>
+		<UniqueId>739a843a-cca6-4885-a35a-6980c255eb5e</UniqueId>
+		<SenderReference>88972</SenderReference>
+		<StatusDateTime>29/10/2021 12:53 +11:00</StatusDateTime>
+		<Status>MobileLeftAsInstructed</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

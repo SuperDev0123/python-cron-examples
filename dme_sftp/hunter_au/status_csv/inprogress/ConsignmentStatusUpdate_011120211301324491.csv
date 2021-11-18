@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME186857</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00489878</SenderReference>
+		<StatusDateTime>01/11/2021 12:59 +11:00</StatusDateTime>
+		<Status>MobileCardLeft</Status>
+		<StatusTag>Carded</StatusTag>
+	</StatusEvent>
+</Statuses>

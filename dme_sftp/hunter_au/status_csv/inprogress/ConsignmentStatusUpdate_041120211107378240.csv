@@ -1,0 +1,34 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX186756</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88954</SenderReference>
+		<StatusDateTime>04/11/2021 11:04 +11:00</StatusDateTime>
+		<Status>MobileShortDelivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX186756</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88954</SenderReference>
+		<StatusDateTime>04/11/2021 11:04 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME187868</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22545</SenderReference>
+		<StatusDateTime>04/11/2021 11:06 +10:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME187868</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22545</SenderReference>
+		<StatusDateTime>04/11/2021 11:06 +11:00</StatusDateTime>
+		<Status>MobileLeftAsInstructed</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

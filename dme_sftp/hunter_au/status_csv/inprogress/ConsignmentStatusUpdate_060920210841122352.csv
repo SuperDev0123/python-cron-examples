@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PU143604</ConsignmentNumber>
+		<UniqueId>c9c40e42-fb01-4c9b-be9f-a1646102b2c6</UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>06/09/2021 08:38 +10:00</StatusDateTime>
+		<Status>Cancelled</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

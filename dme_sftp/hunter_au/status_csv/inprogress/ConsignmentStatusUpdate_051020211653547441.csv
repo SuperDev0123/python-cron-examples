@@ -1,0 +1,114 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018711</ConsignmentNumber>
+		<UniqueId>46fa3caa-1bae-4057-b688-2d473b149912</UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>05/10/2021 16:51 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018735</ConsignmentNumber>
+		<UniqueId>573d8cd5-372d-4f1a-ae66-4aaff446bde5</UniqueId>
+		<SenderReference>87942</SenderReference>
+		<StatusDateTime>05/10/2021 16:51 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018741</ConsignmentNumber>
+		<UniqueId>1ede69d0-dc0b-45d6-abea-a562663401f2</UniqueId>
+		<SenderReference>87873</SenderReference>
+		<StatusDateTime>05/10/2021 16:51 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018721</ConsignmentNumber>
+		<UniqueId>df73210b-b1ec-4424-9a36-d772bd38240b</UniqueId>
+		<SenderReference>87933</SenderReference>
+		<StatusDateTime>05/10/2021 16:51 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018710</ConsignmentNumber>
+		<UniqueId>f3cd5d52-de3f-4254-aad2-7137de7776aa</UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>05/10/2021 16:51 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018725</ConsignmentNumber>
+		<UniqueId>cc4629be-f3fd-44dc-a8b5-ab39549b885f</UniqueId>
+		<SenderReference>87935</SenderReference>
+		<StatusDateTime>05/10/2021 16:51 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018732</ConsignmentNumber>
+		<UniqueId>0f433490-6a01-43de-8ebb-19052e7a8350</UniqueId>
+		<SenderReference>87940</SenderReference>
+		<StatusDateTime>05/10/2021 16:51 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018707</ConsignmentNumber>
+		<UniqueId>c84c8903-725d-476b-9f62-4dfe953d5769</UniqueId>
+		<SenderReference>87912</SenderReference>
+		<StatusDateTime>05/10/2021 16:51 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018719</ConsignmentNumber>
+		<UniqueId>11784255-0ce9-4603-a719-bfe9af4e00ad</UniqueId>
+		<SenderReference>87932</SenderReference>
+		<StatusDateTime>05/10/2021 16:51 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018738</ConsignmentNumber>
+		<UniqueId>03651f55-400f-4acf-8d26-ba0b83f9a456</UniqueId>
+		<SenderReference>87944</SenderReference>
+		<StatusDateTime>05/10/2021 16:51 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018728</ConsignmentNumber>
+		<UniqueId>0f21dd4e-8d12-42de-a347-f631c6874237</UniqueId>
+		<SenderReference>87937</SenderReference>
+		<StatusDateTime>05/10/2021 16:51 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018714</ConsignmentNumber>
+		<UniqueId>8291f79e-d3bb-43e5-8612-565df6cad7b3</UniqueId>
+		<SenderReference>87865</SenderReference>
+		<StatusDateTime>05/10/2021 16:51 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018737</ConsignmentNumber>
+		<UniqueId>67e72d08-a0f8-4966-8b09-f01845c1dc41</UniqueId>
+		<SenderReference>87943</SenderReference>
+		<StatusDateTime>05/10/2021 16:51 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018726</ConsignmentNumber>
+		<UniqueId>edc68b08-d9b6-4525-8b8a-7787e1614490</UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>05/10/2021 16:51 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

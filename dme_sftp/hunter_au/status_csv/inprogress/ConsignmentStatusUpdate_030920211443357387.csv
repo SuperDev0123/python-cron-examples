@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>MAG129577</ConsignmentNumber>
+		<UniqueId>74bea456-1e04-48c5-847b-2e7646a1b2b7</UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>03/09/2021 14:41 +10:00</StatusDateTime>
+		<Status>Cancelled</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

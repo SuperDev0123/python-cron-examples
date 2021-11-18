@@ -1,0 +1,250 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME186410</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22448</SenderReference>
+		<StatusDateTime>21/10/2021 17:08 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186254</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22344</SenderReference>
+		<StatusDateTime>21/10/2021 17:08 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185826</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22368</SenderReference>
+		<StatusDateTime>21/10/2021 17:08 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185814</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22343</SenderReference>
+		<StatusDateTime>21/10/2021 17:08 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185791</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22386</SenderReference>
+		<StatusDateTime>21/10/2021 17:08 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185786</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22377</SenderReference>
+		<StatusDateTime>21/10/2021 17:08 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186254</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22344</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185826</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22368</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185814</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22343</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185791</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22386</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185786</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22377</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186254</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22344</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185826</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22368</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185814</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22343</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185791</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22386</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185786</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22377</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186254</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22344</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185826</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22368</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185814</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22343</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185791</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22386</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185786</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22377</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186254</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22344</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185826</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22368</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185814</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22343</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185791</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22386</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185786</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22377</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185826</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22368</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185814</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22343</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185786</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22377</SenderReference>
+		<StatusDateTime>21/10/2021 17:09 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185814</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22343</SenderReference>
+		<StatusDateTime>21/10/2021 17:10 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME185814</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22343</SenderReference>
+		<StatusDateTime>21/10/2021 17:10 +11:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

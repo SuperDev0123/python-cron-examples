@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
+"DME189847","","","17/11/2021 09:15 +10:00","Assigned",""
+"PLX019191","33ce3d1d-7c50-4e05-8430-18459a5f6a70","88218 -RTS","17/11/2021 09:16 +11:00","Assigned",""
+"PLX189506","","393503651002102336, 393503651002102343","17/11/2021 09:16 +10:00","Assigned",""

@@ -1,0 +1,2 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX018999","48e1faa2-91f1-4f35-93d5-ab04238a44a9","88704","26/10/2021 08:00 +11:00","plx018999","Depot In","Dubbo","",""

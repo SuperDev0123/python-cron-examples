@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018973</ConsignmentNumber>
+		<UniqueId>21e649e6-9f61-4603-b3fa-85d4d93772f4</UniqueId>
+		<SenderReference>86645</SenderReference>
+		<StatusDateTime>22/10/2021 15:46 +11:00</StatusDateTime>
+		<Status>MobileShortDelivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018973</ConsignmentNumber>
+		<UniqueId>21e649e6-9f61-4603-b3fa-85d4d93772f4</UniqueId>
+		<SenderReference>86645</SenderReference>
+		<StatusDateTime>22/10/2021 15:46 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

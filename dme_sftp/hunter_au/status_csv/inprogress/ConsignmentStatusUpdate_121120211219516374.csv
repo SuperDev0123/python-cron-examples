@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DMB014877</ConsignmentNumber>
+		<UniqueId>1e1b2f98-e7d5-40b5-94a6-98eb4219abfa</UniqueId>
+		<SenderReference>GAP-17786 - Electric Scooter</SenderReference>
+		<StatusDateTime>12/11/2021 12:17 +11:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

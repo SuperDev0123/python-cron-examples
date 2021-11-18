@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX019033</ConsignmentNumber>
+		<UniqueId>93e21117-fb92-4d42-acd0-5dd0355adad4</UniqueId>
+		<SenderReference>88772</SenderReference>
+		<StatusDateTime>25/10/2021 16:17 +11:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>AA183595</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>PLEASE QUOTE PC166013</SenderReference>
+		<StatusDateTime>25/10/2021 16:18 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PL014864","","","07/10/2021 18:29 +11:00","PL0148640040046233","Depot In","","",""
+"PL014864","","","07/10/2021 18:29 +11:00","PL0148640030046233","Depot In","","",""
+"PL014864","","","07/10/2021 18:26 +11:00","PL0148640020046233","Depot In","","",""

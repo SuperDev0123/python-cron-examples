@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DMB014885</ConsignmentNumber>
+		<UniqueId>57c77556-dbbd-4c36-89f7-522b4617ee32</UniqueId>
+		<SenderReference>CS00493003</SenderReference>
+		<StatusDateTime>12/11/2021 19:13 +11:00</StatusDateTime>
+		<Status>MobileFutilePickup</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DMB014885</ConsignmentNumber>
+		<UniqueId>57c77556-dbbd-4c36-89f7-522b4617ee32</UniqueId>
+		<SenderReference>CS00493003</SenderReference>
+		<StatusDateTime>12/11/2021 19:13 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

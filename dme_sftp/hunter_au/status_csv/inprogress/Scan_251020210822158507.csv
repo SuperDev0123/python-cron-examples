@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX019087","3bb87a68-93a6-4c67-ac64-12b10d514f76","88895","25/10/2021 08:21 +11:00","PLX0190870060065022","Depot In","ADELAIDE","",""
+"PLX019087","3bb87a68-93a6-4c67-ac64-12b10d514f76","88895","25/10/2021 08:21 +11:00","PLX0190870020065022","Depot In","ADELAIDE","",""
+"PLX019087","3bb87a68-93a6-4c67-ac64-12b10d514f76","88895","25/10/2021 08:21 +11:00","PLX0190870010065022","Depot In","ADELAIDE","",""

@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018780</ConsignmentNumber>
+		<UniqueId>57d4cec0-d256-44ee-9ce2-0e59398a02bf</UniqueId>
+		<SenderReference>88034</SenderReference>
+		<StatusDateTime>14/10/2021 09:33 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018756</ConsignmentNumber>
+		<UniqueId>d624e952-d52a-4141-89ae-e68c89784e8f</UniqueId>
+		<SenderReference>87995</SenderReference>
+		<StatusDateTime>14/10/2021 09:34 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

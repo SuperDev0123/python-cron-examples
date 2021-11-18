@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX018726","edc68b08-d9b6-4525-8b8a-7787e1614490","","13/10/2021 08:26 +11:00","plx018726","Misdirected","Devonport","",""
+"PLX018846","15bf5355-b204-4ab8-9e86-5a978b63d7e1","88177","13/10/2021 08:56 +11:00","PLX0188460010042663","Depot In","Wagga Wagga","",""

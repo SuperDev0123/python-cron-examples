@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX186449</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88816</SenderReference>
+		<StatusDateTime>20/10/2021 08:53 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX186449</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88816</SenderReference>
+		<StatusDateTime>20/10/2021 08:53 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DMB014867</ConsignmentNumber>
+		<UniqueId>07739e69-de42-4d11-bd07-9470a1f053b5</UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>20/10/2021 08:54 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

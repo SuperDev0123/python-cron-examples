@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
+"DME189655","","28788, 28630","17/11/2021 15:15 +11:00","MobilePickupComplete",""
+"DME189655","","28788, 28630","17/11/2021 15:15 +11:00","InTransit",""
+"PLX019191","33ce3d1d-7c50-4e05-8430-18459a5f6a70","88218 -RTS","17/11/2021 15:15 +11:00","Delivered",""

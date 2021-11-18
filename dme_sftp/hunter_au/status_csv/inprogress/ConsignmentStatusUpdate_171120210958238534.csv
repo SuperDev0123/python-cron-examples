@@ -1,0 +1,5 @@
+ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
+"PLX189013","","393503651002099674, 393503651002100813","17/11/2021 09:54 +11:00","OnDelivery",""
+"DME189672","","1187254","17/11/2021 09:55 +11:00","Assigned",""
+"DME189671","","4153602","17/11/2021 09:56 +11:00","Assigned",""
+"DME189678","","3669942","17/11/2021 09:56 +11:00","Assigned",""

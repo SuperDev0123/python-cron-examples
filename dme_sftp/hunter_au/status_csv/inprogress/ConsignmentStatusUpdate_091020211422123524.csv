@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018740</ConsignmentNumber>
+		<UniqueId>40579f33-7051-4723-8233-fa4a62dbf407</UniqueId>
+		<SenderReference>RTS - NO CONNOTE</SenderReference>
+		<StatusDateTime>09/10/2021 14:20 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018743</ConsignmentNumber>
+		<UniqueId>6048d4f0-bc0d-4c34-aea3-86c197f6d359</UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>09/10/2021 14:20 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>AA182058</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>09/10/2021 14:20 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME185098</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22307</SenderReference>
+		<StatusDateTime>27/10/2021 17:34 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME187266</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22436</SenderReference>
+		<StatusDateTime>27/10/2021 17:34 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME187046</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22530</SenderReference>
+		<StatusDateTime>27/10/2021 17:34 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

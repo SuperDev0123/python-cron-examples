@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"DME187842","","CS00483711","04/11/2021 17:54 +11:00","DME1878420010013803","Reserved 15","SYDNEY","",""
+"PLX187293","","89142","04/11/2021 17:49 +11:00","PLX1872930010043677","Depot In","MELBOURNE","",""

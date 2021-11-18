@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
+"PLX188624","","89470","17/11/2021 10:42 +11:00","Delivered",""
+"PLX019203","3a02cf69-1f79-4015-883c-58e8c1411b01","89885","17/11/2021 10:43 +11:00","PickupReceived",""
+"PLX019203","3a02cf69-1f79-4015-883c-58e8c1411b01","89885","17/11/2021 10:43 +11:00","Assigned",""

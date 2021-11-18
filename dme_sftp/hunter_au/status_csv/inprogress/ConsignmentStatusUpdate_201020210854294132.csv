@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DMB014867</ConsignmentNumber>
+		<UniqueId>07739e69-de42-4d11-bd07-9470a1f053b5</UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>20/10/2021 08:52 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

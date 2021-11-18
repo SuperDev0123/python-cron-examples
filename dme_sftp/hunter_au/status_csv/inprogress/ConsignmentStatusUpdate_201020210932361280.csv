@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018952</ConsignmentNumber>
+		<UniqueId>586c880d-1800-4a64-870d-1130840ef49a</UniqueId>
+		<SenderReference>88314</SenderReference>
+		<StatusDateTime>20/10/2021 09:29 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018816</ConsignmentNumber>
+		<UniqueId>cbc2d784-b3a2-4b56-96c5-e23a75fe1ce5</UniqueId>
+		<SenderReference>88098</SenderReference>
+		<StatusDateTime>20/10/2021 09:29 +08:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186268</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>4909508, 4913191, 4920038</SenderReference>
+		<StatusDateTime>20/10/2021 09:31 +10:30</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

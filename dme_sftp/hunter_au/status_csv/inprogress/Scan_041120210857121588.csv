@@ -1,0 +1,6 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX186856","","88926","04/11/2021 08:53 +11:00","PLX1868560070012480","Depot In","Lismore - NCFS","",""
+"PLX186856","","88926","04/11/2021 08:53 +11:00","PLX1868560110012480","Depot In","Lismore - NCFS","",""
+"PLX186856","","88926","04/11/2021 08:53 +11:00","PLX1868560090012480","Depot In","Lismore - NCFS","",""
+"PLX186856","","88926","04/11/2021 08:53 +11:00","PLX1868560030012480","Depot In","Lismore - NCFS","",""
+"PLX186856","","88926","04/11/2021 08:53 +11:00","PLX1868560010012480","Depot In","Lismore - NCFS","",""

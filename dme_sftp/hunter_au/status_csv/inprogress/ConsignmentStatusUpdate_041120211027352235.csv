@@ -1,0 +1,106 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME188249</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>298960</SenderReference>
+		<StatusDateTime>04/11/2021 10:26 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188248</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>298951</SenderReference>
+		<StatusDateTime>04/11/2021 10:26 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188252</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>299576</SenderReference>
+		<StatusDateTime>04/11/2021 10:26 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188250</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>298963</SenderReference>
+		<StatusDateTime>04/11/2021 10:26 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188445</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>PC167372</SenderReference>
+		<StatusDateTime>04/11/2021 10:26 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188463</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>reference1</SenderReference>
+		<StatusDateTime>04/11/2021 10:26 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188423</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>reference1</SenderReference>
+		<StatusDateTime>04/11/2021 10:26 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188251</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>299086</SenderReference>
+		<StatusDateTime>04/11/2021 10:26 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME187807</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>298850</SenderReference>
+		<StatusDateTime>04/11/2021 10:26 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188471</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>299983</SenderReference>
+		<StatusDateTime>04/11/2021 10:26 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188478</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>298776</SenderReference>
+		<StatusDateTime>04/11/2021 10:26 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188476</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>298933</SenderReference>
+		<StatusDateTime>04/11/2021 10:26 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188485</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>reference1</SenderReference>
+		<StatusDateTime>04/11/2021 10:26 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

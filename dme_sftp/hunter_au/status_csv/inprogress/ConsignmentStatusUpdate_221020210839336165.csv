@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>AA179981</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>22/10/2021 08:36 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019088</ConsignmentNumber>
+		<UniqueId>c69a0cb4-4ef4-4615-8dc3-56f1883cd3fb</UniqueId>
+		<SenderReference>88896</SenderReference>
+		<StatusDateTime>22/10/2021 08:37 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

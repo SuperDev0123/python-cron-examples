@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX019089</ConsignmentNumber>
+		<UniqueId>aa9273ff-78b7-41cc-afd0-4fb5bfdad0ef</UniqueId>
+		<SenderReference>88041</SenderReference>
+		<StatusDateTime>28/10/2021 10:29 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME187157</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00488517</SenderReference>
+		<StatusDateTime>28/10/2021 10:29 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

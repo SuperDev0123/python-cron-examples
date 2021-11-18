@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"DME186268","","4909508, 4913191, 4920038","20/10/2021 12:12 +10:30","DME1862680030033803","At Location","ADELAIDE","",""
+"DME186268","","4909508, 4913191, 4920038","20/10/2021 12:12 +10:30","DME1862680020033803","At Location","ADELAIDE","",""
+"DME186268","","4909508, 4913191, 4920038","20/10/2021 12:12 +10:30","DME1862680010033803","At Location","ADELAIDE","",""

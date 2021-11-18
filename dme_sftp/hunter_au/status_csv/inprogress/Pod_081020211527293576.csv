@@ -1,0 +1,2 @@
+ConsignmentNumber,UniqueID,SenderReference,PODReceivedTime,PODReceivedBy,PODType,PODTag,SignatureBase64,PODImageBase64,PODGeoLatitude,PODGeoLongitude,PODGeoReadTime,PODQtySignedFor
+"DME185003","","294603","08/10/2021 15:25 +11:00","","Rejected","Other","","","-38.0116509","145.2628403","08/10/2021 15:25 +11:00","0"

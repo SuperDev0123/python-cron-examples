@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME186748</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00489255</SenderReference>
+		<StatusDateTime>22/10/2021 15:52 +11:00</StatusDateTime>
+		<Status>MobilePickupComplete</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186748</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00489255</SenderReference>
+		<StatusDateTime>22/10/2021 15:52 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME186748</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00489255</SenderReference>
+		<StatusDateTime>22/10/2021 15:53 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

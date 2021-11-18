@@ -1,0 +1,34 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME184988</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1036020</SenderReference>
+		<StatusDateTime>08/10/2021 08:02 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME184849</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037098</SenderReference>
+		<StatusDateTime>08/10/2021 08:02 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME184988</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1036020</SenderReference>
+		<StatusDateTime>08/10/2021 08:02 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME184849</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037098</SenderReference>
+		<StatusDateTime>08/10/2021 08:02 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

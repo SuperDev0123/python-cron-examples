@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX019196</ConsignmentNumber>
+		<UniqueId>5187ca5f-4ddc-4f9d-ab75-811c5f8617d5</UniqueId>
+		<SenderReference>88267-RTS</SenderReference>
+		<StatusDateTime>15/11/2021 23:42 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

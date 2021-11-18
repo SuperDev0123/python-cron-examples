@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX018979","1ea8bd90-4c68-4ad5-90fd-e408f637ab42","88728","22/10/2021 14:21 +10:00","PLX0189790030060832","Reserved 15","BRISBANE","",""
+"PLX018979","1ea8bd90-4c68-4ad5-90fd-e408f637ab42","88728","22/10/2021 14:22 +10:00","PLX0189790060060832","Reserved 15","BRISBANE","",""
+"PLX018979","1ea8bd90-4c68-4ad5-90fd-e408f637ab42","88728","22/10/2021 14:22 +10:00","PLX0189790010060832","Reserved 15","BRISBANE","",""

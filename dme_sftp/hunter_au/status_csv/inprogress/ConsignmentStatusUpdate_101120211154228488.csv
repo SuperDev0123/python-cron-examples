@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX187687</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89081</SenderReference>
+		<StatusDateTime>10/11/2021 11:51 +11:00</StatusDateTime>
+		<Status>Holding</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME189212</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00492204</SenderReference>
+		<StatusDateTime>10/11/2021 11:52 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

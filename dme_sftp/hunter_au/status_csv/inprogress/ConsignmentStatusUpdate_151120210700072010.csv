@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX188847</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89554</SenderReference>
+		<StatusDateTime>15/11/2021 06:58 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189072</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>393503651002099742, 393503651002099759</SenderReference>
+		<StatusDateTime>15/11/2021 06:58 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

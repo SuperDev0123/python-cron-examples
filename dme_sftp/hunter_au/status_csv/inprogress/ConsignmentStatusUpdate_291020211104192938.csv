@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX187715</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89227</SenderReference>
+		<StatusDateTime>29/10/2021 11:00 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX187672</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89257</SenderReference>
+		<StatusDateTime>29/10/2021 11:01 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX187001</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88968</SenderReference>
+		<StatusDateTime>29/10/2021 11:02 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

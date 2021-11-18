@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME185828</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22366</SenderReference>
+		<StatusDateTime>28/10/2021 09:07 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME187266</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>22436</SenderReference>
+		<StatusDateTime>28/10/2021 09:07 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

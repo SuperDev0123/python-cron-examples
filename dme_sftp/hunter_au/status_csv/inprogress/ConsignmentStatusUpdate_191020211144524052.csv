@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME186360</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>296290</SenderReference>
+		<StatusDateTime>19/10/2021 11:42 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME184881</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00484274</SenderReference>
+		<StatusDateTime>05/10/2021 15:48 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

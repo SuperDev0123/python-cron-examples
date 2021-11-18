@@ -1,0 +1,2 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"EGG024564","","","01/09/2021 13:42 +10:00","EGG0245640010014123","Reserved 5","BRISBANE","","WEB SCAN"

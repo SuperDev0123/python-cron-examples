@@ -1,0 +1,50 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>OPEN-DMB014853</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>07/10/2021 17:12 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>OPEN-DMB014855</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>07/10/2021 17:12 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018742</ConsignmentNumber>
+		<UniqueId>564fbad4-6845-4367-8a3f-3b7ce25197e9</UniqueId>
+		<SenderReference>87930</SenderReference>
+		<StatusDateTime>07/10/2021 17:12 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX184995</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>87994</SenderReference>
+		<StatusDateTime>07/10/2021 17:10 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX184995</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>87994</SenderReference>
+		<StatusDateTime>07/10/2021 17:22 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX185171</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>005-TEST</SenderReference>
+		<StatusDateTime>07/10/2021 17:24 +11:00</StatusDateTime>
+		<Status>Cancelled</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

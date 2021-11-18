@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018876</ConsignmentNumber>
+		<UniqueId>ec8c1020-a56f-42f9-a634-35aa364661ef</UniqueId>
+		<SenderReference>retrun double up</SenderReference>
+		<StatusDateTime>13/10/2021 15:05 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018748</ConsignmentNumber>
+		<UniqueId>376ee3f5-2804-4ae3-ba6d-7b2a68475543</UniqueId>
+		<SenderReference>87872</SenderReference>
+		<StatusDateTime>13/10/2021 14:56 +11:00</StatusDateTime>
+		<Status>MobileShortDelivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018748</ConsignmentNumber>
+		<UniqueId>376ee3f5-2804-4ae3-ba6d-7b2a68475543</UniqueId>
+		<SenderReference>87872</SenderReference>
+		<StatusDateTime>13/10/2021 14:56 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

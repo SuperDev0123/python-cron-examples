@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME188916</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>PC171591, PC171042</SenderReference>
+		<StatusDateTime>11/11/2021 10:58 +11:00</StatusDateTime>
+		<Status>DriverPickupAcknowledge</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188935</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88813</SenderReference>
+		<StatusDateTime>11/11/2021 10:57 +10:00</StatusDateTime>
+		<Status>Holding</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

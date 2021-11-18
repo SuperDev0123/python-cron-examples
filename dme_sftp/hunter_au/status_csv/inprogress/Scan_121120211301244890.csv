@@ -1,0 +1,2 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"DME189217","","reference1","12/11/2021 12:54 +11:00","DME1892170010014806","Depot In","BRISBANE","",""

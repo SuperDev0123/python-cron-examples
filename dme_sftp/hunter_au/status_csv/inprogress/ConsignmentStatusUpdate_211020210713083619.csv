@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME185626</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>reference1</SenderReference>
+		<StatusDateTime>21/10/2021 07:00 +11:00</StatusDateTime>
+		<Status>InDepotUnableToAccess</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX186109</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88717</SenderReference>
+		<StatusDateTime>21/10/2021 07:12 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018995</ConsignmentNumber>
+		<UniqueId>9ce06b4f-f132-4de2-beb1-0586acd1c0b7</UniqueId>
+		<SenderReference>88759</SenderReference>
+		<StatusDateTime>21/10/2021 07:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

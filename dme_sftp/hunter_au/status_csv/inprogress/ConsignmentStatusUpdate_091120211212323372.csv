@@ -1,0 +1,170 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX187674</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89259</SenderReference>
+		<StatusDateTime>09/11/2021 12:10 +10:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX187674</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89259</SenderReference>
+		<StatusDateTime>09/11/2021 12:10 +11:00</StatusDateTime>
+		<Status>MobileLeftAsInstructed</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188830</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89522</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188844</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89550</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188457</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89420</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188452</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89418</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188833</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89526</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188462</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89421</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188464</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89422</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188477</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89429</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188849</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89518</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188486</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89464</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189005</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89630</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188427</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89436</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188430</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89439</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188470</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89426</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188479</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89430</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188472</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89427</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188849</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89518</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX188486</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89464</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX189005</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89630</SenderReference>
+		<StatusDateTime>09/11/2021 12:11 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

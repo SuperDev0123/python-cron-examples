@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX018748","376ee3f5-2804-4ae3-ba6d-7b2a68475543","87872","13/10/2021 04:33 +11:00","PLX0187480010073300","Depot In","Warrnambool","",""
+"PLX018748","376ee3f5-2804-4ae3-ba6d-7b2a68475543","87872","13/10/2021 04:33 +11:00","PLX0187480020073300","Depot In","Warrnambool","",""

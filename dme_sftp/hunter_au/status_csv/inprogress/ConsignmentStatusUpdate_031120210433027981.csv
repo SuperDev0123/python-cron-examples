@@ -1,0 +1,34 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX186954</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88939</SenderReference>
+		<StatusDateTime>02/11/2021 13:01 +11:00</StatusDateTime>
+		<Status>MobileShortDelivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX186954</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88939</SenderReference>
+		<StatusDateTime>02/11/2021 13:01 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX187704</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89191</SenderReference>
+		<StatusDateTime>02/11/2021 17:42 +11:00</StatusDateTime>
+		<Status>MobileShortDelivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX187704</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89191</SenderReference>
+		<StatusDateTime>02/11/2021 17:42 +11:00</StatusDateTime>
+		<Status>InTransit</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

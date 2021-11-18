@@ -1,0 +1,4 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX019157","a5bb29d9-4532-417a-8201-be869664b757","88958","10/11/2021 13:13 +11:00","PLX0191570060092484","Linehaul Out","Lismore - NCFS","Murwillumbah - NCFS",""
+"PLX188247","","89105","10/11/2021 13:12 +11:00","PLX1882470050072480","Depot In","Lismore - NCFS","","Hunter Express"
+"PLX019157","a5bb29d9-4532-417a-8201-be869664b757","88958","10/11/2021 13:12 +11:00","PLX0191570060092484","Depot In","Lismore - NCFS","","Hunter Express"

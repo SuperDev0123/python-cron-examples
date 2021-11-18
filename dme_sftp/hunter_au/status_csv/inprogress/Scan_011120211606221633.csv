@@ -1,0 +1,3 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"PLX018928","ed713b3a-84b7-481d-8a91-01b6862379ea","88198","01/11/2021 15:37 +11:00","PLX0189280010033844","On Delivery","Traralgon","",""
+"PLX018928","ed713b3a-84b7-481d-8a91-01b6862379ea","88198","01/11/2021 15:52 +11:00","PLX0189280030033844","On Delivery","Traralgon","",""

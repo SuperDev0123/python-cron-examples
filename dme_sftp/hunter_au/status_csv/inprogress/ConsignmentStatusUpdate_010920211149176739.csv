@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>EGV167076</ConsignmentNumber>
+		<UniqueId>1442e09a-7f9c-4f08-a0cf-567b1fe52d80</UniqueId>
+		<SenderReference></SenderReference>
+		<StatusDateTime>01/09/2021 11:48 +10:00</StatusDateTime>
+		<Status>MobileCardLeft</Status>
+		<StatusTag>Carded</StatusTag>
+	</StatusEvent>
+</Statuses>

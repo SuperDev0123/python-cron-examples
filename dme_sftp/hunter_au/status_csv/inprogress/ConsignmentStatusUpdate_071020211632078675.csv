@@ -1,0 +1,34 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DMB014851</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>294509</SenderReference>
+		<StatusDateTime>07/10/2021 16:21 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DMB014851</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>294509</SenderReference>
+		<StatusDateTime>07/10/2021 16:21 +11:00</StatusDateTime>
+		<Status>Created</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018757</ConsignmentNumber>
+		<UniqueId>45616349-35dd-4bbc-95eb-6d44ee163df7</UniqueId>
+		<SenderReference>87996</SenderReference>
+		<StatusDateTime>07/10/2021 16:22 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018758</ConsignmentNumber>
+		<UniqueId>677b4670-3743-473c-8841-bee517e307ad</UniqueId>
+		<SenderReference>87998</SenderReference>
+		<StatusDateTime>07/10/2021 16:24 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

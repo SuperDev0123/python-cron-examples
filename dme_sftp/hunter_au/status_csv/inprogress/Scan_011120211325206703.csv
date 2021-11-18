@@ -1,0 +1,2 @@
+ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
+"DME186869","65771","CS00487661","01/11/2021 12:56 +10:30","DME1868690010013803","Depot In","ADELAIDE","","WEB SCAN"

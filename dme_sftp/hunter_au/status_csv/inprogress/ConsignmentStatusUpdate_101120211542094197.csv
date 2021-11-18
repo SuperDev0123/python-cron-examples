@@ -1,0 +1,66 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>DME189009</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037543</SenderReference>
+		<StatusDateTime>10/11/2021 15:40 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME189009</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037543</SenderReference>
+		<StatusDateTime>10/11/2021 15:40 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188976</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037918</SenderReference>
+		<StatusDateTime>10/11/2021 15:40 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188976</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>1037918</SenderReference>
+		<StatusDateTime>10/11/2021 15:40 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME188901</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>9447556</SenderReference>
+		<StatusDateTime>10/11/2021 15:40 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DMB014882</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00478244</SenderReference>
+		<StatusDateTime>10/11/2021 15:40 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DMB014882</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00478244</SenderReference>
+		<StatusDateTime>10/11/2021 15:40 +11:00</StatusDateTime>
+		<Status>Created</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>DME189210</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>CS00478244</SenderReference>
+		<StatusDateTime>10/11/2021 15:40 +11:00</StatusDateTime>
+		<Status>Holding</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

@@ -1,0 +1,50 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX186756</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>88954</SenderReference>
+		<StatusDateTime>25/10/2021 19:29 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019092</ConsignmentNumber>
+		<UniqueId>ccde3087-5ec8-478c-985d-b15565f08fe1</UniqueId>
+		<SenderReference>88829</SenderReference>
+		<StatusDateTime>25/10/2021 19:29 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019109</ConsignmentNumber>
+		<UniqueId>581d40a9-0347-4cce-bbf8-cfe19439f387</UniqueId>
+		<SenderReference>88899</SenderReference>
+		<StatusDateTime>25/10/2021 19:29 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018966</ConsignmentNumber>
+		<UniqueId>c88fb6f8-5b53-46de-8cf1-56164f6427a8</UniqueId>
+		<SenderReference>87727</SenderReference>
+		<StatusDateTime>25/10/2021 19:29 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019103</ConsignmentNumber>
+		<UniqueId>afc4b61a-76d9-4a8d-8fc4-636e4877cf24</UniqueId>
+		<SenderReference>88067</SenderReference>
+		<StatusDateTime>25/10/2021 19:25 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019047</ConsignmentNumber>
+		<UniqueId>7fa4eeb8-109a-4ec1-a825-a8c82e584315</UniqueId>
+		<SenderReference>88245</SenderReference>
+		<StatusDateTime>25/10/2021 19:29 +11:00</StatusDateTime>
+		<Status>InDepot</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

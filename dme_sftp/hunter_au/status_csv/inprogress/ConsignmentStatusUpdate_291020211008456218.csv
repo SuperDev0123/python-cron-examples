@@ -1,0 +1,26 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX187130</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89016</SenderReference>
+		<StatusDateTime>29/10/2021 10:07 +11:00</StatusDateTime>
+		<Status>PickupReceived</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX187130</ConsignmentNumber>
+		<UniqueId></UniqueId>
+		<SenderReference>89016</SenderReference>
+		<StatusDateTime>29/10/2021 10:07 +11:00</StatusDateTime>
+		<Status>Assigned</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX019120</ConsignmentNumber>
+		<UniqueId>e29f53c7-e6cd-4729-8d1c-2af505748d28</UniqueId>
+		<SenderReference>replacement 89180</SenderReference>
+		<StatusDateTime>29/10/2021 10:07 +11:00</StatusDateTime>
+		<Status>OnDelivery</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>

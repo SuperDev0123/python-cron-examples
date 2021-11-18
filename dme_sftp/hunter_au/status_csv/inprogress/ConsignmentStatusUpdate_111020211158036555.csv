@@ -1,0 +1,10 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018775</ConsignmentNumber>
+		<UniqueId>16865515-b2d8-47fb-b2c9-b65572465c68</UniqueId>
+		<SenderReference>87542 30189 double up return</SenderReference>
+		<StatusDateTime>11/10/2021 11:52 +10:30</StatusDateTime>
+		<Status>MobileFutilePickup</Status>
+		<StatusTag>Closed / No one home</StatusTag>
+	</StatusEvent>
+</Statuses>

@@ -1,0 +1,18 @@
+<Statuses>
+	<StatusEvent>
+		<ConsignmentNumber>PLX018947</ConsignmentNumber>
+		<UniqueId>ecb5326e-be98-4447-94f9-105075fab700</UniqueId>
+		<SenderReference>88723</SenderReference>
+		<StatusDateTime>16/10/2021 09:26 +11:00</StatusDateTime>
+		<Status>Delivered</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+<StatusEvent>
+		<ConsignmentNumber>PLX018947</ConsignmentNumber>
+		<UniqueId>ecb5326e-be98-4447-94f9-105075fab700</UniqueId>
+		<SenderReference>88723</SenderReference>
+		<StatusDateTime>16/10/2021 09:26 +11:00</StatusDateTime>
+		<Status>MobileLeftAsInstructed</Status>
+		<StatusTag></StatusTag>
+	</StatusEvent>
+</Statuses>
