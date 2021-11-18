@@ -76,8 +76,8 @@ def get_product_from_woocommerce(product_id):
 
 
 def add_or_update_orders():
-    from_ts = datetime.strptime(datetime.now() - timedelta(hours=12), "%Y-%m-%d %H:%M:%S")
-    to_ts = datetime.strptime(datetime.now(), "%Y-%m-%d %H:%M:%S")
+    from_ts = datetime.strftime(datetime.now() - timedelta(hours=24), "%Y-%m-%dT%H:%M:%S")
+    to_ts = datetime.strftime(datetime.now(), "%Y-%m-%dT%H:%M:%S")
     # from_ts = None
     # to_ts = None
     orders = get_orders_from_woocommerce(from_ts, to_ts, 'processing')
