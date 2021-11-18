@@ -54,11 +54,12 @@ def get_orders_from_woocommerce(from_date, to_date, status):
         url += "&order=desc"
 
         if from_date:
-            url += "&after={from_date}"
+            url += f"&after={from_date}"
 
         if to_date:
-            url += "&before={to_date}"
+            url += f"&before={to_date}"
 
+        print(f"url - {url}")
         order_list = wcapi.get(url).json()
         return order_list
     except Exception as e:
