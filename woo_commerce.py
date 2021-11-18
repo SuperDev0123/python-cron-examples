@@ -177,7 +177,7 @@ def add_or_update_orders():
 
 
 if __name__ == "__main__":
-    print("#900 - Running %s" % datetime.datetime.now())
+    print("#900 - Running %s" % datetime.now())
     time1 = time.time()
 
     try:
@@ -198,7 +198,7 @@ if __name__ == "__main__":
         print("Error 904:", str(e))
 
         # set_option(mysqlcon, "st_status_pod", False, time1)
-    print("#999 - Finished %s\n\n\n" % datetime.datetime.now())
+    print("#999 - Finished %s\n\n\n" % datetime.now())
 
 
 # // order data sample
