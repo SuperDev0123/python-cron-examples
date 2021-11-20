@@ -61,6 +61,11 @@ def get_orders_from_woocommerce(from_date, to_date, status):
 
         print(f"url - {url}")
         order_list = wcapi.get(url).json()
+
+        if 'code' in order_list and order_list['code'] == 'woocommerce_rest_cannot_view':
+            print(f"Message from WooCommerce: {order_list['message']}")
+            return []
+
         return order_list
     except Exception as e:
         print(f"Get orders error: {e}")
