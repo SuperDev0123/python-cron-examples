@@ -99,7 +99,7 @@ def add_or_update_orders():
     )
     token = get_token()
 
-    for order in orders:
+    for order in orders[:1]:
         print(
             f"@101 [ORDER] orderId: {order['id']}, Order Status: {order['status']}, product_cnt: {len(order['line_items'])}"
         )
@@ -111,7 +111,7 @@ def add_or_update_orders():
             "b_001_b_freight_provider": "",
             "b_002_b_vehicle_type": "",
             "b_003_b_service_name": "",
-            "b_005_b_created_for": "bathroomsalesdirect",
+            "b_005_b_created_for": "Bathroom Sales Direct",
             "b_006_b_created_for_email": "info@bathroomsalesdirect.com.au",
             "b_007_b_ready_status": "Available From",
             "b_008_b_category": "Standard Sales",
@@ -121,7 +121,7 @@ def add_or_update_orders():
             "b_016_b_pu_instructions_address": "",
             "b_019_b_pu_tail_lift": 0,
             "b_021_b_pu_avail_from_date": order["date_modified"][:10],
-            "b_022_b_pu_avail_from_time_hour": 12,
+            "b_022_b_pu_avail_from_time_hour": 8,
             "b_023_b_pu_avail_from_time_minute": 0,
             "b_027_b_pu_address_type": "Business",
             "b_028_b_pu_company": "Bathroom Sales Direct",
@@ -139,6 +139,7 @@ def add_or_update_orders():
             "b_042_b_del_num_operators": 0,
             "b_043_b_del_instructions_contact": "",
             "b_044_b_del_instructions_address": "",
+            "b_053_b_del_address_type": "Residential",
             "b_054_b_del_company": order["shipping"]["first_name"]
             + order["shipping"]["last_name"],
             "b_055_b_del_address_street_1": order["shipping"]["address_1"],
