@@ -21,7 +21,7 @@ wcapi = API(
     consumer_secret="cs_8b52746e7285a2cbaee34046be2e5eadb09884f2",  # Your consumer secret
     wp_api=True,  # Enable the WP REST API integration
     version="wc/v3",  # WooCommerce WP REST API version
-    query_string_auth=True
+    query_string_auth=True,
 )
 
 
@@ -64,7 +64,10 @@ def get_orders_from_woocommerce(from_date, to_date, status):
         print(f"url - {url}")
         order_list = wcapi.get(url).json()
 
-        if 'code' in order_list and order_list['code'] == 'woocommerce_rest_cannot_view':
+        if (
+            "code" in order_list
+            and order_list["code"] == "woocommerce_rest_cannot_view"
+        ):
             print(f"Message from WooCommerce: {order_list['message']}")
             return []
 
@@ -91,7 +94,7 @@ def add_or_update_orders():
     # to_ts = None
     # orders = get_orders_from_woocommerce(from_ts, to_ts, 'processing')
     # print(f"@001 [GET ORDER] Status: 'processing', Cnt: {len(orders)}")
-    orders += get_orders_from_woocommerce(from_ts, to_ts, 'on-hold')
+    orders += get_orders_from_woocommerce(from_ts, to_ts, "on-hold")
     print(f"@002 [GET ORDER] Status: 'on-hold', Cnt: {len(orders)}")
 
     if len(orders) == 0:
@@ -127,7 +130,7 @@ def add_or_update_orders():
             "b_021_b_pu_avail_from_date": order["date_modified"][:10],
             "b_022_b_pu_avail_from_time_hour": 8,
             "b_023_b_pu_avail_from_time_minute": 0,
-            "b_027_b_pu_address_type": "Business",
+            "b_027_b_pu_address_type": "business",
             "b_028_b_pu_company": "Bathroom Sales Direct",
             "b_029_b_pu_address_street_1": "118 Merrylands Road",
             "b_030_b_pu_address_street_2": "",
@@ -143,7 +146,7 @@ def add_or_update_orders():
             "b_042_b_del_num_operators": 0,
             "b_043_b_del_instructions_contact": "",
             "b_044_b_del_instructions_address": "",
-            "b_053_b_del_address_type": "Residential",
+            "b_053_b_del_address_type": "residential",
             "b_054_b_del_company": order["shipping"]["first_name"]
             + order["shipping"]["last_name"],
             "b_055_b_del_address_street_1": order["shipping"]["address_1"],
