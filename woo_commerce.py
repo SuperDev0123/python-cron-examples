@@ -198,6 +198,20 @@ if __name__ == "__main__":
     time1 = time.time()
 
     try:
+        mysqlcon = pymysql.connect(
+            host=DB_HOST,
+            port=DB_PORT,
+            user=DB_USER,
+            password=DB_PASS,
+            db=DB_NAME,
+            charset="utf8mb4",
+            cursorclass=pymysql.cursors.DictCursor,
+        )
+    except:
+        print("Mysql DB connection error!")
+        exit(1)
+
+    try:
         option = get_option(mysqlcon, "bsd_woocommerce")
 
         if int(option["option_value"]) == 0:
