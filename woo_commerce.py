@@ -17,10 +17,11 @@ from woocommerce import API
 
 wcapi = API(
     url="https://bathroomsalesdirect.com.au/",  # Your store URL
-    consumer_key="ck_ef5088f8997a8bb637b866269962530c62f2e4e8",  # Your consumer key
-    consumer_secret="cs_263cbc00a2a180d6bb9d7011194dfc98d04d8377",  # Your consumer secret
+    consumer_key="ck_b805f1858e763af3f27e5638f80e06f924ac94b1",  # Your consumer key
+    consumer_secret="cs_8b52746e7285a2cbaee34046be2e5eadb09884f2",  # Your consumer secret
     wp_api=True,  # Enable the WP REST API integration
     version="wc/v3",  # WooCommerce WP REST API version
+    query_string_auth=True
 )
 
 
@@ -88,10 +89,12 @@ def add_or_update_orders():
     from_ts = None
     to_ts = None
     orders = get_orders_from_woocommerce(from_ts, to_ts, 'processing')
+    print(f"@001 [GET ORDER] Status: 'processing', Cnt: {len(orders)}")
     orders += get_orders_from_woocommerce(from_ts, to_ts, 'on-hold')
+    print(f"@002 [GET ORDER] Status: 'on-hold', Cnt: {len(orders)}")
 
     if len(orders) == 0:
-        print(f"@001 [GET ORDER] No orders!")
+        print(f"@003 [GET ORDER] No orders!")
         return
 
     print(
