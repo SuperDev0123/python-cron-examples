@@ -108,89 +108,89 @@ def add_or_update_orders():
             f"@101 [ORDER] orderId: {order['id']}, Order Status: {order['status']}, product_cnt: {len(order['line_items'])}"
         )
 
-        # booking = {
-        #     "pk_header_id": str(uuid.uuid4()),
-        #     "b_client_warehouse_code": "BSD_MERRYLANDS",
-        #     "b_000_1_b_clientReference_RA_Numbers": order["order_key"],
-        #     "b_001_b_freight_provider": "",
-        #     "b_002_b_vehicle_type": "",
-        #     "b_003_b_service_name": "",
-        #     "b_005_b_created_for": "Bathroom Sales Direct",
-        #     "b_006_b_created_for_email": "info@bathroomsalesdirect.com.au",
-        #     "b_007_b_ready_status": "Available From",
-        #     "b_008_b_category": "Standard Sales",
-        #     "b_009_b_priority": "Standard",
-        #     "b_012_b_driver_bring_connote": 0,
-        #     "b_013_b_package_job": 0,
-        #     "b_016_b_pu_instructions_address": "",
-        #     "b_019_b_pu_tail_lift": 0,
-        #     "b_021_b_pu_avail_from_date": order["date_modified"][:10],
-        #     "b_022_b_pu_avail_from_time_hour": 8,
-        #     "b_023_b_pu_avail_from_time_minute": 0,
-        #     "b_027_b_pu_address_type": "Business",
-        #     "b_028_b_pu_company": "Bathroom Sales Direct",
-        #     "b_029_b_pu_address_street_1": "118 Merrylands Road",
-        #     "b_030_b_pu_address_street_2": "",
-        #     "b_031_b_pu_address_state": "NSW",
-        #     "b_032_b_pu_address_suburb": "Merrylands",
-        #     "b_033_b_pu_address_postalcode": "2160",
-        #     "b_034_b_pu_address_country": "Australia",
-        #     "b_035_b_pu_contact_full_name": "Bathroom Sales Direct",
-        #     "b_037_b_pu_email": "info@bathroomsalesdirect.com.au",
-        #     "b_038_b_pu_phone_main": "0296816914",
-        #     "b_040_b_pu_communicate_via": "Email",
-        #     "b_041_b_del_tail_lift": 0,
-        #     "b_042_b_del_num_operators": 0,
-        #     "b_043_b_del_instructions_contact": "",
-        #     "b_044_b_del_instructions_address": "",
-        #     "b_053_b_del_address_type": "Residential",
-        #     "b_054_b_del_company": order["shipping"]["first_name"]
-        #     + order["shipping"]["last_name"],
-        #     "b_055_b_del_address_street_1": order["shipping"]["address_1"],
-        #     "b_056_b_del_address_street_2": order["shipping"]["address_2"],
-        #     "b_057_b_del_address_state": order["shipping"]["state"],
-        #     "b_058_b_del_address_suburb": order["shipping"]["city"],
-        #     "b_059_b_del_address_postalcode": order["shipping"]["postcode"],
-        #     "b_060_b_del_address_country": "Australia",
-        #     "b_061_b_del_contact_full_name": order["shipping"]["first_name"]
-        #     + order["shipping"]["last_name"],
-        #     "b_063_b_del_email": "",
-        #     "b_064_b_del_phone_main": "",
-        #     "b_066_b_del_communicate_via": "Email",
-        #     "b_client_order_num": order["id"],
-        # }
+        booking = {
+            "pk_header_id": str(uuid.uuid4()),
+            "b_client_warehouse_code": "BSD_MERRYLANDS",
+            "b_000_1_b_clientReference_RA_Numbers": order["order_key"],
+            "b_001_b_freight_provider": "",
+            "b_002_b_vehicle_type": "",
+            "b_003_b_service_name": "",
+            "b_005_b_created_for": "Bathroom Sales Direct",
+            "b_006_b_created_for_email": "info@bathroomsalesdirect.com.au",
+            "b_007_b_ready_status": "Available From",
+            "b_008_b_category": "Standard Sales",
+            "b_009_b_priority": "Standard",
+            "b_012_b_driver_bring_connote": 0,
+            "b_013_b_package_job": 0,
+            "b_016_b_pu_instructions_address": "",
+            "b_019_b_pu_tail_lift": 0,
+            "b_021_b_pu_avail_from_date": order["date_modified"][:10],
+            "b_022_b_pu_avail_from_time_hour": 8,
+            "b_023_b_pu_avail_from_time_minute": 0,
+            "b_027_b_pu_address_type": "Business",
+            "b_028_b_pu_company": "Bathroom Sales Direct",
+            "b_029_b_pu_address_street_1": "118 Merrylands Road",
+            "b_030_b_pu_address_street_2": "",
+            "b_031_b_pu_address_state": "NSW",
+            "b_032_b_pu_address_suburb": "Merrylands",
+            "b_033_b_pu_address_postalcode": "2160",
+            "b_034_b_pu_address_country": "Australia",
+            "b_035_b_pu_contact_full_name": "Bathroom Sales Direct",
+            "b_037_b_pu_email": "info@bathroomsalesdirect.com.au",
+            "b_038_b_pu_phone_main": "0296816914",
+            "b_040_b_pu_communicate_via": "Email",
+            "b_041_b_del_tail_lift": 0,
+            "b_042_b_del_num_operators": 0,
+            "b_043_b_del_instructions_contact": "",
+            "b_044_b_del_instructions_address": "",
+            "b_053_b_del_address_type": "Residential",
+            "b_054_b_del_company": order["shipping"]["first_name"]
+            + order["shipping"]["last_name"],
+            "b_055_b_del_address_street_1": order["shipping"]["address_1"],
+            "b_056_b_del_address_street_2": order["shipping"]["address_2"],
+            "b_057_b_del_address_state": order["shipping"]["state"],
+            "b_058_b_del_address_suburb": order["shipping"]["city"],
+            "b_059_b_del_address_postalcode": order["shipping"]["postcode"],
+            "b_060_b_del_address_country": "Australia",
+            "b_061_b_del_contact_full_name": order["shipping"]["first_name"]
+            + order["shipping"]["last_name"],
+            "b_063_b_del_email": "",
+            "b_064_b_del_phone_main": "",
+            "b_066_b_del_communicate_via": "Email",
+            "b_client_order_num": order["id"],
+        }
 
-        # booking_lines = []
-        # for line in order["line_items"]:
-        #     print(f"@103 [PRODUCT] productId: {line['product_id']}")
-        #     product = get_product_from_woocommerce(line["product_id"])
+        booking_lines = []
+        for line in order["line_items"]:
+            print(f"@103 [PRODUCT] productId: {line['product_id']}")
+            product = get_product_from_woocommerce(line["product_id"])
 
-        #     if product:
-        #         booking_lines.append(
-        #             {
-        #                 "booking_line": {
-        #                     "l_009_weight_per_each": product["weight"],
-        #                     "l_003_item": product["name"],
-        #                     "l_004_dim_UOM": "cm",
-        #                     "l_002_qty": line["quantity"],
-        #                     "l_001_type_of_packaging": "Carton",
-        #                     "l_005_dim_length": product["dimensions"]["length"],
-        #                     "l_006_dim_width": product["dimensions"]["width"],
-        #                     "l_007_dim_height": product["dimensions"]["height"],
-        #                     "l_008_weight_UOM": "kg",
-        #                 }
-        #             }
-        #         )
+            if product:
+                booking_lines.append(
+                    {
+                        "booking_line": {
+                            "l_009_weight_per_each": product["weight"],
+                            "l_003_item": product["name"],
+                            "l_004_dim_UOM": "cm",
+                            "l_002_qty": line["quantity"],
+                            "l_001_type_of_packaging": "Carton",
+                            "l_005_dim_length": product["dimensions"]["length"],
+                            "l_006_dim_width": product["dimensions"]["width"],
+                            "l_007_dim_height": product["dimensions"]["height"],
+                            "l_008_weight_UOM": "kg",
+                        }
+                    }
+                )
 
-        # data = {"booking": booking, "booking_lines": booking_lines}
+        data = {"booking": booking, "booking_lines": booking_lines}
 
-        # url = API_URL + "/boks/"
-        # headers = {"Authorization": f"JWT {token}"}
-        # response = requests.post(url, params={}, json=data, headers=headers)
-        # response0 = response.content.decode("utf8")
-        # data0 = json.loads(response0)
+        url = API_URL + "/boks/"
+        headers = {"Authorization": f"JWT {token}"}
+        response = requests.post(url, params={}, json=data, headers=headers)
+        response0 = response.content.decode("utf8")
+        data0 = json.loads(response0)
 
-        # print("@901 - Result: ", data0)
+        print("@901 - Result: ", data0)
 
 
 if __name__ == "__main__":
