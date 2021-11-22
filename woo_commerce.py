@@ -88,10 +88,10 @@ def add_or_update_orders():
     to_ts = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
     # from_ts = None
     # to_ts = None
-    orders = get_orders_from_woocommerce(from_ts, to_ts, 'processing')
-    print(f"@001 [GET ORDER] Status: 'processing', Cnt: {len(orders)}")
-    # orders += get_orders_from_woocommerce(from_ts, to_ts, 'on-hold')
-    # print(f"@002 [GET ORDER] Status: 'on-hold', Cnt: {len(orders)}")
+    # orders = get_orders_from_woocommerce(from_ts, to_ts, 'processing')
+    # print(f"@001 [GET ORDER] Status: 'processing', Cnt: {len(orders)}")
+    orders += get_orders_from_woocommerce(from_ts, to_ts, 'on-hold')
+    print(f"@002 [GET ORDER] Status: 'on-hold', Cnt: {len(orders)}")
 
     if len(orders) == 0:
         print(f"@003 [GET ORDER] No orders!")
