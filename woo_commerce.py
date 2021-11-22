@@ -54,7 +54,7 @@ def get_orders_from_woocommerce(from_date, to_date, status):
         url += "&orderby=id"
         url += "&order=desc"
         # url += "&page=1"
-        url += "&exclude=[118369,118370,118371,118372,118373,118374,118375,118376,118377,118378,118381,118382,118383,118392,118393,118394,118395,118396,118400,118402,118404,118405,118406,118407,118408,118411,118412]"
+        # url += "&exclude=[118369,118370,118371,118372,118373,118374,118375,118376,118377,118378,118381,118382,118383,118392,118393,118394,118395,118396,118400,118402,118404,118405,118406,118407,118408,118411,118412]"
 
         if from_date:
             url += f"&after={from_date}"
@@ -89,7 +89,7 @@ def get_product_from_woocommerce(product_id):
 
 def add_or_update_orders():
     orders = []
-    from_ts = (datetime.now() - timedelta(hours=22)).strftime("%Y-%m-%dT%H:%M:%S")
+    from_ts = (datetime.now() - timedelta(minutes=10)).strftime("%Y-%m-%dT%H:%M:%S")
     to_ts = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
     # from_ts = None
     # to_ts = None
