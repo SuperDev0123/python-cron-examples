@@ -105,7 +105,7 @@ def add_or_update_orders():
     token = get_token()
 
     for order in orders:
-        if str(order["id"]) == '118368':
+        if order["id"] in [118368,118361,118359,118358,118357,118356,118355,118354,118353]:
             print(
                 f"@100 [GET ORDER] Ignored: {order['id']}"
             )
