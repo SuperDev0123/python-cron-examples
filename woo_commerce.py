@@ -84,10 +84,10 @@ def get_product_from_woocommerce(product_id):
 
 def add_or_update_orders():
     orders = []
-    # from_ts = (datetime.now() - timedelta(minutes=10)).strftime("%Y-%m-%dT%H:%M:%S")
-    # to_ts = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-    from_ts = None
-    to_ts = None
+    from_ts = (datetime.now() - timedelta(days=3)).strftime("%Y-%m-%dT%H:%M:%S")
+    to_ts = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+    # from_ts = None
+    # to_ts = None
     orders = get_orders_from_woocommerce(from_ts, to_ts, 'processing')
     print(f"@001 [GET ORDER] Status: 'processing', Cnt: {len(orders)}")
     orders += get_orders_from_woocommerce(from_ts, to_ts, 'on-hold')
@@ -102,7 +102,7 @@ def add_or_update_orders():
     )
     token = get_token()
 
-    for order in orders[:1]:
+    for order in orders:
         print(
             f"@101 [ORDER] orderId: {order['id']}, Order Status: {order['status']}, product_cnt: {len(order['line_items'])}"
         )
@@ -197,16 +197,16 @@ if __name__ == "__main__":
     time1 = time.time()
 
     try:
-        #     option = get_option(mysqlcon, "st_status_pod")
+        option = get_option(mysqlcon, "st_status_pod")
 
-        #     if int(option["option_value"]) == 0:
-        #         print("#905 - `st_status_pod` option is OFF")
-        #     elif option["is_running"]:
-        #         print("#905 - `st_status_pod` script is already RUNNING")
-        #     else:
-        #         print("#906 - `st_status_pod` option is ON")
-        #         set_option(mysqlcon, "st_status_pod", True)
-        #         print("#910 - Processing...")
+        if int(option["option_value"]) == 0:
+            print("#905 - `st_status_pod` option is OFF")
+        elif option["is_running"]:
+            print("#905 - `st_status_pod` script is already RUNNING")
+        else:
+            print("#906 - `st_status_pod` option is ON")
+            set_option(mysqlcon, "st_status_pod", True)
+            print("#910 - Processing...")
 
         add_or_update_orders()
     except Exception as e:
