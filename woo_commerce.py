@@ -84,10 +84,10 @@ def get_product_from_woocommerce(product_id):
 
 def add_or_update_orders():
     orders = []
-    # from_ts = (datetime.now() - timedelta(minutes=10)).strftime("%Y-%m-%dT%H:%M:%S")
-    # to_ts = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-    from_ts = None
-    to_ts = None
+    from_ts = (datetime.now() - timedelta(days=3, hours=22)).strftime("%Y-%m-%dT%H:%M:%S")
+    to_ts = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+    # from_ts = None
+    # to_ts = None
     orders = get_orders_from_woocommerce(from_ts, to_ts, 'processing')
     print(f"@001 [GET ORDER] Status: 'processing', Cnt: {len(orders)}")
     # orders += get_orders_from_woocommerce(from_ts, to_ts, 'on-hold')
@@ -104,7 +104,7 @@ def add_or_update_orders():
     token = get_token()
 
     for order in orders:
-        if str(order["id"]) != '118364':
+        if str(order["id"]) == '118368':
             print(
                 f"@100 [GET ORDER] Ignored: {order['id']}"
             )
