@@ -49,10 +49,11 @@ def get_orders_from_woocommerce(from_date, to_date, status):
 
     try:
         url = f"orders?"
-        url += "per_page=10"
+        url += "per_page=40"
         url += f"&status={status}"
         url += "&orderby=id"
         url += "&order=desc"
+        url += "&page=1"
         # url += "&exclude=[118368,118361,118359,118358,118357,118356,118355,118354,118353,118352,118351,118350,118349,118348,118346,118345,118341,118369,118338,118337,118335,118334,118333,118332,118326,118325,118324,118364,118360,118347,118339,118322,118321,118320,118318,118317,118314,118313,118312,118311,118307,118306,118305,118304,118303,118302,118301,118299,118298,118297,118296,118295,118293,118292,118291,118290,118289,118288,118287,118284,118283,118282,118281,118280,118279,118278,118277,118276,118265,118264,118262,118257,118294,118323,118258]"
 
         if from_date:
@@ -88,12 +89,12 @@ def get_product_from_woocommerce(product_id):
 
 def add_or_update_orders():
     orders = []
-    from_ts = (datetime.now() - timedelta(minutes=10)).strftime("%Y-%m-%dT%H:%M:%S")
+    from_ts = (datetime.now() - timedelta(hours=22)).strftime("%Y-%m-%dT%H:%M:%S")
     to_ts = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
     # from_ts = None
     # to_ts = None
-    # orders = get_orders_from_woocommerce(from_ts, to_ts, 'processing')
-    # print(f"@001 [GET ORDER] Status: 'processing', Cnt: {len(orders)}")
+    orders = get_orders_from_woocommerce(from_ts, to_ts, "processing")
+    print(f"@001 [GET ORDER] Status: 'processing', Cnt: {len(orders)}")
     orders += get_orders_from_woocommerce(from_ts, to_ts, "on-hold")
     print(f"@002 [GET ORDER] Status: 'on-hold', Cnt: {len(orders)}")
 
