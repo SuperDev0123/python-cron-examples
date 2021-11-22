@@ -53,7 +53,7 @@ def get_orders_from_woocommerce(from_date, to_date, status):
         url += f"&status={status}"
         url += "&orderby=id"
         url += "&order=desc"
-        url += "&page=1"
+        url += "&page=2"
 
         if from_date:
             url += f"&after={from_date}"
@@ -105,7 +105,7 @@ def add_or_update_orders():
     token = get_token()
 
     for order in orders:
-        if order["id"] in [118368,118361,118359,118358,118357,118356,118355,118354,118353,118352,118351,118350,118349,118348,118346,118345,118341]:
+        if order["id"] in [118368,118361,118359,118358,118357,118356,118355,118354,118353,118352,118351,118350,118349,118348,118346,118345,118341,118369,118338,118337,118335,118334,118333,118332,118326,118325,118324,118364,118360,118347,118339]:
             print(
                 f"@100 [GET ORDER] Ignored: {order['id']}"
             )
