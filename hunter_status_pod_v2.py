@@ -2,6 +2,7 @@
 
 import sys, time
 import json
+import base64
 from datetime import datetime
 import pymysql, pymysql.cursors
 import shutil
@@ -37,13 +38,18 @@ sftp_server_infos = {
 }
 
 
+def update_booking(consignment_number, pod_url, mysqlcon):
+    with mysqlcon.cursor() as cursor:
+        sql = "UPDATE dme_bookings SET z_pod_url=%s WHERE `v_FPBookingNumber`=%s"
+        result = cursor.execute(sql, (pod_url, consignment_number))
+    return result
+
 def get_booking(consignment_number, mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "SELECT `id`, `vx_freight_provider` From `dme_bookings` WHERE `v_FPBookingNumber`=%s"
         cursor.execute(sql, (consignment_number))
         booking = cursor.fetchone()
     return booking
-
         
 if __name__ == "__main__":
     print("#900 - Running %s" % datetime.now())
@@ -79,7 +85,7 @@ if __name__ == "__main__":
             set_option(mysqlcon, "hunter_status_pod", True)
             print("#910 - Processing...")
 
-            # Download .FTP files
+            Download .FTP files
             try:
                 download_sftp(
                     sftp_server_infos["host"],
@@ -140,11 +146,38 @@ if __name__ == "__main__":
                             else:
                                 print('No booking or wrong freight_provider: ', file, ', Row: ', index + 1)
                                 have_issue = True
-                    if have_issue:
-                        shutil.move(path.join(FTP_DIR, file), path.join(ISSUED_FTP_DIR, file))
-                    elif should_archive:
-                        shutil.move(path.join(FTP_DIR, file), path.join(ARCHIVE_FTP_DIR, file))
-                    
+                elif 'Pod' in file:
+                    with open(path.join(FTP_DIR, file), 'r') as csvfile:
+                        csv_content = list(csv.reader(csvfile))
+                        row_count = len(csv_content)
+                        for index in range(1, row_count):
+                            consignment_number = csv_content[index][0]
+                            image = csv_content[index][8]
+                        
+                            if consignment_number:
+                                booking = get_booking(consignment_number, mysqlcon)
+                            else:
+                                print('No Consignment number: ', file, 'row: ', index)
+                                have_issue = True
+                            
+                            if booking and booking['vx_freight_provider'].lower() == 'hunter':
+                                full_path = f"{S3_URL}/pdfs/hunter_au/{consignment_number}.tif"
+                                db_pod_url = f"hunter_au/{consignment_number}.tif"
+                                with open(full_path, "wb") as f:
+                                    f.write(base64.b64decode(image))
+                                    f.close()
+                                    update_booking(consignment_number, db_pod_url, mysqlcon)
+
+                            else:
+                                print('No booking or wrong freight_provider: ', file, 'row: ', index)
+                                have_issue = True
+                        if not have_issue:
+                            should_archive = True
+                if have_issue:
+                    shutil.move(path.join(FTP_DIR, file), path.join(ISSUED_FTP_DIR, file))
+                elif should_archive:
+                    shutil.move(path.join(FTP_DIR, file), path.join(ARCHIVE_FTP_DIR, file))
+
             set_option(mysqlcon, "hunter_status_pod", False, time1)
     except Exception as e:
         print("Error 904:", str(e))
