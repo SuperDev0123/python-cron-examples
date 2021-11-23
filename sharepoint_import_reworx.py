@@ -411,6 +411,7 @@ def do_import(dbcon, cur, filename):
         line["client_item_reference"] = None
         line["l_004_dim_UOM"] = worksheet1["H%i" % row].value
         line["l_008_weight_UOM"] = worksheet1["F%i" % row].value
+        line["b_093_packed_status"] = "original"
         line["zbl_101_text_1"] = None
         line["zbl_102_text_2"] = None
         line["zbl_103_text_3"] = None
