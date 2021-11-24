@@ -140,7 +140,6 @@ def do_process(mysqlcon):
                         ),
                     )
                     has_issue = response.status_code != 200
-                    break
                 else:
                     print("No booking or wrong freight_provider: ", file)
                     has_issue = True
@@ -153,6 +152,8 @@ def do_process(mysqlcon):
                 shutil.move(
                     path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file)
                 )
+
+            break
 
 
 if __name__ == "__main__":
