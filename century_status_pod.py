@@ -16,9 +16,9 @@ from _env import (
     DB_PASS,
     DB_PORT,
     DB_NAME,
-    CENTURY_FTP_DIR as FTP_DIR,
-    CENTURY_ARCHIVE_FTP_DIR as ARCHIVE_FTP_DIR,
-    CENTURY_ISSUED_FTP_DIR as ISSUED_FTP_DIR,
+    CTC_INPROGRESS_DIR as INPROGRESS_DIR,
+    CTC_ARCHIVE_DIR as ARCHIVE_DIR,
+    CTC_ISSUED_DIR as ISSUED_DIR,
     API_URL,
 )
 from _options_lib import get_option, set_option
@@ -32,8 +32,8 @@ sftp_server_infos = {
     "username": "dmeadmin",
     "password": "6FUB78AP4q@t",
     "sftp_filepath": "/transporter/status_tracking/indata/",
-    "local_filepath": FTP_DIR,
-    "local_filepath_archive": ARCHIVE_FTP_DIR,
+    "local_filepath": INPROGRESS_DIR,
+    "local_filepath_archive": ARCHIVE_DIR,
 }
 
 
@@ -65,10 +65,10 @@ def do_process(mysqlcon):
         print("Failed download .FTP files from remote. Error: ", str(e))
         set_option(mysqlcon, "century_status_pod", False, time1)
 
-    for file in listdir(FTP_DIR):
+    for file in listdir(INPROGRESS_DIR):
         response = None
         should_issue = False
-        with open(path.join(FTP_DIR, file), "r") as csvfile:
+        with open(path.join(INPROGRESS_DIR, file), "r") as csvfile:
             csv_list = list(csv.reader(csvfile))
             cols = csv_list[0]
             content = csv_list[1]
@@ -122,9 +122,9 @@ def do_process(mysqlcon):
             #         should_issue = True
 
         # if response and response.ok:
-        #     shutil.move(path.join(FTP_DIR, file), path.join(ARCHIVE_FTP_DIR, file))
+        #     shutil.move(path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file))
         # if should_issue:
-        #     shutil.move(path.join(FTP_DIR, file), path.join(ISSUED_FTP_DIR, file))
+        #     shutil.move(path.join(INPROGRESS_DIR, file), path.join(ISSUED_DIR, file))
 
 
 if __name__ == "__main__":
@@ -145,8 +145,10 @@ if __name__ == "__main__":
         print("Mysql DB connection error!")
         exit(1)
 
-    if not path.isdir(FTP_DIR) or not path.isdir(ARCHIVE_FTP_DIR):
-        print('Given argument "%s, %s" is not a directory' % FTP_DIR, ARCHIVE_FTP_DIR)
+    if not path.isdir(INPROGRESS_DIR) or not path.isdir(ARCHIVE_DIR):
+        print(
+            'Given argument "%s, %s" is not a directory' % INPROGRESS_DIR, ARCHIVE_DIR
+        )
         exit(1)
 
     try:
