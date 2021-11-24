@@ -75,51 +75,62 @@ def do_process(mysqlcon):
 
             print("\n@1 - ", file, "\n", cols, "\n", content)
 
-            # if "booking_number" in cols:
-            #     index = cols.index("booking_number")
-            #     booking_id = content[index]
-            # else:
-            #     booking_id = None
+            if "booking_number" in cols:
+                index = cols.index("booking_number")
+                booking_id = content[index]
+            else:
+                booking_id = None
 
-            # if cols[0] == "customer_order_number":
-            #     consignment_number = content[1]
-            #     fp_status_code = content[3]
-            #     fp_status_details = content[5]
-            #     event_time_stamp = datetime.strptime(content[2], "%Y%m%d").strftime(
-            #         "%Y-%m-%d %H:%M:%S.%f"
-            #     )
-            # else:
-            #     consignment_number = content[0]
-            #     fp_status_code = content[2]
-            #     fp_status_details = content[4]
-            #     event_time_stamp = datetime.strptime(content[1], "%Y%m%d").strftime(
-            #         "%Y-%m-%d %H:%M:%S.%f"
-            #     )
+            if cols[0] == "customer_order_number":
+                consignment_number = content[1]
+                fp_status_code = content[3]
+                fp_status_details = content[5]
+                event_time_stamp = datetime.strptime(content[2], "%Y%m%d").strftime(
+                    "%Y-%m-%d %H:%M:%S.%f"
+                )
+            else:
+                consignment_number = content[0]
+                fp_status_code = content[2]
+                fp_status_details = content[4]
+                event_time_stamp = datetime.strptime(content[1], "%Y%m%d").strftime(
+                    "%Y-%m-%d %H:%M:%S.%f"
+                )
 
-            # if not booking_id and not consignment_number:
-            #     print("No booking id and consignment number: ", file)
-            #     should_issue = True
-            # else:
-            #     booking = get_booking(booking_id, consignment_number, mysqlcon)
-            #     if booking and booking["vx_freight_provider"] == "Century":
-            #         headers = {"content-type": "application/json"}
-            #         response = requests.post(
-            #             f"{API_URL}/statushistory/save_status_history/",
-            #             headers=headers,
-            #             data=json.dumps(
-            #                 {
-            #                     "booking_id": booking["id"],
-            #                     "consignment_number": consignment_number,
-            #                     "fp_status_code": fp_status_code,
-            #                     "fp_status_details": fp_status_details,
-            #                     "event_time_stamp": event_time_stamp,
-            #                     "is_from_script": True,
-            #                 }
-            #             ),
-            #         )
-            #     else:
-            #         print("No booking or wrong freight_provider: ", file)
-            #         should_issue = True
+            if not booking_id and not consignment_number:
+                print("No booking id and consignment number: ", file)
+                should_issue = True
+            else:
+                booking = get_booking(booking_id, consignment_number, mysqlcon)
+                if booking and booking["vx_freight_provider"] == "Century":
+                    # headers = {"content-type": "application/json"}
+                    # response = requests.post(
+                    #     f"{API_URL}/statushistory/save_status_history/",
+                    #     headers=headers,
+                    #     data=json.dumps(
+                    #         {
+                    #             "booking_id": booking["id"],
+                    #             "consignment_number": consignment_number,
+                    #             "fp_status_code": fp_status_code,
+                    #             "fp_status_details": fp_status_details,
+                    #             "event_time_stamp": event_time_stamp,
+                    #             "is_from_script": True,
+                    #         }
+                    #     ),
+                    # )
+                    print(
+                        "@! - ",
+                        {
+                            "booking_id": booking["id"],
+                            "consignment_number": consignment_number,
+                            "fp_status_code": fp_status_code,
+                            "fp_status_details": fp_status_details,
+                            "event_time_stamp": event_time_stamp,
+                            "is_from_script": True,
+                        },
+                    )
+                else:
+                    print("No booking or wrong freight_provider: ", file)
+                    should_issue = True
 
         # if response and response.ok:
         #     shutil.move(path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file))
