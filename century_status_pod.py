@@ -101,7 +101,11 @@ def do_process(mysqlcon):
                 should_issue = True
             else:
                 booking = get_booking(booking_id, consignment_number, mysqlcon)
-                if booking and booking["vx_freight_provider"] == "Century":
+                if (
+                    booking
+                    and booking["vx_freight_provider"]
+                    and booking["vx_freight_provider"].lower() == "century"
+                ):
                     # headers = {"content-type": "application/json"}
                     # response = requests.post(
                     #     f"{API_URL}/statushistory/save_status_history/",
