@@ -153,8 +153,6 @@ def do_process(mysqlcon):
                     path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file)
                 )
 
-            break
-
 
 if __name__ == "__main__":
     print("\n\n\n#900 - Running %s" % datetime.now())
