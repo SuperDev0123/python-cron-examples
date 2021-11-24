@@ -57,11 +57,11 @@ def get_token():
 def get_booking(booking_id, consignment_number, mysqlcon):
     with mysqlcon.cursor() as cursor:
         if booking_id:
-            sql = "SELECT `id`, `fk_booking_id`, `vx_freight_provider` From `dme_bookings` WHERE `id`=%s"
+            sql = "SELECT `id`, `pk_booking_id`, `vx_freight_provider` From `dme_bookings` WHERE `id`=%s"
             cursor.execute(sql, (booking_id))
             booking = cursor.fetchone()
         else:
-            sql = "SELECT `id`, `fk_booking_id`, `vx_freight_provider` From `dme_bookings` WHERE `v_FPBookingNumber`=%s"
+            sql = "SELECT `id`, `pk_booking_id`, `vx_freight_provider` From `dme_bookings` WHERE `v_FPBookingNumber`=%s"
             cursor.execute(sql, (consignment_number))
             booking = cursor.fetchone()
         return booking
@@ -130,7 +130,7 @@ def do_process(mysqlcon):
                         headers=headers,
                         data=json.dumps(
                             {
-                                "fk_booking_id": booking["fk_booking_id"],
+                                "fk_booking_id": booking["pk_booking_id"],
                                 "consignment_number": consignment_number,
                                 "fp_status": fp_status,
                                 "fp_status_description": fp_status_description,
