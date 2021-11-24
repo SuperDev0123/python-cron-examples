@@ -75,21 +75,22 @@ def do_process(mysqlcon):
 
             print("\n@1 - ", file, "\n", cols, "\n", content)
 
-            if "booking_number" in cols:
-                index = cols.index("booking_number")
-                booking_id = content[index]
-            else:
-                booking_id = None
+            booking_id = None
+            # if "booking_number" in cols:
+            #     index = cols.index("booking_number")
+            #     booking_id = content[index]
+            # else:
+            #     booking_id = None
 
             if cols[0] == "customer_order_number":
-                consignment_number = content[1]
+                consignment_number = content[-1]
                 fp_status_code = content[3]
                 fp_status_details = content[5]
                 event_time_stamp = datetime.strptime(content[2], "%Y%m%d").strftime(
                     "%Y-%m-%d %H:%M:%S.%f"
                 )
             else:
-                consignment_number = content[0]
+                consignment_number = content[-1]
                 fp_status_code = content[2]
                 fp_status_details = content[4]
                 event_time_stamp = datetime.strptime(content[1], "%Y%m%d").strftime(
