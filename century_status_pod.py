@@ -83,9 +83,9 @@ def do_process(mysqlcon):
         set_option(mysqlcon, "century_status_pod", False, time1)
 
     token = get_token()
-    for file in listdir(INPROGRESS_DIR)[0]:
+    for file in listdir(INPROGRESS_DIR):
         response = None
-        should_issue = False
+        has_issue = False
         with open(path.join(INPROGRESS_DIR, file), "r") as csvfile:
             booking_id = None
             csv_list = list(csv.reader(csvfile))
@@ -112,7 +112,7 @@ def do_process(mysqlcon):
 
             if not booking_id and not consignment_number:
                 print("No booking id and consignment number: ", file)
-                should_issue = True
+                has_issue = True
             else:
                 booking = get_booking(booking_id, consignment_number, mysqlcon)
 
@@ -139,14 +139,16 @@ def do_process(mysqlcon):
                             }
                         ),
                     )
+                    has_issue = response.status_code != 200
+                    break
                 else:
                     print("No booking or wrong freight_provider: ", file)
-                    should_issue = True
+                    has_issue = True
 
-        if response and response.ok:
-            shutil.move(path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file))
-        if should_issue:
+        if has_issue:
             shutil.move(path.join(INPROGRESS_DIR, file), path.join(ISSUED_DIR, file))
+        else:
+            shutil.move(path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file))
 
 
 if __name__ == "__main__":
