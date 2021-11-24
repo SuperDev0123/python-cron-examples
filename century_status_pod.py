@@ -145,10 +145,12 @@ if __name__ == "__main__":
         print("Mysql DB connection error!")
         exit(1)
 
-    if not path.isdir(INPROGRESS_DIR) or not path.isdir(ARCHIVE_DIR):
-        print(
-            'Given argument "%s, %s" is not a directory' % INPROGRESS_DIR, ARCHIVE_DIR
-        )
+    if not path.isdir(INPROGRESS_DIR):
+        print(f"{INPROGRESS_DIR} is not a directory")
+        exit(1)
+
+    if not path.isdir(ARCHIVE_DIR):
+        print(f"{ARCHIVE_DIR} is not a directory")
         exit(1)
 
     try:
