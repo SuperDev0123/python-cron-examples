@@ -18,7 +18,7 @@ DB_HOST = "localhost"
 DB_USER = "root"
 DB_PASS = ""
 DB_PORT = 3306
-DB_NAME = "dme_db_prod"
+DB_NAME = "deliver_me"
 
 API_URL = "http://localhost:8000/api"  # Local
 USERNAME = "dme"
@@ -32,10 +32,10 @@ SI_DOWNLOAD_DIR = "./xls/downloaded"
 SI_IMPORT_DIR = "./xls/imported"
 SI_ERROR_DIR = "./xls/issued"
 
-# HUNTER
-HUNTER_FTP_DIR = "./dme_sftp/hunter_au/status_csv/inprogress/"
-HUNTER_ARCHIVE_FTP_DIR = "./dme_sftp/hunter_au/status_csv/archive/"
-HUNTER_ISSUED_FTP_DIR = "./dme_sftp/hunter_au/status_csv/issued/"
+# Hunter Tracking
+HT_INPROGRESS_DIR = "./dme_sftp/hunter_au/status_csv/inprogress/"
+HT_ARCHIVE_DIR = "./dme_sftp/hunter_au/status_csv/archive/"
+HT_ISSUED_DIR = "./dme_sftp/hunter_au/status_csv/issued/"
 
 # ST - Startrack
 ST_FTP_DIR = "/Users/admin/work/goldmine/scripts/dir01/"
