@@ -18,6 +18,11 @@ API_URL = "http://localhost:8000/api"  # Local
 USERNAME = "dme"
 PASSWORD = "LRyuNp3zn[XE_`8-"
 
+# Century Tracking
+CTC_INPROGRESS_DIR = "./dme_sftp/century_au/status_csv/inprogress"
+CTC_ARCHIVE_DIR = "./dme_sftp/century_au/status_csv/archive"
+CTC_ISSUED_DIR = "./dme_sftp/century_au/status_csv/issued"
+
 # SI - Sharepoint import
 SI_DOWNLOAD_DIR = "./xls/downloaded"
 SI_IMPORT_DIR = "./xls/imported"

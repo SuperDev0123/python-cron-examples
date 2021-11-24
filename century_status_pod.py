@@ -37,17 +37,12 @@ sftp_server_infos = {
 }
 
 
-def get_booking(booking_id, consignment_number, mysqlcon):
+def get_booking(consignment_number, mysqlcon):
     with mysqlcon.cursor() as cursor:
-        if booking_id:
-            sql = "SELECT `id`, `vx_freight_provider` From `dme_bookings` WHERE `id`=%s"
-            cursor.execute(sql, (booking_id))
-            booking = cursor.fetchone()
-        else:
-            sql = "SELECT `id`, `vx_freight_provider` From `dme_bookings` WHERE `v_FPBookingNumber`=%s"
-            cursor.execute(sql, (consignment_number))
-            booking = cursor.fetchone()
-        return booking
+        sql = "SELECT `id`, `vx_freight_provider` From `dme_bookings` WHERE `v_FPBookingNumber`=%s"
+        cursor.execute(sql, (consignment_number))
+        booking = cursor.fetchone()
+    return booking
 
 
 def do_process(mysqlcon):
@@ -66,7 +61,6 @@ def do_process(mysqlcon):
         set_option(mysqlcon, "century_status_pod", False, time1)
 
     for file in listdir(INPROGRESS_DIR):
-        response = None
         should_issue = False
         with open(path.join(INPROGRESS_DIR, file), "r") as csvfile:
             csv_list = list(csv.reader(csvfile))
@@ -74,13 +68,6 @@ def do_process(mysqlcon):
             content = csv_list[1]
 
             print("\n@1 - ", file, "\n", cols, "\n", content)
-
-            booking_id = None
-            # if "booking_number" in cols:
-            #     index = cols.index("booking_number")
-            #     booking_id = content[index]
-            # else:
-            #     booking_id = None
 
             if cols[0] == "customer_order_number":
                 consignment_number = content[-1]
@@ -97,31 +84,31 @@ def do_process(mysqlcon):
                     "%Y-%m-%d %H:%M:%S.%f"
                 )
 
-            if not booking_id and not consignment_number:
-                print("No booking id and consignment number: ", file)
+            if not consignment_number:
+                print("No consignment number: ", file)
                 should_issue = True
             else:
-                booking = get_booking(booking_id, consignment_number, mysqlcon)
+                booking = get_booking(consignment_number, mysqlcon)
                 if (
                     booking
                     and booking["vx_freight_provider"]
                     and booking["vx_freight_provider"].lower() == "century"
                 ):
-                    # headers = {"content-type": "application/json"}
-                    # response = requests.post(
-                    #     f"{API_URL}/statushistory/save_status_history/",
-                    #     headers=headers,
-                    #     data=json.dumps(
-                    #         {
-                    #             "booking_id": booking["id"],
-                    #             "consignment_number": consignment_number,
-                    #             "fp_status_code": fp_status_code,
-                    #             "fp_status_details": fp_status_details,
-                    #             "event_time_stamp": event_time_stamp,
-                    #             "is_from_script": True,
-                    #         }
-                    #     ),
-                    # )
+                    headers = {"content-type": "application/json"}
+                    requests.post(
+                        f"{API_URL}/statushistory/save_status_history/",
+                        headers=headers,
+                        data=json.dumps(
+                            {
+                                "booking_id": booking["id"],
+                                "consignment_number": consignment_number,
+                                "fp_status_code": fp_status_code,
+                                "fp_status_details": fp_status_details,
+                                "event_time_stamp": event_time_stamp,
+                                "is_from_script": True,
+                            }
+                        ),
+                    )
                     print(
                         "@! - ",
                         {
@@ -137,10 +124,10 @@ def do_process(mysqlcon):
                     print("No booking or wrong freight_provider: ", file)
                     should_issue = True
 
-        # if response and response.ok:
-        #     shutil.move(path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file))
-        # if should_issue:
-        #     shutil.move(path.join(INPROGRESS_DIR, file), path.join(ISSUED_DIR, file))
+        if should_issue:
+            shutil.move(path.join(INPROGRESS_DIR, file), path.join(ISSUED_DIR, file))
+        else:
+            shutil.move(path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file))
 
 
 if __name__ == "__main__":
