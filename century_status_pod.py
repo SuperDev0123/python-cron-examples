@@ -57,12 +57,12 @@ def get_token():
 def get_booking(booking_id, consignment_number, mysqlcon):
     with mysqlcon.cursor() as cursor:
         if booking_id:
-            sql = "SELECT `id`, `pk_booking_id`, `vx_freight_provider` From `dme_bookings` WHERE `id`=%s"
-            cursor.execute(sql, (booking_id))
+            sql = "SELECT `id`, `pk_booking_id`, `vx_freight_provider` From `dme_bookings` WHERE `id`=%s AND LOWER(vx_freight_provider)=%s"
+            cursor.execute(sql, (booking_id, "century"))
             booking = cursor.fetchone()
         else:
-            sql = "SELECT `id`, `pk_booking_id`, `vx_freight_provider` From `dme_bookings` WHERE `v_FPBookingNumber`=%s"
-            cursor.execute(sql, (consignment_number))
+            sql = "SELECT `id`, `pk_booking_id`, `vx_freight_provider` From `dme_bookings` WHERE `v_FPBookingNumber`=%s AND LOWER(vx_freight_provider)=%s"
+            cursor.execute(sql, (consignment_number, "century"))
             booking = cursor.fetchone()
         return booking
 
