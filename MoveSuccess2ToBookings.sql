@@ -68,15 +68,7 @@ INSERT IGNORE INTO `dme_bookings`
     `b_client_order_num`, `b_client_sales_inv_num`, `b_client_warehouse_code`,
     `b_client_name`, `delivery_kpi_days`, `z_api_issue_update_flag_500`,
     `x_manual_booked_flag`, `x_booking_Created_With`, `api_booking_quote_id`,
-    `booking_type`, `vx_fp_order_id`, `b_error_Capture`,
-    `pu_Address_Type`, `de_To_AddressType`
-    `pu_no_of_assists`, `de_no_of_assists`,
-    `pu_location`, `de_to_location`,
-    `pu_access`, `de_access`,
-    `pu_floor_number`, `de_floor_number`,
-    `pu_floor_access_by`, `de_to_floor_access_by`,
-    `pu_service`, `de_service`
-    )
+    `booking_type`, `vx_fp_order_id`, `b_clientPU_Warehouse`)
 SELECT bok_1.pk_header_id, bok_1.b_000_1_b_clientReference_RA_Numbers,
     bok_1.b_000_b_total_lines, bok_1.b_001_b_freight_provider, b_002_b_vehicle_type,
     bok_1.b_005_b_created_for, bok_1.b_006_b_created_for_email, b_007_b_ready_status,
@@ -128,14 +120,7 @@ SELECT bok_1.pk_header_id, bok_1.b_000_1_b_clientReference_RA_Numbers,
     CASE WHEN success = 2 THEN 1 WHEN success = 3 THEN 0 WHEN success= 4 THEN 0 END,
     CASE WHEN success = 6 THEN 1 ELSE 0 END,
     bok_1.x_booking_Created_With, bok_1.quote_id,
-    bok_1.b_092_booking_type, '', bok_1.zb_105_text_5,
-    bok_1.b_027_b_pu_address_type, bok_1.b_053_b_del_address_type,
-    bok_1.b_072_b_pu_no_of_assists, bok_1.b_073_b_del_no_of_assists,
-    bok_1.b_078_b_pu_location, bok_1.b_068_b_del_location,
-    bok_1.b_074_b_pu_access, bok_1.b_075_b_del_access,
-    bok_1.b_079_b_pu_floor_number, bok_1.b_069_b_del_floor_number,
-    bok_1.pu_floor_access_by, bok_1.de_to_floor_access_by,
-    bok_1.pu_service, bok_1.de_service
+    bok_1.b_092_booking_type, '', bok_1.b_clientPU_Warehouse
 FROM bok_1_headers bok_1
 LEFT OUTER JOIN dme_clients ON fk_client_id=dme_account_num
 LEFT OUTER JOIN utl_fp_delivery_times ON (b_001_b_freight_provider = fp_name AND cast(b_059_b_del_address_postalcode AS UNSIGNED) 
@@ -184,7 +169,7 @@ INSERT IGNORE INTO dme_booking_lines
     e_dimLength, e_dimWidth, e_dimHeight,
     e_weightUOM, z_createdTimeStamp, e_dimUOM,
     client_item_reference, pk_booking_lines_id, zbl_121_integer_1,
-    zbl_102_text_2, is_deleted)
+    zbl_102_text_2, is_deleted, packed_status)
 SELECT client_booking_id, l_009_weight_per_each,
     CASE
         WHEN upper(l_004_dim_UOM) = "CM"
@@ -208,7 +193,7 @@ SELECT client_booking_id, l_009_weight_per_each,
     l_005_dim_length, l_006_dim_width, l_007_dim_height,
     l_008_weight_UOM, z_createdTimeStamp, l_004_dim_UOM,
     client_item_reference, pk_booking_lines_id, zbl_121_integer_1,
-    zbl_102_text_2, is_deleted
+    zbl_102_text_2, 0, b_093_packed_status
 FROM `bok_2_lines`
 WHERE success IN (2,4);
 
@@ -252,25 +237,32 @@ bookingCreatedEmail: REPEAT
 
     -- Populate 'booking_created_for'
     SELECT first_name, last_name, api_booking_quote_id, pk_id_dme_client;
-    
-    If last_name = ""
+
+    If first_name = "Bathroom"
         THEN
-            -- SELECT 'Only first_name';
-            SELECT email INTO booking_created_for_email
-            FROM dme_client_employees
-            WHERE name_last IS NULL AND name_first=first_name AND fk_id_dme_client_id=pk_id_dme_client;
+            UPDATE dme_bookings
+            SET booking_Created_For_Email = "info@bathroomsalesdirect.com.au"
+            WHERE b_bookingID_Visual = bookingID_Visual;
         ELSE
-            -- SELECT 'first_name, last_name';
-            SELECT email INTO booking_created_for_email
-            FROM dme_client_employees
-            WHERE name_first=last_name AND name_last=first_name AND fk_id_dme_client_id=pk_id_dme_client;
+            If last_name = ""
+                THEN
+                    -- SELECT 'Only first_name';
+                    SELECT email INTO booking_created_for_email
+                    FROM dme_client_employees
+                    WHERE name_last IS NULL AND name_first=first_name AND fk_id_dme_client_id=pk_id_dme_client;
+                ELSE
+                    -- SELECT 'first_name, last_name';
+                    SELECT email INTO booking_created_for_email
+                    FROM dme_client_employees
+                    WHERE name_first=last_name AND name_last=first_name AND fk_id_dme_client_id=pk_id_dme_client;
+            END If;
+
+            SELECT booking_created_for_email;
+
+            UPDATE dme_bookings
+            SET booking_Created_For_Email = booking_created_for_email
+            WHERE b_bookingID_Visual = bookingID_Visual;
     END If;
-
-    SELECT booking_created_for_email;
-
-    UPDATE dme_bookings
-    SET booking_Created_For_Email = booking_created_for_email
-    WHERE b_bookingID_Visual = bookingID_Visual;
 
     -- Populate 'Quoted Cost' and 'Quoted $'
     If api_booking_quote_id THEN

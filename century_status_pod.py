@@ -20,6 +20,8 @@ from _env import (
     CTC_ARCHIVE_DIR as ARCHIVE_DIR,
     CTC_ISSUED_DIR as ISSUED_DIR,
     API_URL,
+    USERNAME,
+    PASSWORD,
 )
 from _options_lib import get_option, set_option
 from _upload_download import download_sftp, upload_sftp
@@ -37,14 +39,29 @@ sftp_server_infos = {
 }
 
 
+def get_token():
+    url = API_URL + "/api-token-auth/"
+    data = {"username": USERNAME, "password": PASSWORD}
+    response = requests.post(url, params={}, json=data)
+    response0 = response.content.decode("utf8")
+    data0 = json.loads(response0)
+
+    if "token" in data0:
+        print("@101 - Token: ", data0["token"])
+        return data0["token"]
+    else:
+        print("@400 - ", data0["non_field_errors"])
+        return None
+
+
 def get_booking(booking_id, consignment_number, mysqlcon):
     with mysqlcon.cursor() as cursor:
         if booking_id:
-            sql = "SELECT `id`, `vx_freight_provider` From `dme_bookings` WHERE `id`=%s"
+            sql = "SELECT `id`, `fk_booking_id`, `vx_freight_provider` From `dme_bookings` WHERE `id`=%s"
             cursor.execute(sql, (booking_id))
             booking = cursor.fetchone()
         else:
-            sql = "SELECT `id`, `vx_freight_provider` From `dme_bookings` WHERE `v_FPBookingNumber`=%s"
+            sql = "SELECT `id`, `fk_booking_id`, `vx_freight_provider` From `dme_bookings` WHERE `v_FPBookingNumber`=%s"
             cursor.execute(sql, (consignment_number))
             booking = cursor.fetchone()
         return booking
@@ -65,7 +82,8 @@ def do_process(mysqlcon):
         print("Failed download .FTP files from remote. Error: ", str(e))
         set_option(mysqlcon, "century_status_pod", False, time1)
 
-    for file in listdir(INPROGRESS_DIR):
+    token = get_token()
+    for file in listdir(INPROGRESS_DIR)[0]:
         response = None
         should_issue = False
         with open(path.join(INPROGRESS_DIR, file), "r") as csvfile:
@@ -103,13 +121,16 @@ def do_process(mysqlcon):
                     and booking["vx_freight_provider"]
                     and booking["vx_freight_provider"].lower() == "century"
                 ):
-                    headers = {"content-type": "application/json"}
+                    headers = {
+                        "content-type": "application/json",
+                        "Authorization": f"JWT {token}",
+                    }
                     response = requests.post(
                         f"{API_URL}/statushistory/save_status_history/",
                         headers=headers,
                         data=json.dumps(
                             {
-                                "booking_id": booking["id"],
+                                "fk_booking_id": booking["fk_booking_id"],
                                 "consignment_number": consignment_number,
                                 "fp_status": fp_status,
                                 "fp_status_description": fp_status_description,
