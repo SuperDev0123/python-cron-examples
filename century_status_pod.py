@@ -145,14 +145,18 @@ def do_process(mysqlcon):
                     print("No booking or wrong freight_provider: ", file)
                     has_issue = True
 
-        if has_issue:
-            shutil.move(path.join(INPROGRESS_DIR, file), path.join(ISSUED_DIR, file))
-        else:
-            shutil.move(path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file))
+            if has_issue:
+                shutil.move(
+                    path.join(INPROGRESS_DIR, file), path.join(ISSUED_DIR, file)
+                )
+            else:
+                shutil.move(
+                    path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file)
+                )
 
 
 if __name__ == "__main__":
-    print("#900 - Running %s" % datetime.now())
+    print("\n\n\n#900 - Running %s" % datetime.now())
     time1 = time.time()
 
     try:
