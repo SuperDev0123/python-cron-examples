@@ -3,11 +3,12 @@
 import sys, time
 import os
 import uuid
-import datetime
+from datetime import datetime, timedelta
 import pymysql, pymysql.cursors
 import shutil
 import json
 import requests
+import traceback
 
 from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
 from _options_lib import get_option, set_option
@@ -16,10 +17,11 @@ from woocommerce import API
 
 wcapi = API(
     url="https://bathroomsalesdirect.com.au/",  # Your store URL
-    consumer_key="ck_ef5088f8997a8bb637b866269962530c62f2e4e8",  # Your consumer key
-    consumer_secret="cs_263cbc00a2a180d6bb9d7011194dfc98d04d8377",  # Your consumer secret
+    consumer_key="ck_b805f1858e763af3f27e5638f80e06f924ac94b1",  # Your consumer key
+    consumer_secret="cs_8b52746e7285a2cbaee34046be2e5eadb09884f2",  # Your consumer secret
     wp_api=True,  # Enable the WP REST API integration
     version="wc/v3",  # WooCommerce WP REST API version
+    query_string_auth=True,
 )
 
 
@@ -42,11 +44,34 @@ def get_token():
         return None
 
 
-def get_orders_from_woocommerce(from_date, to_date):
+def get_orders_from_woocommerce(from_date, to_date, status):
+    print(f"params - from_date: {from_date}, to_date: {to_date}, status: {status}")
+
     try:
-        order_list = wcapi.get(
-            f"orders?after={from_date}&before={to_date}&per_page=30&status=completed&orderby=id&order=desc"
-        ).json()
+        url = f"orders?"
+        url += "per_page=40"
+        url += f"&status={status}"
+        url += "&orderby=id"
+        url += "&order=desc"
+        # url += "&page=1"
+        # url += "&exclude=[118369,118370,118371,118372,118373,118374,118375,118376,118377,118378,118381,118382,118383,118392,118393,118394,118395,118396,118400,118402,118404,118405,118406,118407,118408,118411,118412]"
+
+        if from_date:
+            url += f"&after={from_date}"
+
+        if to_date:
+            url += f"&before={to_date}"
+
+        print(f"url - {url}")
+        order_list = wcapi.get(url).json()
+
+        if (
+            "code" in order_list
+            and order_list["code"] == "woocommerce_rest_cannot_view"
+        ):
+            print(f"Message from WooCommerce: {order_list['message']}")
+            return []
+
         return order_list
     except Exception as e:
         print(f"Get orders error: {e}")
@@ -63,9 +88,20 @@ def get_product_from_woocommerce(product_id):
 
 
 def add_or_update_orders():
-    from_ts = "2021-07-01T00:00:00"
-    to_ts = "2021-08-12T00:00:00"
-    orders = get_orders_from_woocommerce(from_ts, to_ts)
+    orders = []
+    from_ts = (datetime.now() - timedelta(minutes=10)).strftime("%Y-%m-%dT%H:%M:%S")
+    to_ts = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+    # from_ts = None
+    # to_ts = None
+    orders = get_orders_from_woocommerce(from_ts, to_ts, "processing")
+    print(f"@001 [GET ORDER] Status: 'processing', Cnt: {len(orders)}")
+    orders += get_orders_from_woocommerce(from_ts, to_ts, "on-hold")
+    print(f"@002 [GET ORDER] Status: 'on-hold', Cnt: {len(orders)}")
+
+    if len(orders) == 0:
+        print(f"@003 [GET ORDER] No orders!")
+        return
+
     print(
         f"@100 [GET ORDER] from_ts: {from_ts}, to_ts: {to_ts}, order_cnt: {len(orders)}"
     )
@@ -83,7 +119,7 @@ def add_or_update_orders():
             "b_001_b_freight_provider": "",
             "b_002_b_vehicle_type": "",
             "b_003_b_service_name": "",
-            "b_005_b_created_for": "bathroomsalesdirect",
+            "b_005_b_created_for": "Bathroom Sales Direct",
             "b_006_b_created_for_email": "info@bathroomsalesdirect.com.au",
             "b_007_b_ready_status": "Available From",
             "b_008_b_category": "Standard Sales",
@@ -93,9 +129,9 @@ def add_or_update_orders():
             "b_016_b_pu_instructions_address": "",
             "b_019_b_pu_tail_lift": 0,
             "b_021_b_pu_avail_from_date": order["date_modified"][:10],
-            "b_022_b_pu_avail_from_time_hour": 12,
+            "b_022_b_pu_avail_from_time_hour": 8,
             "b_023_b_pu_avail_from_time_minute": 0,
-            "b_027_b_pu_address_type": "Business",
+            "b_027_b_pu_address_type": "business",
             "b_028_b_pu_company": "Bathroom Sales Direct",
             "b_029_b_pu_address_street_1": "118 Merrylands Road",
             "b_030_b_pu_address_street_2": "",
@@ -111,6 +147,7 @@ def add_or_update_orders():
             "b_042_b_del_num_operators": 0,
             "b_043_b_del_instructions_contact": "",
             "b_044_b_del_instructions_address": "",
+            "b_053_b_del_address_type": "residential",
             "b_054_b_del_company": order["shipping"]["first_name"]
             + order["shipping"]["last_name"],
             "b_055_b_del_address_street_1": order["shipping"]["address_1"],
@@ -161,27 +198,43 @@ def add_or_update_orders():
 
 
 if __name__ == "__main__":
-    print("#900 - Running %s" % datetime.datetime.now())
+    print("#900 - Running %s" % datetime.now())
     time1 = time.time()
 
     try:
-        #     option = get_option(mysqlcon, "st_status_pod")
+        mysqlcon = pymysql.connect(
+            host=DB_HOST,
+            port=DB_PORT,
+            user=DB_USER,
+            password=DB_PASS,
+            db=DB_NAME,
+            charset="utf8mb4",
+            cursorclass=pymysql.cursors.DictCursor,
+        )
+    except:
+        print("Mysql DB connection error!")
+        exit(1)
 
-        #     if int(option["option_value"]) == 0:
-        #         print("#905 - `st_status_pod` option is OFF")
-        #     elif option["is_running"]:
-        #         print("#905 - `st_status_pod` script is already RUNNING")
-        #     else:
-        #         print("#906 - `st_status_pod` option is ON")
-        #         set_option(mysqlcon, "st_status_pod", True)
-        #         print("#910 - Processing...")
+    try:
+        option = get_option(mysqlcon, "bsd_woocommerce")
 
-        add_or_update_orders()
+        if int(option["option_value"]) == 0:
+            print("#905 - `bsd_woocommerce` option is OFF")
+        elif option["is_running"]:
+            print("#905 - `bsd_woocommerce` script is already RUNNING")
+        else:
+            print("#906 - `bsd_woocommerce` option is ON")
+            set_option(mysqlcon, "bsd_woocommerce", True)
+            print("#910 - Processing...")
+            add_or_update_orders()
+            set_option(mysqlcon, "bsd_woocommerce", False, time1)
     except Exception as e:
+        print(f"@000 traceback: {traceback.format_exc()}")
         print("Error 904:", str(e))
+        set_option(mysqlcon, "bsd_woocommerce", False, time1)
 
         # set_option(mysqlcon, "st_status_pod", False, time1)
-    print("#999 - Finished %s\n\n\n" % datetime.datetime.now())
+    print("#999 - Finished %s\n\n\n" % datetime.now())
 
 
 # // order data sample

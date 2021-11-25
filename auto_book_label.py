@@ -25,7 +25,7 @@ from _options_lib import get_option, set_option
 from _email_lib import send_email
 
 TYPE_1 = 1  # Plum
-TYPE_2 = 2  # JasonL
+TYPE_2 = 2  # JasonL & BSD(Bathroom Sales Direct)
 
 
 def get_token():
@@ -56,14 +56,14 @@ def get_bookings(mysqlcon, type):
                 sql, ("Ready for Booking", "461162D2-90C7-BF4E-A905-000000000004", "")
             )
             bookings = cursor.fetchall()
-        elif type == TYPE_2:  # JasonL
+        elif type == TYPE_2:  # JasonL & BSD
             sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider`, `kf_client_id`, `b_client_order_num` \
                     FROM `dme_bookings` \
-                    WHERE `b_status`=%s and `kf_client_id`=%s \
+                    WHERE `b_status`=%s AND (`kf_client_id`=%s OR `kf_client_id`=%s)\
                     ORDER BY id DESC \
                     LIMIT 10"
             cursor.execute(
-                sql, ("Ready for Despatch", "1af6bcd2-6148-11eb-ae93-0242ac130002")
+                sql, ("Ready for Despatch", "1af6bcd2-6148-11eb-ae93-0242ac130002", "9e72da0f-77c3-4355-a5ce-70611ffd0bc8")
             )
             bookings = cursor.fetchall()
 
@@ -73,7 +73,7 @@ def get_bookings(mysqlcon, type):
 def reset_booking(mysqlcon, booking, error_msg):
     with mysqlcon.cursor() as cursor:
         # JasonL & TNT
-        if booking["kf_client_id"] == "1af6bcd2-6148-11eb-ae93-0242ac130002":
+        if booking["kf_client_id"] in ["1af6bcd2-6148-11eb-ae93-0242ac130002", "9e72da0f-77c3-4355-a5ce-70611ffd0bc8"]:
             sql = "UPDATE `dme_bookings` \
                     SET `v_FPBookingNumber`=NULL, `b_status`=%s, `b_dateBookedDate`=NULL, `b_error_Capture`=%s \
                     WHERE id=%s"
