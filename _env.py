@@ -33,11 +33,6 @@ SI_DOWNLOAD_DIR = "./xls/downloaded"
 SI_IMPORT_DIR = "./xls/imported"
 SI_ERROR_DIR = "./xls/issued"
 
-# Hunter Tracking
-HT_INPROGRESS_DIR = "./dme_sftp/hunter_au/status_csv/inprogress/"
-HT_ARCHIVE_DIR = "./dme_sftp/hunter_au/status_csv/archive/"
-HT_ISSUED_DIR = "./dme_sftp/hunter_au/status_csv/issued/"
-
 # ST - Startrack
 ST_FTP_DIR = "/Users/admin/work/goldmine/scripts/dir01/"
 ST_ARCHIVE_FTP_DIR = "/Users/admin/work/goldmine/scripts/dir02/"
@@ -72,10 +67,15 @@ STTCO_ARCHIVE_DIR = "./dir02/"
 CCO_DIR = "./dir01/"
 CCO_ARCHIVE_DIR = "./dir02/"
 
-# CENTURY
-CENTURY_FTP_DIR = "./dme_sftp/century_au/status_csv/inprogress/"
-CENTURY_ARCHIVE_FTP_DIR = "./dme_sftp/century_au/status_csv/archive/"
-CENTURY_ISSUED_FTP_DIR = "./dme_sftp/century_au/status_csv/issued/"
+# CENTURY TRACKING CSV
+CTC_INPROGRESS_DIR = "./dme_sftp/century_au/status_csv/inprogress/"
+CTC_ARCHIVE_DIR = "./dme_sftp/century_au/status_csv/archive/"
+CTC_ISSUED_DIR = "./dme_sftp/century_au/status_csv/issued/"
+
+# HUNTER TRACKING CSV
+HT_INPROGRESS_DIR = "./dme_sftp/hunter_au/status_csv/inprogress/"
+HT_ARCHIVE_DIR = "./dme_sftp/hunter_au/status_csv/archive/"
+HT_ISSUED_DIR = "./dme_sftp/hunter_au/status_csv/issued/"
 
 # **************
 # ***  DEV   ***
