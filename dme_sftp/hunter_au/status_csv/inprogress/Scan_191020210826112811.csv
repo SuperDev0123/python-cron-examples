@@ -1,3 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX018945","4339903b-4fb3-4552-b539-e88cbd94c31b","88286","19/10/2021 08:23 +10:00","PLX0189450040044740","Depot In","MACKAY","",""
-"DME185626","","reference1","19/10/2021 08:23 +10:00","DME1856260010012099","Depot In","SunshineCoast","","Parcel"

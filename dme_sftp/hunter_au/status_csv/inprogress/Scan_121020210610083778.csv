@@ -1,4 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX018725","cc4629be-f3fd-44dc-a8b5-ab39549b885f","87935","11/10/2021 06:30 +11:00","PLX0187250010042283","On Delivery","NEWCASTLE","",""
-"PLX018725","cc4629be-f3fd-44dc-a8b5-ab39549b885f","87935","11/10/2021 06:35 +11:00","PLX0187250030042283","On Delivery","NEWCASTLE","",""
-"PLX018725","cc4629be-f3fd-44dc-a8b5-ab39549b885f","87935","11/10/2021 06:36 +11:00","PLX0187250020042283","On Delivery","NEWCASTLE","",""

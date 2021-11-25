@@ -1,4 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"DME189212","","CS00492204","15/11/2021 08:20 +10:00","DME1892120010014122","On Delivery","BRISBANE","",""
-"PLX189048","","89609","15/11/2021 08:27 +11:00","PLX1890480020022232","On Delivery","SYDNEY","",""
-"PLX189048","","89609","15/11/2021 08:27 +11:00","PLX1890480010022232","On Delivery","SYDNEY","",""

@@ -1,8 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX018994","558db19b-693e-4e3e-abab-63f7ecb4cab0","88758","26/10/2021 08:54 +11:00","PLX0189940040062430","On Delivery","Taree","",""
-"PLX018994","558db19b-693e-4e3e-abab-63f7ecb4cab0","88758","26/10/2021 08:54 +11:00","PLX0189940020062430","On Delivery","Taree","",""
-"PLX018994","558db19b-693e-4e3e-abab-63f7ecb4cab0","88758","26/10/2021 08:55 +11:00","PLX0189940030062430","On Delivery","Taree","",""
-"PLX018994","558db19b-693e-4e3e-abab-63f7ecb4cab0","88758","26/10/2021 08:56 +11:00","PLX0189940060062430","On Delivery","Taree","",""
-"PLX018994","558db19b-693e-4e3e-abab-63f7ecb4cab0","88758","26/10/2021 08:56 +11:00","PLX0189940050062430","On Delivery","Taree","",""
-"PLX018994","558db19b-693e-4e3e-abab-63f7ecb4cab0","88758","26/10/2021 08:56 +11:00","PLX0189940010062430","On Delivery","Taree","",""
-"PLX019012","f09a095b-a57e-4605-9110-6c8ac9a3c9ca","88786","26/10/2021 08:38 +11:00","PLX0190120010012794","On Delivery","ORANGE","",""

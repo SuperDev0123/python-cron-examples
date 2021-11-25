@@ -1,3 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX018816","cbc2d784-b3a2-4b56-96c5-e23a75fe1ce5","88098","16/10/2021 13:10 +08:00","PLX0188160030046016","Depot In","PERTH","",""
-"PLX018801","ed5b3821-404d-4fd1-b6dd-94e33f6b172c","88062","16/10/2021 13:11 +08:00","PLX0188010010016057","Depot In","PERTH","",""

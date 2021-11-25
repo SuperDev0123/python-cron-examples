@@ -1,4 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"DME185755","","CS00487720","14/10/2021 17:55 +11:00","DME1857550010012250","Depot In","MELBOURNE","",""
-"DME185760","","295795","14/10/2021 17:55 +11:00","DME1857600010012340","Depot In","MELBOURNE","",""
-"PLX018829","510a948d-904a-4a1e-b7ec-d292ef3efe34","88119","14/10/2021 17:57 +11:00","PLX0188290020023356","Depot In","MELBOURNE","",""

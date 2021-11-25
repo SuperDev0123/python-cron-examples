@@ -1,5 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX018952","586c880d-1800-4a64-870d-1130840ef49a","88314","20/10/2021 09:59 +11:00","PLX0189520040063280","On Delivery","Warrnambool","",""
-"PLX018952","586c880d-1800-4a64-870d-1130840ef49a","88314","20/10/2021 09:59 +11:00","PLX0189520050063280","On Delivery","Warrnambool","",""
-"PLX018952","586c880d-1800-4a64-870d-1130840ef49a","88314","20/10/2021 09:59 +11:00","PLX0189520020063280","On Delivery","Warrnambool","",""
-"PLX018952","586c880d-1800-4a64-870d-1130840ef49a","88314","20/10/2021 09:59 +11:00","PLX0189520030063280","On Delivery","Warrnambool","",""

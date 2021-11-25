@@ -1,5 +1,0 @@
-ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
-"DME190010","","CS00488628","18/11/2021 09:33 +11:00","Assigned",""
-"DME189680","","6675845","18/11/2021 09:34 +11:00","Assigned",""
-"DME189438","","CS00492576","18/11/2021 09:34 +11:00","Assigned",""
-"PLX019219","62d5b2c8-593c-424d-a955-b5a9ff4f9ff3","90150","18/11/2021 09:34 +11:00","PickupReceived",""

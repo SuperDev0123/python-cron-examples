@@ -1,5 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX019031","feea93b4-7e02-4081-a8d0-87548567edf0","88809","29/10/2021 08:16 +11:00","PLX0190310010047030","On Delivery","HOBART","",""
-"PLX019031","feea93b4-7e02-4081-a8d0-87548567edf0","88809","29/10/2021 08:16 +11:00","PLX0190310020047030","On Delivery","HOBART","",""
-"PLX019031","feea93b4-7e02-4081-a8d0-87548567edf0","88809","29/10/2021 08:16 +11:00","PLX0190310040047030","On Delivery","HOBART","",""
-"PLX019031","feea93b4-7e02-4081-a8d0-87548567edf0","88809","29/10/2021 08:16 +11:00","PLX0190310030047030","On Delivery","HOBART","",""

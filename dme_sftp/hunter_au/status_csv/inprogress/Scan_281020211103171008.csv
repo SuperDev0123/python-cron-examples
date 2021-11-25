@@ -1,8 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX019063","fa4b6f40-f8cc-4e8a-9158-0bccf23572fc","88210","28/10/2021 09:45 +08:00","PLX0190630050076020","On Delivery","PERTH","",""
-"PLX019063","fa4b6f40-f8cc-4e8a-9158-0bccf23572fc","88210","28/10/2021 09:45 +08:00","PLX0190630030076020","On Delivery","PERTH","",""
-"PLX019063","fa4b6f40-f8cc-4e8a-9158-0bccf23572fc","88210","28/10/2021 09:45 +08:00","PLX0190630040076020","On Delivery","PERTH","",""
-"PLX019063","fa4b6f40-f8cc-4e8a-9158-0bccf23572fc","88210","28/10/2021 09:45 +08:00","PLX0190630060076020","On Delivery","PERTH","",""
-"PLX019063","fa4b6f40-f8cc-4e8a-9158-0bccf23572fc","88210","28/10/2021 09:45 +08:00","PLX0190630070076020","On Delivery","PERTH","",""
-"PLX019063","fa4b6f40-f8cc-4e8a-9158-0bccf23572fc","88210","28/10/2021 09:45 +08:00","PLX0190630020076020","On Delivery","PERTH","",""
-"PLX019063","fa4b6f40-f8cc-4e8a-9158-0bccf23572fc","88210","28/10/2021 09:45 +08:00","PLX0190630010076020","On Delivery","PERTH","",""

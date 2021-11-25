@@ -1,5 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"DME189649","","1015510149","18/11/2021 06:27 +11:00","DME1896490010012170","On Delivery","SYDNEY","",""
-"DME189655","","28788, 28630","18/11/2021 06:45 +11:00","DME1896550020022170","On Delivery","SYDNEY","",""
-"PLX189077","","393503651002104712, 393503651002104705","18/11/2021 08:23 +11:00","PLX1890770020022640","Linehaul Out","Devonport","Hunter Express Outbound",""
-"PLX188744","","89509","18/11/2021 08:45 +11:00","PLX1887440010060836","Depot In","BRISBANE","",""

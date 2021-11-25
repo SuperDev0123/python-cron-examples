@@ -1,7 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX019146","f88353df-1a52-48fe-ba1a-1bd125d16bf3","88945","11/11/2021 09:07 +11:00","PLX0191460010045052","Depot In","ADELAIDE","",""
-"PLX188212","","89366","11/11/2021 09:07 +11:00","PLX1882120030035330","Depot In","ADELAIDE","",""
-"PLX019146","f88353df-1a52-48fe-ba1a-1bd125d16bf3","88945","11/11/2021 09:07 +11:00","PLX0191460020045052","Depot In","ADELAIDE","",""
-"PLX188111","","88317","11/11/2021 08:59 +11:00","PLX1881110020032536","On Delivery","Batemans Bay","",""
-"PLX188111","","88317","11/11/2021 09:06 +11:00","PLX1881110010032536","On Delivery","Batemans Bay","",""
-"PLX019146","f88353df-1a52-48fe-ba1a-1bd125d16bf3","88945","11/11/2021 09:07 +11:00","PLX0191460040045052","Depot In","ADELAIDE","",""

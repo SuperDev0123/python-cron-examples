@@ -1,5 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX019144","66792","89382","10/11/2021 11:59 +11:00","PLX0191440040044227","Depot In","Gold Coast","","WEB SCAN"
-"PLX019144","66792","89382","10/11/2021 11:59 +11:00","PLX0191440020044227","Depot In","Gold Coast","","WEB SCAN"
-"PLX019144","66792","89382","10/11/2021 11:59 +11:00","PLX0191440030044227","Depot In","Gold Coast","","WEB SCAN"
-"PLX019144","66792","89382","10/11/2021 11:59 +11:00","PLX0191440010044227","Depot In","Gold Coast","","WEB SCAN"

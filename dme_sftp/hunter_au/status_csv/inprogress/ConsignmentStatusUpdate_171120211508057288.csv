@@ -1,6 +1,0 @@
-ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
-"PLX189239","","393503651002102725, 393503651002102732","17/11/2021 15:06 +10:30","MobileShortDelivered",""
-"PLX189239","","393503651002102725, 393503651002102732","17/11/2021 15:06 +11:00","InTransit",""
-"PLX188740","","89507","17/11/2021 15:06 +10:30","MobileShortDelivered",""
-"PLX188740","","89507","17/11/2021 15:06 +11:00","InTransit",""
-"DME190222","","3561831","17/11/2021 15:07 +10:30","PickupReceived",""

@@ -1,6 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"DME188893","","7390886","10/11/2021 10:11 +08:00","DME1888930010016164","Depot In","PERTH","",""
-"PLX188494","","89469","10/11/2021 10:12 +10:00","PLX1884940020044560","On Delivery","SunshineCoast","",""
-"PLX188494","","89469","10/11/2021 10:12 +10:00","PLX1884940030044560","On Delivery","SunshineCoast","",""
-"PLX188494","","89469","10/11/2021 10:12 +10:00","PLX1884940040044560","On Delivery","SunshineCoast","",""
-"PLX188494","","89469","10/11/2021 10:12 +10:00","PLX1884940010044560","On Delivery","SunshineCoast","",""

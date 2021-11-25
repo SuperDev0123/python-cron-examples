@@ -1,4 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX184894","","87961","15/10/2021 09:46 +11:00","plx1848940010042340","On Delivery","TAMWORTH","",""
-"PLX018880","852d308e-d9c4-46e0-964b-1762918c8b25","84829 extra box return","15/10/2021 10:03 +11:00","PLX0188800010012766","At Location","SYDNEY","",""
-"PLX018775","16865515-b2d8-47fb-b2c9-b65572465c68","87542 30189 double up return","15/10/2021 10:04 +11:00","PLX0187750020022766","At Location","SYDNEY","",""

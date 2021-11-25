@@ -1,5 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX019157","a5bb29d9-4532-417a-8201-be869664b757","88958","12/11/2021 10:28 +11:00","PLX0191570060092484","Depot In","Murwillumbah - NCFS","","NCFS Murwillumbah"
-"PLX188215","","89370","12/11/2021 10:29 +10:30","PLX1882150020045355","Linehaul Out","ADELAIDE","ONFORWARD","Agent - Cochrans"
-"PLX188215","","89370","12/11/2021 10:29 +10:30","PLX1882150030045355","Linehaul Out","ADELAIDE","ONFORWARD","Agent - Cochrans"
-"PLX188215","","89370","12/11/2021 10:30 +10:30","PLX1882150010045355","Linehaul Out","ADELAIDE","ONFORWARD","Agent - Cochrans"

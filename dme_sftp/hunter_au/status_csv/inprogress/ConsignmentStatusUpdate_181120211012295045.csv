@@ -1,4 +1,0 @@
-ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
-"PLX019204","346c176b-2526-43d0-b9f4-b92cd077b866","90175","18/11/2021 10:10 +11:00","DriverPickupAcknowledge",""
-"PLX189050","","89611","18/11/2021 10:10 +10:00","OnDelivery",""
-"PLX019223","645a54e6-2e80-4f25-9f9b-41d85eeb9664","90178","18/11/2021 10:11 +11:00","Assigned",""

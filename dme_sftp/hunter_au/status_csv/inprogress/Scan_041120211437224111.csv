@@ -1,5 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX187643","","89234","04/11/2021 14:35 +08:00","PLX1876430040066171","Reserved 4","PERTH","",""
-"PLX187643","","89234","04/11/2021 14:35 +08:00","PLX1876430050066171","Reserved 4","PERTH","",""
-"PLX187643","","89234","04/11/2021 14:35 +08:00","PLX1876430060066171","Reserved 4","PERTH","",""
-"DME187076","","22221","04/11/2021 14:36 +11:00","DME1870760010013551","On Delivery","BENDIGO","",""

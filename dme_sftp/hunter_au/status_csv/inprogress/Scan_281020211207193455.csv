@@ -1,4 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX186763","65792","88867","28/10/2021 11:06 +11:00","PLX1867630090014214","Depot In","Gold Coast","","WEB SCAN"
-"PLX186763","65792","88867","28/10/2021 11:06 +11:00","PLX1867630110014214","Depot In","Gold Coast","","WEB SCAN"
-"DME186478","","3237643","28/10/2021 12:05 +11:00","DME1864780010013803","Linehaul Out","Warrnambool","Hunter",""

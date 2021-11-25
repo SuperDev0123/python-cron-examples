@@ -1,5 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX186906","","88950","01/11/2021 09:52 +11:00","PLX1869060020043162","On Delivery","MELBOURNE","",""
-"PLX186906","","88950","01/11/2021 09:52 +11:00","PLX1869060010043162","On Delivery","MELBOURNE","",""
-"PLX186906","","88950","01/11/2021 09:53 +11:00","PLX1869060030043162","On Delivery","MELBOURNE","",""
-"PLX186906","","88950","01/11/2021 09:54 +11:00","PLX1869060040043162","On Delivery","MELBOURNE","",""

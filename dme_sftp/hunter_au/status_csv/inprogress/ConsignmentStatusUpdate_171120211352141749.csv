@@ -1,4 +1,0 @@
-ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
-"PLX019196","5187ca5f-4ddc-4f9d-ab75-811c5f8617d5","88267-RTS","17/11/2021 13:50 +11:00","MobileFutilePickup",""
-"PLX019196","5187ca5f-4ddc-4f9d-ab75-811c5f8617d5","88267-RTS","17/11/2021 13:50 +11:00","PickupReceived",""
-"PLX019196","5187ca5f-4ddc-4f9d-ab75-811c5f8617d5","88267-RTS","17/11/2021 13:50 +11:00","MobileRejected",""

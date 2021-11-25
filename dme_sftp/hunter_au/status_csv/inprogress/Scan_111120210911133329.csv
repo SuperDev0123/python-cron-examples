@@ -1,5 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX188052","","89322","11/11/2021 09:01 +11:00","PLX1880520040042135","On Delivery","SYDNEY","",""
-"PLX188052","","89322","11/11/2021 09:01 +11:00","PLX1880520020042135","On Delivery","SYDNEY","",""
-"PLX188052","","89322","11/11/2021 09:01 +11:00","PLX1880520030042135","On Delivery","SYDNEY","",""
-"PLX188052","","89322","11/11/2021 09:02 +11:00","PLX1880520010042135","On Delivery","SYDNEY","",""

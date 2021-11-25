@@ -1,5 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"EGV167079","fdfa3958-0e6b-4a72-a5a0-5c545cf15de5","","06/09/2021 15:05 +10:00","EGV1670790010044000","Held Over","BRISBANE","","WEB SCAN"
-"HXX110149","","","06/09/2021 15:05 +10:00","HXX1101490010024008","Held Over","BRISBANE","","WEB SCAN"
-"HXX110150","","","06/09/2021 15:05 +10:00","HXX1101500010034008","Held Over","BRISBANE","","WEB SCAN"
-"HXX110150","","","06/09/2021 15:05 +10:00","HXX1101500020034008","Held Over","BRISBANE","","WEB SCAN"

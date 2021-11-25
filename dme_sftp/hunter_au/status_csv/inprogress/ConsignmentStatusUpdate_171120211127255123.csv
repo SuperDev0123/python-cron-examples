@@ -1,9 +1,0 @@
-ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
-"DME190055","","301688, 301688","17/11/2021 11:25 +11:00","MobilePickupComplete",""
-"DME190055","","301688, 301688","17/11/2021 11:25 +11:00","InTransit",""
-"DME190056","","302118","17/11/2021 11:25 +11:00","MobilePickupComplete",""
-"DME190056","","302118","17/11/2021 11:25 +11:00","InTransit",""
-"DME190058","","","17/11/2021 11:25 +11:00","MobilePickupComplete",""
-"DME190058","","","17/11/2021 11:25 +11:00","InTransit",""
-"DME190060","","302745","17/11/2021 11:25 +11:00","MobilePickupComplete",""
-"DME190060","","302745","17/11/2021 11:25 +11:00","InTransit",""

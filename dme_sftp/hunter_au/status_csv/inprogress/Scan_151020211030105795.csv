@@ -1,6 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX018783","21f2ff39-5850-4b26-94d1-8da8accffb4e","88042","15/10/2021 10:07 +11:00","PLX0187830020043088","On Delivery","MELBOURNE","",""
-"PLX018783","21f2ff39-5850-4b26-94d1-8da8accffb4e","88042","15/10/2021 10:07 +11:00","PLX0187830040043088","On Delivery","MELBOURNE","",""
-"PLX018783","21f2ff39-5850-4b26-94d1-8da8accffb4e","88042","15/10/2021 10:07 +11:00","PLX0187830030043088","On Delivery","MELBOURNE","",""
-"PLX018783","21f2ff39-5850-4b26-94d1-8da8accffb4e","88042","15/10/2021 10:07 +11:00","PLX0187830010043088","On Delivery","MELBOURNE","",""
-"DME184849","","1037098","15/10/2021 09:27 +11:00","DME1848490010012560","On Delivery","SYDNEY","",""

@@ -1,4 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX189005","","89630","12/11/2021 16:26 +10:00","PLX1890050050064554","On Delivery","SunshineCoast","",""
-"PLX189005","","89630","12/11/2021 16:26 +10:00","PLX1890050060064554","On Delivery","SunshineCoast","",""
-"PLX188062","","89329","12/11/2021 16:27 +10:00","PLX188062","Linehaul Out","BRISBANE","TOOWOOMBA",""

@@ -1,7 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX018857","da18f603-c7f0-49d0-b93c-530cb0149fc7","","10/11/2021 08:06 +11:00","PLX0188570040063862","On Delivery","Traralgon","",""
-"PLX018857","da18f603-c7f0-49d0-b93c-530cb0149fc7","","10/11/2021 08:08 +11:00","PLX0188570010063862","On Delivery","Traralgon","",""
-"PLX018857","da18f603-c7f0-49d0-b93c-530cb0149fc7","","10/11/2021 08:26 +11:00","PLX0188570020063862","On Delivery","Traralgon","",""
-"PLX018857","da18f603-c7f0-49d0-b93c-530cb0149fc7","","10/11/2021 08:26 +11:00","PLX0188570030063862","On Delivery","Traralgon","",""
-"PLX018857","da18f603-c7f0-49d0-b93c-530cb0149fc7","","10/11/2021 08:27 +11:00","PLX0188570050063862","On Delivery","Traralgon","",""
-"PLX018857","da18f603-c7f0-49d0-b93c-530cb0149fc7","","10/11/2021 08:27 +11:00","PLX0188570060063862","On Delivery","Traralgon","",""

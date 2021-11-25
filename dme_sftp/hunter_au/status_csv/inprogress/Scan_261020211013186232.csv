@@ -1,9 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX018964","8ccad15c-de4e-4879-bf96-cebb069eaafa","87677","26/10/2021 09:23 +10:00","PLX0189640020094305","On Delivery","BRISBANE","",""
-"PLX018964","8ccad15c-de4e-4879-bf96-cebb069eaafa","87677","26/10/2021 09:24 +10:00","PLX0189640060094305","On Delivery","BRISBANE","",""
-"PLX018964","8ccad15c-de4e-4879-bf96-cebb069eaafa","87677","26/10/2021 09:24 +10:00","PLX0189640080094305","On Delivery","BRISBANE","",""
-"PLX018964","8ccad15c-de4e-4879-bf96-cebb069eaafa","87677","26/10/2021 09:24 +10:00","PLX0189640070094305","On Delivery","BRISBANE","",""
-"PLX018964","8ccad15c-de4e-4879-bf96-cebb069eaafa","87677","26/10/2021 09:24 +10:00","PLX0189640010094305","On Delivery","BRISBANE","",""
-"PLX018964","8ccad15c-de4e-4879-bf96-cebb069eaafa","87677","26/10/2021 09:24 +10:00","PLX0189640090094305","On Delivery","BRISBANE","",""
-"PLX018964","8ccad15c-de4e-4879-bf96-cebb069eaafa","87677","26/10/2021 09:24 +10:00","PLX0189640040094305","On Delivery","BRISBANE","",""
-"PLX018964","8ccad15c-de4e-4879-bf96-cebb069eaafa","87677","26/10/2021 09:24 +10:00","PLX0189640050094305","On Delivery","BRISBANE","",""

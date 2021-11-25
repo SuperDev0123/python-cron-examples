@@ -1,4 +1,0 @@
-ConsignmentNumber,UniqueId,SenderReference,StatusDateTime,Status,StatusTag
-"DME189655","","28788, 28630","17/11/2021 16:04 +11:00","InDepot",""
-"DME189680","","6675845","17/11/2021 16:10 +11:00","MobilePickupComplete",""
-"DME189680","","6675845","17/11/2021 16:10 +11:00","InTransit",""

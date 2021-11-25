@@ -1,9 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX187707","","89194","08/11/2021 12:08 +10:30","PLX1877070070075251","Linehaul Out","ADELAIDE","SA_COUNTRY","Agent - Cochrans"
-"PLX187707","","89194","08/11/2021 12:09 +10:30","PLX1877070060075251","Linehaul Out","ADELAIDE","SA_COUNTRY","Agent - Cochrans"
-"PLX187707","","89194","08/11/2021 12:09 +10:30","PLX1877070050075251","Linehaul Out","ADELAIDE","SA_COUNTRY","Agent - Cochrans"
-"PLX187707","","89194","08/11/2021 12:09 +10:30","PLX1877070010075251","Linehaul Out","ADELAIDE","SA_COUNTRY","Agent - Cochrans"
-"PLX187707","","89194","08/11/2021 12:09 +10:30","PLX1877070030075251","Linehaul Out","ADELAIDE","SA_COUNTRY","Agent - Cochrans"
-"PLX187707","","89194","08/11/2021 12:09 +10:30","PLX1877070040075251","Linehaul Out","ADELAIDE","SA_COUNTRY","Agent - Cochrans"
-"PLX187707","","89194","08/11/2021 12:09 +10:30","PLX1877070020075251","Linehaul Out","ADELAIDE","SA_COUNTRY","Agent - Cochrans"
-"PLX019128","d083fe24-221d-4395-903d-6bd5c99a009c","89005","08/11/2021 12:03 +11:00","PLX0191280010012430","On Delivery","Taree","",""

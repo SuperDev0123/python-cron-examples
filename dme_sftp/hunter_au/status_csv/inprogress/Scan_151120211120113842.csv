@@ -1,7 +1,0 @@
-ConsignmentNumber,UniqueID,SenderReference,ScanDateTime,BarcodeValue,ScanType,ScanLocation,ScanDestLocation,ScanTag
-"PLX188430","","89439","15/11/2021 11:18 +10:30","PLX1884300040065608","Linehaul Out","ADELAIDE","ONFORWARD","Agent - Cochrans"
-"PLX188430","","89439","15/11/2021 11:18 +10:30","PLX1884300020065608","Linehaul Out","ADELAIDE","ONFORWARD","Agent - Cochrans"
-"PLX188430","","89439","15/11/2021 11:18 +10:30","PLX1884300060065608","Linehaul Out","ADELAIDE","ONFORWARD","Agent - Cochrans"
-"PLX188430","","89439","15/11/2021 11:18 +10:30","PLX1884300050065608","Linehaul Out","ADELAIDE","ONFORWARD","Agent - Cochrans"
-"PLX188430","","89439","15/11/2021 11:18 +10:30","PLX1884300010065608","Linehaul Out","ADELAIDE","ONFORWARD","Agent - Cochrans"
-"PLX188430","","89439","15/11/2021 11:18 +10:30","PLX1884300030065608","Linehaul Out","ADELAIDE","ONFORWARD","Agent - Cochrans"
