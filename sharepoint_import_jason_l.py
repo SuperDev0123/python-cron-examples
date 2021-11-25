@@ -140,6 +140,7 @@ def insert_line(dbcur, line):
                   %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, \
                   %s, %s, %s)"
     args = [v for _, v in line.items()]
+    print("insert_line args - ", args)
     dbcur.execute(sql, args)
 
 
