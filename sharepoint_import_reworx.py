@@ -124,7 +124,7 @@ def insert_line(dbcur, line):
                 v_client_pk_consigment_num, l_cubic_weight, l_002_qty, \
                 l_001_type_of_packaging, l_005_dim_length, l_006_dim_width, \
                 l_007_dim_height, `date_processed`, `z_createdTimeStamp`, \
-                `success`, \
+                `success`, `b_093_packed_status`, \
                 `e_pallet_type`, `client_item_number`, `e_item_type`, \
                 `client_item_reference`, `l_004_dim_UOM`, `l_008_weight_UOM`, \
                 `zbl_101_text_1`, `zbl_102_text_2`, `zbl_103_text_3`, \
@@ -413,13 +413,13 @@ def do_import(dbcon, cur, filename):
             "%Y-%m-%d %H:%M:%S"
         )
         line["success"] = warehouse_success_type[0]
+        line["b_093_packed_status"] = "original"
         line["e_pallet_type"] = None
         line["client_item_number"] = None
         line["e_item_type"] = None
         line["client_item_reference"] = None
         line["l_004_dim_UOM"] = worksheet1["H%i" % row].value
         line["l_008_weight_UOM"] = worksheet1["F%i" % row].value
-        line["b_093_packed_status"] = "original"
         line["zbl_101_text_1"] = None
         line["zbl_102_text_2"] = None
         line["zbl_103_text_3"] = None
