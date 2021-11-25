@@ -275,8 +275,12 @@ def do_import(dbcon, cur, filename):
         header["b_client_sales_inv_num"] = None
         header["b_client_order_num"] = None
         header["b_client_del_note_num"] = None
-        header["date_processed"] = convert_to_UTC_tz(datetime.now())
-        header["z_createdTimeStamp"] = convert_to_UTC_tz(datetime.now())
+        header["date_processed"] = convert_to_UTC_tz(datetime.now()).strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
+        header["z_createdTimeStamp"] = convert_to_UTC_tz(datetime.now()).strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
         header["success"] = warehouse_success_type[0]
         header["b_007_b_ready_status"] = worksheet0["B%i" % row].value
         header["b_023_b_pu_avail_from_time_minute"] = worksheet0["E%i" % row].value
@@ -403,8 +407,12 @@ def do_import(dbcon, cur, filename):
         line["l_005_dim_length"] = worksheet1["I%i" % row].value
         line["l_006_dim_width"] = worksheet1["J%i" % row].value
         line["l_007_dim_height"] = worksheet1["K%i" % row].value
-        line["date_processed"] = convert_to_UTC_tz(datetime.now())
-        line["z_createdTimeStamp"] = convert_to_UTC_tz(datetime.now())
+        line["date_processed"] = convert_to_UTC_tz(datetime.now()).strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
+        line["z_createdTimeStamp"] = convert_to_UTC_tz(datetime.now()).strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
         line["success"] = warehouse_success_type[0]
         line["e_pallet_type"] = None
         line["client_item_number"] = None
@@ -475,16 +483,30 @@ def do_import(dbcon, cur, filename):
         line_detail["zbld_133_decimal_3"] = None
         line_detail["zbld_134_decimal_4"] = None
         line_detail["zbld_135_decimal_5"] = None
-        line_detail["zbld_141_date_1"] = convert_to_UTC_tz(datetime.now())
-        line_detail["zbld_142_date_2"] = convert_to_UTC_tz(datetime.now())
-        line_detail["zbld_143_date_3"] = convert_to_UTC_tz(datetime.now())
-        line_detail["zbld_144_date_4"] = convert_to_UTC_tz(datetime.now())
-        line_detail["zbld_145_date_5"] = convert_to_UTC_tz(datetime.now())
+        line_detail["zbld_141_date_1"] = convert_to_UTC_tz(datetime.now()).strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
+        line_detail["zbld_142_date_2"] = convert_to_UTC_tz(datetime.now()).strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
+        line_detail["zbld_143_date_3"] = convert_to_UTC_tz(datetime.now()).strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
+        line_detail["zbld_144_date_4"] = convert_to_UTC_tz(datetime.now()).strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
+        line_detail["zbld_145_date_5"] = convert_to_UTC_tz(datetime.now()).strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
 
         line_detail["v_client_pk_consigment_num"] = None
-        line_detail["z_createdTimeStamp"] = convert_to_UTC_tz(datetime.now())
+        line_detail["z_createdTimeStamp"] = convert_to_UTC_tz(datetime.now()).strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
         line_detail["z_createdByAccount"] = ""
-        line_detail["z_modifiedTimeStamp"] = convert_to_UTC_tz(datetime.now())
+        line_detail["z_modifiedTimeStamp"] = convert_to_UTC_tz(datetime.now()).strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
         line_detail["z_modifiedByAccount"] = ""
         line_detail["success"] = warehouse_success_type[0]
 
@@ -603,7 +625,9 @@ def download_from_sharepoint(dbcon):
 
             dme_file = {}
             dme_file["file_name"] = filename
-            dme_file["z_createdTimeStamp"] = convert_to_UTC_tz(datetime.now())
+            dme_file["z_createdTimeStamp"] = convert_to_UTC_tz(datetime.now()).strftime(
+                "%Y-%m-%d %H:%M:%S"
+            )
             dme_file["z_createdByAccount"] = "DME"
             dme_file["file_type"] = "xls import"
             dme_file["file_path"] = str(
