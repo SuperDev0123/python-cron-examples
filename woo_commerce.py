@@ -12,6 +12,7 @@ import traceback
 
 from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
 from _options_lib import get_option, set_option
+from _email_lib import send_email
 
 from woocommerce import API
 
@@ -193,8 +194,22 @@ def add_or_update_orders():
         response = requests.post(url, params={}, json=data, headers=headers)
         response0 = response.content.decode("utf8")
         data0 = json.loads(response0)
-
         print("@901 - Result: ", data0)
+
+        # Send email when get failed to push order to DME_API
+        if not data0["success"]:
+            text = (
+                f"This email is from DME CRONJOB:"
+                + f"\nFetching following order from Woocommerce get failed. Please check products of the above order."
+                + f"\n\nOrderId: {order['id']}\nOrder Status: {order['status']}\nError: {data0['message']}"
+                + f"\n\nRegards,\nDME CRONJOB"
+            )
+            send_email(
+                ["dme@bathroomsalesdirect.com.au", "bookings@deliver-me.com.au"],
+                ["dev.deliverme@gmail.com", "goldj@deliver-me.com.au"],
+                f"Error while fetching order from Woocommerce",
+                text,
+            )
 
 
 if __name__ == "__main__":
