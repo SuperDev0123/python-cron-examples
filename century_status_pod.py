@@ -54,17 +54,36 @@ def get_token():
         return None
 
 
-def get_booking(booking_id, consignment_number, mysqlcon):
+def get_booking(booking_visual_id, consignment_number, mysqlcon):
     with mysqlcon.cursor() as cursor:
-        if booking_id:
-            sql = "SELECT `id`, `pk_booking_id`, `vx_freight_provider` From `dme_bookings` WHERE `id`=%s AND LOWER(vx_freight_provider)=%s"
-            cursor.execute(sql, (booking_id, "century"))
+        if booking_visual_id:
+            sql = "SELECT `id`, `pk_booking_id`, `vx_freight_provider`, `v_FPBookingNumber` From `dme_bookings` WHERE `b_bookingID_Visual`=%s AND LOWER(vx_freight_provider)=%s"
+            cursor.execute(sql, (booking_visual_id, "century"))
             booking = cursor.fetchone()
+
+            if booking and not booking["v_FPBookingNumber"]:
+                sql = "UPDATE `dme_bookings` SET v_FPBookingNumber=%s WHERE b_bookingID_Visual=%s"
+                cursor.execute(sql, (consignment_number, booking_visual_id))
+                mysqlcon.commit()
+                print(
+                    f"@800 - Update {b_bookingID_Visual} v_FPBookingNumber: {consignment_number}"
+                )
         else:
-            sql = "SELECT `id`, `pk_booking_id`, `vx_freight_provider` From `dme_bookings` WHERE `v_FPBookingNumber`=%s AND LOWER(vx_freight_provider)=%s"
+            sql = "SELECT `id`, `pk_booking_id`, `vx_freight_provider`, `v_FPBookingNumber` From `dme_bookings` WHERE `v_FPBookingNumber`=%s AND LOWER(vx_freight_provider)=%s"
             cursor.execute(sql, (consignment_number, "century"))
             booking = cursor.fetchone()
         return booking
+
+
+def extract_booking_id(id_with_prefix):
+    """
+    DME190100 -> 190100
+    """
+
+    if "DME" not in id_with_prefix:
+        return None
+    else:
+        return id_with_prefix[3:]
 
 
 def do_process(mysqlcon):
@@ -95,6 +114,7 @@ def do_process(mysqlcon):
 
             if cols[0] == "customer_order_number":
                 consignment_number = content[-1]
+                booking_id = extract_booking_id(content[1])
                 fp_status = content[3]
                 fp_status_description = content[5]
                 event_time_stamp = datetime.strptime(content[2], "%Y%m%d").strftime(
@@ -102,14 +122,14 @@ def do_process(mysqlcon):
                 )
             else:
                 consignment_number = content[-1]
+                booking_id = extract_booking_id(content[0])
                 fp_status = content[2]
                 fp_status_description = content[4]
                 event_time_stamp = datetime.strptime(content[1], "%Y%m%d").strftime(
                     "%Y-%m-%d %H:%M:%S.%f"
                 )
 
-            print(f"consignment_number: {consignment_number}")
-
+            print(f"booking_id: {booking_id}, consignment_number: {consignment_number}")
             if not booking_id and not consignment_number:
                 print("No booking id and consignment number: ", file)
                 has_issue = True
