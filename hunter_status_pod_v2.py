@@ -123,10 +123,17 @@ def do_process(mysqlcon):
                         print(f"Old tracking file: {file}, {event_time_stamp}")
                         have_issue = True
 
+                    if not consignment_number:
+                        print("No consignment number: ", file, ", Row: ", index + 1)
+                        have_issue = True
+
                     if not have_issue and consignment_number:
                         booking = get_booking(consignment_number, mysqlcon)
-                    else:
-                        print("No consignment number: ", file, ", Row: ", index + 1)
+
+                    if not booking:
+                        print(
+                            f"No booking or wrong freight_provider. file: {file}, Row: {index + 1}"
+                        )
                         have_issue = True
 
                     if (
@@ -148,17 +155,12 @@ def do_process(mysqlcon):
                                     "consignment_number": consignment_number,
                                     "fp_status": fp_status_code,
                                     "fp_status_description": None,
-                                    "event_time_stamp": event_time_stamp,
+                                    "event_time_stamp": event_time_stamp_str,
                                     "is_from_script": True,
                                 }
                             ),
                         )
                         has_issue = response.status_code != 200
-                    else:
-                        print(
-                            f"No booking or wrong freight_provider. file: {file}, Row: {index + 1}"
-                        )
-                        have_issue = True
         elif ".tif" in file or ".jpg" in file or ".png" in file:
             print(f"\n.tif file: {file}")
             consignment_number = file[:-4]
