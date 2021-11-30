@@ -90,70 +90,80 @@ def do_process(mysqlcon):
     for file in listdir(INPROGRESS_DIR):
         have_issue = False
         if "ConsignmentStatusUpdate" in file:
-            pass
-            # con_index = -1
-            # with open(path.join(INPROGRESS_DIR, file), "r") as csvfile:
-            #     csv_content = list(csv.reader(csvfile))
-            #     cols = csv_content[0]
-            #     content = csv_content[1:]
-            #     print("\nFile: ", file, "\nCols: ", cols, "\nContent: ", content)
+            con_index = -1
+            with open(path.join(INPROGRESS_DIR, file), "r") as csvfile:
+                csv_content = list(csv.reader(csvfile))
+                cols = csv_content[0]
+                content = csv_content[1:]
+                print("\nFile: ", file, "\nCols: ", cols, "\nContent: ", content)
 
-            #     try:
-            #         con_index = cols.index("ConsignmentNumber")
-            #         time_index = cols.index("StatusDateTime")
-            #         status_index = cols.index("Status")
-            #     except Exception as e:
-            #         have_issue = True
-            #         print("Invalid file type: ", file)
+                try:
+                    con_index = cols.index("ConsignmentNumber")
+                    time_index = cols.index("StatusDateTime")
+                    status_index = cols.index("Status")
+                except Exception as e:
+                    have_issue = True
+                    print("Invalid file type: ", file)
 
-            #     if con_index == 0:
-            #         for index, line in enumerate(content):
-            #             consignment_number = line[con_index]
-            #             fp_status_code = line[status_index]
-            #             event_time_stamp = datetime.strptime(
-            #                 line[time_index], "%d/%m/%Y %H:%M %z"
-            #             ).strftime("%Y-%m-%d %H:%M:%S.%f")
+                if con_index == 0:
+                    for index, line in enumerate(content):
+                        consignment_number = line[con_index]
+                        fp_status_code = line[status_index]
+                        event_time_stamp = datetime.strptime(
+                            line[time_index], "%d/%m/%Y %H:%M %z"
+                        )
+                        event_time_stamp_str = datetime.strptime(
+                            line[time_index], "%d/%m/%Y %H:%M %z"
+                        ).strftime("%Y-%m-%d %H:%M:%S.%f")
 
-            #             if consignment_number:
-            #                 booking = get_booking(consignment_number, mysqlcon)
-            #             else:
-            #                 print("No consignment number: ", file, ", Row: ", index + 1)
-            #                 have_issue = True
+                        print(
+                            "@1 - ",
+                            event_time_stamp,
+                            event_time_stamp
+                            > datetime.strptime("2021-11-30 00:00", "%Y-%m-%d %H:%M"),
+                        )
 
-            #             if (
-            #                 booking
-            #                 and booking["vx_freight_provider"]
-            #                 and booking["vx_freight_provider"].lower() == "hunter"
-            #             ):
-            #                 headers = {
-            #                     "content-type": "application/json",
-            #                     "Authorization": f"JWT {token}",
-            #                 }
-            #                 response = requests.post(
-            #                     f"{API_URL}/statushistory/save_status_history/",
-            #                     headers=headers,
-            #                     data=json.dumps(
-            #                         {
-            #                             "fk_booking_id": booking["pk_booking_id"],
-            #                             "consignment_number": consignment_number,
-            #                             "fp_status": fp_status_code,
-            #                             "fp_status_description": None,
-            #                             "event_time_stamp": event_time_stamp,
-            #                             "is_from_script": True,
-            #                         }
-            #                     ),
-            #                 )
-            #                 has_issue = response.status_code != 200
-            #             else:
-            #                 print(
-            #                     "No booking or wrong freight_provider: ",
-            #                     file,
-            #                     ", Row: ",
-            #                     index + 1,
-            #                 )
-            #                 have_issue = True
-        elif ".tif" in file:
-            print("\n.tif file: ", file)
+                        # if consignment_number:
+                        #     booking = get_booking(consignment_number, mysqlcon)
+                        # else:
+                        #     print("No consignment number: ", file, ", Row: ", index + 1)
+                        #     have_issue = True
+
+                        # if (
+                        #     consignment_number
+                        #     and booking
+                        #     and booking["vx_freight_provider"]
+                        #     and booking["vx_freight_provider"].lower() == "hunter"
+                        # ):
+                        #     headers = {
+                        #         "content-type": "application/json",
+                        #         "Authorization": f"JWT {token}",
+                        #     }
+                        #     response = requests.post(
+                        #         f"{API_URL}/statushistory/save_status_history/",
+                        #         headers=headers,
+                        #         data=json.dumps(
+                        #             {
+                        #                 "fk_booking_id": booking["pk_booking_id"],
+                        #                 "consignment_number": consignment_number,
+                        #                 "fp_status": fp_status_code,
+                        #                 "fp_status_description": None,
+                        #                 "event_time_stamp": event_time_stamp,
+                        #                 "is_from_script": True,
+                        #             }
+                        #         ),
+                        #     )
+                        #     has_issue = response.status_code != 200
+                        # else:
+                        #     print(
+                        #         "No booking or wrong freight_provider: ",
+                        #         file,
+                        #         ", Row: ",
+                        #         index + 1,
+                        #     )
+                        #     have_issue = True
+        elif ".tif" in file or ".jpg" in file or ".png" in file:
+            print(f"\n.tif file: {file}")
             consignment_number = file[:-4]
             booking = get_booking(consignment_number, mysqlcon)
 
