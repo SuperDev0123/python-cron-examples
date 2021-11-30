@@ -21,7 +21,7 @@ from _env import (
     HT_ARCHIVE_DIR as ARCHIVE_DIR,
     HT_ISSUED_DIR as ISSUED_DIR,
     API_URL,
-    S3_URL,
+    S3_PUBLIC_URL,
     USERNAME,
     PASSWORD,
 )
@@ -174,7 +174,9 @@ def do_process(mysqlcon):
                         and booking["vx_freight_provider"]
                         and booking["vx_freight_provider"].lower() == "hunter"
                     ):
-                        full_path = f"{S3_URL}/pdfs/hunter_au/{consignment_number}.tif"
+                        full_path = (
+                            f"{S3_PUBLIC_URL}/pdfs/hunter_au/{consignment_number}.tif"
+                        )
                         db_pod_url = f"hunter_au/{consignment_number}.tif"
                         with open(full_path, "wb") as f:
                             f.write(base64.b64decode(image))
