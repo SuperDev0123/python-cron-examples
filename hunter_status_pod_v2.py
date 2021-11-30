@@ -89,6 +89,7 @@ def do_process(mysqlcon):
     token = get_token()
     for file in listdir(INPROGRESS_DIR):
         have_issue = False
+
         if "ConsignmentStatusUpdate" in file:
             con_index = -1
             with open(path.join(INPROGRESS_DIR, file), "r") as csvfile:
@@ -103,67 +104,60 @@ def do_process(mysqlcon):
                     status_index = cols.index("Status")
                 except Exception as e:
                     have_issue = True
-                    print("Invalid file type: ", file)
+                    print("Invalid format: ", file)
 
-                if con_index == 0:
-                    for index, line in enumerate(content):
-                        consignment_number = line[con_index]
-                        fp_status_code = line[status_index]
-                        event_time_stamp = datetime.strptime(
-                            line[time_index], "%d/%m/%Y %H:%M %z"
-                        )
-                        event_time_stamp_str = datetime.strptime(
-                            line[time_index], "%d/%m/%Y %H:%M %z"
-                        ).strftime("%Y-%m-%d %H:%M:%S.%f")
+                for index, line in enumerate(content):
+                    consignment_number = line[con_index]
+                    fp_status_code = line[status_index]
+                    event_time_stamp = datetime.strptime(
+                        line[time_index], "%d/%m/%Y %H:%M %z"
+                    )
+                    event_time_stamp_str = datetime.strptime(
+                        line[time_index], "%d/%m/%Y %H:%M %z"
+                    ).strftime("%Y-%m-%d %H:%M:%S.%f")
 
-                        print(
-                            "@1 - ",
-                            event_time_stamp,
-                            event_time_stamp
-                            > datetime.strptime(
-                                "2021-11-30 00:00 +11:00", "%Y-%m-%d %H:%M %z"
+                    if event_time_stamp < datetime.strptime(
+                        "2021-11-30 00:00 +11:00", "%Y-%m-%d %H:%M %z"
+                    ):
+                        print(f"Old tracking file: {file}, {event_time_stamp}")
+                        have_issue = True
+
+                    if not have_issue and consignment_number:
+                        booking = get_booking(consignment_number, mysqlcon)
+                    else:
+                        print("No consignment number: ", file, ", Row: ", index + 1)
+                        have_issue = True
+
+                    if (
+                        consignment_number
+                        and booking
+                        and booking["vx_freight_provider"]
+                        and booking["vx_freight_provider"].lower() == "hunter"
+                    ):
+                        headers = {
+                            "content-type": "application/json",
+                            "Authorization": f"JWT {token}",
+                        }
+                        response = requests.post(
+                            f"{API_URL}/statushistory/save_status_history/",
+                            headers=headers,
+                            data=json.dumps(
+                                {
+                                    "fk_booking_id": booking["pk_booking_id"],
+                                    "consignment_number": consignment_number,
+                                    "fp_status": fp_status_code,
+                                    "fp_status_description": None,
+                                    "event_time_stamp": event_time_stamp,
+                                    "is_from_script": True,
+                                }
                             ),
                         )
-
-                        # if consignment_number:
-                        #     booking = get_booking(consignment_number, mysqlcon)
-                        # else:
-                        #     print("No consignment number: ", file, ", Row: ", index + 1)
-                        #     have_issue = True
-
-                        # if (
-                        #     consignment_number
-                        #     and booking
-                        #     and booking["vx_freight_provider"]
-                        #     and booking["vx_freight_provider"].lower() == "hunter"
-                        # ):
-                        #     headers = {
-                        #         "content-type": "application/json",
-                        #         "Authorization": f"JWT {token}",
-                        #     }
-                        #     response = requests.post(
-                        #         f"{API_URL}/statushistory/save_status_history/",
-                        #         headers=headers,
-                        #         data=json.dumps(
-                        #             {
-                        #                 "fk_booking_id": booking["pk_booking_id"],
-                        #                 "consignment_number": consignment_number,
-                        #                 "fp_status": fp_status_code,
-                        #                 "fp_status_description": None,
-                        #                 "event_time_stamp": event_time_stamp,
-                        #                 "is_from_script": True,
-                        #             }
-                        #         ),
-                        #     )
-                        #     has_issue = response.status_code != 200
-                        # else:
-                        #     print(
-                        #         "No booking or wrong freight_provider: ",
-                        #         file,
-                        #         ", Row: ",
-                        #         index + 1,
-                        #     )
-                        #     have_issue = True
+                        has_issue = response.status_code != 200
+                    else:
+                        print(
+                            f"No booking or wrong freight_provider. file: {file}, Row: {index + 1}"
+                        )
+                        have_issue = True
         elif ".tif" in file or ".jpg" in file or ".png" in file:
             print(f"\n.tif file: {file}")
             consignment_number = file[:-4]
@@ -188,10 +182,10 @@ def do_process(mysqlcon):
                 print("No booking or wrong freight_provider: ", file)
                 have_issue = True
 
-        # if have_issue:
-        #     shutil.move(path.join(INPROGRESS_DIR, file), path.join(ISSUED_DIR, file))
-        # else:
-        #     shutil.move(path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file))
+        if have_issue:
+            shutil.move(path.join(INPROGRESS_DIR, file), path.join(ISSUED_DIR, file))
+        else:
+            shutil.move(path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file))
 
 
 if __name__ == "__main__":
