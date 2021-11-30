@@ -9,6 +9,7 @@ import shutil
 from os import listdir, path
 import csv
 import requests
+import traceback
 
 import _status_history
 from _env import (
@@ -237,6 +238,7 @@ if __name__ == "__main__":
             set_option(mysqlcon, "hunter_status_pod", False, time1)
     except Exception as e:
         print("Error 904:", str(e))
+        traceback.print_exc()
         set_option(mysqlcon, "hunter_status_pod", False, time1)
 
     mysqlcon.close()
