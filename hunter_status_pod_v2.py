@@ -73,11 +73,17 @@ def update_booking(consignment_number, pod_url, mysqlcon):
 
 
 def move_to_issued_dir(file):
-    shutil.move(path.join(INPROGRESS_DIR, file), path.join(ISSUED_DIR, file))
+    try:
+        shutil.move(path.join(INPROGRESS_DIR, file), path.join(ISSUED_DIR, file))
+    except:
+        pass
 
 
 def move_to_achived_dir(file):
-    shutil.move(path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file))
+    try:
+        shutil.move(path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file))
+    except:
+        pass
 
 
 def do_process(mysqlcon):
@@ -195,10 +201,7 @@ def do_process(mysqlcon):
                 move_to_issued_dir(file)
                 continue
 
-        try:
-            move_to_achived_dir(file)
-        except:
-            pass
+        move_to_achived_dir(file)
 
 
 if __name__ == "__main__":
