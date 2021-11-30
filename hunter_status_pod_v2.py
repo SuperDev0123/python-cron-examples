@@ -71,6 +71,14 @@ def update_booking(consignment_number, pod_url, mysqlcon):
     return result
 
 
+def move_to_issued_dir(file):
+    shutil.move(path.join(INPROGRESS_DIR, file), path.join(ISSUED_DIR, file))
+
+
+def move_to_achived_dir(file):
+    shutil.move(path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file))
+
+
 def do_process(mysqlcon):
     # Download .FTP files
     try:
@@ -88,7 +96,6 @@ def do_process(mysqlcon):
 
     token = get_token()
     for file in listdir(INPROGRESS_DIR):
-        have_issue = False
 
         if "ConsignmentStatusUpdate" in file:
             con_index = -1
@@ -103,8 +110,8 @@ def do_process(mysqlcon):
                     time_index = cols.index("StatusDateTime")
                     status_index = cols.index("Status")
                 except Exception as e:
-                    have_issue = True
                     print("Invalid format: ", file)
+                    move_to_issued_dir(file)
 
                 booking = None
                 for index, line in enumerate(content):
@@ -121,20 +128,20 @@ def do_process(mysqlcon):
                         "2021-11-30 00:00 +11:00", "%Y-%m-%d %H:%M %z"
                     ):
                         print(f"Old tracking file: {file}, {event_time_stamp}")
-                        have_issue = True
+                        move_to_issued_dir(file)
 
                     if not consignment_number:
                         print("No consignment number: ", file, ", Row: ", index + 1)
-                        have_issue = True
+                        move_to_issued_dir(file)
 
-                    if not have_issue and consignment_number:
+                    if consignment_number:
                         booking = get_booking(consignment_number, mysqlcon)
 
                     if not booking:
                         print(
                             f"No booking or wrong freight_provider. file: {file}, Row: {index + 1}"
                         )
-                        have_issue = True
+                        move_to_issued_dir(file)
 
                     if (
                         consignment_number
@@ -160,7 +167,10 @@ def do_process(mysqlcon):
                                 }
                             ),
                         )
-                        has_issue = response.status_code != 200
+                        if response.status_code == 200:
+                            move_to_achived_dir(file)
+                        else:
+                            move_to_issued_dir(file)
         elif ".tif" in file or ".jpg" in file or ".png" in file:
             print(f"\n.tif file: {file}")
             consignment_number = file[:-4]
@@ -168,27 +178,22 @@ def do_process(mysqlcon):
 
             if booking and booking["z_pod_url"]:
                 print(f"POD already exist - {consignment_number}")
-                have_issue = False
+                move_to_achived_dir(file)
             elif (
                 booking
                 and booking["vx_freight_provider"]
                 and booking["vx_freight_provider"].lower() == "hunter"
                 and not booking["z_pod_url"]
             ):
-                full_path = f"{S3_PUBLIC_URL}/imgs/hunter_au/{consignment_number}.tif"
-                db_pod_url = f"hunter_au/{consignment_number}.tif"
+                full_path = f"{S3_PUBLIC_URL}/imgs/hunter_au/{file}"
+                db_pod_url = f"hunter_au/{file}"
                 shutil.move(path.join(INPROGRESS_DIR, file), full_path)
                 result = update_booking(consignment_number, db_pod_url, mysqlcon)
                 print(f"Set POD: {full_path}")
-                have_issue = not result
+                move_to_achived_dir(file)
             else:
                 print("No booking or wrong freight_provider: ", file)
-                have_issue = True
-
-        if have_issue:
-            shutil.move(path.join(INPROGRESS_DIR, file), path.join(ISSUED_DIR, file))
-        else:
-            shutil.move(path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file))
+                move_to_issued_dir(file)
 
 
 if __name__ == "__main__":
