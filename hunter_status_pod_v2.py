@@ -195,10 +195,10 @@ def do_process(mysqlcon):
                         )
                         have_issue = True
 
-        if have_issue:
-            shutil.move(path.join(INPROGRESS_DIR, file), path.join(ISSUED_DIR, file))
-        else:
-            shutil.move(path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file))
+        # if have_issue:
+        #     shutil.move(path.join(INPROGRESS_DIR, file), path.join(ISSUED_DIR, file))
+        # else:
+        #     shutil.move(path.join(INPROGRESS_DIR, file), path.join(ARCHIVE_DIR, file))
 
 
 if __name__ == "__main__":
