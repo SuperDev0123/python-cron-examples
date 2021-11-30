@@ -137,12 +137,12 @@ def do_process(mysqlcon):
                     ):
                         print(f"Old tracking file: {file}, {event_time_stamp}")
                         move_to_issued_dir(file)
-                        continue
+                        break
 
                     if not consignment_number:
                         print("No consignment number: ", file, ", Row: ", index + 1)
                         move_to_issued_dir(file)
-                        continue
+                        break
 
                     if consignment_number:
                         booking = get_booking(consignment_number, mysqlcon)
@@ -152,7 +152,7 @@ def do_process(mysqlcon):
                             f"No booking or wrong freight_provider. file: {file}, Row: {index + 1}"
                         )
                         move_to_issued_dir(file)
-                        continue
+                        break
 
                     if (
                         consignment_number
