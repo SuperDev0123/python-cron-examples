@@ -120,7 +120,9 @@ def do_process(mysqlcon):
                             "@1 - ",
                             event_time_stamp,
                             event_time_stamp
-                            > datetime.strptime("2021-11-30 00:00", "%Y-%m-%d %H:%M"),
+                            > datetime.strptime(
+                                "2021-11-30 00:00 +11:00", "%Y-%m-%d %H:%M %z"
+                            ),
                         )
 
                         # if consignment_number:
