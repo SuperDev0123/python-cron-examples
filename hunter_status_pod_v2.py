@@ -168,10 +168,6 @@ def do_process(mysqlcon):
                                 }
                             ),
                         )
-                        if response.status_code == 200:
-                            move_to_achived_dir(file)
-                        else:
-                            move_to_issued_dir(file)
         elif ".tif" in file or ".jpg" in file or ".png" in file:
             print(f"\n.tif file: {file}")
             consignment_number = file[:-4]
@@ -179,7 +175,6 @@ def do_process(mysqlcon):
 
             if booking and booking["z_pod_url"]:
                 print(f"POD already exist - {consignment_number}")
-                move_to_achived_dir(file)
             elif (
                 booking
                 and booking["vx_freight_provider"]
@@ -191,10 +186,11 @@ def do_process(mysqlcon):
                 shutil.move(path.join(INPROGRESS_DIR, file), full_path)
                 result = update_booking(consignment_number, db_pod_url, mysqlcon)
                 print(f"Set POD: {full_path}")
-                move_to_achived_dir(file)
             else:
                 print("No booking or wrong freight_provider: ", file)
                 move_to_issued_dir(file)
+
+        move_to_achived_dir(file)
 
 
 if __name__ == "__main__":
