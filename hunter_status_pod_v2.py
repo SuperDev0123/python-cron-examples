@@ -166,7 +166,7 @@ def do_process(mysqlcon):
                 and booking["vx_freight_provider"].lower() == "hunter"
                 and not booking["z_pod_url"]
             ):
-                full_path = f"{S3_PUBLIC_URL}/pdfs/hunter_au/{consignment_number}.tif"
+                full_path = f"{S3_PUBLIC_URL}/imgs/hunter_au/{consignment_number}.tif"
                 db_pod_url = f"hunter_au/{consignment_number}.tif"
                 shutil.move(path.join(INPROGRESS_DIR, file), full_path)
                 result = update_booking(consignment_number, db_pod_url, mysqlcon)
