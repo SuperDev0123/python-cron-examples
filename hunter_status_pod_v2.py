@@ -173,7 +173,7 @@ def do_process(mysqlcon):
                 print(f"Set POD: {full_path}")
                 have_issue = not result
             else:
-                print("No booking or wrong freight_provider: ", file, "row: ", index)
+                print("No booking or wrong freight_provider: ", file)
                 have_issue = True
 
         # if have_issue:
