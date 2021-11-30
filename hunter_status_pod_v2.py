@@ -58,8 +58,8 @@ def get_token():
 
 def get_booking(consignment_number, mysqlcon):
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT `id`, `pk_booking_id`, `vx_freight_provider` From `dme_bookings` WHERE `v_FPBookingNumber`=%s"
-        cursor.execute(sql, (consignment_number))
+        sql = "SELECT `id`, `pk_booking_id`, `vx_freight_provider`, `z_pod_url` From `dme_bookings` WHERE `v_FPBookingNumber`=%s AND lower(`vx_freight_provider`)=%s"
+        cursor.execute(sql, (consignment_number, "hunter"))
         booking = cursor.fetchone()
     return booking
 
@@ -152,48 +152,29 @@ def do_process(mysqlcon):
             #                     index + 1,
             #                 )
             #                 have_issue = True
-        elif "Pod" in file:
-            with open(path.join(INPROGRESS_DIR, file), "r") as csvfile:
-                csv_content = list(csv.reader(csvfile))
-                cols = csv_content[0]
-                content = csv_content[1:]
-                print("\nFile: ", file, "\nCols: ", cols, "\nContent: ", content)
+        elif ".tif" in file:
+            print("\n.tif file: ", file)
+            consignment_number = file[:-4]
+            booking = get_booking(consignment_number, mysqlcon)
 
-                for index, line in enumerate(content):
-                    consignment_number = line[0]
-                    image = line[8]
-
-                    if consignment_number:
-                        booking = get_booking(consignment_number, mysqlcon)
-                    else:
-                        print("No Consignment number: ", file, "row: ", index)
-                        have_issue = True
-
-                    if (
-                        booking
-                        and booking["vx_freight_provider"]
-                        and booking["vx_freight_provider"].lower() == "hunter"
-                    ):
-                        full_path = (
-                            f"{S3_PUBLIC_URL}/pdfs/hunter_au/{consignment_number}.tif"
-                        )
-                        db_pod_url = f"hunter_au/{consignment_number}.tif"
-                        with open(full_path, "wb") as f:
-                            f.write(base64.b64decode(image))
-                            f.close()
-                        result = update_booking(
-                            consignment_number, db_pod_url, mysqlcon
-                        )
-                        print(f"Set POD: {full_path}")
-                        have_issue = not result
-                    else:
-                        print(
-                            "No booking or wrong freight_provider: ",
-                            file,
-                            "row: ",
-                            index,
-                        )
-                        have_issue = True
+            if booking and booking["z_pod_url"]:
+                print(f"POD already exist - {consignment_number}")
+                have_issue = False
+            elif (
+                booking
+                and booking["vx_freight_provider"]
+                and booking["vx_freight_provider"].lower() == "hunter"
+                and not booking["z_pod_url"]
+            ):
+                full_path = f"{S3_PUBLIC_URL}/pdfs/hunter_au/{consignment_number}.tif"
+                db_pod_url = f"hunter_au/{consignment_number}.tif"
+                shutil.move(path.join(INPROGRESS_DIR, file), full_path)
+                result = update_booking(consignment_number, db_pod_url, mysqlcon)
+                print(f"Set POD: {full_path}")
+                have_issue = not result
+            else:
+                print("No booking or wrong freight_provider: ", file, "row: ", index)
+                have_issue = True
 
         # if have_issue:
         #     shutil.move(path.join(INPROGRESS_DIR, file), path.join(ISSUED_DIR, file))
