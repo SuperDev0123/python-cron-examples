@@ -169,7 +169,7 @@ def do_process(mysqlcon):
                             ),
                         )
         elif ".tif" in file or ".jpg" in file or ".png" in file:
-            print(f"\n.tif file: {file}")
+            print(f"\nPOD file: {file}")
             consignment_number = file[:-4]
             booking = get_booking(consignment_number, mysqlcon)
 
@@ -190,7 +190,10 @@ def do_process(mysqlcon):
                 print("No booking or wrong freight_provider: ", file)
                 move_to_issued_dir(file)
 
-        move_to_achived_dir(file)
+        try:
+            move_to_achived_dir(file)
+        except:
+            pass
 
 
 if __name__ == "__main__":
