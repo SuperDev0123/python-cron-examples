@@ -106,6 +106,7 @@ def do_process(mysqlcon):
                     have_issue = True
                     print("Invalid format: ", file)
 
+                booking = None
                 for index, line in enumerate(content):
                     consignment_number = line[con_index]
                     fp_status_code = line[status_index]
