@@ -4,8 +4,11 @@ Script version 1.0
 
 Avaialble clients:
     * Plum Products Australia Ltd(461162D2-90C7-BF4E-A905-000000000004)
+    * Jason L
+    * Bathroom Sales Direct
 
 """
+import traceback
 import os, sys, time, json
 import datetime
 import pymysql, pymysql.cursors
@@ -63,7 +66,12 @@ def get_bookings(mysqlcon, type):
                     ORDER BY id DESC \
                     LIMIT 10"
             cursor.execute(
-                sql, ("Ready for Despatch", "1af6bcd2-6148-11eb-ae93-0242ac130002", "9e72da0f-77c3-4355-a5ce-70611ffd0bc8")
+                sql,
+                (
+                    "Ready for Despatch",
+                    "1af6bcd2-6148-11eb-ae93-0242ac130002",
+                    "9e72da0f-77c3-4355-a5ce-70611ffd0bc8",
+                ),
             )
             bookings = cursor.fetchall()
 
@@ -73,7 +81,10 @@ def get_bookings(mysqlcon, type):
 def reset_booking(mysqlcon, booking, error_msg):
     with mysqlcon.cursor() as cursor:
         # JasonL & TNT
-        if booking["kf_client_id"] in ["1af6bcd2-6148-11eb-ae93-0242ac130002", "9e72da0f-77c3-4355-a5ce-70611ffd0bc8"]:
+        if booking["kf_client_id"] in [
+            "1af6bcd2-6148-11eb-ae93-0242ac130002",
+            "9e72da0f-77c3-4355-a5ce-70611ffd0bc8",
+        ]:
             sql = "UPDATE `dme_bookings` \
                     SET `v_FPBookingNumber`=NULL, `b_status`=%s, `b_dateBookedDate`=NULL, `b_error_Capture`=%s \
                     WHERE id=%s"
@@ -214,6 +225,7 @@ if __name__ == "__main__":
             print("#919 - Finished processing!")
             set_option(mysqlcon, "auto_book_label", False, time1)
     except Exception as e:
+        traceback.print_exc()
         print("#904 Error: ", str(e))
         set_option(mysqlcon, "auto_book_label", False, time1)
 
