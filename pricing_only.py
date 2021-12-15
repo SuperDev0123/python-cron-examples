@@ -20,12 +20,29 @@ from _env import (
     DB_PORT,
     DB_NAME,
     API_URL,
+    USERNAME,
+    PASSWORD,
     PO_RESULT_DIR as RESULT_DIR,
     PO_SRC_DIR as SRC_DIR,
     PO_SRC_INPROGRESS_DIR as SRC_INPROGRESS_DIR,
     PO_SRC_ACHIEVE_DIR as SRC_ACHIEVE_DIR,
 )
 from _options_lib import get_option, set_option
+
+
+def get_token():
+    url = API_URL + "/api-token-auth/"
+    data = {"username": USERNAME, "password": PASSWORD}
+    response = requests.post(url, params={}, json=data)
+    response0 = response.content.decode("utf8")
+    data0 = json.loads(response0)
+
+    if "token" in data0:
+        print("@101 - Token: ", data0["token"])
+        return data0["token"]
+    else:
+        print("@400 - ", data0["non_field_errors"])
+        return None
 
 
 def replace_null(array):
@@ -155,6 +172,20 @@ def do_pricing(booking, booking_lines):
     return data0
 
 
+def do_bulk_pricing(bookings, booking_lines):
+    token = get_token()
+    headers = {"Authorization": f"JWT {token}"}
+    url = API_URL + "/bulk_pricing/"
+    data = {"bookings": bookings, "booking_lines": booking_lines}
+    response = requests.post(url, params={}, json=data, headers=headers)
+    response0 = response.content.decode("utf8")
+    data0 = json.loads(response0)
+    # print(f"@202 - {data0['message']}")
+    # s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
+    # print(f"@210 - Pricing result: {s0}")
+    return data0
+
+
 def do_process(mysqlcon, fpath, fname):
     # Create RESULT_DIR folder if not exist
     if not os.path.exists(RESULT_DIR):
@@ -215,18 +246,13 @@ def do_process(mysqlcon, fpath, fname):
     bookings = replace_null(bookings)
     booking_lines = replace_null(booking_lines)
 
-    for index, booking in enumerate(bookings):
-        lines = []
-        note = f"In progress: {index / len(bookings) * 100}%"
-        _update_file_info(mysqlcon, fname, fpath, note)
+    pricing_response = do_bulk_pricing(bookings, booking_lines)
 
-        for booking_line in booking_lines:
-            if booking["pk_booking_id"] == booking_line["fk_booking_id"]:
-                lines.append(booking_line)
+    for result in pricing_response["result"]:
+        booking = result["booking"]
+        pricings = result["pricings"]
 
-        pricing_response = do_pricing(booking, lines)
-
-        for pricing in pricing_response["results"]:
+        for pricing in pricings:
             worksheet.write(row, col + 0, booking["pk_booking_id"])
             worksheet.write(row, col + 1, booking["puPickUpAvailFrom_Date"])
             worksheet.write(row, col + 2, booking["b_clientReference_RA_Numbers"])
@@ -253,22 +279,6 @@ def do_process(mysqlcon, fpath, fname):
             worksheet.write(row, col + 23, booking["client_warehouse_code"])
             worksheet.write(row, col + 24, booking["pu_Address_Type"])
             worksheet.write(row, col + 25, booking["de_To_AddressType"])
-
-            # Deactivate `lowest`
-            # lowest = None
-
-            # for pricing in pricing_response["results"]:
-            #     if not lowest:
-            #         lowest = pricing
-            #     else:
-            #         if int(lowest["client_mu_1_minimum_values"]) >= int(
-            #             pricing["client_mu_1_minimum_values"]
-            #         ):
-            #             lowest = pricing
-
-            # if lowest:
-            # if True:
-
             worksheet.write(row, col + 26, pricing["freight_provider"])
             worksheet.write(row, col + 27, pricing["account_code"])
             worksheet.write(row, col + 28, pricing["service_name"])
@@ -282,6 +292,74 @@ def do_process(mysqlcon, fpath, fname):
             row += 1
 
     workbook.close()
+
+    # for index, booking in enumerate(bookings):
+    #     lines = []
+    #     note = f"In progress: {index / len(bookings) * 100}%"
+    #     _update_file_info(mysqlcon, fname, fpath, note)
+
+    #     for booking_line in booking_lines:
+    #         if booking["pk_booking_id"] == booking_line["fk_booking_id"]:
+    #             lines.append(booking_line)
+
+    #     pricing_response = do_pricing(booking, lines)
+
+    #     for pricing in pricing_response["results"]:
+    #         worksheet.write(row, col + 0, booking["pk_booking_id"])
+    #         worksheet.write(row, col + 1, booking["puPickUpAvailFrom_Date"])
+    #         worksheet.write(row, col + 2, booking["b_clientReference_RA_Numbers"])
+    #         worksheet.write(row, col + 3, booking["puCompany"])
+    #         worksheet.write(row, col + 4, booking["pu_Contact_F_L_Name"])
+    #         worksheet.write(row, col + 5, booking["pu_Email"])
+    #         worksheet.write(row, col + 6, booking["pu_Phone_Main"])
+    #         worksheet.write(row, col + 7, booking["pu_Address_Street_1"])
+    #         worksheet.write(row, col + 8, booking["pu_Address_street_2"])
+    #         worksheet.write(row, col + 9, booking["pu_Address_Country"])
+    #         worksheet.write(row, col + 10, booking["pu_Address_PostalCode"])
+    #         worksheet.write(row, col + 11, booking["pu_Address_State"])
+    #         worksheet.write(row, col + 12, booking["pu_Address_Suburb"])
+    #         worksheet.write(row, col + 13, booking["deToCompanyName"])
+    #         worksheet.write(row, col + 14, booking["de_to_Contact_F_LName"])
+    #         worksheet.write(row, col + 15, booking["de_Email"])
+    #         worksheet.write(row, col + 16, booking["de_to_Phone_Main"])
+    #         worksheet.write(row, col + 17, booking["de_To_Address_Street_1"])
+    #         worksheet.write(row, col + 18, booking["de_To_Address_Street_2"])
+    #         worksheet.write(row, col + 19, booking["de_To_Address_Country"])
+    #         worksheet.write(row, col + 20, booking["de_To_Address_PostalCode"])
+    #         worksheet.write(row, col + 21, booking["de_To_Address_State"])
+    #         worksheet.write(row, col + 22, booking["de_To_Address_Suburb"])
+    #         worksheet.write(row, col + 23, booking["client_warehouse_code"])
+    #         worksheet.write(row, col + 24, booking["pu_Address_Type"])
+    #         worksheet.write(row, col + 25, booking["de_To_AddressType"])
+
+    #         # Deactivate `lowest`
+    #         # lowest = None
+
+    #         # for pricing in pricing_response["results"]:
+    #         #     if not lowest:
+    #         #         lowest = pricing
+    #         #     else:
+    #         #         if int(lowest["client_mu_1_minimum_values"]) >= int(
+    #         #             pricing["client_mu_1_minimum_values"]
+    #         #         ):
+    #         #             lowest = pricing
+
+    #         # if lowest:
+    #         # if True:
+
+    #         worksheet.write(row, col + 26, pricing["freight_provider"])
+    #         worksheet.write(row, col + 27, pricing["account_code"])
+    #         worksheet.write(row, col + 28, pricing["service_name"])
+    #         worksheet.write(row, col + 29, pricing["fee"])
+    #         worksheet.write(row, col + 30, pricing["client_mu_1_minimum_values"])
+    #         worksheet.write(row, col + 31, pricing["tax_id_1"])
+    #         worksheet.write(row, col + 32, pricing["tax_value_1"])
+    #         worksheet.write(row, col + 33, pricing["etd"])
+    #         worksheet.write(row, col + 34, pricing["mu_percentage_fuel_levy"])
+
+    #         row += 1
+
+    # workbook.close()
 
     return file_path
 
@@ -363,6 +441,10 @@ if __name__ == "__main__":
                             mysqlcon, SRC_INPROGRESS_DIR + fname, fname
                         )
                         shutil.move(SRC_INPROGRESS_DIR + fname, SRC_ACHIEVE_DIR + fname)
+
+                        # TEST Usage
+                        # shutil.move(SRC_ACHIEVE_DIR + fname, SRC_DIR + fname)
+
                         _update_file_info(
                             mysqlcon, fname, SRC_ACHIEVE_DIR + fname, "Done: 100%"
                         )
@@ -379,6 +461,7 @@ if __name__ == "__main__":
 
             set_option(mysqlcon, "pricing_only", False, time1)
     except OSError as e:
+        shutil.move(SRC_INPROGRESS_DIR + fname, SRC_DIR + fname)
         print("Error:", str(e))
         set_option(mysqlcon, "pricing_only", False, time1)
 

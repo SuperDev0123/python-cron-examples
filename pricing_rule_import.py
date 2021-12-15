@@ -247,6 +247,7 @@ def read_xls(file):
         cost["max_width"] = set_null(ws["R%i" % row].value)
         cost["max_height"] = set_null(ws["S%i" % row].value)
         cost["max_weight"] = set_null(ws["T%i" % row].value)
+        cost["max_volume"] = set_null(ws["U%i" % row].value)
         costs.append(cost)
         row += 1
 
