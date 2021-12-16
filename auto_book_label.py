@@ -101,7 +101,7 @@ def send_email_to_admins(booking, error_msg, type):
         + f"\n\nRegards,\nDME CRONJOB"
     )
     send_email(
-        ["bookings@deliver-me.com.au", "stephenm@deliver-me.com.au"],
+        ["bookings@deliver-me.com.au", "goldj@deliver-me.com.au"],
         ["dev.deliverme@gmail.com"],
         f"Error happend while '{type.upper()}'",
         text,

@@ -259,7 +259,7 @@ When complete click 'Update' and then 'Price & Time Calc (FC)'. Select the appro
 Your booking will then be ready for the warehouse to process."
             send_email(
                 ["customerservice@jasonl.com.au"],
-                ["stephenm@deliver-me.com.au", "dev.deliverme@gmail.com"],
+                ["goldj@deliver-me.com.au", "dev.deliverme@gmail.com"],
                 f"No Quotes",
                 text,
             )
@@ -277,7 +277,7 @@ Freight pricing will be calculated for this address type. If you need to change 
 If you update this setting, don't forget to click the 'Update' button to save your changes and then click the 'Price & Time Calc (FC)' button to select your freight option for this change."
     send_email(
         ["customerservice@jasonl.com.au"],
-        ["stephenm@deliver-me.com.au", "dev.deliverme@gmail.com"],
+        ["goldj@deliver-me.com.au", "dev.deliverme@gmail.com"],
         f"No Delivery Address Type OR No Shipping Type",
         text,
     )
