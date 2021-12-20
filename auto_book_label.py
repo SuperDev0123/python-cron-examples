@@ -52,7 +52,7 @@ def get_bookings(mysqlcon, type):
             sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider`, `kf_client_id`, `b_client_order_num` \
                     FROM `dme_bookings` \
                     WHERE `b_dateBookedDate` IS NULL AND `b_status`=%s AND `kf_client_id`=%s AND \
-                    (`b_error_Capture` IS NULL OR `b_error_Capture`=%s) AND `b_dateBookedDate` IS NOT NULL \
+                    (`b_error_Capture` IS NULL OR `b_error_Capture`=%s) AND `b_dateBookedDate` IS NULL \
                     ORDER BY id DESC \
                     LIMIT 10"
             cursor.execute(
@@ -62,7 +62,7 @@ def get_bookings(mysqlcon, type):
         elif type == TYPE_2:  # JasonL & BSD
             sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider`, `kf_client_id`, `b_client_order_num` \
                     FROM `dme_bookings` \
-                    WHERE `b_status`=%s AND (`kf_client_id`=%s OR `kf_client_id`=%s) AND `b_dateBookedDate` IS NOT NULL \
+                    WHERE `b_status`=%s AND (`kf_client_id`=%s OR `kf_client_id`=%s) AND `b_dateBookedDate` IS NULL \
                     ORDER BY id DESC \
                     LIMIT 10"
             cursor.execute(
