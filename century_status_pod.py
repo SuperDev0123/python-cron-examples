@@ -3,6 +3,7 @@
 import sys, time
 import json
 from datetime import datetime
+import pytz
 import pymysql, pymysql.cursors
 import shutil
 from os import listdir, path
@@ -117,7 +118,9 @@ def do_process(mysqlcon):
                 booking_id = extract_booking_id(content[1])
                 fp_status = content[3]
                 fp_status_description = content[5]
-                event_time_stamp = datetime.strptime(content[2], "%Y%m%d").strftime(
+                event_time_stamp = datetime.strptime(content[2], "%Y%m%d").astimezone(
+                    pytz.UTC
+                ).strftime(
                     "%Y-%m-%d %H:%M:%S.%f"
                 )
             else:
@@ -125,7 +128,9 @@ def do_process(mysqlcon):
                 booking_id = extract_booking_id(content[0])
                 fp_status = content[2]
                 fp_status_description = content[4]
-                event_time_stamp = datetime.strptime(content[1], "%Y%m%d").strftime(
+                event_time_stamp = datetime.strptime(content[1], "%Y%m%d").astimezone(
+                    pytz.UTC
+                ).strftime(
                     "%Y-%m-%d %H:%M:%S.%f"
                 )
 

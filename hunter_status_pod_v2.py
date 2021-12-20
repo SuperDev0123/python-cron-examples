@@ -4,6 +4,7 @@ import sys, time
 import json
 import base64
 from datetime import datetime
+import pytz
 import pymysql, pymysql.cursors
 import shutil
 from os import listdir, path
@@ -121,6 +122,12 @@ def do_process(mysqlcon):
                     move_to_issued_dir(file)
                     continue
 
+                def sort_by_time(line):
+                    time = datetime.strptime(line[time_index], "%d/%m/%Y %H:%M %z")
+                    return time
+                    
+                content.sort(key=sort_by_time)
+
                 booking = None
                 for index, line in enumerate(content):
                     consignment_number = line[con_index]
@@ -130,6 +137,8 @@ def do_process(mysqlcon):
                     )
                     event_time_stamp_str = datetime.strptime(
                         line[time_index], "%d/%m/%Y %H:%M %z"
+                    ).astimezone(
+                        pytz.UTC
                     ).strftime("%Y-%m-%d %H:%M:%S.%f")
 
                     if event_time_stamp < datetime.strptime(
