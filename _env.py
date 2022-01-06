@@ -19,6 +19,10 @@ API_URL = "http://localhost:8000/api"  # Local
 USERNAME = "dme"
 PASSWORD = "LRyuNp3zn[XE_`8-"
 
+# # S3 URL
+# S3_PUBLIC_URL="/opt/s3_public"
+# S3_PRIVATE_URL="/opt/s3_public"
+
 # SI - Sharepoint import
 SI_DOWNLOAD_DIR = "./xls/downloaded"
 SI_IMPORT_DIR = "./xls/imported"
@@ -58,10 +62,16 @@ STTCO_ARCHIVE_DIR = "./dir02/"
 CCO_DIR = "./dir01/"
 CCO_ARCHIVE_DIR = "./dir02/"
 
-# CENTURY
-CENTURY_FTP_DIR = "./dme_sftp/century_au/status_csv/inprogress/"
-CENTURY_ARCHIVE_FTP_DIR = "./dme_sftp/century_au/status_csv/archive/"
-CENTURY_ISSUED_FTP_DIR = "./dme_sftp/century_au/status_csv/issued/"
+# CTC - CENTURY Tracking CSV
+CTC_INPROGRESS_DIR = "/dme_sftp/century_au/status_csv/inprogress/"
+CTC_ARCHIVE_DIR = "/dme_sftp/century_au/status_csv/archive/"
+CTC_ISSUED_DIR = "/dme_sftp/century_au/status_csv/issued/"
+
+# HUNTER TRACKING CSV
+HT_INPROGRESS_DIR = "./dme_sftp/hunter_au/status_csv/inprogress/"
+HT_ARCHIVE_DIR = "./dme_sftp/hunter_au/status_csv/archive/"
+HT_ISSUED_DIR = "./dme_sftp/hunter_au/status_csv/issued/"
+
 
 # **************
 # ***  DEV   ***
@@ -76,6 +86,10 @@ CENTURY_ISSUED_FTP_DIR = "./dme_sftp/century_au/status_csv/issued/"
 # API_URL = "http://3.105.62.128/api"  # Dev
 # USERNAME = "dme"
 # PASSWORD = "LRyuNp3zn[XE_`8-"
+
+# # S3 URL
+# S3_PUBLIC_URL="/opt/s3_public"
+# S3_PRIVATE_URL="/opt/s3_public"
 
 # # SI - Sharepoint import
 # SI_DOWNLOAD_DIR = "/opt/chrons/xls/downloaded"
@@ -116,10 +130,15 @@ CENTURY_ISSUED_FTP_DIR = "./dme_sftp/century_au/status_csv/issued/"
 # CCO_DIR = "./dme_sftp/century/book_csv/outdata/"
 # CCO_ARCHIVE_DIR = "./dme_sftp/century/book_csv/archive/"
 
-# # CENTURY
-# CENTURY_FTP_DIR = "./dme_sftp/century_au/status_csv/inprogress/"
-# CENTURY_ARCHIVE_FTP_DIR = "./dme_sftp/century_au/status_csv/archive/"
-# CENTURY_ISSUED_FTP_DIR = "./dme_sftp/century_au/status_csv/issued/"
+# # CTC - CENTURY Tracking CSV
+# CTC_INPROGRESS_DIR = "/dme_sftp/century_au/status_csv/inprogress/"
+# CTC_ARCHIVE_DIR = "/dme_sftp/century_au/status_csv/archive/"
+# CTC_ISSUED_DIR = "/dme_sftp/century_au/status_csv/issued/"
+
+# # HUNTER TRACKING CSV
+# HT_INPROGRESS_DIR = "/dme_sftp/hunter_au/status_csv/inprogress/"
+# HT_ARCHIVE_DIR = "/dme_sftp/hunter_au/status_csv/archive/"
+# HT_ISSUED_DIR = "/dme_sftp/hunter_au/status_csv/issued/"
 
 # **************
 # ***  PROD  ***
@@ -134,6 +153,10 @@ CENTURY_ISSUED_FTP_DIR = "./dme_sftp/century_au/status_csv/issued/"
 # API_URL = "http://13.55.64.102/api"  # Prod
 # USERNAME = "dme"
 # PASSWORD = "LRyuNp3zn[XE_`8-"
+
+# # S3 URL
+# S3_PUBLIC_URL="/opt/s3_public"
+# S3_PRIVATE_URL="/opt/s3_public"
 
 # # SI - Sharepoint import
 # SI_DOWNLOAD_DIR = "/opt/chrons/xls/downloaded"
@@ -180,3 +203,8 @@ CENTURY_ISSUED_FTP_DIR = "./dme_sftp/century_au/status_csv/issued/"
 # CTC_INPROGRESS_DIR = "/dme_sftp/century_au/status_csv/inprogress/"
 # CTC_ARCHIVE_DIR = "/dme_sftp/century_au/status_csv/archive/"
 # CTC_ISSUED_DIR = "/dme_sftp/century_au/status_csv/issued/"
+
+# # HUNTER TRACKING CSV
+# HT_INPROGRESS_DIR = "/dme_sftp/hunter_au/status_csv/inprogress/"
+# HT_ARCHIVE_DIR = "/dme_sftp/hunter_au/status_csv/archive/"
+# HT_ISSUED_DIR = "/dme_sftp/hunter_au/status_csv/issued/"
