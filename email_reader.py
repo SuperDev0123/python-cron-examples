@@ -221,7 +221,9 @@ def update_booking(mysqlcon, order_number, shipping_type, address_type, token):
                 time.sleep(30)
 
         # Run map sh
+        print(f"@411 - start mapping...")
         os.popen("sh /opt/chrons/MoveSuccess2ToBookings.sh")
+        print(f"@412 - finish mapping...")
 
         if has_no_address_type:
             time.sleep(5)
