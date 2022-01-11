@@ -210,20 +210,20 @@ def update_booking(mysqlcon, order_number, shipping_type, address_type, token):
 
         mysqlcon.commit()
 
-        # Wait while unlocked
-        mapping_script_flag = False
-        while not mapping_script_flag:
-            option = get_option(mysqlcon, "MoveSuccess2ToBookings")
-            mapping_script_flag = option["is_running"]
+        # # Wait while unlocked
+        # mapping_script_flag = False
+        # while not mapping_script_flag:
+        #     option = get_option(mysqlcon, "MoveSuccess2ToBookings")
+        #     mapping_script_flag = option["is_running"]
 
-            if mapping_script_flag:
-                print(f"@410 - MoveSuccess2ToBookings is running, waiting 30s...")
-                time.sleep(30)
+        #     if mapping_script_flag:
+        #         print(f"@410 - MoveSuccess2ToBookings is running, waiting 30s...")
+        #         time.sleep(30)
 
-        # Run map sh
-        print(f"@411 - start mapping...")
-        os.popen("sh /opt/chrons/MoveSuccess2ToBookings.sh")
-        print(f"@412 - finish mapping...")
+        # # Run map sh
+        # print(f"@411 - start mapping...")
+        # os.popen("sh /opt/chrons/MoveSuccess2ToBookings.sh")
+        # print(f"@412 - finish mapping...")
 
         if has_no_address_type:
             time.sleep(5)
