@@ -16,7 +16,8 @@ def get_in_progress_bookings(mysqlcon):
                 WHERE `vx_freight_provider`=%s \
                     AND (`b_client_name`=%s OR `b_client_name`=%s OR `b_client_name`=%s OR `b_client_name`=%s OR `b_client_name`=%s) \
                     AND (`z_lock_status`=%s OR `z_lock_status` IS NULL) \
-                    AND (`b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s) \
+                    AND (`b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND \
+                    `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s) \
                 ORDER BY id DESC \
                 LIMIT 200"
         cursor.execute(
@@ -29,12 +30,15 @@ def get_in_progress_bookings(mysqlcon):
                 "Cinnamon Creations",
                 "Jason L",
                 "0",
+                "Entered",
+                "On Hold",
+                "Picking",
+                "Picked",
                 "Ready for booking",
+                "Ready for Despatch",
                 "Cancelled",
                 "Closed",
                 "Delivered",
-                "Picked",
-                "Picking",
             ),
         )
         bookings = cursor.fetchall()
