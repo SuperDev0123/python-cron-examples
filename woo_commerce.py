@@ -110,7 +110,7 @@ def add_or_update_orders():
 
     for order in orders:
         print(
-            f"@101 [ORDER] orderId: {order['id']}, Order Status: {order['status']}, product_cnt: {len(order['line_items'])}"
+            f"@101 [ORDER] orderId: {order['id']}, Order Status: {order['status']}, product_cnt: {len(order['line_items'])}, shipping_method: {order['shipping_lines'][0]['method_id']}"
         )
 
         booking = {
@@ -163,6 +163,7 @@ def add_or_update_orders():
             "b_064_b_del_phone_main": "",
             "b_066_b_del_communicate_via": "Email",
             "b_client_order_num": order["id"],
+            "shipping_method": order["shipping_lines"][0]["method_id"],
         }
 
         booking_lines = []
@@ -231,6 +232,7 @@ if __name__ == "__main__":
         exit(1)
 
     try:
+        add_or_update_orders()
         option = get_option(mysqlcon, "bsd_woocommerce")
 
         if int(option["option_value"]) == 0:

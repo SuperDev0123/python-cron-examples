@@ -112,6 +112,8 @@ IF NOT is_running_flag THEN
                 THEN 'Ready for booking'
             WHEN success = 4
                 THEN 'Picking'
+            WHEN success = 5
+                THEN ''
         END,
         CASE 
             WHEN success = 2
@@ -122,6 +124,8 @@ IF NOT is_running_flag THEN
                 THEN 'Pre Booking'
             WHEN success = 4
                 THEN 'Pre Booking'
+            WHEN success = 5
+                THEN 'Imported / Integrated'
         END,
         bok_1.client_booking_id, b_client_del_note_num,
         b_client_order_num, b_client_sales_inv_num, b_client_warehouse_code,
@@ -134,7 +138,7 @@ IF NOT is_running_flag THEN
     LEFT OUTER JOIN dme_clients ON fk_client_id=dme_account_num
     LEFT OUTER JOIN utl_fp_delivery_times ON (b_001_b_freight_provider = fp_name AND cast(b_059_b_del_address_postalcode AS UNSIGNED) 
     BETWEEN postal_code_from AND postal_code_to), (SELECT @a:= v_b_bookingID_Visual) AS a 
-    WHERE success IN (2,4);
+    WHERE success IN (2, 4, 5);
 
     SET v_end_b_bookingID_Visual = v_start_b_bookingID_Visual + (ROW_COUNT() - 1);
 
@@ -165,7 +169,7 @@ IF NOT is_running_flag THEN
 
     DROP TABLE dme_memory;
 
-    UPDATE bok_1_headers SET success=1 WHERE success IN (2,4);
+    UPDATE bok_1_headers SET success=1 WHERE success IN (2, 4, 5);
 
 
     SELECT 'Starting move of booking lines';
@@ -204,11 +208,11 @@ IF NOT is_running_flag THEN
         client_item_reference, pk_booking_lines_id, zbl_121_integer_1,
         zbl_102_text_2, 0, b_093_packed_status
     FROM `bok_2_lines`
-    WHERE success IN (2,4);
+    WHERE success IN (2, 4, 5);
 
     SELECT 'Rows moved to dme_booking_lines = ' + ROW_COUNT();
 
-    UPDATE bok_2_lines SET success=1 WHERE success IN (2,4);
+    UPDATE bok_2_lines SET success=1 WHERE success IN (2, 4, 5);
 
 
     SELECT 'Starting move of booking lines data';
@@ -225,11 +229,11 @@ IF NOT is_running_flag THEN
         ld_008_client_ref_number, z_createdByAccount, z_createdTimeStamp,
         z_modifiedByAccount, z_modifiedTimeStamp, fk_booking_lines_id
     FROM `bok_3_lines_data`
-    WHERE success IN (2,4);
+    WHERE success IN (2, 4, 5);
 
     SELECT 'Rows moved to dme_booking_lines_data = ' + ROW_COUNT();
 
-    UPDATE bok_3_lines_data SET success=1 WHERE success IN (2,4);
+    UPDATE bok_3_lines_data SET success=1 WHERE success IN (2, 4, 5);
 
 
     SET bookingID_Visual = v_start_b_bookingID_Visual;
