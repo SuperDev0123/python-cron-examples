@@ -232,7 +232,6 @@ if __name__ == "__main__":
         exit(1)
 
     try:
-        add_or_update_orders()
         option = get_option(mysqlcon, "bsd_woocommerce")
 
         if int(option["option_value"]) == 0:
