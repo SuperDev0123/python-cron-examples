@@ -52,7 +52,8 @@ def _pull_order(order_number, token, shipping_type, b_53):
             "shipping_type": shipping_type,
             "b_client_sales_inv_num": order_number,
             "b_053_b_del_delivery_type": b_53,
-        }
+        },
+        "is_from_script": True,
     }
     print("@900 - Data: ", data)
     headers = {"Authorization": f"JWT {token}"}
