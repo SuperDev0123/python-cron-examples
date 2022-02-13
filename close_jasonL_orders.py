@@ -30,8 +30,8 @@ if __name__ == "__main__":
         option = get_option(mysqlcon, "auto_close_jasonL_orders")
         if int(option["option_value"]) == 0:
             print("#905 - `auto_close_jasonL_orders` option is OFF")
-        # elif option["is_running"]:
-        #     print("#905 - `auto_close_jasonL_orders` script is already RUNNING")
+        elif option["is_running"]:
+            print("#905 - `auto_close_jasonL_orders` script is already RUNNING")
         else:
             print("#906 - `auto_close_jasonL_orders` option is ON")
             set_option(mysqlcon, "auto_close_jasonL_orders", True)
