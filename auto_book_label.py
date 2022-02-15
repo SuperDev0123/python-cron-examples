@@ -120,7 +120,9 @@ def do_book(booking, token):
         response0 = response.content.decode("utf8")
         data0 = json.loads(response0)
         s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
-        print("@210 - BOOK (via FP API) result: ", s0)
+        print(
+            f"@210 - BOOK (via FP: {booking['vx_freight_provider']} API) result: ", s0
+        )
         return data0
     else:  # Via CSV
         url = API_URL + f"/get-csv/"
@@ -133,7 +135,7 @@ def do_book(booking, token):
         response0 = response.content.decode("utf8")
         data0 = json.loads(response0)
         s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
-        print("@211 - BOOK (via CSV) result: ", s0)
+        print(f"@211 - BOOK (via CSV: {booking['vx_freight_provider']}) result: ", s0)
         return data0
 
 
