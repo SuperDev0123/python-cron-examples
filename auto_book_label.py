@@ -62,15 +62,19 @@ def get_bookings(mysqlcon, type):
         elif type == TYPE_2:  # JasonL & BSD
             sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider`, `kf_client_id`, `b_client_order_num` \
                     FROM `dme_bookings` \
-                    WHERE `b_status`=%s AND (`kf_client_id`=%s OR `kf_client_id`=%s) AND `b_dateBookedDate` IS NULL \
+                    WHERE \
+                        `b_dateBookedDate` IS NULL AND \
+                        (`kf_client_id`=%s OR `kf_client_id`=%s) AND \
+                        (`b_status`=%s OR (`b_status`=%s AND `z_manifest_url` IS NOT NULL)) \
                     ORDER BY id DESC \
                     LIMIT 10"
             cursor.execute(
                 sql,
                 (
-                    "Ready for Despatch",
                     "1af6bcd2-6148-11eb-ae93-0242ac130002",
                     "9e72da0f-77c3-4355-a5ce-70611ffd0bc8",
+                    "Ready for Despatch",
+                    "Picked",
                 ),
             )
             bookings = cursor.fetchall()
@@ -116,7 +120,9 @@ def do_book(booking, token):
         response0 = response.content.decode("utf8")
         data0 = json.loads(response0)
         s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
-        print("@210 - BOOK (via FP API) result: ", s0)
+        print(
+            f"@210 - BOOK (via FP: {booking['vx_freight_provider']} API) result: ", s0
+        )
         return data0
     else:  # Via CSV
         url = API_URL + f"/get-csv/"
@@ -129,7 +135,7 @@ def do_book(booking, token):
         response0 = response.content.decode("utf8")
         data0 = json.loads(response0)
         s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
-        print("@211 - BOOK (via CSV) result: ", s0)
+        print(f"@211 - BOOK (via CSV: {booking['vx_freight_provider']}) result: ", s0)
         return data0
 
 

@@ -125,7 +125,7 @@ def do_process(mysqlcon):
                 def sort_by_time(line):
                     time = datetime.strptime(line[time_index], "%d/%m/%Y %H:%M %z")
                     return time
-                    
+
                 content.sort(key=sort_by_time)
 
                 booking = None
@@ -135,23 +135,23 @@ def do_process(mysqlcon):
                     event_time_stamp = datetime.strptime(
                         line[time_index], "%d/%m/%Y %H:%M %z"
                     )
-                    event_time_stamp_str = datetime.strptime(
-                        line[time_index], "%d/%m/%Y %H:%M %z"
-                    ).astimezone(
-                        pytz.UTC
-                    ).strftime("%Y-%m-%d %H:%M:%S.%f")
+                    event_time_stamp_str = (
+                        datetime.strptime(line[time_index], "%d/%m/%Y %H:%M %z")
+                        .astimezone(pytz.UTC)
+                        .strftime("%Y-%m-%d %H:%M:%S.%f")
+                    )
 
                     if event_time_stamp < datetime.strptime(
                         "2021-11-30 00:00 +11:00", "%Y-%m-%d %H:%M %z"
                     ):
                         print(f"Old tracking file: {file}, {event_time_stamp}")
                         move_to_issued_dir(file)
-                        break
+                        continue
 
                     if not consignment_number:
                         print("No consignment number: ", file, ", Row: ", index + 1)
                         move_to_issued_dir(file)
-                        break
+                        continue
 
                     if consignment_number:
                         booking = get_booking(consignment_number, mysqlcon)
@@ -161,7 +161,7 @@ def do_process(mysqlcon):
                             f"No booking or wrong freight_provider. file: {file}, Row: {index + 1}"
                         )
                         move_to_issued_dir(file)
-                        break
+                        continue
 
                     if (
                         consignment_number
