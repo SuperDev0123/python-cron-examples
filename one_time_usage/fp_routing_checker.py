@@ -1,3 +1,5 @@
+from cmath import isnan
+import math
 import pandas as pd
 import datetime
 import pymysql, pymysql.cursors
@@ -27,8 +29,35 @@ def compare():
 
     df_sheet = pd.read_excel("ZoneListCommon_04032022112404.xlsx", header=0,converters={'dest_postcode':str,'sort_bin':str})
     df_compare = df_db.astype(str).compare(df_sheet.astype(str), keep_shape=False, align_axis=1)
-    print(df_compare)
-    df_compare.to_excel('fp_routing_compare_result.xlsx')
+
+    update(df_compare)
+
+    # df_compare.to_excel('fp_routing_compare_result.xlsx')
+
+def update(df_compare):
+    table = 'fp_routing'
+    for index, row in df_compare.iterrows():
+        sql_query = f'update {table} set '
+        
+        if not math.isnan(float(row["dest_postcode"]["self"])):
+            sql_query += f'dest_postcode = {row["dest_postcode"]["other"]} ,'
+            
+        if row["gateway"]["self"] != 'nan':
+            sql_query += f"gateway = '{row['gateway']['other']}' ,"
+
+        if row["onfwd"]["self"] != 'nan':
+            sql_query += f" onfwd = '{row['onfwd']['other']}' ,"
+        sql_query = sql_query[:-1]
+        sql_query += f' where id = {index + 1}'
+        
+        with mysqlcon.cursor() as cursor:
+            cursor.execute(sql_query)
+        
+    mysqlcon.commit()
+            
+
+        
+
 
 if __name__ == "__main__":
     print("#900 - Running %s" % datetime.datetime.now())
