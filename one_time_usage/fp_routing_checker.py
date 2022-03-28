@@ -4,7 +4,7 @@ import pandas as pd
 import datetime
 import pymysql, pymysql.cursors
 
-production = True  # Dev
+production = False  # Dev
 
 if production:
     DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
@@ -30,11 +30,11 @@ def compare():
     df_sheet = pd.read_excel("ZoneListCommon_04032022112404.xlsx", header=0,converters={'dest_postcode':str,'sort_bin':str})
     df_compare = df_db.astype(str).compare(df_sheet.astype(str), keep_shape=False, align_axis=1)
 
-    update(df_compare)
+    update_sql(df_compare)
 
     # df_compare.to_excel('fp_routing_compare_result.xlsx')
 
-def update(df_compare):
+def update_sql(df_compare):
     table = 'fp_routing'
     for index, row in df_compare.iterrows():
         sql_query = f'update {table} set '
@@ -49,13 +49,9 @@ def update(df_compare):
             sql_query += f" onfwd = '{row['onfwd']['other']}' ,"
         sql_query = sql_query[:-1]
         sql_query += f' where id = {index + 1}'
-        
-        with mysqlcon.cursor() as cursor:
-            cursor.execute(sql_query)
-        
-    mysqlcon.commit()
-            
 
+        print(sql_query)
+        
         
 
 
