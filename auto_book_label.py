@@ -84,16 +84,23 @@ def get_bookings(mysqlcon, type):
 
 def reset_booking(mysqlcon, booking, error_msg):
     with mysqlcon.cursor() as cursor:
-        # JasonL & TNT
+        # JasonL & BSD
         if booking["kf_client_id"] in [
             "1af6bcd2-6148-11eb-ae93-0242ac130002",
             "9e72da0f-77c3-4355-a5ce-70611ffd0bc8",
         ]:
-            sql = "UPDATE `dme_bookings` \
-                    SET `v_FPBookingNumber`=NULL, `b_status`=%s, `b_dateBookedDate`=NULL, `b_error_Capture`=%s \
-                    WHERE id=%s"
-            cursor.execute(sql, ("Ready for Despatch", error_msg, booking["id"]))
-            mysqlcon.commit()
+            sql = (
+                "SELECT `b_dateBookedDate`, `b_status` FROM `dme_bookings` WHERE id=%s"
+            )
+            cursor.execute(sql, (booking["id"]))
+            booking = cursor.fetchone()
+
+            if not booking["b_dateBookedDate"]:
+                sql = "UPDATE `dme_bookings` \
+                        SET `v_FPBookingNumber`=NULL, `b_status`=%s, `b_dateBookedDate`=NULL, `b_error_Capture`=%s \
+                        WHERE id=%s"
+                cursor.execute(sql, ("Ready for Despatch", error_msg, booking["id"]))
+                mysqlcon.commit()
 
 
 def send_email_to_admins(booking, error_msg, type):
