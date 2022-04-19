@@ -219,7 +219,10 @@ def csv_write(fpath, f, mysqlcon):
                         if booking["b_status"] != dme_status:
                             print("@201 - New Status!", booking["b_status"], dme_status)
                             _status_history.create(
-                                booking["id"], None, datetime.datetime.now(), dme_status
+                                booking["id"],
+                                transit_state,
+                                datetime.datetime.now(),
+                                dme_status,
                             )
 
                         sql = "UPDATE `dme_bookings` \
