@@ -187,70 +187,72 @@ def csv_write(fpath, f, mysqlcon):
     with mysqlcon.cursor() as cursor:
         translations = get_translations(mysqlcon)
 
-        with open(fpath) as ftp_file:
-            for line in ftp_file:
-                consignment_number = line.split(",")[0].strip()
-                b_del_to_signed_time = datetime.datetime.strptime(
-                    line.split(",")[1].strip(), "%Y%m%d%H%M"
-                )
-                b_del_to_signed_name = line.split(",")[2].strip()
-                type_flag = line.split(",")[3].strip()
-                transit_state = type_flag_transit_state[type_flag]["transit_state"]
-                detail = type_flag_transit_state[type_flag]["detail"]
-                dme_status = get_dme_status_from_flag(translations, type_flag)
-                cartons_delivered = int(line.split(",")[11].strip())
-
-                print(
-                    "@200 - ",
-                    consignment_number,
-                    b_del_to_signed_time,
-                    b_del_to_signed_name,
-                    type_flag,
-                    transit_state,
-                    dme_status,
-                    cartons_delivered,
-                )
-
-                booking = get_booking(consignment_number, mysqlcon)
-                if booking:
-                    # If new status, create status_history
-                    if booking["b_status"] != dme_status:
-                        print("@201 - New Status!")
-                        _status_history.create(
-                            booking["id"], None, datetime.datetime.now(), dme_status
-                        )
-
-                    sql = "UPDATE `dme_bookings` \
-                        SET b_del_to_signed_name=%s, b_del_to_signed_time=%s, z_ModifiedTimestamp=%s, b_status_API=%s, b_status=%s \
-                        WHERE `v_FPBookingNumber`=%s"
-                    cursor.execute(
-                        sql,
-                        (
-                            b_del_to_signed_name,
-                            b_del_to_signed_time,
-                            datetime.datetime.now(),
-                            transit_state,
-                            dme_status,
-                            consignment_number,
-                        ),
+        try:
+            with open(fpath) as ftp_file:
+                for line in ftp_file:
+                    consignment_number = line.split(",")[0].strip()
+                    b_del_to_signed_time = datetime.datetime.strptime(
+                        line.split(",")[1].strip(), "%Y%m%d%H%M"
                     )
-                    mysqlcon.commit()
+                    b_del_to_signed_name = line.split(",")[2].strip()
+                    type_flag = line.split(",")[3].strip()
+                    transit_state = type_flag_transit_state[type_flag]["transit_state"]
+                    detail = type_flag_transit_state[type_flag]["detail"]
+                    dme_status = get_dme_status_from_flag(translations, type_flag)
+                    cartons_delivered = int(line.split(",")[11].strip())
 
-                # Write Each Line
-                comma = ","
-                newLine = "\n"
-                eachLineText = consignment_number + comma
-                eachLineText += b_del_to_signed_time.strftime("%Y%m%d") + comma
-                eachLineText += type_flag + comma
-                eachLineText += transit_state + comma
-                eachLineText += detail + comma
-                eachLineText += dme_status + comma
-                eachLineText += b_del_to_signed_name + comma
-                eachLineText += "" + comma
-                eachLineText += str(cartons_delivered) + comma
+                    print(
+                        "@200 - ",
+                        consignment_number,
+                        b_del_to_signed_time,
+                        b_del_to_signed_name,
+                        type_flag,
+                        transit_state,
+                        dme_status,
+                        cartons_delivered,
+                    )
 
-                f.write(newLine + eachLineText)
+                    booking = get_booking(consignment_number, mysqlcon)
+                    if booking:
+                        # If new status, create status_history
+                        if booking["b_status"] != dme_status:
+                            print("@201 - New Status!", booking["b_status"], dme_status)
+                            _status_history.create(
+                                booking["id"], None, datetime.datetime.now(), dme_status
+                            )
 
+                        sql = "UPDATE `dme_bookings` \
+                            SET b_del_to_signed_name=%s, b_del_to_signed_time=%s, z_ModifiedTimestamp=%s, b_status_API=%s, b_status=%s \
+                            WHERE `v_FPBookingNumber`=%s"
+                        cursor.execute(
+                            sql,
+                            (
+                                b_del_to_signed_name,
+                                b_del_to_signed_time,
+                                datetime.datetime.now(),
+                                transit_state,
+                                dme_status,
+                                consignment_number,
+                            ),
+                        )
+                        mysqlcon.commit()
+
+                    # Write Each Line
+                    comma = ","
+                    newLine = "\n"
+                    eachLineText = consignment_number + comma
+                    eachLineText += b_del_to_signed_time.strftime("%Y%m%d") + comma
+                    eachLineText += type_flag + comma
+                    eachLineText += transit_state + comma
+                    eachLineText += detail + comma
+                    eachLineText += dme_status + comma
+                    eachLineText += b_del_to_signed_name + comma
+                    eachLineText += "" + comma
+                    eachLineText += str(cartons_delivered) + comma
+
+                    f.write(newLine + eachLineText)
+    except Exception as e:
+        print("@204 - ", str(e))
 
 if __name__ == "__main__":
     print("#900 - Running %s" % datetime.datetime.now())
