@@ -251,8 +251,9 @@ def csv_write(fpath, f, mysqlcon):
                     eachLineText += str(cartons_delivered) + comma
 
                     f.write(newLine + eachLineText)
-    except Exception as e:
-        print("@204 - ", str(e))
+        except Exception as e:
+            print("@204 - ", str(e))
+
 
 if __name__ == "__main__":
     print("#900 - Running %s" % datetime.datetime.now())
