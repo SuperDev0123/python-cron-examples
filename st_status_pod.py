@@ -253,6 +253,8 @@ def csv_write(fpath, f, mysqlcon):
                     f.write(newLine + eachLineText)
         except Exception as e:
             print("@204 - ", str(e))
+            traceback.print_exc()
+            exit(1)
 
 
 if __name__ == "__main__":
