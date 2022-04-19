@@ -3,6 +3,7 @@
 import sys, time
 import os
 import datetime
+import traceback
 import pymysql, pymysql.cursors
 import shutil
 
