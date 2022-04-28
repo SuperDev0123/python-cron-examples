@@ -52,12 +52,11 @@ def get_bookings_missing_pod(mysqlcon):
     with mysqlcon.cursor() as cursor:
         sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
                 FROM `dme_bookings` \
-                WHERE `vx_freight_provider`=%s AND `b_client_name`=%s AND z_pod_url IS NULL \
-                    AND (`z_lock_status`=%s OR `z_lock_status` IS NULL) \
+                WHERE `vx_freight_provider`=%s AND z_pod_url IS NULL \
                     AND `b_status`=%s \
                 ORDER BY id DESC \
                 LIMIT 20"
-        cursor.execute(sql, ("Hunter", "Tempo Pty Ltd", "0", "Delivered"))
+        cursor.execute(sql, ("TNT", "Delivered"))
         bookings = cursor.fetchall()
 
         return bookings
