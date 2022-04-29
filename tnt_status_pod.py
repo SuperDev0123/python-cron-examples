@@ -53,7 +53,7 @@ def get_bookings_missing_pod(mysqlcon):
         sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
                 FROM `dme_bookings` \
                 WHERE `vx_freight_provider`=%s AND `z_pod_url` IS NULL \
-                    AND `b_status`=%s AND `b_error_Capture`=%s\
+                    AND `b_status`=%s AND `b_error_Capture`<>%s\
                 ORDER BY id DESC \
                 LIMIT 20"
         cursor.execute(sql, ("TNT", "Delivered", "No Data Found"))
