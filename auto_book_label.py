@@ -89,9 +89,7 @@ def reset_booking(mysqlcon, booking, error_msg):
             "1af6bcd2-6148-11eb-ae93-0242ac130002",
             "9e72da0f-77c3-4355-a5ce-70611ffd0bc8",
         ]:
-            sql = (
-                "SELECT `b_dateBookedDate`, `b_status` FROM `dme_bookings` WHERE id=%s"
-            )
+            sql = "SELECT `id`, `b_dateBookedDate`, `b_status` FROM `dme_bookings` WHERE id=%s"
             cursor.execute(sql, (booking["id"]))
             booking = cursor.fetchone()
 
@@ -114,7 +112,7 @@ def send_email_to_admins(booking, error_msg, type):
     send_email(
         ["bookings@deliver-me.com.au", "goldj@deliver-me.com.au"],
         ["dev.deliverme@gmail.com"],
-        f"Error happend while '{type.upper()}'",
+        f"Error happened while '{type.upper()}'",
         text,
     )
 
@@ -195,10 +193,10 @@ def do_process(mysqlcon):
                     label_result = do_get_label(booking)
 
                     if "Successfully" not in label_result["message"]:
-                        reset_booking(mysqlcon, booking, label_result["message"])
                         send_email_to_admins(
                             booking, label_result["message"], "getlabel"
                         )
+                        reset_booking(mysqlcon, booking, label_result["message"])
             except Exception as e:
                 print(f"#209 Exception - {str(e)}")
                 pass
