@@ -33,7 +33,6 @@ def get_in_progress_bookings(mysqlcon):
                 "Bathroom Sales Direct",
                 "0",
                 "Entered",
-                "On Hold",
                 "Picking",
                 "Picked",
                 "Ready for Booking",
