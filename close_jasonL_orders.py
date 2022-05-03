@@ -36,7 +36,7 @@ if __name__ == "__main__":
             print("#906 - `auto_close_jasonL_orders` option is ON")
             set_option(mysqlcon, "auto_close_jasonL_orders", True)
             subprocess.run(
-                "python manage.py jason_l_orders_status",
+                "python manage.py jasonL_orders_status",
                 shell=True,
                 check=True,
                 cwd=DME_API_URL,
