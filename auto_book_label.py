@@ -39,7 +39,7 @@ def get_token():
     data0 = json.loads(response0)
 
     if "token" in data0:
-        print("@101 - Token: ", data0["token"])
+        # print("@101 - Token: ", data0["token"])
         return data0["token"]
     else:
         print("@400 - ", data0["non_field_errors"])
@@ -53,6 +53,7 @@ def get_bookings(mysqlcon, type):
                     FROM `dme_bookings` \
                     WHERE `b_dateBookedDate` IS NULL AND `b_status`=%s AND `kf_client_id`=%s AND \
                     (`b_error_Capture` IS NULL OR `b_error_Capture`=%s) AND `b_dateBookedDate` IS NULL \
+                    AND `vx_freight_provider`<>%s \
                     ORDER BY id DESC \
                     LIMIT 10"
             cursor.execute(
@@ -66,6 +67,7 @@ def get_bookings(mysqlcon, type):
                         `b_dateBookedDate` IS NULL AND \
                         (`kf_client_id`=%s OR `kf_client_id`=%s) AND \
                         (`b_status`=%s OR (`b_status`=%s AND `z_manifest_url` IS NOT NULL)) \
+                        AND `vx_freight_provider`<>%s \
                     ORDER BY id DESC \
                     LIMIT 10"
             cursor.execute(
@@ -75,6 +77,7 @@ def get_bookings(mysqlcon, type):
                     "9e72da0f-77c3-4355-a5ce-70611ffd0bc8",
                     "Ready for Despatch",
                     "Picked",
+                    "Allied",
                 ),
             )
             bookings = cursor.fetchall()
