@@ -296,6 +296,33 @@ If you update this setting, don't forget to click the 'Update' button to save yo
     )
     print("@410 - 'No Address Type' email is sent!")
 
+def email_parse(in_str):
+    pre_order_str = "Just to confirm your job: "
+    pre_date_str = "The date and time"
+    order_index = in_str.find(pre_order_str)
+    date_index = in_str.find(pre_date_str)
+
+    order_extract_str = in_str[order_index + len(pre_order_str):]
+    order_result = ""
+    for m in order_extract_str:
+        if not (m.isdigit() or m.isspace()):
+            break;
+        order_result = order_result + m
+
+    order_arr = order_result.split(' ')
+    # new_result = re.findall('[0-9]+', order_extract_str)
+    date_extract_str = in_str[date_index + len(pre_date_str):]
+    index = 0
+    for m in date_extract_str:
+        if m.isdigit():
+            break
+        index = index + 1
+    
+    date_result = date_extract_str[index:].split(' ')[0]
+            
+    print("OrderNum: ", order_arr)
+    print("Date and Time: ", date_result)
+    return order_arr, date_result
 
 def do_process(mysqlcon):
     """
@@ -312,35 +339,38 @@ def do_process(mysqlcon):
     token = get_token()
 
     for email in emails:
+        subject = email["subject"]
         content = email["content"]
         content_items = content.split("|")
+        if "job status update" in subject:
+            order_arr, date_result = email_parse(content)
 
         if len(content_items) != 5:
             continue
 
-        if (
-            content_items[0].strip().lower() == "jasonl"
-            and "picking slip printed" in content_items[4].strip().lower()
-        ):
-            order_number = content_items[1].strip()
-            shipping_type = content_items[2].strip()
-            address_type = content_items[3].strip()
+        # if (
+        #     content_items[0].strip().lower() == "jasonl"
+        #     and "picking slip printed" in content_items[4].strip().lower()
+        # ):
+        #     order_number = content_items[1].strip()
+        #     shipping_type = content_items[2].strip()
+        #     address_type = content_items[3].strip()
 
-            # Prevent '135000-' case
-            if len(order_number.split("-")) > 1 and order_number.split("-")[1] == "":
-                order_number = order_number.split("-")[0]
+        #     # Prevent '135000-' case
+        #     if len(order_number.split("-")) > 1 and order_number.split("-")[1] == "":
+        #         order_number = order_number.split("-")[0]
 
-            print(f"@801 - {content}")
-            is_updated = update_booking(
-                mysqlcon, order_number, shipping_type, address_type, token
-            )
+        #     print(f"@801 - {content}")
+        #     is_updated = update_booking(
+        #         mysqlcon, order_number, shipping_type, address_type, token
+        #     )
 
-            print(
-                f"\n@802 - order_number: {order_number}, {'MAPPED!' if is_updated else 'NOT MAPPED'}"
-            )
+        #     print(
+        #         f"\n@802 - order_number: {order_number}, {'MAPPED!' if is_updated else 'NOT MAPPED'}"
+        #     )
 
-            if is_updated:
-                _check_quote(order_number, mysqlcon)
+        #     if is_updated:
+        #         _check_quote(order_number, mysqlcon)
 
 
 if __name__ == "__main__":
