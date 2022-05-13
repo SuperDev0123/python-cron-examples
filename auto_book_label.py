@@ -57,7 +57,13 @@ def get_bookings(mysqlcon, type):
                     ORDER BY id DESC \
                     LIMIT 10"
             cursor.execute(
-                sql, ("Ready for Booking", "461162D2-90C7-BF4E-A905-000000000004", "")
+                sql,
+                (
+                    "Ready for Booking",
+                    "461162D2-90C7-BF4E-A905-000000000004",
+                    "",
+                    "Allied_",
+                ),
             )
             bookings = cursor.fetchall()
         elif type == TYPE_2:  # JasonL & BSD
@@ -77,7 +83,7 @@ def get_bookings(mysqlcon, type):
                     "9e72da0f-77c3-4355-a5ce-70611ffd0bc8",
                     "Ready for Despatch",
                     "Picked",
-                    "Allied",
+                    "Allied_",
                 ),
             )
             bookings = cursor.fetchall()
