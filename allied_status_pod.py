@@ -17,7 +17,8 @@ def get_in_progress_bookings(mysqlcon):
                     AND (`b_client_name`=%s OR `b_client_name`=%s OR `b_client_name`=%s OR `b_client_name`=%s OR `b_client_name`=%s OR `b_client_name`=%s) \
                     AND (`z_lock_status`=%s OR `z_lock_status` IS NULL) \
                     AND (`b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND \
-                    `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s) \
+                    `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s) \
+                    AND b_dateBookedDate IS NOT NULL AND b_dateBookedDate <= NOW() - INTERVAL 10 MINUTE \
                 ORDER BY id DESC \
                 LIMIT 200"
         cursor.execute(
@@ -25,17 +26,16 @@ def get_in_progress_bookings(mysqlcon):
             (
                 "Allied",
                 "Tempo Pty Ltd",
-                "Jason L",
                 "Plum Products Australia Ltd",
                 "Reworx",
                 "Cinnamon Creations",
+                "Jason L",
                 "Bathroom Sales Direct",
                 "0",
                 "Entered",
-                "On Hold",
                 "Picking",
                 "Picked",
-                "Ready for booking",
+                "Ready for Booking",
                 "Ready for Despatch",
                 "Cancelled",
                 "Closed",

@@ -19,6 +19,9 @@ API_URL = "http://localhost:8000/api"  # Local
 USERNAME = "dme"
 PASSWORD = "LRyuNp3zn[XE_`8-"
 
+# DME_API project absolute url
+DME_API_URL = "../dme_api"
+
 # # S3 URL
 # S3_PUBLIC_URL="/opt/s3_public"
 # S3_PRIVATE_URL="/opt/s3_public"
@@ -87,6 +90,9 @@ HT_ISSUED_DIR = "./dme_sftp/hunter_au/status_csv/issued/"
 # USERNAME = "dme"
 # PASSWORD = "LRyuNp3zn[XE_`8-"
 
+# # DME_API project absolute url
+# DME_API_URL = "/var/www/html/dme_api"
+
 # # S3 URL
 # S3_PUBLIC_URL="/opt/s3_public"
 # S3_PRIVATE_URL="/opt/s3_public"
@@ -140,6 +146,7 @@ HT_ISSUED_DIR = "./dme_sftp/hunter_au/status_csv/issued/"
 # HT_ARCHIVE_DIR = "/dme_sftp/hunter_au/status_csv/archive/"
 # HT_ISSUED_DIR = "/dme_sftp/hunter_au/status_csv/issued/"
 
+
 # **************
 # ***  PROD  ***
 # **************
@@ -153,6 +160,9 @@ HT_ISSUED_DIR = "./dme_sftp/hunter_au/status_csv/issued/"
 # API_URL = "http://13.55.64.102/api"  # Prod
 # USERNAME = "dme"
 # PASSWORD = "LRyuNp3zn[XE_`8-"
+
+# # DME_API project absolute url
+# DME_API_URL = "/var/www/html/dme_api"
 
 # # S3 URL
 # S3_PUBLIC_URL="/opt/s3_public"

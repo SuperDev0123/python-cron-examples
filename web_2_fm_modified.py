@@ -102,7 +102,7 @@ def upload_file_to_sharepoint(file_path, file_name):
 def write_worksheet(name, workbook, worksheet, table, fields_info):
     worksheet.set_column(0, 200, width=25)
     bold = workbook.add_format({"bold": 1, "align": "left"})
-    datetime_format = workbook.add_format({"num_format": "dd/mm/yyyy hh:mm:ss"})
+    datetime_format = workbook.add_format({"num_format": "DD/MM/YYYY HH:mm"})
     date_format = workbook.add_format({"num_format": "dd/mm/yyyy"})
     time_format = workbook.add_format({"num_format": "hh:mm:ss"})
 
