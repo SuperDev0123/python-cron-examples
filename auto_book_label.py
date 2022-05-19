@@ -39,7 +39,7 @@ def get_token():
     data0 = json.loads(response0)
 
     if "token" in data0:
-        print("@101 - Token: ", data0["token"])
+        # print("@101 - Token: ", data0["token"])
         return data0["token"]
     else:
         print("@400 - ", data0["non_field_errors"])
@@ -53,24 +53,37 @@ def get_bookings(mysqlcon, type):
                     FROM `dme_bookings` \
                     WHERE `b_dateBookedDate` IS NULL AND `b_status`=%s AND `kf_client_id`=%s AND \
                     (`b_error_Capture` IS NULL OR `b_error_Capture`=%s) AND `b_dateBookedDate` IS NULL \
-                    ORDER BY id DESC \
-                    LIMIT 10"
-            cursor.execute(
-                sql, ("Ready for Booking", "461162D2-90C7-BF4E-A905-000000000004", "")
-            )
-            bookings = cursor.fetchall()
-        elif type == TYPE_2:  # JasonL & BSD
-            sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider`, `kf_client_id`, `b_client_order_num` \
-                    FROM `dme_bookings` \
-                    WHERE `b_status`=%s AND (`kf_client_id`=%s OR `kf_client_id`=%s) AND `b_dateBookedDate` IS NULL \
+                    AND `vx_freight_provider`<>%s \
                     ORDER BY id DESC \
                     LIMIT 10"
             cursor.execute(
                 sql,
                 (
-                    "Ready for Despatch",
+                    "Ready for Booking",
+                    "461162D2-90C7-BF4E-A905-000000000004",
+                    "",
+                    "Allied_",
+                ),
+            )
+            bookings = cursor.fetchall()
+        elif type == TYPE_2:  # JasonL & BSD
+            sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider`, `kf_client_id`, `b_client_order_num` \
+                    FROM `dme_bookings` \
+                    WHERE \
+                        `b_dateBookedDate` IS NULL AND \
+                        (`kf_client_id`=%s OR `kf_client_id`=%s) AND \
+                        (`b_status`=%s OR (`b_status`=%s AND `z_manifest_url` IS NOT NULL)) \
+                        AND `vx_freight_provider`<>%s \
+                    ORDER BY id DESC \
+                    LIMIT 10"
+            cursor.execute(
+                sql,
+                (
                     "1af6bcd2-6148-11eb-ae93-0242ac130002",
                     "9e72da0f-77c3-4355-a5ce-70611ffd0bc8",
+                    "Ready for Despatch",
+                    "Picked",
+                    "Allied_",
                 ),
             )
             bookings = cursor.fetchall()
@@ -80,16 +93,21 @@ def get_bookings(mysqlcon, type):
 
 def reset_booking(mysqlcon, booking, error_msg):
     with mysqlcon.cursor() as cursor:
-        # JasonL & TNT
+        # JasonL & BSD
         if booking["kf_client_id"] in [
             "1af6bcd2-6148-11eb-ae93-0242ac130002",
             "9e72da0f-77c3-4355-a5ce-70611ffd0bc8",
         ]:
-            sql = "UPDATE `dme_bookings` \
-                    SET `v_FPBookingNumber`=NULL, `b_status`=%s, `b_dateBookedDate`=NULL, `b_error_Capture`=%s \
-                    WHERE id=%s"
-            cursor.execute(sql, ("Ready for Despatch", error_msg, booking["id"]))
-            mysqlcon.commit()
+            sql = "SELECT `id`, `b_dateBookedDate`, `b_status` FROM `dme_bookings` WHERE id=%s"
+            cursor.execute(sql, (booking["id"]))
+            booking = cursor.fetchone()
+
+            if not booking["b_dateBookedDate"]:
+                sql = "UPDATE `dme_bookings` \
+                        SET `v_FPBookingNumber`=NULL, `b_status`=%s, `b_dateBookedDate`=NULL, `b_error_Capture`=%s \
+                        WHERE id=%s"
+                cursor.execute(sql, ("Ready for Despatch", error_msg, booking["id"]))
+                mysqlcon.commit()
 
 
 def send_email_to_admins(booking, error_msg, type):
@@ -103,7 +121,7 @@ def send_email_to_admins(booking, error_msg, type):
     send_email(
         ["bookings@deliver-me.com.au", "goldj@deliver-me.com.au"],
         ["dev.deliverme@gmail.com"],
-        f"Error happend while '{type.upper()}'",
+        f"Error happened while '{type.upper()}'",
         text,
     )
 
@@ -116,7 +134,9 @@ def do_book(booking, token):
         response0 = response.content.decode("utf8")
         data0 = json.loads(response0)
         s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
-        print("@210 - BOOK (via FP API) result: ", s0)
+        print(
+            f"@210 - BOOK (via FP: {booking['vx_freight_provider']} API) result: ", s0
+        )
         return data0
     else:  # Via CSV
         url = API_URL + f"/get-csv/"
@@ -129,7 +149,7 @@ def do_book(booking, token):
         response0 = response.content.decode("utf8")
         data0 = json.loads(response0)
         s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
-        print("@211 - BOOK (via CSV) result: ", s0)
+        print(f"@211 - BOOK (via CSV: {booking['vx_freight_provider']}) result: ", s0)
         return data0
 
 
@@ -182,10 +202,10 @@ def do_process(mysqlcon):
                     label_result = do_get_label(booking)
 
                     if "Successfully" not in label_result["message"]:
-                        reset_booking(mysqlcon, booking, label_result["message"])
                         send_email_to_admins(
                             booking, label_result["message"], "getlabel"
                         )
+                        reset_booking(mysqlcon, booking, label_result["message"])
             except Exception as e:
                 print(f"#209 Exception - {str(e)}")
                 pass

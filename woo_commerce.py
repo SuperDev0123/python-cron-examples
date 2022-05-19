@@ -115,7 +115,7 @@ def add_or_update_orders():
 
         booking = {
             "pk_header_id": str(uuid.uuid4()),
-            "b_client_warehouse_code": "BSD_MERRYLANDS",
+            "b_client_warehouse_code": "BSD_SMITHFIELD",
             "b_000_1_b_clientReference_RA_Numbers": order["order_key"],
             "b_001_b_freight_provider": "",
             "b_002_b_vehicle_type": "",
@@ -134,11 +134,11 @@ def add_or_update_orders():
             "b_023_b_pu_avail_from_time_minute": 0,
             "b_027_b_pu_address_type": "business",
             "b_028_b_pu_company": "Bathroom Sales Direct",
-            "b_029_b_pu_address_street_1": "118 Merrylands Road",
+            "b_029_b_pu_address_street_1": "81 Warren Road",
             "b_030_b_pu_address_street_2": "",
             "b_031_b_pu_address_state": "NSW",
-            "b_032_b_pu_address_suburb": "Merrylands",
-            "b_033_b_pu_address_postalcode": "2160",
+            "b_032_b_pu_address_suburb": "Smithfield",
+            "b_033_b_pu_address_postalcode": "2164",
             "b_034_b_pu_address_country": "Australia",
             "b_035_b_pu_contact_full_name": "Bathroom Sales Direct",
             "b_037_b_pu_email": "info@bathroomsalesdirect.com.au",
