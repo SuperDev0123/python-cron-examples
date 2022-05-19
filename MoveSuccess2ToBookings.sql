@@ -11,7 +11,8 @@ DECLARE pk_id_dme_client int(11);
 DECLARE booking_created_for_email char(255);
 DECLARE bookingID_Visual int(11);
 DECLARE api_booking_quote_id int(11);
-DECLARE is_running_flag tinyint;
+DECLARE _running_flag tinyint;
+DECLARE _start_time datetime(6);
 
 
 DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -23,12 +24,13 @@ DECLARE EXIT HANDLER FOR SQLEXCEPTION
         DROP TABLE IF EXISTS dme_memory;
     END;
 
-SELECT is_running INTO is_running_flag FROM dme_options WHERE option_name = 'MoveSuccess2ToBookings';
-SELECT is_running_flag;
+SELECT is_running, start_time INTO _running_flag, _start_time FROM dme_options WHERE option_name = 'MoveSuccess2ToBookings';
+SELECT _running_flag, _start_time;
 
-IF NOT is_running_flag THEN
+IF NOT _running_flag OR (_running_flag AND _start_time < DATE_SUB(CURRENT_TIMESTAMP(), INTERVAL 5 MINUTE)) THEN
+    SELECT _running_flag, _start_time;
     -- LOCK
-    UPDATE dme_options SET is_running = 1 WHERE option_name = 'MoveSuccess2ToBookings';
+    UPDATE dme_options SET is_running = 1, start_time=CURRENT_TIMESTAMP() WHERE option_name = 'MoveSuccess2ToBookings';
     COMMIT;
 
     DROP TABLE IF EXISTS dme_memory;
@@ -77,7 +79,8 @@ IF NOT is_running_flag THEN
         `b_client_order_num`, `b_client_sales_inv_num`, `b_client_warehouse_code`,
         `b_client_name`, `delivery_kpi_days`, `z_api_issue_update_flag_500`,
         `x_manual_booked_flag`, `x_booking_Created_With`, `api_booking_quote_id`,
-        `booking_type`, `vx_fp_order_id`, `b_clientPU_Warehouse`)
+        `booking_type`, `vx_fp_order_id`, `b_clientPU_Warehouse`,
+        `b_promo_code`)
     SELECT bok_1.pk_header_id, bok_1.b_000_1_b_clientReference_RA_Numbers,
         bok_1.b_000_b_total_lines, bok_1.b_001_b_freight_provider, b_002_b_vehicle_type,
         bok_1.b_005_b_created_for, bok_1.b_006_b_created_for_email, b_007_b_ready_status,
@@ -113,7 +116,7 @@ IF NOT is_running_flag THEN
             WHEN success = 4
                 THEN 'Picking'
             WHEN success = 5
-                THEN ''
+                THEN 'Imported / Integrated'
         END,
         CASE 
             WHEN success = 2
@@ -125,7 +128,7 @@ IF NOT is_running_flag THEN
             WHEN success = 4
                 THEN 'Pre Booking'
             WHEN success = 5
-                THEN 'Imported / Integrated'
+                THEN 'Pre Booking'
         END,
         bok_1.client_booking_id, b_client_del_note_num,
         b_client_order_num, b_client_sales_inv_num, b_client_warehouse_code,
@@ -133,7 +136,8 @@ IF NOT is_running_flag THEN
         CASE WHEN success = 2 THEN 1 WHEN success = 3 THEN 0 WHEN success= 4 THEN 0 END,
         CASE WHEN success = 6 THEN 1 ELSE 0 END,
         bok_1.x_booking_Created_With, bok_1.quote_id,
-        bok_1.b_092_booking_type, '', bok_1.b_clientPU_Warehouse
+        bok_1.b_092_booking_type, '', bok_1.b_clientPU_Warehouse,
+        bok_1.b_093_b_promo_code
     FROM bok_1_headers bok_1
     LEFT OUTER JOIN dme_clients ON fk_client_id=dme_account_num
     LEFT OUTER JOIN utl_fp_delivery_times ON (b_001_b_freight_provider = fp_name AND cast(b_059_b_del_address_postalcode AS UNSIGNED) 
@@ -176,7 +180,7 @@ IF NOT is_running_flag THEN
 
     INSERT IGNORE INTO dme_booking_lines
         (e_spec_clientRMA_Number, e_weightPerEach,
-        e_1_Total_dimCubicMeter, e_Total_KG_weight,
+        e_1_Total_dimCubicMeter, total_2_cubic_mass_factor_calc, e_Total_KG_weight,
         e_item, e_qty, e_type_of_packaging,
         e_item_type, e_pallet_Type, fk_booking_id,
         e_dimLength, e_dimWidth, e_dimHeight,
@@ -190,6 +194,13 @@ IF NOT is_running_flag THEN
             WHEN upper( l_004_dim_UOM) IN ( "METER", "M")
                 THEN (l_002_qty * l_005_dim_length * l_006_dim_width * l_007_dim_height)
             ELSE l_002_qty * (l_005_dim_length * l_006_dim_width * l_007_dim_height / 1000000000)
+        END,
+        CASE
+            WHEN upper(l_004_dim_UOM) = "CM"
+                THEN l_002_qty * (l_005_dim_length * l_006_dim_width * l_007_dim_height / 1000000) * 250
+            WHEN upper( l_004_dim_UOM) IN ( "METER", "M")
+                THEN (l_002_qty * l_005_dim_length * l_006_dim_width * l_007_dim_height) * 250
+            ELSE l_002_qty * (l_005_dim_length * l_006_dim_width * l_007_dim_height / 1000000000) * 250
         END,
         CASE 
             WHEN lower(l_008_weight_UOM) IN ("g", "gram", "grams")
@@ -290,8 +301,7 @@ IF NOT is_running_flag THEN
     END REPEAT bookingCreatedEmail;
 
     -- UNLOCK
-    UPDATE dme_options SET is_running = 0 WHERE option_name = 'MoveSuccess2ToBookings';
-
+    UPDATE dme_options SET is_running = 0, end_time=CURRENT_TIMESTAMP() WHERE option_name = 'MoveSuccess2ToBookings';
     COMMIT;
 ELSE
     SELECT 'Procedure MoveSuccess2ToBookings is already running.';

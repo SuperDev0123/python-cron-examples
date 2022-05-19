@@ -4,7 +4,7 @@ import time
 import datetime
 import pymysql, pymysql.cursors
 
-from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME
+from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, DME_API_URL
 from _options_lib import get_option, set_option
 import subprocess
 
@@ -36,7 +36,10 @@ if __name__ == "__main__":
             print("#906 - `auto_close_bsd_orders` option is ON")
             set_option(mysqlcon, "auto_close_bsd_orders", True)
             subprocess.run(
-                "python manage.py bsd_orders_status", shell=True, check=True, cwd="../dme_api"
+                "python manage.py bsd_orders_status",
+                shell=True,
+                check=True,
+                cwd=DME_API_URL,
             )
             set_option(mysqlcon, "auto_close_bsd_orders", False, time1)
     except OSError as e:
