@@ -9,13 +9,21 @@ def email_parse(in_str):
     date_index = in_str.find(pre_date_str)
 
     order_extract_str = in_str[order_index + len(pre_order_str):]
-    order_result = ""
-    for m in order_extract_str:
-        if not (m.isdigit() or m.isspace()):
-            break;
-        order_result = order_result + m
 
-    order_arr = order_result.strip().split(' ')
+    order_extract_arr = order_extract_str.replace(",", "").strip().split(" ")
+    order_arr = []
+    for order_num in order_extract_arr:
+        if is_order_num(order_num):
+            order_arr.append(order_num)
+        else: break
+    # print("Order_Num", order_arr)
+    # order_result = ""
+    # for m in order_extract_str:
+    #     if not (m.isdigit() or m.isspace()):
+    #         break;
+    #     order_result = order_result + m
+
+    # order_arr = order_result.strip().split(' ')
     # new_result = re.findall('[0-9]+', order_extract_str)
     date_extract_str = in_str[date_index + len(pre_date_str):]
     index = 0
@@ -51,9 +59,16 @@ def sydney_to_utc(sydney_time):
 
     return utc_time
 
+def is_order_num(order_num):
+    index = 0
+    for m in order_num:
+        if not (m.isdigit() or m.isspace()):
+            break;
+        index = index + 1;
+    return True if index > 3 else False
 
 if __name__ == "__main__":
-    email_parse("Just to confirm your job: 1042079 23855 1042180 23856, has now been received in our warehouse. The date and time of the receive is: 09/05/2022 Free storage time finish at 23/05/2022")
+    email_parse("Just to confirm your job: 1042079-a, 23855-b 1042180-cc, 23856, has now been received in our warehouse. The date and time of the receive is: 09/05/2022 Free storage time finish at 23/05/2022")
     email_parse("Just to confirm your job: 20144 Alistair Reid 36 Augusta Street Glen Huntly VIC 3163 has now been Completed. The date and time of the job is: 10/05/2022")
     email_parse("Just to confirm your job: 20185 Tennis Victoria110/102 Olympic Boulevard Melbourne VIC 3000 has now been Rescheduled. The date and time of the job is: 8:00 16/05/2022 ")
     email_parse("Just to confirm your job: 20235 James Dugand Williams Corporation Level 6, 10 Queen street Melbourne VIC 3000 has now been Scheduled. The date and time of the job is: 7:00 11/05/2022")
