@@ -83,12 +83,22 @@ def read_email_from_gmail():
     else:
         first_email_id = 0
 
-    latest_email_id = int(id_list[-1])  # Check 20 recent emails
+    latest_email_id = int(id_list[-1])
 
     current_time_seconds = time.time()
     res = []
 
+    with mysqlcon.cursor() as cursor:
+        sql = "SELECT `arg1` \
+                FROM `dme_options` \
+                WHERE `option_name`=%s"
+        cursor.execute(sql, ("check_received_emails"))
+        option = cursor.fetchone()
+
     for i in range(latest_email_id, first_email_id, -1):
+        if i <= option[arg1]:
+            continue
+
         result, data = mail.fetch(str(i), "(RFC822)")
 
         b = email.message_from_bytes(data[0][1])
@@ -125,16 +135,18 @@ def read_email_from_gmail():
                 email_received_time.strip(), "%a, %d %b %Y %H:%M:%S %z"
             )
 
-            time_diff = current_time_seconds - received_time_obj.timestamp()
+            res.append(
+                {
+                    "subject": email_subject,
+                    "received_time": str(received_time_obj),
+                    "content": content,
+                }
+            )
 
-            if time_diff <= 60 * 10:  # Check if received in last 10 mins
-                res.append(
-                    {
-                        "subject": email_subject,
-                        "received_time": str(received_time_obj),
-                        "content": content,
-                    }
-                )
+    with mysqlcon.cursor() as cursor:
+        sql = "UPDATE `dme_options` SET arg1=%s WHERE option_name=%s"
+        cursor.execute(sql, (latest_email_id, "check_received_emails"))
+        mysqlcon.commit()
 
     return res
 
