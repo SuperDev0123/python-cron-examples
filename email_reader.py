@@ -564,21 +564,21 @@ if __name__ == "__main__":
         print("Mysql DB connection error!")
         exit(1)
 
-        try:
-            option = get_option(mysqlcon, "check_received_emails")
+    try:
+        option = get_option(mysqlcon, "check_received_emails")
 
-            if int(option["option_value"]) == 0:
-                print("#905 - `check_received_emails` option is OFF")
-            elif option["is_running"]:
-                print("#905 - `check_received_emails` script is already RUNNING")
-            else:
-                print("#906 - `check_received_emails` option is ON")
-                set_option(mysqlcon, "check_received_emails", True)
-                do_process(mysqlcon)
-                set_option(mysqlcon, "check_received_emails", False, time1)
-        except Exception as e:
-            print("#904 Error:", str(e))
+        if int(option["option_value"]) == 0:
+            print("#905 - `check_received_emails` option is OFF")
+        elif option["is_running"]:
+            print("#905 - `check_received_emails` script is already RUNNING")
+        else:
+            print("#906 - `check_received_emails` option is ON")
+            set_option(mysqlcon, "check_received_emails", True)
+            do_process(mysqlcon)
             set_option(mysqlcon, "check_received_emails", False, time1)
+    except Exception as e:
+        print("#904 Error:", str(e))
+        set_option(mysqlcon, "check_received_emails", False, time1)
 
     mysqlcon.close()
     print("#909 - Finished %s\n\n\n" % datetime.now())
