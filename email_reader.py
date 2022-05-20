@@ -17,15 +17,15 @@ from _options_lib import get_option, set_option
 from _email_lib import send_email
 from _time_lib import sydney_to_utc
 
-# LOCAL
-EMAIL_USERNAME = "dev.deliverme@gmail.com"
-EMAIL_PASSWORD = "Dme1234****"
-EMAIL_SERVER_NAME = "imap.gmail.com"
-
-# DEV & PROD
-# EMAIL_USERNAME = "data.deliver-me@outlook.com"
-# EMAIL_PASSWORD = "Dme1234*"
-# EMAIL_SERVER_NAME = "outlook.office365.com"
+IS_PRODUCTION = False
+if not IS_PRODUCTION:  # LOCAL
+    EMAIL_USERNAME = "dev.deliverme@gmail.com"
+    EMAIL_PASSWORD = "Dme1234****"
+    EMAIL_SERVER_NAME = "imap.gmail.com"
+elif IS_PRODUCTION:  # DEV & PROD
+    EMAIL_USERNAME = "data.deliver-me@outlook.com"
+    EMAIL_PASSWORD = "Dme1234*"
+    EMAIL_SERVER_NAME = "outlook.office365.com"
 
 
 def get_token():
@@ -96,7 +96,7 @@ def read_email_from_gmail():
         option = cursor.fetchone()
 
     for i in range(latest_email_id, first_email_id, -1):
-        if i <= option[arg1]:
+        if i <= option["arg1"]:
             continue
 
         result, data = mail.fetch(str(i), "(RFC822)")
