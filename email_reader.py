@@ -443,7 +443,7 @@ def do_process(mysqlcon):
 
     print("@800 - Reading 50 recent emails...")
     emails = read_email_from_gmail()
-    # token = get_token()
+    token = get_token()
 
     for email in emails:
         subject = email["subject"]
