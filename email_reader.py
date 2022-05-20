@@ -3,16 +3,19 @@
 
 import imaplib
 import email
+import pytz
 import time
 import json
 from datetime import datetime
 import os, sys, json
 import pymysql, pymysql.cursors
 import requests
+import traceback
 
 from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
 from _options_lib import get_option, set_option
 from _email_lib import send_email
+from _time_lib import sydney_to_utc
 
 # LOCAL
 EMAIL_USERNAME = "dev.deliverme@gmail.com"
@@ -124,7 +127,7 @@ def read_email_from_gmail():
 
             time_diff = current_time_seconds - received_time_obj.timestamp()
 
-            if time_diff <= 60 * 10:  # Check if received in last 10 mins
+            if time_diff <= 60 * 20:  # Check if received in last 10 mins
                 res.append(
                     {
                         "subject": email_subject,
@@ -297,6 +300,125 @@ If you update this setting, don't forget to click the 'Update' button to save yo
     print("@410 - 'No Address Type' email is sent!")
 
 
+def _send_email_to_admin(subject, text):
+    send_email(
+        ["goldj@deliver-me.com.au", "daniely@deliver-me.com.au"],
+        ["dev.deliverme@gmail.com"],
+        subject,
+        text,
+    )
+
+
+def is_order_num(order_num):
+    index = 0
+    for m in order_num:
+        if not (m.isdigit() or m.isspace()):
+            break
+        index = index + 1
+    return True if index > 3 else False
+
+
+def _extract_info(email_text):
+    """
+    Extract info from `Bast Assembly` tracking email
+
+    i.e:
+        * "Just to confirm your job: 1042079 23855 1042180 23856, has now been received in our warehouse. The date and time of the receive is: 09/05/2022 Free storage time finish at 23/05/2022"
+        * "Just to confirm your job: 20235 James Dugand Williams Corporation Level 6, 10 Queen street Melbourne VIC 3000 has now been Scheduled. The date and time of the job is: 7:00 11/05/2022"
+        * "Just to confirm your job: 20185 Tennis Victoria110/102 Olympic Boulevard Melbourne VIC 3000 has now been Rescheduled. The date and time of the job is: 8:00 16/05/2022 "
+        * "Just to confirm your job: 20144 Alistair Reid 36 Augusta Street Glen Huntly VIC 3163 has now been Completed. The date and time of the job is: 10/05/2022"
+    """
+    email_text = "".join(email_text.splitlines())
+    email_text = email_text.replace("=", "").lower()
+    email_text = email_text.replace("please do not", " please do not ").lower()
+    print("\n@101 - ", email_text)
+
+    pre_order_str = "just to confirm your job: "
+    pre_date_str = "the date and time"
+    order_index = email_text.find(pre_order_str)
+    date_index = email_text.find(pre_date_str)
+
+    order_extract_str = email_text[order_index + len(pre_order_str) :]
+    order_extract_arr = order_extract_str.replace(",", "").strip().split(" ")
+    order_nums = []
+    for order_num in order_extract_arr:
+        if is_order_num(order_num):
+            order_nums.append(order_num)
+        else:
+            break
+
+    # new_result = re.findall('[0-9]+', order_extract_str)
+    date_extract_str = email_text[date_index + len(pre_date_str) :]
+    index = 0
+    for m in date_extract_str:
+        if m.isdigit():
+            break
+        index = index + 1
+
+    date_result = date_extract_str[index:]
+    date_part = ""
+    for m in date_result:
+        if not (m.isdigit() or m.isspace() or m in ["/", ":"]):
+            break
+        date_part = date_part + m
+
+    if len(date_part.strip().split(" ")) > 1:
+        event_at = datetime.strptime(date_part.strip()[:16], "%H:%M %d/%m/%Y")
+    else:
+        event_at = datetime.strptime(date_part.strip()[:10], "%d/%m/%Y")
+
+    event_at = sydney_to_utc(event_at)
+
+    # Scan Data
+    scan_info = None
+    if "been received in our warehouse" in email_text:
+        scan_info = "RECEIVED BY MEL DEPOT"
+    elif "been scheduled" in email_text:
+        scan_info = "DELIVERY SCHEDULED"
+    elif "been rescheduled" in email_text:
+        scan_info = "DELIVERY RESCHEDULED"
+    elif "been completed" in email_text:
+        scan_info = "DELIVERED TO CUSTOMER"
+
+    print("\nOrderNum: ", order_nums, "Event At: ", event_at, "Scan Info: ", scan_info)
+
+    return order_nums, event_at, scan_info
+
+
+# TEST _extract_info
+# _extract_info(
+#     "Just to confirm your job: 1042079 23855 1042180 23856, has now been received in our warehouse. The date and time of the receive is: 09/05/2022 Free storage time finish at 23/05/2022"
+# )
+# _extract_info(
+#     "Just to confirm your job: 10005 has now been received in our warehouse. The date and time of the receive is: 09/05/2022 Free storage time finish at 23/05/2022"
+# )
+# _extract_info(
+#     "Just to confirm your job: 20235 James Dugand Williams Corporation Level 6, 10 Queen street Melbourne VIC 3000 has now been Scheduled. The date and time of the job is: 7:00 11/05/2022"
+# )
+# _extract_info(
+#     "Just to confirm your job: 20185 Tennis Victoria110/102 Olympic Boulevard Melbourne VIC 3000 has now been Rescheduled. The date and time of the job is: 8:00 16/05/2022 "
+# )
+# _extract_info(
+#     "Just to confirm your job: 20144 Alistair Reid 36 Augusta Street Glen Huntly VIC 3163 has now been Completed. The date and time of the job is: 10/05/2022"
+# )
+
+
+def _get_order(order_number, mysqlcon):
+    """
+    Get JasonL order with order_number
+    """
+
+    with mysqlcon.cursor() as cursor:
+        mysqlcon.commit()
+        sql = "SELECT `id`, `pk_booking_id`, `b_bookingID_Visual` \
+                FROM `dme_bookings` \
+                WHERE `kf_client_id`=%s AND `b_client_order_num`=%s"
+        cursor.execute(sql, ("1af6bcd2-6148-11eb-ae93-0242ac130002", order_number))
+        booking = cursor.fetchone()
+
+    return booking
+
+
 def do_process(mysqlcon):
     """
     - read emails received in last 10 mins
@@ -309,19 +431,21 @@ def do_process(mysqlcon):
 
     print("@800 - Reading 50 recent emails...")
     emails = read_email_from_gmail()
-    token = get_token()
+    # token = get_token()
 
     for email in emails:
+        subject = email["subject"]
         content = email["content"]
         content_items = content.split("|")
 
-        if len(content_items) != 5:
-            continue
-
+        # JasonL `Picking Slip Print` email
         if (
             content_items[0].strip().lower() == "jasonl"
             and "picking slip printed" in content_items[4].strip().lower()
         ):
+            if len(content_items) != 5:
+                continue
+
             order_number = content_items[1].strip()
             shipping_type = content_items[2].strip()
             address_type = content_items[3].strip()
@@ -341,6 +465,85 @@ def do_process(mysqlcon):
 
             if is_updated:
                 _check_quote(order_number, mysqlcon)
+        # Best Assembly `tracking` email
+        elif "job status update" in subject:
+            try:
+                order_nums, event_at, scan_info = _extract_info(content)
+            except Exception as e:
+                _send_email_to_admin(
+                    "Email Reader: Best Assembly tracking",
+                    f"Dear Developer,\n\nFailed to extract info from email.\n\n\nEmail content: {content}\n\nBest,\nDME Cron",
+                )
+                print(f"@403 - Failed to extract info from email. Error: {str(e)}")
+                traceback.print_exc()
+
+            for order_number in order_nums:
+                order = _get_order(order_number, mysqlcon)
+
+                if order:
+                    cursor = mysqlcon.cursor()
+                    if scan_info in ["RECEIVED BY MEL DEPOT"]:
+                        sql = "UPDATE `dme_bookings` \
+                            SET `s_06_Latest_Delivery_Date_TimeSet`=%s \
+                            WHERE `id`=%s"
+                        cursor.execute(sql, (event_at, order["id"]))
+                        sql = "INSERT INTO `fp_status_history` \
+                            (`booking_id`, `fp_id`, `status`, `desc`, `event_timestamp`, `is_active`) \
+                            VALUES (%s, %s, %s, %s, %s, %s)"
+                        cursor.execute(
+                            sql, (order["id"], 100, scan_info, content, event_at, 1)
+                        )
+                        mysqlcon.commit()
+                    elif scan_info in ["DELIVERY SCHEDULED"]:
+                        sql = "UPDATE `dme_bookings` \
+                            SET `s_06_Latest_Delivery_Date_TimeSet`=%s \
+                            WHERE `id`=%s"
+                        cursor.execute(sql, (event_at, order["id"]))
+                        sql = "INSERT INTO `fp_status_history` \
+                            (`booking_id`, `fp_id`, `status`, `desc`, `event_timestamp`, `is_active`) \
+                            VALUES (%s, %s, %s, %s, %s, %s)"
+                        cursor.execute(
+                            sql, (order["id"], 100, scan_info, content, event_at, 1)
+                        )
+                        mysqlcon.commit()
+                    elif scan_info in ["DELIVERY RESCHEDULED"]:
+                        sql = "UPDATE `dme_bookings` \
+                            SET `s_06_Latest_Delivery_Date_Time_Override`=%s \
+                            WHERE `id`=%s"
+                        cursor.execute(sql, (event_at, order["id"]))
+                        sql = "INSERT INTO `fp_status_history` \
+                            (`booking_id`, `fp_id`, `status`, `desc`, `event_timestamp`, `is_active`) \
+                            VALUES (%s, %s, %s, %s, %s, %s)"
+                        cursor.execute(
+                            sql, (order["id"], 100, scan_info, content, event_at, 1)
+                        )
+                        mysqlcon.commit()
+                    elif scan_info in ["DELIVERED TO CUSTOMER"]:
+                        sql = "UPDATE `dme_bookings` \
+                            SET `s_21_Actual_Delivery_TimeStamp`=%s, `b_status`=%s, `b_status_category`=%s, `z_lock_status`=%s \
+                            WHERE `id`=%s"
+                        cursor.execute(
+                            sql, (event_at, "Delivered", "Completed", 1, order["id"])
+                        )
+                        sql = "INSERT INTO `fp_status_history` \
+                            (`booking_id`, `fp_id`, `status`, `desc`, `event_timestamp`, `is_active`) \
+                            VALUES (%s, %s, %s, %s, %s, %s)"
+                        cursor.execute(
+                            sql, (order["id"], 100, scan_info, content, event_at, 1)
+                        )
+                        mysqlcon.commit()
+                    else:
+                        _send_email_to_admin(
+                            "Email Reader: Best Assembly tracking",
+                            f"Dear Developer,\n\nUnknown Scan info: {scan_info}\n\nEmail content: {content}\n\nBest,\nDME Cron",
+                        )
+                        print(f"@401 - Unknown Scan info: {scan_info}")
+                else:
+                    _send_email_to_admin(
+                        "Email Reader: Best Assembly tracking",
+                        f"Dear Developer,\n\nJasonL order does not exist - {order_number}\n\n\nEmail content: {content}\n\nBest,\nDME Cron",
+                    )
+                    print(f"@402 - JasonL order does not exist - {order_number}")
 
 
 if __name__ == "__main__":
@@ -361,21 +564,21 @@ if __name__ == "__main__":
         print("Mysql DB connection error!")
         exit(1)
 
-    try:
-        option = get_option(mysqlcon, "check_received_emails")
+        try:
+            option = get_option(mysqlcon, "check_received_emails")
 
-        if int(option["option_value"]) == 0:
-            print("#905 - `check_received_emails` option is OFF")
-        elif option["is_running"]:
-            print("#905 - `check_received_emails` script is already RUNNING")
-        else:
-            print("#906 - `check_received_emails` option is ON")
-            set_option(mysqlcon, "check_received_emails", True)
-            do_process(mysqlcon)
+            if int(option["option_value"]) == 0:
+                print("#905 - `check_received_emails` option is OFF")
+            elif option["is_running"]:
+                print("#905 - `check_received_emails` script is already RUNNING")
+            else:
+                print("#906 - `check_received_emails` option is ON")
+                set_option(mysqlcon, "check_received_emails", True)
+                do_process(mysqlcon)
+                set_option(mysqlcon, "check_received_emails", False, time1)
+        except Exception as e:
+            print("#904 Error:", str(e))
             set_option(mysqlcon, "check_received_emails", False, time1)
-    except Exception as e:
-        print("#904 Error:", str(e))
-        set_option(mysqlcon, "check_received_emails", False, time1)
 
     mysqlcon.close()
     print("#909 - Finished %s\n\n\n" % datetime.now())
