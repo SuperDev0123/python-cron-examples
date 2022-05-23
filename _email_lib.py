@@ -18,6 +18,7 @@ from _env import (
 def send_email(
     send_to,
     send_cc,
+    send_bcc,
     subject,
     text,
     files=None,
@@ -41,5 +42,5 @@ def send_email(
         smtp.starttls()
 
     smtp.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
-    smtp.sendmail(EMAIL_HOST_USER, send_to + send_cc, msg.as_string())
+    smtp.sendmail(EMAIL_HOST_USER, send_to + send_cc + send_bcc, msg.as_string())
     smtp.close()
