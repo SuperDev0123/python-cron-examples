@@ -60,7 +60,9 @@ def get_token():
 
 def get_booking(consignment_number, mysqlcon):
     with mysqlcon.cursor() as cursor:
-        sql = "SELECT `id`, `pk_booking_id`, `vx_freight_provider`, `z_pod_url` From `dme_bookings` WHERE `v_FPBookingNumber`=%s AND lower(`vx_freight_provider`)=%s"
+        sql = "SELECT `id`, `pk_booking_id`, `vx_freight_provider`, `z_pod_url`, `z_lock_status` \
+                From `dme_bookings` \
+                WHERE `v_FPBookingNumber`=%s AND lower(`vx_freight_provider`)=%s"
         cursor.execute(sql, (consignment_number, "hunter"))
         booking = cursor.fetchone()
     return booking
@@ -150,7 +152,7 @@ def do_process(mysqlcon):
 
                     if not consignment_number:
                         print("No consignment number: ", file, ", Row: ", index + 1)
-                        move_to_issued_dir(file)
+                        # move_to_issued_dir(file)
                         continue
 
                     if consignment_number:
@@ -160,7 +162,11 @@ def do_process(mysqlcon):
                         print(
                             f"No booking or wrong freight_provider. file: {file}, Row: {index + 1}"
                         )
-                        move_to_issued_dir(file)
+                        # move_to_issued_dir(file)
+                        continue
+
+                    if booking["z_lock_status"] == 1:
+                        print(f"Booking({consignment_number}) is locked.")
                         continue
 
                     if (
