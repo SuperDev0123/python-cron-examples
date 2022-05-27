@@ -13,16 +13,15 @@ from _env import (
     DB_PASS,
     DB_PORT,
     DB_NAME,
+    API_URL,
     USERNAME,
     PASSWORD,
 )
 from _options_lib import get_option, set_option
 from _email_lib import send_email
-DEV_SERVER_URL = "http://3.105.62.128/api"
-PROD_SERVER_URL = "http://13.55.64.102/api"
 
-def get_token(SERVER_URL):
-    url = SERVER_URL + "/api-token-auth/"
+def get_token():
+    url = API_URL + "/api-token-auth/"
     data = {"username": USERNAME, "password": PASSWORD}
     response = requests.post(url, params={}, json=data)
     response0 = response.content.decode("utf8")
@@ -35,27 +34,24 @@ def get_token(SERVER_URL):
         print("@400 - ", data0["non_field_errors"])
         return "400"
 
-def send_email_to_admins(error_msg):
-    text = (
-        error_msg
-    )
-
+def send_email_to_admins(subject, error_msg):
     send_email(
         ["bookings@deliver-me.com.au", "goldj@deliver-me.com.au"],
         ["dev.deliverme@gmail.com"],
-        f"Error happened while system check",
-        text,
+        subject,
+        error_msg,
     )
 
 def do_process():
-    error_msg = "PROD SERVER Check Failed"
-    token = get_token(PROD_SERVER_URL)
+    subject = "URGENT --- server is down "
+    if DB_NAME == "dme_db_prod":
+        error_msg = "PROD SERVER Check Failed"
+    elif DB_NAME == "dme_db_dev":
+        error_msg = "DEV SERVER Check FAILED"
+        
+    token = get_token()
     if token == "400":
-        send_email_to_admins(error_msg)
-    error_msg = "DEV SERVER Check Failed"
-    token = get_token(DEV_SERVER_URL)
-    if token == "400":
-        send_email_to_admins(error_msg)
+        send_email_to_admins(subject, error_msg)
 
 if __name__ == "__main__":
     print("#900 Started %s" % datetime.datetime.now())
