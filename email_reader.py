@@ -288,6 +288,7 @@ Your booking will then be ready for the warehouse to process."
             send_email(
                 ["customerservice@jasonl.com.au"],
                 ["goldj@deliver-me.com.au", "dev.deliverme@gmail.com"],
+                [],
                 f"No Quotes",
                 text,
             )
@@ -306,6 +307,7 @@ If you update this setting, don't forget to click the 'Update' button to save yo
     send_email(
         ["customerservice@jasonl.com.au"],
         ["goldj@deliver-me.com.au", "dev.deliverme@gmail.com"],
+        [],
         f"No Delivery Address Type OR No Shipping Type",
         text,
     )
@@ -316,6 +318,7 @@ def _send_email_to_admin(subject, text):
     send_email(
         ["goldj@deliver-me.com.au", "daniely@deliver-me.com.au"],
         ["dev.deliverme@gmail.com"],
+        [],
         subject,
         text,
     )

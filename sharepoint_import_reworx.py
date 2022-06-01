@@ -552,6 +552,7 @@ def send_error_email(filename, error):
     send_email(
         ["bookings@deliver-me.com.au"],
         ["dev.deliverme@gmail.com", "goldj@deliver-me.com.au"],
+        [],
         "Error",
         text,
     )
@@ -562,6 +563,7 @@ def send_duplicate_email(filename):
     send_email(
         ["bookings@deliver-me.com.au"],
         ["dev.deliverme@gmail.com", "goldj@deliver-me.com.au"],
+        [],
         "Duplicated",
         text,
     )

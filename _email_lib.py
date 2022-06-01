@@ -18,6 +18,7 @@ from _env import (
 def send_email(
     send_to,
     send_cc,
+    send_bcc,
     subject,
     text,
     files=None,
@@ -31,6 +32,7 @@ def send_email(
     msg["From"] = EMAIL_HOST_USER
     msg["To"] = COMMASPACE.join(send_to)
     msg["Cc"] = COMMASPACE.join(send_cc)
+    msg["Bcc"] = COMMASPACE.join(send_bcc)
     msg["Date"] = formatdate(localtime=True)
     msg["Subject"] = subject
     msg.attach(MIMEText(text, mime_type))
@@ -41,5 +43,5 @@ def send_email(
         smtp.starttls()
 
     smtp.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
-    smtp.sendmail(EMAIL_HOST_USER, send_to + send_cc, msg.as_string())
+    smtp.sendmail(EMAIL_HOST_USER, send_to + send_cc + send_bcc, msg.as_string())
     smtp.close()

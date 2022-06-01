@@ -208,6 +208,7 @@ def add_or_update_orders():
             send_email(
                 ["dme@bathroomsalesdirect.com.au", "bookings@deliver-me.com.au"],
                 ["dev.deliverme@gmail.com", "goldj@deliver-me.com.au"],
+                [],
                 f"Error while fetching order from Woocommerce",
                 text,
             )

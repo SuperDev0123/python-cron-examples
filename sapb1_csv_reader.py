@@ -62,6 +62,7 @@ def do_process(fpath, mysqlcon):
                 send_email(
                     [],
                     ["dev.deliverme@gmail.com"],
+                    [],
                     "Error on 'SAPB1 CSV READER'",
                     error_msg,
                 )
