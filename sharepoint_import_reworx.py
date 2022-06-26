@@ -222,6 +222,7 @@ def do_import(dbcon, cur, filename):
 
         header = {}
         print(f"#801 - Reading HEADER(S): {row - 3}")
+        time.sleep(0.2)
         pk_header_id = str(uuid.uuid1())
         header["id"] = worksheet0["A%i" % row].value
         header["client_booking_id"] = pk_header_id
@@ -440,6 +441,7 @@ def do_import(dbcon, cur, filename):
         line["zbl_143_date_3"] = None
         line["zbl_144_date_4"] = None
         line["zbl_145_date_5"] = None
+        time.sleep(0.2)
         line["pk_booking_lines_id"] = str(uuid.uuid1())
 
         lines.append(line)
