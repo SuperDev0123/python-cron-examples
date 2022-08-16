@@ -13,7 +13,25 @@ DECLARE bookingID_Visual int(11);
 DECLARE api_booking_quote_id int(11);
 DECLARE _running_flag tinyint;
 DECLARE _start_time datetime(6);
+DECLARE last_pk_lines_id int(11);
+DECLARE b_pk_lines_id int(11);
+DECLARE b_e_qty INT;
+DECLARE b_e_type_of_packaging VARCHAR(24);
+DECLARE b_e_dimUOM VARCHAR(10);
+DECLARE b_e_weightUOM VARCHAR(10);
+DECLARE b_e_dimLength DOUBLE(10, 3);
+DECLARE b_e_dimWidth DOUBLE(10, 3);
+DECLARE b_e_dimHeight DOUBLE(10, 3);
+DECLARE b_e_weightPerEach DOUBLE(10, 3);
+DECLARE b_dim_ratio DOUBLE(10, 3);
+DECLARE b_util_height DOUBLE(10, 3);
+DECLARE b_util_cbm DOUBLE(10, 3);
+DECLARE b_util_kg DOUBLE(10, 3);
+DECLARE b_vx_freight_provider INT;
+DECLARE bDone INT;
 
+DECLARE curs CURSOR FOR  SELECT pk_lines_id, l_002_qty, l_001_type_of_packaging, l_004_dim_UOM, l_008_weight_UOM, l_005_dim_length, l_006_dim_width, l_007_dim_height, l_009_weight_per_each FROM bok_2_lines WHERE success IN (2, 4, 5);
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET bDone = 1;
 
 DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
@@ -178,48 +196,91 @@ IF NOT _running_flag OR (_running_flag AND _start_time < DATE_SUB(CURRENT_TIMEST
 
     SELECT 'Starting move of booking lines';
 
-    INSERT IGNORE INTO dme_booking_lines
-        (e_spec_clientRMA_Number, e_weightPerEach,
-        e_1_Total_dimCubicMeter, total_2_cubic_mass_factor_calc, e_Total_KG_weight,
-        e_item, e_qty, e_type_of_packaging,
-        e_item_type, e_pallet_Type, fk_booking_id,
-        e_dimLength, e_dimWidth, e_dimHeight,
-        e_weightUOM, z_createdTimeStamp, e_dimUOM,
-        client_item_reference, pk_booking_lines_id, zbl_121_integer_1,
-        zbl_102_text_2, is_deleted, packed_status)
-    SELECT client_booking_id, l_009_weight_per_each,
-        CASE
-            WHEN upper(l_004_dim_UOM) = "CM"
-                THEN l_002_qty * (l_005_dim_length * l_006_dim_width * l_007_dim_height / 1000000)
-            WHEN upper( l_004_dim_UOM) IN ( "METER", "M")
-                THEN (l_002_qty * l_005_dim_length * l_006_dim_width * l_007_dim_height)
-            ELSE l_002_qty * (l_005_dim_length * l_006_dim_width * l_007_dim_height / 1000000000)
-        END,
-        CASE
-            WHEN upper(l_004_dim_UOM) = "CM"
-                THEN l_002_qty * (l_005_dim_length * l_006_dim_width * l_007_dim_height / 1000000) * 250
-            WHEN upper( l_004_dim_UOM) IN ( "METER", "M")
-                THEN (l_002_qty * l_005_dim_length * l_006_dim_width * l_007_dim_height) * 250
-            ELSE l_002_qty * (l_005_dim_length * l_006_dim_width * l_007_dim_height / 1000000000) * 250
-        END,
-        CASE 
-            WHEN lower(l_008_weight_UOM) IN ("g", "gram", "grams")
-                THEN l_002_qty * l_009_weight_per_each / 1000
-            WHEN lower(l_008_weight_UOM) IN ("kilogram", "kilograms", "kg", "kgs")
-                THEN l_002_qty * l_009_weight_per_each 
-            WHEN lower(l_008_weight_UOM) IN ("t", "ton", "tons")
-                THEN l_002_qty * l_009_weight_per_each * 1000
-            Else
-                0
-        END,
-        l_003_item, l_002_qty, l_001_type_of_packaging,
-        e_item_type, e_pallet_type, v_client_pk_consigment_num,
-        l_005_dim_length, l_006_dim_width, l_007_dim_height,
-        l_008_weight_UOM, z_createdTimeStamp, l_004_dim_UOM,
-        client_item_reference, pk_booking_lines_id, zbl_121_integer_1,
-        zbl_102_text_2, 0, b_093_packed_status
-    FROM `bok_2_lines`
-    WHERE success IN (2, 4, 5);
+    OPEN curs;
+
+    SET bDone = 0;
+    REPEAT		
+        FETCH curs INTO b_pk_lines_id, b_e_qty, b_e_type_of_packaging, b_e_dimUOM, b_e_weightUOM, b_e_dimLength, b_e_dimWidth, b_e_dimHeight, b_e_weightPerEach;			
+        IF last_pk_lines_id IS NULL OR last_pk_lines_id != b_pk_lines_id	THEN
+            IF LOWER(b_e_dimUOM) IN ("km", "kms", "kilometer", "kilometers")
+                THEN SET b_dim_ratio = 1000; 
+            END IF;
+            IF LOWER(b_e_dimUOM) in ("m", "ms", "meter", "meters") THEN SET b_dim_ratio = 1; END IF;
+            IF LOWER(b_e_dimUOM) in ("cm", "cms", "centimeter", "centimeters") THEN SET b_dim_ratio = 0.01; END IF;
+            IF LOWER(b_e_dimUOM) in ("mm", "mms", "millimeter", "millimeters") THEN SET b_dim_ratio = 0.001; END IF;
+            if LOWER(b_e_weightUOM) in ("t", "ts", "ton", "tons") THEN
+                SET b_e_weightPerEach = b_e_weightPerEach * 1000;
+            END IF;
+            if LOWER(b_e_weightUOM) in ("kg", "kgs", "kilogram", "kilograms") THEN
+                SET b_e_weightPerEach = b_e_weightPerEach * 1;
+            END IF;
+            if LOWER(b_e_weightUOM) in ("g", "gs", "gram", "grams") THEN
+                SET b_e_weightPerEach = b_e_weightPerEach * 0.001;
+            END IF;
+            SET b_e_dimLength = b_e_dimLength * b_dim_ratio;
+            SET b_e_dimWidth = b_e_dimWidth * b_dim_ratio;
+            SET b_e_dimHeight = b_e_dimHeight * b_dim_ratio;
+            IF UPPER(b_e_type_of_packaging) IN ("PALLET", "PLT", "PAL", "SKID") OR b_e_dimHeight > 1.4 
+                THEN SET b_util_height = 1.4;
+            ELSE SET b_util_height = b_e_dimHeight / b_dim_ratio; END IF;
+            SET b_util_cbm = ROUND(b_e_dimLength * b_e_dimWidth * b_e_dimHeight * b_e_qty, 3);
+            SELECT abq.freight_provider INTO b_vx_freight_provider FROM api_booking_quotes abq LEFT JOIN bok_2_lines bl ON abq.fk_booking_id = bl.fk_header_id where bl.pk_lines_id = b_pk_lines_id;
+            Set b_util_kg = ROUND(b_util_cbm * b_e_qty * 
+            CASE 
+                WHEN LOWER(b_vx_freight_provider) = "northline"
+                    THEN 333
+                WHEN LOWER(b_vx_freight_provider) = "northline" AND ((b_e_dimLength > 1.2 and b_e_dimWidth > 1.2) OR (GREATEST(b_e_dimLength, b_e_dimWidth) > 1.2 and b_e_weightPerEach > 59)) or (b_e_dimHeight > 1.8)
+                    THEN 333
+                ELSE 250
+            END
+            , 3);
+            INSERT IGNORE INTO dme_booking_lines
+                (e_spec_clientRMA_Number, e_weightPerEach,
+                e_1_Total_dimCubicMeter, total_2_cubic_mass_factor_calc, e_Total_KG_weight,
+                e_item, e_qty, e_type_of_packaging,
+                e_item_type, e_pallet_Type, fk_booking_id,
+                e_dimLength, e_dimWidth, e_dimHeight,
+                e_weightUOM, z_createdTimeStamp, e_dimUOM,
+                client_item_reference, pk_booking_lines_id, zbl_121_integer_1,
+                zbl_102_text_2, is_deleted, packed_status, e_util_height, e_util_cbm, e_util_kg)
+            SELECT client_booking_id, l_009_weight_per_each,
+                    CASE
+                            WHEN upper(l_004_dim_UOM) = "CM"
+                                    THEN l_002_qty * (l_005_dim_length * l_006_dim_width * l_007_dim_height / 1000000)
+                            WHEN upper( l_004_dim_UOM) IN ( "METER", "M")
+                                    THEN (l_002_qty * l_005_dim_length * l_006_dim_width * l_007_dim_height)
+                            ELSE l_002_qty * (l_005_dim_length * l_006_dim_width * l_007_dim_height / 1000000000)
+                    END,
+                    CASE
+                            WHEN upper(l_004_dim_UOM) = "CM"
+                                    THEN l_002_qty * (l_005_dim_length * l_006_dim_width * l_007_dim_height / 1000000) * 250
+                            WHEN upper( l_004_dim_UOM) IN ( "METER", "M")
+                                    THEN (l_002_qty * l_005_dim_length * l_006_dim_width * l_007_dim_height) * 250
+                            ELSE l_002_qty * (l_005_dim_length * l_006_dim_width * l_007_dim_height / 1000000000) * 250
+                    END,
+                    CASE 
+                            WHEN lower(l_008_weight_UOM) IN ("g", "gram", "grams")
+                                    THEN l_002_qty * l_009_weight_per_each / 1000
+                            WHEN lower(l_008_weight_UOM) IN ("kilogram", "kilograms", "kg", "kgs")
+                                    THEN l_002_qty * l_009_weight_per_each 
+                            WHEN lower(l_008_weight_UOM) IN ("t", "ton", "tons")
+                                    THEN l_002_qty * l_009_weight_per_each * 1000
+                            Else
+                                    0
+                    END,
+                    l_003_item, l_002_qty, l_001_type_of_packaging,
+                    e_item_type, e_pallet_type, v_client_pk_consigment_num,
+                    l_005_dim_length, l_006_dim_width, l_007_dim_height,
+                    l_008_weight_UOM, z_createdTimeStamp, l_004_dim_UOM,
+                    client_item_reference, pk_booking_lines_id, zbl_121_integer_1,
+                    zbl_102_text_2, 0, b_093_packed_status, b_util_height, b_util_cbm, b_util_kg
+            FROM `bok_2_lines`
+            WHERE pk_lines_id = b_pk_lines_id;
+            SET last_pk_lines_id = b_pk_lines_id;
+        END IF;			
+    UNTIL bDone END REPEAT;
+
+    CLOSE curs;
 
     SELECT 'Rows moved to dme_booking_lines = ' + ROW_COUNT();
 
