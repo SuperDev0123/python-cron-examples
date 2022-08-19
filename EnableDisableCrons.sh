@@ -3,7 +3,7 @@ arr=("MoveSuccess2ToBookings" "TransferBookings" "TruncateBookings" "TransferBoo
 
 for i in "${arr[@]}"
 do
-        cronstatus=$(mysql dme_db_prod --host=deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com --user=fmadmin --password=oU8pPQxh -se "Select option_value from dme_options where option_name")
+        cronstatus=$(mysql dme_db_prod --host=deliverme-db8.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com --user=fmadmin --password=oU8pPQxh -se "Select option_value from dme_options where option_name")
 
         if [ "1" = "$cronstatus" ]; then
                 crontab -l | sed "/^#.*$i/s/^#//" | crontab -   

@@ -15,7 +15,7 @@ production = True  # Prod
 if production:
     UPLOAD_DIR = "/var/www/html/dme_api/media/onedrive"
     IMPORT_DIR = "./xls"
-    DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"  # New db
+    DB_HOST = "deliverme-db8.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"  # New db
     DB_USER = "fmadmin"
     DB_PASS = "oU8pPQxh"
     DB_PORT = 3306
@@ -947,4 +947,3 @@ if __name__ == "__main__":
     dbcon.close()
 
     print("#999 - Finished %s\n\n\n" % datetime.now())
-

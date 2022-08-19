@@ -80,7 +80,7 @@ HT_ISSUED_DIR = "./dme_sftp/hunter_au/status_csv/issued/"
 # ***  DEV   ***
 # **************
 
-# DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
+# DB_HOST = "deliverme-db8.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
 # DB_USER = "fmadmin"
 # DB_PASS = "oU8pPQxh"
 # DB_PORT = 3306
@@ -151,7 +151,7 @@ HT_ISSUED_DIR = "./dme_sftp/hunter_au/status_csv/issued/"
 # ***  PROD  ***
 # **************
 
-# DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
+# DB_HOST = "deliverme-db8.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
 # DB_USER = "fmadmin"
 # DB_PASS = "oU8pPQxh"
 # DB_PORT = 3306

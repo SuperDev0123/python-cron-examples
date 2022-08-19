@@ -23,21 +23,21 @@ from subprocess import Popen, PIPE
 env_mode = 2  # Prod
 
 if env_mode == 0:
-    DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
+    DB_HOST = "deliverme-db8.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
     DB_USER = "fmadmin"
     DB_PASS = "oU8pPQxh"
     DB_PORT = 3306
     DB_NAME = "dme_db_dev"  # Dev
     filepath = "static/common/labels/"
 if env_mode == 1:
-    DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
+    DB_HOST = "deliverme-db8.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
     DB_USER = "fmadmin"
     DB_PASS = "oU8pPQxh"
     DB_PORT = 3306
     DB_NAME = "dme_db_dev"  # Dev
     filepath = "/var/www/html/dme_api/static/dhl_au/labels/"
 elif env_mode == 2:
-    DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
+    DB_HOST = "deliverme-db8.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
     DB_USER = "fmadmin"
     DB_PASS = "oU8pPQxh"
     DB_PORT = 3306

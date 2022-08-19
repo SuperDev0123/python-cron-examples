@@ -46,7 +46,7 @@ PR_SRC_ACHIEVE_DIR = "./../dme_api/static/uploaded/pricing_rule/achieve/"
 # ***  DEV   ***
 # **************
 
-# DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
+# DB_HOST = "deliverme-db8.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
 # DB_USER = "fmadmin"
 # DB_PASS = "oU8pPQxh"
 # DB_PORT = 3306
@@ -57,9 +57,9 @@ PR_SRC_ACHIEVE_DIR = "./../dme_api/static/uploaded/pricing_rule/achieve/"
 # PASSWORD = "pass#123"
 
 # SI - Sharepoint import
-#SI_DOWNLOAD_DIR = "/opt/chrons/xls/downloaded"
-#SI_IMPORT_DIR = "/opt/chrons/xls/imported"
-#SI_ERROR_DIR = "/opt/chrons/xls/issued"
+# SI_DOWNLOAD_DIR = "/opt/chrons/xls/downloaded"
+# SI_IMPORT_DIR = "/opt/chrons/xls/imported"
+# SI_ERROR_DIR = "/opt/chrons/xls/issued"
 
 # ST - Startrack
 # ST_FTP_DIR = "/home/cope_au/dme_sftp/startrack_au/ftp/indata/"
@@ -84,11 +84,11 @@ PR_SRC_ACHIEVE_DIR = "./../dme_api/static/uploaded/pricing_rule/achieve/"
 # ***  PROD  ***
 # **************
 
-#DB_HOST = "deliverme-db.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
-#DB_USER = "fmadmin"
-#DB_PASS = "oU8pPQxh"
-#DB_PORT = 3306
-#DB_NAME = "dme_db_prod"  # Prod
+# DB_HOST = "deliverme-db8.cgc7xojhvzjl.ap-southeast-2.rds.amazonaws.com"
+# DB_USER = "fmadmin"
+# DB_PASS = "oU8pPQxh"
+# DB_PORT = 3306
+# DB_NAME = "dme_db_prod"  # Prod
 
 # API_URL = "http://13.55.64.102/api"  # Prod
 
