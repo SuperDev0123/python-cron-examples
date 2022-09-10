@@ -12,7 +12,7 @@ from _options_lib import get_option, set_option
 def get_bookings(mysqlcon, type="not-booked"):
     with mysqlcon.cursor() as cursor:
         if type == "not-booked":
-            sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
+            sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture`, `b_client_warehouse_code` \
                     FROM `dme_bookings` \
                     WHERE `vx_freight_provider`=%s and `b_dateBookedDate` is NULL and `b_status`=%s and \
                     (`b_error_Capture` is NULL or `b_error_Capture`=%s) \
@@ -20,7 +20,7 @@ def get_bookings(mysqlcon, type="not-booked"):
                     LIMIT 10"
             cursor.execute(sql, ("StarTrack", "Ready for Booking", ""))
         elif type == "missing-label":
-            sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture` \
+            sql = "SELECT `id`, `b_bookingID_Visual`, `b_error_Capture`, `b_client_warehouse_code` \
                     FROM `dme_bookings` \
                     WHERE `vx_freight_provider`=%s and `b_dateBookedDate` is not NULL and `b_status`=%s and \
                     `z_label_url` is NULL and z_CreatedTimestamp > '2020-01-01' and \
@@ -38,7 +38,7 @@ def do_book(booking):
     data = {}
     data["booking_id"] = booking["id"]
 
-    response = requests.post(url, params={}, json=data)
+    response = requests.post(url, json=data)
     response0 = response.content.decode("utf8")
     data0 = json.loads(response0)
     s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
@@ -47,11 +47,14 @@ def do_book(booking):
 
 
 def do_create_and_get_label(booking):
-    url = API_URL + "/fp-api/startrack/get-label/"
+    if booking["b_client_warehouse_code"] == "BIO - RIC":
+        url = API_URL + "/build-label/"
+    else:
+        url = API_URL + "/fp-api/startrack/get-label/"
+
     data = {}
     data["booking_id"] = booking["id"]
-
-    response = requests.post(url, params={}, json=data)
+    response = requests.post(url, json=data)
     response0 = response.content.decode("utf8")
     data0 = json.loads(response0)
     s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
