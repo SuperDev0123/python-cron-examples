@@ -91,7 +91,7 @@ def do_process(mysqlcon, token):
 
         for booking in bookings:
             print("#200 - Processing: ***", booking["b_bookingID_Visual"], "***")
-            result = do_book(booking)
+            result = do_book(booking, token)
 
             if "message" in result and "Successfully booked" in result["message"]:
                 do_create_and_get_label(booking, token)
