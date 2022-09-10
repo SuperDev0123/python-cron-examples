@@ -9,6 +9,25 @@ from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
 from _options_lib import get_option, set_option
 
 
+def get_token():
+    # BioPak credential
+    USERNAME = "biopak"
+    PASSWORD = "biopak#123"
+
+    url = API_URL + "/api-token-auth/"
+    data = {"username": USERNAME, "password": PASSWORD}
+    response = requests.post(url, params={}, json=data)
+    response0 = response.content.decode("utf8")
+    data0 = json.loads(response0)
+
+    if "token" in data0:
+        print("@101 - Token: ", data0["token"])
+        return data0["token"]
+    else:
+        print("@400 - ", data0["non_field_errors"])
+        return None
+
+
 def get_bookings(mysqlcon, type="not-booked"):
     with mysqlcon.cursor() as cursor:
         if type == "not-booked":
@@ -33,12 +52,12 @@ def get_bookings(mysqlcon, type="not-booked"):
         return bookings
 
 
-def do_book(booking):
+def do_book(booking, token):
     url = API_URL + "/fp-api/startrack/book/"
     data = {}
     data["booking_id"] = booking["id"]
-
-    response = requests.post(url, json=data)
+    headers = {"Authorization": f"JWT {token}"}
+    response = requests.post(url, json=data, headers=headers)
     response0 = response.content.decode("utf8")
     data0 = json.loads(response0)
     s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
@@ -46,7 +65,7 @@ def do_book(booking):
     return data0
 
 
-def do_create_and_get_label(booking):
+def do_create_and_get_label(booking, token):
     if booking["b_client_warehouse_code"] == "BIO - RIC":
         url = API_URL + "/build-label/"
     else:
@@ -54,14 +73,15 @@ def do_create_and_get_label(booking):
 
     data = {}
     data["booking_id"] = booking["id"]
-    response = requests.post(url, json=data)
+    headers = {"Authorization": f"JWT {token}"}
+    response = requests.post(url, json=data, headers=headers)
     response0 = response.content.decode("utf8")
     data0 = json.loads(response0)
     s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
     print("@220 - ", s0)
 
 
-def do_process(mysqlcon):
+def do_process(mysqlcon, token):
     # Get 3 ST bookings
     bookings = get_bookings(mysqlcon)
     print("#200 - Booking cnt to process(BOOK & LABEL): ", len(bookings))
@@ -74,7 +94,7 @@ def do_process(mysqlcon):
             result = do_book(booking)
 
             if "message" in result and "Successfully booked" in result["message"]:
-                do_create_and_get_label(booking)
+                do_create_and_get_label(booking, token)
 
     # Get 3 ST bookings
     bookings = get_bookings(mysqlcon, "missing-label")
@@ -84,7 +104,7 @@ def do_process(mysqlcon):
         time.sleep(5)
 
         for booking in bookings:
-            do_create_and_get_label(booking)
+            do_create_and_get_label(booking, token)
 
 
 if __name__ == "__main__":
@@ -116,7 +136,8 @@ if __name__ == "__main__":
             print("#906 - `st_auto_book_label` option is ON")
             set_option(mysqlcon, "st_auto_book_label", True)
             print("#910 - Processing...")
-            do_process(mysqlcon)
+            token = get_token()
+            do_process(mysqlcon, token)
             set_option(mysqlcon, "st_auto_book_label", False, time1)
     except Exception as e:
         print("Error 904:", str(e))
