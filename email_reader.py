@@ -165,6 +165,12 @@ def update_booking(mysqlcon, order_number, shipping_type, address_type, token):
         bok_1 = cursor.fetchone()
 
         if bok_1:
+            if int(bok_1["success"]) in [1, 4]:  # Already mapped
+                print(
+                    f"@404 - Already mapped! Order Number: {order_number}, success Code: {bok_1['success']}"
+                )
+                return False
+
             shipping_type = bok_1["b_092_booking_type"]
             b_53 = bok_1["b_053_b_del_address_type"]
         else:
@@ -200,12 +206,6 @@ def update_booking(mysqlcon, order_number, shipping_type, address_type, token):
 
         if not bok_1:
             print(f"@400 - Order doens't exist! Order Number: {order_number}")
-            return False
-
-        if int(bok_1["success"]) in [1, 4]:  # Already mapped
-            print(
-                f"@404 - Already mapped! Order Number: {order_number}, success Code: {bok_1['success']}"
-            )
             return False
 
         print(f"@403 - Updating... {order_number}")
