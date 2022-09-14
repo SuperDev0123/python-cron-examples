@@ -47,20 +47,10 @@ def get_token():
 
 
 def do_process(mysqlcon, token):
-    message = f"@350 {LOG_ID} OrderNum: {_order_num}, Suffix: {suffix}"
-    logger.info(message)
-    # ---
-
-    if settings.ENV != "local":  # Only on DEV or PROD
-        logger.info(f"@351 {LOG_ID} Running .sh script...")
-        subprocess.run(["/home/ubuntu/jason_l/picklog/src/run.sh"])
-        logger.info(f"@352 {LOG_ID} Finish running .sh")
-
-    if settings.ENV == "local":
-        file_path = "/Users/juli/Documents/talend_sample_data/picklog.csv"
-    else:
-        file_path = "/home/ubuntu/jason_l/picklog/src/picklog.csv"
-
+    logger.info(f"@351 {LOG_ID} Running .sh script...")
+    subprocess.run(["/home/ubuntu/jason_l/picklog/src/run.sh"])
+    logger.info(f"@352 {LOG_ID} Finish running .sh")
+    file_path = "/home/ubuntu/jason_l/picklog/src/picklog.csv"
     csv_file = open(file_path)
     logger.info(f"@350 {LOG_ID} File({file_path}) opened!")
 
