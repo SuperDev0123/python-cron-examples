@@ -47,28 +47,13 @@ def get_token():
 
 
 def do_process(mysqlcon, token):
-    # - Split `order_num` and `suffix` -
-    _order_num, suffix = order_num, ""
-    iters = _order_num.split("-")
-
-    if len(iters) > 1:
-        _order_num, suffix = iters[0], iters[1]
-
     message = f"@350 {LOG_ID} OrderNum: {_order_num}, Suffix: {suffix}"
     logger.info(message)
     # ---
 
     if settings.ENV != "local":  # Only on DEV or PROD
         logger.info(f"@351 {LOG_ID} Running .sh script...")
-        subprocess.run(
-            [
-                "/home/ubuntu/jason_l/picklog/src/run.sh",
-                "--context_param",
-                f"param1={_order_num}",
-                "--context_param",
-                f"param2={suffix}",
-            ]
-        )
+        subprocess.run(["/home/ubuntu/jason_l/picklog/src/run.sh"])
         logger.info(f"@352 {LOG_ID} Finish running .sh")
 
     if settings.ENV == "local":
