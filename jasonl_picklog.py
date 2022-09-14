@@ -47,12 +47,12 @@ def get_token():
 
 
 def do_process(mysqlcon, token):
-    logger.info(f"@351 {LOG_ID} Running .sh script...")
+    print(f"@351 {LOG_ID} Running .sh script...")
     subprocess.run(["/home/ubuntu/jason_l/picklog/src/run.sh"])
-    logger.info(f"@352 {LOG_ID} Finish running .sh")
+    print(f"@352 {LOG_ID} Finish running .sh")
     file_path = "/home/ubuntu/jason_l/picklog/src/picklog.csv"
     csv_file = open(file_path)
-    logger.info(f"@350 {LOG_ID} File({file_path}) opened!")
+    print(f"@350 {LOG_ID} File({file_path}) opened!")
 
     for i, line in enumerate(csv_file):
         if i == 0:  # Ignore first header row
