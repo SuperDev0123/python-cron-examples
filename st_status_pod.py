@@ -230,20 +230,38 @@ def csv_write(fpath, f, mysqlcon):
                                 dme_status,
                             )
 
-                        sql = "UPDATE `dme_bookings` \
-                            SET b_del_to_signed_name=%s, b_del_to_signed_time=%s, z_ModifiedTimestamp=%s, b_status_API=%s, b_status=%s \
-                            WHERE `v_FPBookingNumber`=%s"
-                        cursor.execute(
-                            sql,
-                            (
-                                b_del_to_signed_name,
-                                b_del_to_signed_time,
-                                datetime.datetime.now(),
-                                transit_state,
-                                dme_status,
-                                consignment_number,
-                            ),
-                        )
+                        if dme_status == "Delivered":
+                            sql = "UPDATE `dme_bookings` \
+                                SET b_del_to_signed_name=%s, b_del_to_signed_time=%s, z_ModifiedTimestamp=%s, b_status_API=%s, b_status=%s, s_21_Actual_Delivery_TimeStamp=%s \
+                                WHERE `v_FPBookingNumber`=%s"
+                            cursor.execute(
+                                sql,
+                                (
+                                    b_del_to_signed_name,
+                                    b_del_to_signed_time,
+                                    datetime.datetime.now(),
+                                    transit_state,
+                                    dme_status,
+                                    b_del_to_signed_time,
+                                    consignment_number,
+                                ),
+                            )
+                        else:
+                            sql = "UPDATE `dme_bookings` \
+                                SET b_del_to_signed_name=%s, b_del_to_signed_time=%s, z_ModifiedTimestamp=%s, b_status_API=%s, b_status=%s \
+                                WHERE `v_FPBookingNumber`=%s"
+                            cursor.execute(
+                                sql,
+                                (
+                                    b_del_to_signed_name,
+                                    b_del_to_signed_time,
+                                    datetime.datetime.now(),
+                                    transit_state,
+                                    dme_status,
+                                    consignment_number,
+                                ),
+                            )
+
                         mysqlcon.commit()
 
                     # Write Each Line
