@@ -60,7 +60,7 @@ def do_process(mysqlcon, token):
 
         content_items = line.split("|")
         order_number = content_items[0].strip()
-        shipping_type = content_items[1].strip()
+        shipping_type = content_items[1].strip() or "DMEA"
         address_type = content_items[2].strip()
 
         # Prevent '135000-' case
