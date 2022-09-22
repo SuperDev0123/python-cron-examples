@@ -66,7 +66,7 @@ def do_book(booking, token):
 
 
 def do_create_and_get_label(booking, token):
-    if booking["b_client_warehouse_code"] == "BIO - RIC":
+    if booking["b_client_warehouse_code"] in ["BIO - RIC", "BIO - HAZ"]:
         url = API_URL + "/build-label/"
     else:
         url = API_URL + "/fp-api/startrack/get-label/"
