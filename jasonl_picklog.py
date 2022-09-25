@@ -54,6 +54,7 @@ def do_process(mysqlcon, token):
     csv_file = open(file_path)
     print(f"@350 {LOG_ID} File({file_path}) opened!")
 
+    # PULL & MAP
     for i, line in enumerate(csv_file):
         if i == 0:  # Ignore first header row
             continue
@@ -61,7 +62,7 @@ def do_process(mysqlcon, token):
         content_items = line.split("|")
         order_number = content_items[0].strip()
         shipping_type = content_items[1].strip() or "DMEA"
-        address_type = content_items[2].strip()
+        address_type = content_items[2].strip() or "Business"
 
         # Prevent '135000-' case
         if len(order_number.split("-")) > 1 and order_number.split("-")[1] == "":

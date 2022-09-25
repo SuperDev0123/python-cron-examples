@@ -303,7 +303,7 @@ if __name__ == "__main__":
         exit(1)
 
     if not os.path.isdir(FTP_DIR) or not os.path.isdir(CSV_DIR):
-        print('Given argument "%s, %s" is not a directory' % FTP_DIR, CSV_DIR)
+        print(f"Given argument {FTP_DIR}, {CSV_DIR} is not a directory")
         exit(1)
 
     try:
