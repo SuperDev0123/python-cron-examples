@@ -49,7 +49,7 @@ def get_token():
 def get_bookings(mysqlcon, type):
     with mysqlcon.cursor() as cursor:
         if type == TYPE_1:  # Plum
-            sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider`, `kf_client_id`, `b_client_order_num` \
+            sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider`, `kf_client_id`, `b_client_order_num`, `b_client_name` \
                     FROM `dme_bookings` \
                     WHERE `b_dateBookedDate` IS NULL AND `b_status`=%s AND `kf_client_id`=%s AND \
                     (`b_error_Capture` IS NULL OR `b_error_Capture`=%s) AND `b_dateBookedDate` IS NULL \
@@ -67,7 +67,7 @@ def get_bookings(mysqlcon, type):
             )
             bookings = cursor.fetchall()
         elif type == TYPE_2:  # JasonL & BSD & Tempo Big W
-            sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider`, `kf_client_id`, `b_client_order_num` \
+            sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider`, `kf_client_id`, `b_client_order_num`, `b_client_name` \
                     FROM `dme_bookings` \
                     WHERE \
                         `b_dateBookedDate` IS NULL AND \
@@ -185,12 +185,17 @@ def do_process(mysqlcon):
     #             do_get_label(booking)
 
     bookings = get_bookings(mysqlcon, TYPE_2)  # JasonL
-    print("#202 - Booking cnt to process(JasonL): ", len(bookings))
+    print("#202 - Booking cnt to process(JasonL | BSD | Tempo Big W): ", len(bookings))
 
     if len(bookings) > 0:
         for booking in bookings:
             try:
-                print("#203 - Processing: ***", booking["b_bookingID_Visual"], "***")
+                print(
+                    "#203 - Processing: ***",
+                    booking["b_bookingID_Visual"],
+                    booking["b_client_name"],
+                    "***",
+                )
                 result = do_book(booking, token)
 
                 if not "successfully" in result["message"].lower():
