@@ -66,7 +66,7 @@ def get_bookings(mysqlcon, type):
                 ),
             )
             bookings = cursor.fetchall()
-        elif type == TYPE_2:  # JasonL & BSD
+        elif type == TYPE_2:  # JasonL & BSD & Tempo Big W
             sql = "SELECT `id`, `b_bookingID_Visual`, `vx_freight_provider`, `kf_client_id`, `b_client_order_num` \
                     FROM `dme_bookings` \
                     WHERE \
@@ -81,6 +81,7 @@ def get_bookings(mysqlcon, type):
                 (
                     "1af6bcd2-6148-11eb-ae93-0242ac130002",
                     "9e72da0f-77c3-4355-a5ce-70611ffd0bc8",
+                    "d69f550a-9327-4ff9-bc8f-242dfca00f7e",
                     "Ready for Despatch",
                     "Picked",
                     "Allied_",
