@@ -62,7 +62,7 @@ def get_bookings(mysqlcon, type):
                     "Ready for Booking",
                     "461162D2-90C7-BF4E-A905-000000000004",
                     "",
-                    "Allied_",
+                    "_Allied",
                 ),
             )
             bookings = cursor.fetchall()
@@ -71,7 +71,7 @@ def get_bookings(mysqlcon, type):
                     FROM `dme_bookings` \
                     WHERE \
                         `b_dateBookedDate` IS NULL AND \
-                        (`kf_client_id`=%s OR `kf_client_id`=%s) AND \
+                        (`kf_client_id`=%s OR `kf_client_id`=%s OR `kf_client_id`=%s) AND \
                         (`b_status`=%s OR (`b_status`=%s AND `z_manifest_url` IS NOT NULL)) \
                         AND `vx_freight_provider`<>%s \
                     ORDER BY id DESC \
@@ -84,7 +84,7 @@ def get_bookings(mysqlcon, type):
                     "d69f550a-9327-4ff9-bc8f-242dfca00f7e",
                     "Ready for Despatch",
                     "Picked",
-                    "Allied_",
+                    "_Allied",
                 ),
             )
             bookings = cursor.fetchall()
