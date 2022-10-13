@@ -63,6 +63,7 @@ def do_process(mysqlcon, token):
         order_number = content_items[0].strip()
         shipping_type = content_items[1].strip() or "DMEA"
         address_type = content_items[2].strip() or "Business"
+        pusher = content_items[4].strip() or ""
 
         # Prevent '135000-' case
         if len(order_number.split("-")) > 1 and order_number.split("-")[1] == "":
@@ -70,7 +71,7 @@ def do_process(mysqlcon, token):
 
         print(f"@801 - {line}")
         is_updated = update_booking(
-            mysqlcon, order_number, shipping_type, address_type, token
+            mysqlcon, order_number, shipping_type, address_type, pusher, token
         )
 
         print(
