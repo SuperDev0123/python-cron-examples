@@ -331,7 +331,7 @@ def get_or_create_freight_provider(token, rule, freight_providers):
     fp_company_name = None
 
     for freight_provider in freight_providers:
-        if rule["freight_provider_id"] == freight_provider["id"]:
+        if int(rule["freight_provider_id"]) == freight_provider["id"]:
             fp_id = freight_provider["id"]
             fp_company_name = freight_provider["fp_company_name"]
             fp_address_country = freight_provider["fp_address_country"]
@@ -448,8 +448,9 @@ def do_process(mysqlcon, fpath, fname):
 
     if not freight_provider["rule_type_code"]:
         _set_rule_type_of_fp(mysqlcon, freight_provider, rule_type)
+
     if rule_type != freight_provider["rule_type_code"]:
-        message = f"# 501 Error: Freight Provider({freight_provider['fp_company_name']}) has this Rule Type({freight_provider['rule_type_code']}). But imported Rule({rule['id']}) with wrong Rule Type({rule_type})"
+        message = f"# 501 Error: Freight Provider({freight_provider['fp_company_name']}) has this Rule Type({freight_provider['rule_type_code']}). Rule Type({rule_type})"
         print(message)
         raise Exception(message)
 

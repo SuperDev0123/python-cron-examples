@@ -193,6 +193,7 @@ def do_process(mysqlcon):
                 print(
                     "#203 - Processing: ***",
                     booking["b_bookingID_Visual"],
+                    "|",
                     booking["b_client_name"],
                     "***",
                 )

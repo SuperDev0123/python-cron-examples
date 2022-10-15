@@ -80,7 +80,7 @@ IF NOT _running_flag OR (_running_flag AND _start_time < DATE_SUB(CURRENT_TIMEST
         `b_client_name`, `delivery_kpi_days`, `z_api_issue_update_flag_500`,
         `x_manual_booked_flag`, `x_booking_Created_With`, `api_booking_quote_id`,
         `booking_type`, `vx_fp_order_id`, `b_clientPU_Warehouse`,
-        `b_promo_code`, `client_sales_total`)
+        `b_promo_code`, `client_sales_total`, `is_quote_locked`)
     SELECT bok_1.pk_header_id, bok_1.b_000_1_b_clientReference_RA_Numbers,
         bok_1.b_000_b_total_lines, bok_1.b_001_b_freight_provider, b_002_b_vehicle_type,
         bok_1.b_005_b_created_for, bok_1.b_006_b_created_for_email, b_007_b_ready_status,
@@ -137,7 +137,7 @@ IF NOT _running_flag OR (_running_flag AND _start_time < DATE_SUB(CURRENT_TIMEST
         CASE WHEN success = 6 THEN 1 ELSE 0 END,
         bok_1.x_booking_Created_With, bok_1.quote_id,
         bok_1.b_092_booking_type, '', bok_1.b_clientPU_Warehouse,
-        bok_1.b_093_b_promo_code, bok_1.b_094_client_sales_total
+        bok_1.b_093_b_promo_code, bok_1.b_094_client_sales_total, bok_1.b_092_is_quote_locked
     FROM bok_1_headers bok_1
     LEFT OUTER JOIN dme_clients ON fk_client_id=dme_account_num
     LEFT OUTER JOIN utl_fp_delivery_times ON (b_001_b_freight_provider = fp_name AND cast(b_059_b_del_address_postalcode AS UNSIGNED) 

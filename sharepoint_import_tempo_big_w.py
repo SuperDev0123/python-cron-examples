@@ -273,7 +273,7 @@ def do_import(dbcon, cur, filename):
         )
         header["z_test"] = None
         header["b_client_sales_inv_num"] = None
-        header["b_client_order_num"] = None
+        header["b_client_order_num"] = worksheet0["BN%i" % row].value
         header["b_client_del_note_num"] = None
         header["date_processed"] = convert_to_UTC_tz(datetime.now()).strftime(
             "%Y-%m-%d %H:%M:%S"

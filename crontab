@@ -52,6 +52,13 @@
 # Sendle
 */30 * * * * sudo python3 /opt/chrons/sendle_status_pod.py >> /opt/chrons/sendle_status_pod.log 2>&1
 
+# Allied
+*/25 * * * * sudo python3 /opt/chrons/allied_status_pod.py >> /opt/chrons/allied_status_pod.log 2>&1
+
+# Century
+*/30 * * * * sudo python3 /opt/chrons/century_status_pod.py >> /opt/chrons/century_status_pod.log 2>&1
+*/5 * * * * sudo python3 /opt/chrons/upload_csv_ftp.py >> /opt/chrons/upload_csv_ftp.py.log 2>&1
+
 # Pricing-Only and Pricing-Rule
 * * * * * sudo python3 /opt/chrons/pricing_only.py >> /opt/chrons/pricing_only.log 2>&1
 * * * * * sudo python3 /opt/chrons/pricing_rule_import.py >> /opt/chrons/pricing_rule_import.log 2>&1
@@ -82,3 +89,6 @@
 # */5 * * * * /opt/chrons/cope_au_move_connote.sh
 # */59 * * * * /opt/chrons/scan_label_cope.sh
 # */10 * * * * /opt/chrons/append_status_history_feedback.sh
+
+# BSD Woo-commerce
+*/10 * * * * sudo python3 /opt/chrons/woo_commerce.py >> /opt/chrons/woo_commerce.log 2>&1

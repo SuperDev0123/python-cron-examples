@@ -41,13 +41,13 @@ ST_ARCHIVE_CSV_DIR = "/Users/admin/work/goldmine/scripts/dir02/"
 PO_RESULT_DIR = "./../dme_api/static/uploaded/pricing_only/result/"
 PO_SRC_DIR = "./../dme_api/static/uploaded/pricing_only/indata/"
 PO_SRC_INPROGRESS_DIR = "./../dme_api/static/uploaded/pricing_only/inprogress/"
-PO_SRC_ACHIEVE_DIR = "./../dme_api/static/uploaded/pricing_only/achieve/"
+PO_SRC_ACHIEVE_DIR = "./../dme_api/static/uploaded/pricing_only/archive/"
 
 # PR - Pricing Rule
 PR_RESULT_DIR = "./../dme_api/static/uploaded/pricing_rule/result/"
 PR_SRC_DIR = "./../dme_api/static/uploaded/pricing_rule/indata/"
 PR_SRC_INPROGRESS_DIR = "./../dme_api/static/uploaded/pricing_rule/inprogress/"
-PR_SRC_ACHIEVE_DIR = "./../dme_api/static/uploaded/pricing_rule/achieve/"
+PR_SRC_ACHIEVE_DIR = "./../dme_api/static/uploaded/pricing_rule/archive/"
 
 # SAPB1 - CSV INPUT
 SAPB1_CSV_INPUT_DIR = "./dir01/"
