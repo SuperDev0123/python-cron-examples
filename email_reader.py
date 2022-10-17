@@ -195,7 +195,7 @@ def update_booking(mysqlcon, order_number, shipping_type, address_type, pusher, 
         # Pull Order from JasonL
         _pull_order(order_number, token, shipping_type, pusher, b_53)
         print(f"@402 - PULLED! Order Number: {order_number}")
-        time.sleep(20)
+        time.sleep(60)
 
     with mysqlcon.cursor() as cursor:
         mysqlcon.commit()
