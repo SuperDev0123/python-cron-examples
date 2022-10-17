@@ -91,7 +91,7 @@ def do_book(booking):
 
 
 def do_create_and_get_label(booking):
-    url = API_URL + f"/fp-api/{booking['vx_freight_provider'].lower()}/book/"
+    url = API_URL + f"/fp-api/{booking['vx_freight_provider'].lower()}/get-label/"
     data = {"booking_id": booking["id"]}
     response = requests.post(url, params={}, json=data)
 
