@@ -42,7 +42,7 @@ def _get_label_built_cnt(booking_ids, mysqlcon):
     cursor = mysqlcon.cursor()
     sql = (
         "SELECT id "
-        + f'FROM dme_bookings WHERE id in ({booking_ids}) and z_label_url IS NOT NULL'
+        + f"FROM dme_bookings WHERE id in ({booking_ids}) and z_label_url IS NOT NULL"
     )
     cursor.execute(sql)
     bookings = cursor.fetchall()
@@ -52,7 +52,7 @@ def _get_label_built_cnt(booking_ids, mysqlcon):
 def _get_bookings(booking_ids, mysqlcon):
     cursor = mysqlcon.cursor()
     sql = (
-        "SELECT id, b_bookingID_Visual, b_dateBookedDate, vx_freight_provider, api_booking_quote_id "
+        "SELECT id, b_bookingID_Visual, b_dateBookedDate, vx_freight_provider, api_booking_quote_id, b_client_name "
         + f"FROM dme_bookings WHERE id in ({booking_ids})"
     )
     cursor.execute(sql)
@@ -91,7 +91,10 @@ def do_book(booking):
 
 
 def do_create_and_get_label(booking):
-    url = API_URL + f"/fp-api/{booking['vx_freight_provider'].lower()}/get-label/"
+    if b_client_name.b_client_name == "Tempo Big W":
+        url = API_URL + f"/build-label/"
+    else:
+        url = API_URL + f"/fp-api/{booking['vx_freight_provider'].lower()}/get-label/"
     data = {"booking_id": booking["id"]}
     response = requests.post(url, params={}, json=data)
 
@@ -101,8 +104,9 @@ def do_create_and_get_label(booking):
         if response.status_code == 200:
             response0 = response.content.decode("utf8")
             data0 = json.loads(response0)
-            # s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
-            # print(f"@210 - Pricing result: {s0}")
+            s0 = json.dumps(data0, indent=4, sort_keys=True)  # Just for visual
+            print(f"@210 - Pricing result: {s0}")
+
             if len(data0["message"]) > 0:
                 return data0
 
@@ -120,7 +124,9 @@ def do_process(mysqlcon):
         print(f"#801 - BookingSets count:", len(bookingSets))
         bookingSet = bookingSets[0]
         progress = "BOOK" if bookingSet["status"] == "Starting BOOK" else "LABEL"
-        _update_bookingSet_status(bookingSet["id"], f"In Progress({progress}) {0}%", mysqlcon)
+        _update_bookingSet_status(
+            bookingSet["id"], f"In Progress({progress}) {0}%", mysqlcon
+        )
         print(f"#802 - Retrieving Bookings...")
         bookings = _get_bookings(bookingSet["booking_ids"], mysqlcon)
 
@@ -134,13 +140,13 @@ def do_process(mysqlcon):
                 )
 
                 try:
-                    if (progress == "BOOK" and booking["b_dateBookedDate"]):
+                    if progress == "BOOK" and booking["b_dateBookedDate"]:
                         pass
                     elif (
                         booking["vx_freight_provider"]
                         and booking["api_booking_quote_id"]
                     ):
-                        if (progress == "BOOK") :
+                        if progress == "BOOK":
                             _update_bookingSet_status(
                                 bookingSet["id"],
                                 f"In Progress(BOOK) {index / len(booking) * 100}%",
@@ -161,7 +167,7 @@ def do_process(mysqlcon):
                                     mysqlcon,
                                 )
                                 do_create_and_get_label(booking)
-                        else :
+                        else:
                             _update_bookingSet_status(
                                 bookingSet["id"],
                                 f"In Progress(LABEL) {index / len(booking) * 100}%",
@@ -176,10 +182,16 @@ def do_process(mysqlcon):
                     print(f"@591 - Error: {e}")
                     pass
 
-            booked_cnt = _get_booked_cnt(bookingSet["booking_ids"], mysqlcon) if progress == "BOOK" else _get_label_built_cnt(bookingSet["booking_ids"], mysqlcon)
+            booked_cnt = (
+                _get_booked_cnt(bookingSet["booking_ids"], mysqlcon)
+                if progress == "BOOK"
+                else _get_label_built_cnt(bookingSet["booking_ids"], mysqlcon)
+            )
             _update_bookingSet_status(
                 bookingSet["id"],
-                f"Completed(BOOK): {booked_cnt} / {len(bookings)} Bookings have been Booked" if progress == "BOOK" else f"Completed(LABEL): {booked_cnt} / {len(bookings)} Labels have been Built",
+                f"Completed(BOOK): {booked_cnt} / {len(bookings)} Bookings have been Booked"
+                if progress == "BOOK"
+                else f"Completed(LABEL): {booked_cnt} / {len(bookings)} Labels have been Built",
                 mysqlcon,
             )
         else:
