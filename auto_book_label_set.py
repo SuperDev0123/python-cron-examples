@@ -175,7 +175,7 @@ def do_process(mysqlcon):
                         if progress == "BOOK":
                             _update_bookingSet_status(
                                 bookingSet["id"],
-                                f"In Progress(BOOK) {index / len(booking) * 100}%",
+                                f"In Progress(BOOK) {index / len(bookings) * 100}%",
                                 mysqlcon,
                             )
                             result = do_book(booking)
@@ -189,14 +189,14 @@ def do_process(mysqlcon):
                             ):
                                 _update_bookingSet_status(
                                     bookingSet["id"],
-                                    f"In Progress(LABEL) {index / len(booking) * 100}%",
+                                    f"In Progress(LABEL) {index / len(bookings) * 100}%",
                                     mysqlcon,
                                 )
                                 do_create_and_get_label(booking, token)
                         else:
                             _update_bookingSet_status(
                                 bookingSet["id"],
-                                f"In Progress(LABEL) {index / len(booking) * 100}%",
+                                f"In Progress(LABEL) {index / len(bookings) * 100}%",
                                 mysqlcon,
                             )
                             do_create_and_get_label(booking, token)
