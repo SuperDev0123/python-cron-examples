@@ -99,7 +99,7 @@ def do_create_and_get_label(booking):
     response = requests.post(url, params={}, json=data)
 
     try:
-        # print(f"@200 - {response.status_code}")
+        print(f"@200 - {response.status_code}")
 
         if response.status_code == 200:
             response0 = response.content.decode("utf8")
@@ -136,7 +136,7 @@ def do_process(mysqlcon):
 
             for index, booking in enumerate(bookings):
                 print(
-                    f"#810 - Processing {index + 1}/{len(bookings)} - {booking['b_bookingID_Visual']}, {booking['vx_freight_provider']}, Pricing<{booking['api_booking_quote_id']}>"
+                    f"#810 - {progress} Processing {index + 1}/{len(bookings)} - {booking['b_bookingID_Visual']}, {booking['vx_freight_provider']}, Pricing<{booking['api_booking_quote_id']}>"
                 )
 
                 try:
