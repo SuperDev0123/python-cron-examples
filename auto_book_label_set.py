@@ -175,9 +175,9 @@ def do_process(mysqlcon):
                             )
                             do_create_and_get_label(booking)
                     else:
-                        _update_booking_error(
-                            booking, "Pricing is not selected!", mysqlcon
-                        )
+                        msg = "Pricing is not selected!"
+                        print("#840 - ", msg)
+                        _update_booking_error(booking, msg, mysqlcon)
                 except Exception as e:
                     print(f"@591 - Error: {e}")
                     pass
