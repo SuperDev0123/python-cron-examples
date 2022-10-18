@@ -91,7 +91,7 @@ def do_book(booking):
 
 
 def do_create_and_get_label(booking):
-    if b_client_name["b_client_name"] == "Tempo Big W":
+    if booking.['b_client_name'] == "Tempo Big W":
         url = API_URL + f"/build-label/"
     else:
         url = API_URL + f"/fp-api/{booking['vx_freight_provider'].lower()}/get-label/"
