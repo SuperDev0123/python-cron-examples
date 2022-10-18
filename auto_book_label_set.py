@@ -9,8 +9,32 @@ import traceback
 import time
 import pymysql, pymysql.cursors
 
-from _env import DB_HOST, DB_USER, DB_PASS, DB_PORT, DB_NAME, API_URL
+from _env import (
+    DB_HOST,
+    DB_USER,
+    DB_PASS,
+    DB_PORT,
+    DB_NAME,
+    API_URL,
+    USERNAME,
+    PASSWORD,
+)
 from _options_lib import get_option, set_option
+
+
+def get_token():
+    url = API_URL + "/api-token-auth/"
+    data = {"username": USERNAME, "password": PASSWORD}
+    response = requests.post(url, params={}, json=data)
+    response0 = response.content.decode("utf8")
+    data0 = json.loads(response0)
+
+    if "token" in data0:
+        # print("@101 - Token: ", data0["token"])
+        return data0["token"]
+    else:
+        print("@400 - ", data0["non_field_errors"])
+        return None
 
 
 def _update_bookingSet_status(bookingSet_id, status, mysqlcon):
@@ -90,13 +114,14 @@ def do_book(booking):
         return None
 
 
-def do_create_and_get_label(booking):
+def do_create_and_get_label(booking, token):
     if booking["b_client_name"] == "Tempo Big W":
         url = API_URL + f"/build-label/"
     else:
         url = API_URL + f"/fp-api/{booking['vx_freight_provider'].lower()}/get-label/"
     data = {"booking_id": booking["id"]}
-    response = requests.post(url, params={}, json=data)
+    headers = {"Authorization": "JWT " + token, "Content-Type": "application/json"}
+    response = requests.post(url, params={}, json=data, headers=headers)
 
     try:
         print(f"@200 - {response.status_code}")
@@ -133,6 +158,7 @@ def do_process(mysqlcon):
         if bookings:
             print(f"#803 - Bookings count:", len(bookings))
             success_cnt = 0
+            token = get_token()
 
             for index, booking in enumerate(bookings):
                 print(
@@ -166,14 +192,14 @@ def do_process(mysqlcon):
                                     f"In Progress(LABEL) {index / len(booking) * 100}%",
                                     mysqlcon,
                                 )
-                                do_create_and_get_label(booking)
+                                do_create_and_get_label(booking, token)
                         else:
                             _update_bookingSet_status(
                                 bookingSet["id"],
                                 f"In Progress(LABEL) {index / len(booking) * 100}%",
                                 mysqlcon,
                             )
-                            do_create_and_get_label(booking)
+                            do_create_and_get_label(booking, token)
                     else:
                         msg = "Pricing is not selected!"
                         print("#840 - ", msg)
