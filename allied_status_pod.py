@@ -20,7 +20,7 @@ def get_in_progress_bookings(mysqlcon):
                     `b_status`<>%s AND `b_status`<>%s AND `b_status`<>%s) \
                     AND b_dateBookedDate IS NOT NULL AND b_dateBookedDate <= NOW() - INTERVAL 10 MINUTE \
                 ORDER BY id DESC \
-                LIMIT 200"
+                LIMIT 500"
         cursor.execute(
             sql,
             (
