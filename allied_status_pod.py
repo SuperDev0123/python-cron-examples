@@ -100,6 +100,7 @@ def do_process(mysqlcon):
     for booking in bookings:
         print("#201 - Processing: ***", booking["b_bookingID_Visual"], "***")
         result = do_tracking(booking)
+        time.sleep(5)
 
         if "b_status" in result and result["b_status"] == "Delivered":
             do_pod(booking)
