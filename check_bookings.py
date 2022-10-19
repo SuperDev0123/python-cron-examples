@@ -96,11 +96,11 @@ def do_process(mysqlcon):
     if len(bookings) > 0:
         send_email_to_admins(bookings, "Duplicated Booking Visual ID")
         
-    # bookings = get_duplicate_pk_booking_ids(mysqlcon)  # JasonL
-    # print("#202 - Duplicate PK Booking IDs: ", len(bookings))
+    bookings = get_duplicate_pk_booking_ids(mysqlcon)  # JasonL
+    print("#202 - Duplicate PK Booking IDs: ", len(bookings))
 
-    # if len(bookings) > 0:
-    #     send_email_to_admins(bookings, "Duplicated PK Booking ID")
+    if len(bookings) > 0:
+        send_email_to_admins(bookings, "Duplicated PK Booking ID")
 
 if __name__ == "__main__":
     print("#900 Started %s" % datetime.datetime.now())
